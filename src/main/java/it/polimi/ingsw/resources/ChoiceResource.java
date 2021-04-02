@@ -4,11 +4,11 @@ public class ChoiceResource implements Resource {
     private final ChoiceSet choices;
     private ConcreteResource finalChoice;
 
-    ChoiceResource(ChoiceSet choices) throws EmptyChoiceSetException {
-        if(choices.empty()) {
-            throw new EmptyChoiceSetException();
+    ChoiceResource(ChoiceSet choices) throws InvalidChoiceSetException {
+        if(choices == null || choices.empty()) {
+            throw new InvalidChoiceSetException();
         }
-        this.choices = choices;
+        this.choices = new ChoiceSet(choices);
         if(choices.size() == 1) {
             for(ConcreteResource resource: ConcreteResource.values()) {
                 if(choices.containsResource(resource)) {

@@ -25,7 +25,7 @@ public class ConcreteResourceSet implements ResourceSet {
 
     public void removeResource(ConcreteResource resource, int quantity) throws NotEnoughResourcesException {
         int prevQuantity = getCount(resource);
-        if(prevQuantity == 0) {
+        if(prevQuantity < quantity) {
             throw new NotEnoughResourcesException();
         }
 

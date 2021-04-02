@@ -16,7 +16,10 @@ public class ChoiceResourceSet implements ResourceSet {
         return true;
     }
 
-    public ConcreteResourceSet toConcrete() {
+    public ConcreteResourceSet toConcrete() throws NotConcreteException {
+        if(!isConcrete()) {
+            throw new NotConcreteException();
+        }
         ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
         for(Resource resource: resources)
             concreteResourceSet.addResource(resource.getResource());
@@ -25,5 +28,9 @@ public class ChoiceResourceSet implements ResourceSet {
 
     public void addResource(Resource resource) {
         resources.add(resource);
+    }
+
+    public ArrayList<Resource> getResources() {
+        return new ArrayList<>(resources);
     }
 }
