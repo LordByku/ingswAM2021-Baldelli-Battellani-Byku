@@ -18,6 +18,19 @@ public class ChoiceSet {
         }
     }
 
+    ChoiceSet(ChoiceSet other) {
+        if(other == null) {
+            set = null;
+        } else {
+            set = new HashSet<>();
+            for(ConcreteResource resource: ConcreteResource.values()) {
+                if(other.containsResource(resource)) {
+                    set.add(resource);
+                }
+            }
+        }
+    }
+
     public void addChoice(ConcreteResource resource) {
         set.add(resource);
     }

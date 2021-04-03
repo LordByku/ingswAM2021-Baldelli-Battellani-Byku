@@ -11,7 +11,7 @@ public class ChoiceResourceTest {
         try {
             ChoiceResource choiceResource = new ChoiceResource(emptyChoiceSet);
             fail();
-        } catch(EmptyChoiceSetException e) {
+        } catch (InvalidChoiceSetException e) {
             assertTrue(true);
         }
 
@@ -24,7 +24,58 @@ public class ChoiceResourceTest {
             assertTrue(choiceResource.canChoose(ConcreteResource.SHIELD));
             assertFalse(choiceResource.canChoose(ConcreteResource.SERVANT));
             assertFalse(choiceResource.canChoose(ConcreteResource.STONE));
-        } catch(EmptyChoiceSetException e) {
+        } catch (InvalidChoiceSetException e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void nullChoiceSetTest() {
+        ChoiceSet nullChoiceSet = null;
+
+        try {
+            ChoiceResource choiceResource = new ChoiceResource(nullChoiceSet);
+            fail();
+        } catch (InvalidChoiceSetException e) {
+            assertTrue(true);
+        }
+    }
+
+    @Test
+    public void modifyChoiceSetTest() {
+        ChoiceSet choiceSet = new ChoiceSet();
+
+        choiceSet.addChoice(ConcreteResource.COIN);
+        choiceSet.addChoice(ConcreteResource.STONE);
+
+        try {
+            ChoiceResource choiceResource = new ChoiceResource(choiceSet);
+            assertFalse(choiceResource.canChoose(ConcreteResource.SHIELD));
+
+            choiceSet.addChoice(ConcreteResource.SHIELD);
+            assertFalse(choiceResource.canChoose(ConcreteResource.SHIELD));
+        } catch (InvalidChoiceSetException e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void modifyFinalChoiceTest() {
+        ChoiceSet choiceSet = new ChoiceSet();
+
+        choiceSet.addChoice(ConcreteResource.COIN);
+        choiceSet.addChoice(ConcreteResource.SHIELD);
+
+        try {
+            ChoiceResource choiceResource = new ChoiceResource(choiceSet);
+            choiceResource.makeChoice(ConcreteResource.COIN);
+            ConcreteResource finalChoice = choiceResource.getResource();
+            finalChoice = ConcreteResource.STONE;
+
+            assertEquals(ConcreteResource.COIN, choiceResource.getResource());
+        } catch (InvalidChoiceSetException e) {
+            fail();
+        } catch (InvalidResourceException e) {
             fail();
         }
     }
@@ -39,7 +90,7 @@ public class ChoiceResourceTest {
 
             assertTrue(choiceResource.isConcrete());
             assertSame(choiceResource.getResource(), ConcreteResource.COIN);
-        } catch (EmptyChoiceSetException e) {
+        } catch (InvalidChoiceSetException e) {
             fail();
         }
     }
@@ -70,7 +121,7 @@ public class ChoiceResourceTest {
                 assertTrue(choiceResource.isConcrete());
                 assertSame(choiceResource.getResource(), ConcreteResource.COIN);
             }
-        } catch (EmptyChoiceSetException e) {
+        } catch (InvalidChoiceSetException e) {
             fail();
         }
     }
