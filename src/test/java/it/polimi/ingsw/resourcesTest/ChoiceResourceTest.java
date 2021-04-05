@@ -1,5 +1,6 @@
-package it.polimi.ingsw.resources;
+package it.polimi.ingsw.resourcesTest;
 
+import it.polimi.ingsw.resources.*;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

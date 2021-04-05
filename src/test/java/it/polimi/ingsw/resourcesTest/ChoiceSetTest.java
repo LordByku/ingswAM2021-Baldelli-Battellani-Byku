@@ -1,8 +1,10 @@
-package it.polimi.ingsw.resources;
+package it.polimi.ingsw.resourcesTest;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import it.polimi.ingsw.resources.ChoiceSet;
+import it.polimi.ingsw.resources.ConcreteResource;
 import org.junit.Test;
 
 public class ChoiceSetTest {

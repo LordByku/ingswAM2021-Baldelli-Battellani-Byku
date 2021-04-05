@@ -1,7 +1,8 @@
-package it.polimi.ingsw.resources;
+package it.polimi.ingsw.resourcesTest;
 
 import static org.junit.Assert.assertSame;
 
+import it.polimi.ingsw.resources.ConcreteResource;
 import org.junit.Test;
 
 public class ConcreteResourceTest {

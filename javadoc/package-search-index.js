@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"it.polimi.ingsw.leaderCards"},{"l":"it.polimi.ingsw.resources"},{"l":"it.polimi.ingsw.resourcesTest"}];updateSearchResults();
