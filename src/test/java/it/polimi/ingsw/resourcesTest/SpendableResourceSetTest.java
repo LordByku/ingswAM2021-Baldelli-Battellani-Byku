@@ -2,7 +2,7 @@ package it.polimi.ingsw.resourcesTest;
 
 import org.junit.Test;
 
-public class SpendableResourceSet {
+public class SpendableResourceSetTest {
     @Test
     public void unionTest() {
         //TODO
