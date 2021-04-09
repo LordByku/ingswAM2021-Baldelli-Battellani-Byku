@@ -1,4 +1,4 @@
-package it.polimi.ingsw.leaderCards;
+package it.polimi.ingsw.devCards;
 
 import java.util.HashSet;
 
