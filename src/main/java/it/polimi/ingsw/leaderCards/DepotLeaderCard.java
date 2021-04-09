@@ -1,7 +1,7 @@
 package it.polimi.ingsw.leaderCards;
 
 import it.polimi.ingsw.resources.ConcreteResource;
-import it.polimi.ingsw.resources.ConcreteResourceSet;
+import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
 
 public class DepotLeaderCard extends LeaderCard{
     private final ConcreteResource type;

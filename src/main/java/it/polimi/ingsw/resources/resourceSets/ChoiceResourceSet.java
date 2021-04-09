@@ -1,4 +1,7 @@
-package it.polimi.ingsw.resources;
+package it.polimi.ingsw.resources.resourceSets;
+
+import it.polimi.ingsw.resources.NotConcreteException;
+import it.polimi.ingsw.resources.Resource;
 
 import java.util.ArrayList;
 
@@ -9,7 +12,7 @@ public class ChoiceResourceSet implements ResourceSet {
     /**
      * resources is where Resources are stored
      */
-    private final ArrayList<Resource> resources;
+    private ArrayList<Resource> resources;
 
     /**
      * The constructor initializes resources to an empty ArrayList
@@ -59,5 +62,45 @@ public class ChoiceResourceSet implements ResourceSet {
      */
     public ArrayList<Resource> getResources() {
         return new ArrayList<>(resources);
+    }
+
+    /**
+     * This method allows to add the resources contained in a ResourceSet to this resource set
+     * @param other The ResourceSet to add resources from
+     * @throws InvalidResourceSetException other is null or other is not a ChoiceResourceSet
+     */
+    @Override
+    public void union(ResourceSet other) throws InvalidResourceSetException {
+        if(other == null) {
+            throw new InvalidResourceSetException();
+        }
+        try {
+            ChoiceResourceSet choiceOther = (ChoiceResourceSet) other;
+            ArrayList<Resource> otherResources = choiceOther.getResources();
+            for(Resource resource: otherResources) {
+                addResource(resource);
+            }
+        } catch (ClassCastException e) {
+            throw new InvalidResourceSetException();
+        }
+    }
+
+    /**
+     * clone returns a copy of the object
+     * @return A copy of the object
+     */
+    @Override
+    public ResourceSet clone() {
+        try {
+            ChoiceResourceSet cloneResourceSet = (ChoiceResourceSet) super.clone();
+            cloneResourceSet.resources = (ArrayList<Resource>) resources.clone();
+            for(int i = 0; i < resources.size(); i++) {
+                cloneResourceSet.resources.set(i, resources.get(i).copy());
+            }
+            return cloneResourceSet;
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

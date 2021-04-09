@@ -1,6 +1,10 @@
 package it.polimi.ingsw.resourcesTest;
 
 import it.polimi.ingsw.resources.*;
+import it.polimi.ingsw.resources.resourceSets.ChoiceResourceSet;
+import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
+import it.polimi.ingsw.resources.NotConcreteException;
+import it.polimi.ingsw.resources.resourceSets.InvalidResourceSetException;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -14,7 +18,7 @@ public class ChoiceResourceSetTest {
 
         choiceResourceSet.addResource(ConcreteResource.COIN);
 
-        ChoiceSet choiceSet = new ChoiceSet(true);
+        ChoiceSet choiceSet = new FullChoiceSet();
         try {
             choiceResourceSet.addResource(new ChoiceResource(choiceSet));
         } catch (InvalidChoiceSetException e) {
@@ -46,7 +50,7 @@ public class ChoiceResourceSetTest {
 
          choiceResourceSet.addResource(ConcreteResource.COIN);
 
-        ChoiceSet choiceSet = new ChoiceSet(true);
+        ChoiceSet choiceSet = new FullChoiceSet();
         try {
             choiceResourceSet.addResource(new ChoiceResource(choiceSet));
             choiceResourceSet.addResource(new ChoiceResource(choiceSet));
@@ -84,5 +88,108 @@ public class ChoiceResourceSetTest {
         } catch (NotConcreteException e) {
             fail();
         }
+    }
+
+    @Test
+    public void unionTest() {
+        ChoiceResourceSet choiceResourceSet1 = new ChoiceResourceSet();
+        ChoiceResourceSet choiceResourceSet2 = new ChoiceResourceSet();
+
+        ChoiceSet choiceSet = new FullChoiceSet();
+
+        try {
+            choiceResourceSet1.addResource(ConcreteResource.COIN);
+            choiceResourceSet1.addResource(new ChoiceResource(choiceSet));
+
+            choiceResourceSet2.addResource(new ChoiceResource(choiceSet));
+            choiceResourceSet2.addResource(ConcreteResource.STONE);
+        } catch (InvalidChoiceSetException e) {
+            fail();
+        }
+
+        try {
+            choiceResourceSet1.union(choiceResourceSet2);
+        } catch (InvalidResourceSetException e) {
+            fail();
+        }
+
+        ArrayList<Resource> resources = choiceResourceSet1.getResources();
+
+        assertEquals(4, resources.size());
+        assertEquals(ConcreteResource.COIN, resources.get(0));
+        assertFalse(resources.get(1).isConcrete());
+        assertFalse(resources.get(2).isConcrete());
+        assertEquals(ConcreteResource.STONE, resources.get(3));
+    }
+
+    @Test
+    public void advancedUnionTest() {
+        ChoiceResourceSet choiceResourceSet1 = new ChoiceResourceSet();
+        ChoiceResourceSet choiceResourceSet2 = new ChoiceResourceSet();
+        ChoiceResourceSet choiceResourceSet3 = null;
+
+        ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
+
+        choiceResourceSet1.addResource(ConcreteResource.STONE);
+        choiceResourceSet1.addResource(ConcreteResource.SHIELD);
+
+        try {
+            choiceResourceSet1.union(choiceResourceSet2);
+
+            ArrayList<Resource> resources = choiceResourceSet1.getResources();
+
+            assertEquals(2, resources.size());
+            assertEquals(ConcreteResource.STONE, resources.get(0));
+            assertEquals(ConcreteResource.SHIELD, resources.get(1));
+        } catch (InvalidResourceSetException e) {
+            fail();
+        }
+
+        try {
+            choiceResourceSet1.union(choiceResourceSet3);
+            fail();
+        } catch (InvalidResourceSetException e) {
+            assertTrue(true);
+        }
+
+        try {
+            choiceResourceSet1.union(concreteResourceSet);
+            fail();
+        } catch (InvalidResourceSetException e) {
+            assertTrue(true);
+        }
+
+        ArrayList<Resource> resources = choiceResourceSet1.getResources();
+        assertEquals(2, resources.size());
+        assertEquals(ConcreteResource.STONE, resources.get(0));
+        assertEquals(ConcreteResource.SHIELD, resources.get(1));
+    }
+
+    @Test
+    public void cloneTest() {
+        ChoiceResourceSet choiceResourceSet1 = new ChoiceResourceSet();
+        ChoiceSet choiceSet = new FullChoiceSet();
+
+        choiceResourceSet1.addResource(ConcreteResource.COIN);
+        try {
+            choiceResourceSet1.addResource(new ChoiceResource(choiceSet));
+        } catch (InvalidChoiceSetException e) {
+            fail();
+        }
+
+        ChoiceResourceSet choiceResourceSet2 = (ChoiceResourceSet) choiceResourceSet1.clone();
+        ArrayList<Resource> resources1 = choiceResourceSet1.getResources();
+        ArrayList<Resource> resources2 = choiceResourceSet2.getResources();
+
+        choiceResourceSet1.addResource(ConcreteResource.SHIELD);
+        try {
+            ((ChoiceResource) resources2.get(1)).makeChoice(ConcreteResource.SERVANT);
+            ((ChoiceResource) resources1.get(1)).makeChoice(ConcreteResource.STONE);
+        } catch (InvalidResourceException e) {
+            fail();
+        }
+
+        assertEquals(2, resources2.size());
+        assertEquals(ConcreteResource.SERVANT, resources2.get(1).getResource());
     }
 }

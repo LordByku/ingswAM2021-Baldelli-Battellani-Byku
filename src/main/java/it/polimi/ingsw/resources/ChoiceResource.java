@@ -25,7 +25,7 @@ public class ChoiceResource implements Resource {
         if(choices == null || choices.empty()) {
             throw new InvalidChoiceSetException();
         }
-        this.choices = new ChoiceSet(choices);
+        this.choices = choices.clone();
         if(choices.size() == 1) {
             for(ConcreteResource resource: ConcreteResource.values()) {
                 if(choices.containsResource(resource)) {
@@ -76,5 +76,20 @@ public class ChoiceResource implements Resource {
     @Override
     public boolean isConcrete() {
         return finalChoice != null;
+    }
+
+    /**
+     * copy returns a copy of the object
+     * @return A copy of the object
+     */
+    @Override
+    public Resource copy() {
+        try {
+            ChoiceResource copyResource = new ChoiceResource(choices);
+            copyResource.finalChoice = finalChoice;
+            return copyResource;
+        } catch (InvalidChoiceSetException e) {
+            return null;
+        }
     }
 }

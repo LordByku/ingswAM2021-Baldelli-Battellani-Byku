@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import it.polimi.ingsw.resources.ChoiceSet;
 import it.polimi.ingsw.resources.ConcreteResource;
+import it.polimi.ingsw.resources.FullChoiceSet;
 import org.junit.Test;
 
 public class ChoiceSetTest {
@@ -23,12 +24,30 @@ public class ChoiceSetTest {
 
     @Test
     public void fullConstructorTest() {
-        ChoiceSet choiceSetFull = new ChoiceSet(true);
-        ChoiceSet choiceSetEmpty = new ChoiceSet(false);
+        ChoiceSet choiceSetFull = new FullChoiceSet();
+        ChoiceSet choiceSetEmpty = new ChoiceSet();
 
         for(ConcreteResource resource: ConcreteResource.values()) {
             assertTrue(choiceSetFull.containsResource(resource));
             assertFalse(choiceSetEmpty.containsResource(resource));
         }
+    }
+
+    @Test
+    public void cloneTest() {
+        ChoiceSet choiceSet1 = new ChoiceSet();
+
+        choiceSet1.addChoice(ConcreteResource.COIN);
+
+        ChoiceSet choiceSet2 = choiceSet1.clone();
+
+        assertTrue(choiceSet2.containsResource(ConcreteResource.COIN));
+        assertFalse(choiceSet2.containsResource(ConcreteResource.STONE));
+        assertFalse(choiceSet2.containsResource(ConcreteResource.SHIELD));
+        assertFalse(choiceSet2.containsResource(ConcreteResource.SERVANT));
+
+        choiceSet1.addChoice(ConcreteResource.SHIELD);
+
+        assertFalse(choiceSet2.containsResource(ConcreteResource.SHIELD));
     }
 }

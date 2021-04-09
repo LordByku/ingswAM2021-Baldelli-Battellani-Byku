@@ -1,4 +1,7 @@
-package it.polimi.ingsw.resources;
+package it.polimi.ingsw.resources.resourceSets;
+
+import it.polimi.ingsw.resources.ConcreteResource;
+import it.polimi.ingsw.resources.NotEnoughResourcesException;
 
 import java.util.HashMap;
 
@@ -9,7 +12,7 @@ public class ConcreteResourceSet implements ResourceSet {
     /**
      * resources is where ConcreteResources are stored
      */
-    private final HashMap<ConcreteResource, Integer> resources;
+    private HashMap<ConcreteResource, Integer> resources;
 
     /**
      * The constructor initializes resources to an empty set
@@ -88,15 +91,41 @@ public class ConcreteResourceSet implements ResourceSet {
     }
 
     /**
-     * union adds to this object all the ConcreteResource contained in another ConcreteResourceSet
-     * @param other The ConcreteResourceSet to add resources from
+     * This method allows to add the resources contained in a ResourceSet to this resource set
+     * @param other The ResourceSet to add resources from
+     * @throws InvalidResourceSetException other is null or other is not a ConcreteResourceSet
      */
-    public void union(ConcreteResourceSet other) {
-        for(ConcreteResource resource: ConcreteResource.values()) {
-            int quantity = other.getCount(resource);
-            try {
-                addResource(resource, quantity);
-            } catch (InvalidQuantityException e) {}
+    @Override
+    public void union(ResourceSet other) throws InvalidResourceSetException {
+        if(other == null) {
+            throw new InvalidResourceSetException();
+        }
+        try {
+            ConcreteResourceSet concreteOther = (ConcreteResourceSet) other;
+            for(ConcreteResource resource: ConcreteResource.values()) {
+                int quantity = concreteOther.getCount(resource);
+                try {
+                    addResource(resource, quantity);
+                } catch (InvalidQuantityException e) {}
+            }
+        } catch (ClassCastException e) {
+            throw new InvalidResourceSetException();
+        }
+    }
+
+    /**
+     * clone returns a copy of the object
+     * @return A copy of the object
+     */
+    @Override
+    public ResourceSet clone() {
+        try {
+            ConcreteResourceSet cloneResourceSet = (ConcreteResourceSet) super.clone();
+            cloneResourceSet.resources = (HashMap<ConcreteResource, Integer>) resources.clone();
+            return cloneResourceSet;
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

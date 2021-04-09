@@ -1,5 +1,7 @@
 package it.polimi.ingsw.resources;
 
+import it.polimi.ingsw.resources.resourceSets.ResourceSet;
+
 /**
  * Resource is the interface for resources, including ChoiceResources
  */
@@ -16,4 +18,11 @@ public interface Resource {
      * @return True iff this Resource represents a ConcreteResource
      */
     boolean isConcrete();
+
+    /**
+     * copy returns a copy of the object
+     * @return A copy of the object
+     */
+    Resource copy();
+    // TODO: Maybe copyable interface? Can't use clone because ConcreteResource cannot override clone() from Enum
 }

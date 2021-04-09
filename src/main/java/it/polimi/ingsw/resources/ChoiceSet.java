@@ -1,51 +1,23 @@
 package it.polimi.ingsw.resources;
 
+import java.awt.*;
 import java.util.Arrays;
 import java.util.HashSet;
 
 /**
  * ChoiceSet represents a set of resources to choose from
  */
-public class ChoiceSet {
+public class ChoiceSet implements Cloneable {
     /**
      * set contains the resources that can be chosen
      */
-    private final HashSet<ConcreteResource> set;
+    private HashSet<ConcreteResource> set;
 
     /**
-     * The default constructor initializes set to an empty set
+     * The constructor initializes set to an empty set
      */
     public ChoiceSet() {
         set = new HashSet<>();
-    }
-
-    /**
-     * This constructor allows to build a ChoiceSet that contains all possible ConcreteResources
-     * @param fullSet If True than set is initialized to contain all possible ConcreteResources
-     */
-    public ChoiceSet(boolean fullSet) {
-        if(fullSet) {
-            set = new HashSet<>(Arrays.asList(ConcreteResource.values()));
-        } else {
-            set = new HashSet<>();
-        }
-    }
-
-    /**
-     * This constructor builds a copy of another ChoiceSet
-     * @param other The ChoiceSet to copy from
-     */
-    ChoiceSet(ChoiceSet other) {
-        if(other == null) {
-            set = null;
-        } else {
-            set = new HashSet<>();
-            for(ConcreteResource resource: ConcreteResource.values()) {
-                if(other.containsResource(resource)) {
-                    set.add(resource);
-                }
-            }
-        }
     }
 
     /**
@@ -79,5 +51,21 @@ public class ChoiceSet {
      */
     public int size() {
         return set.size();
+    }
+
+    /**
+     * clone returns a copy of the object
+     * @return A copy of the object
+     */
+    @Override
+    public ChoiceSet clone() {
+        try {
+            ChoiceSet setClone = (ChoiceSet) super.clone();
+            setClone.set = (HashSet<ConcreteResource>) set.clone();
+            return setClone;
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
