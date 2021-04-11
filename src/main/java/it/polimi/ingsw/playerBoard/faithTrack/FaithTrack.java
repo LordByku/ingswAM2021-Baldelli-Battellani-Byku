@@ -1,11 +1,13 @@
-package it.polimi.ingsw.faithTrack;
+package it.polimi.ingsw.playerBoard.faithTrack;
+
+import it.polimi.ingsw.playerBoard.Scoring;
 
 import java.util.ArrayList;
 
 /**
  * FaithTrack represents the on-board faith track
  */
-public class FaithTrack {
+public class FaithTrack implements Scoring {
     int markerPosition;
     private ArrayList<PopeFavor> receivedPopeFavors;
 

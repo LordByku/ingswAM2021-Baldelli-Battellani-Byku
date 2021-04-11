@@ -1,12 +1,13 @@
 package it.polimi.ingsw.devCards;
 
+import it.polimi.ingsw.playerBoard.Scoring;
 import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
 
 /**
  * DevCard represents development cards
  */
 
-public class DevCard {
+public class DevCard implements Scoring {
     ConcreteResourceSet reqResources;
     CardColour colour;
     CardLevel level;

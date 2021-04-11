@@ -1,6 +1,8 @@
 package it.polimi.ingsw.leaderCards;
 
-public abstract class LeaderCard {
+import it.polimi.ingsw.playerBoard.Scoring;
+
+public abstract class LeaderCard implements Scoring {
     int points;
     //Board board;
     LeaderCardRequirements requirements;
