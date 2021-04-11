@@ -1,0 +1,33 @@
+package it.polimi.ingsw.leaderCards;
+
+import it.polimi.ingsw.resources.ConcreteResource;
+import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
+
+/**
+ * A special depot created by the activation of a DepotLeaderCard, it can store just 2 resource of a defined type.
+ */
+public class LeaderCardDepot{
+
+    /**
+     * The type of resource storable into the depot.
+     */
+    private ConcreteResource type;
+
+    /**
+     * Dimension of the depot
+     */
+    private final int slots = 2;
+
+    /**
+     * Set of Resources stored into the depot.
+     */
+    private ConcreteResourceSet resources;
+
+    /**
+     * Constructor sets the type of resources that can be stored.
+     * @param type of resources that can be stored.
+     */
+    LeaderCardDepot(ConcreteResource type){
+        this.type = type;
+    }
+}

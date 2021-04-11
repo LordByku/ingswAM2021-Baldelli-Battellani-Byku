@@ -1,5 +1,17 @@
 package it.polimi.ingsw.leaderCards;
 
+import it.polimi.ingsw.playerBoard.Board;
+
+/**
+ * LeaderCardRequirements represents the requirements needed to play a LeaderCard
+ */
+
 public interface LeaderCardRequirements {
-    //boolean isSatisfied(Board board);
+
+    /**
+     * isSatisfied calls the board to check if it match the requirements.
+     * @param board the board of the current player.
+     * @return true if the board matches the requirements, false otherwise.
+     */
+    boolean isSatisfied(Board board);
 }

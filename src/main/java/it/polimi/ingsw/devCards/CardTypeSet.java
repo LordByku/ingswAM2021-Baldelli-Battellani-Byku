@@ -1,13 +1,22 @@
 package it.polimi.ingsw.devCards;
 
-import it.polimi.ingsw.devCards.CardType;
-import it.polimi.ingsw.leaderCards.LeaderCardRequirements;
-
 import java.util.HashMap;
 
-public class CardTypeSet implements LeaderCardRequirements {
+/**
+ * CardTypeset represents a set of CardTypes
+ */
+
+public class CardTypeSet{
     private HashMap<CardType,Integer> cardTypes;
 
+    public HashMap<CardType, Integer> getCardTypes(){ return cardTypes; }
+    // TODO: implements LeaderCardRequirements
+
     //@Override
-    //public boolean isSatisfied(Board board) {}
+    //public boolean isSatisfied(Board board) {
+        //TODO:
+        // method hasCardTypeSet in Board
+
+        // return board.hasCardTypeSet(this.getCardTypes());
+    //}
 }

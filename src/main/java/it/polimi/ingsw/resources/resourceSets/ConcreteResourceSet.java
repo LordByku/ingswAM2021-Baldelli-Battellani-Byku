@@ -1,5 +1,7 @@
 package it.polimi.ingsw.resources.resourceSets;
 
+import it.polimi.ingsw.leaderCards.LeaderCardRequirements;
+import it.polimi.ingsw.playerBoard.Board;
 import it.polimi.ingsw.resources.ConcreteResource;
 import it.polimi.ingsw.resources.NotEnoughResourcesException;
 
@@ -128,4 +130,14 @@ public class ConcreteResourceSet implements ResourceSet {
             return null;
         }
     }
+
+    // TODO: implements LeaderCardRequirements
+
+    //@Override
+    //public boolean isSatisfied(Board board) {
+    //TODO:
+    // method hasConcreteResourceSet in Board
+
+    // return board.hasConcreteResourceSet(this.getResourceSet());
+    //}
 }

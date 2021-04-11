@@ -1,24 +1,32 @@
 package it.polimi.ingsw.leaderCards;
 
+import it.polimi.ingsw.playerBoard.Board;
+import it.polimi.ingsw.playerBoard.resourceLocations.Depot;
+import it.polimi.ingsw.playerBoard.resourceLocations.Warehouse;
 import it.polimi.ingsw.resources.ConcreteResource;
-import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
+
+import java.util.ArrayList;
+
+/**
+ * DepotLeaderCard represents all LeaderCards with a depot power.
+ */
 
 public class DepotLeaderCard extends LeaderCard{
+    /**
+     * the type of ConcreteResource that can be stored in the depot.
+     */
     private final ConcreteResource type;
-    private final ConcreteResourceSet resources;
 
-    DepotLeaderCard(int points, LeaderCardRequirements requirements, boolean active, ConcreteResource type, ConcreteResourceSet resources){
+
+    DepotLeaderCard(int points, Board board, LeaderCardRequirements requirements, ConcreteResource type){
         this.points=points;
-        //this.board = board;
+        this.board = board;
         this.requirements=requirements;
-        this.active=active;
         this.type=type;
-        this.resources=resources;
+
+        //TODO: create LeaderCardDepot into the Warehouse
+        // decide if make LeaderCardDepot subclass of Depot or create an abstract class.
+        // Create JAVADOC for constructor
     }
 
-    @Override
-    public void play() {
-        active=true;
-        //TBD - Board class needed
-    }
 }
