@@ -10,4 +10,8 @@ public class DiscountArea {
     public DiscountArea() {
         discountEffects = new ArrayList<>();
     }
+
+    public void addDiscountEffect(DiscountEffect effect){
+        discountEffects.add(effect);
+    }
 }

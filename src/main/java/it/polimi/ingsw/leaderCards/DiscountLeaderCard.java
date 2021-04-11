@@ -22,14 +22,13 @@ public class DiscountLeaderCard extends LeaderCard{
      * @param board the board of the current player.
      * @param requirements needed to play the leader card.
      * @param type of resource to discount.
-     * @param discountEffects reference of the ArrayList of discountEffects of the DiscountArea.
      */
-    DiscountLeaderCard(int points, Board board, LeaderCardRequirements requirements, ConcreteResource type, ArrayList<DiscountEffect> discountEffects){
+    DiscountLeaderCard(int points, Board board, LeaderCardRequirements requirements, ConcreteResource type){
         this.points=points;
         this.board = board;
         this.requirements=requirements;
         this.type=type;
 
-        discountEffects.add(new DiscountEffect(this.type));
+        board.addDiscountEffect(new DiscountEffect(this.type));
     }
 }

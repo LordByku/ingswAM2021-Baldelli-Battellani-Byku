@@ -17,7 +17,7 @@ public class DiscountEffect {
     /**
      * @param type of ConcreteResource to convert the white marble into.
      */
-    DiscountEffect(ConcreteResource type){
+    public DiscountEffect(ConcreteResource type){
         this.type = type;
     }
 

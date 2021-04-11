@@ -22,15 +22,14 @@ public class WhiteConversionLeaderCard extends LeaderCard{
      * @param board the board of the current player.
      * @param requirements needed to play the leader card.
      * @param type of resource to convert the white marble into.
-     * @param conversionEffects reference of the HashSet of ConversionEffect of the ConversionEffectArea.
      */
-    WhiteConversionLeaderCard(int points, Board board, LeaderCardRequirements requirements, ConcreteResource type, HashSet<ConversionEffect> conversionEffects){
+    WhiteConversionLeaderCard(int points, Board board, LeaderCardRequirements requirements, ConcreteResource type){
         this.points=points;
         this.board = board;
         this.requirements=requirements;
         this.type=type;
 
-        conversionEffects.add(new ConversionEffect(this.type));
+        board.addConversionEffect(new ConversionEffect(this.type));
     }
 
 }

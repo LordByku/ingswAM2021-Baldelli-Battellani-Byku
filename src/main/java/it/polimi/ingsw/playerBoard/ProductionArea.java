@@ -26,4 +26,8 @@ public class ProductionArea {
         productions.add(new ProductionDetails(new SpendableResourceSet(inputChoiceResourceSet),
                                               new ObtainableResourceSet(outputChoiceResourceSet)));
     }
+
+    public void addProduction(ProductionDetails productionDetails) {
+        productions.add(productionDetails);
+    }
 }

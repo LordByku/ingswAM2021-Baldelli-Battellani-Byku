@@ -10,4 +10,8 @@ public class ConversionEffectArea {
     public ConversionEffectArea() {
         conversionEffects = new HashSet<>();
     }
+
+    public void addConversionEffect(ConversionEffect effect){
+        conversionEffects.add(effect);
+    }
 }

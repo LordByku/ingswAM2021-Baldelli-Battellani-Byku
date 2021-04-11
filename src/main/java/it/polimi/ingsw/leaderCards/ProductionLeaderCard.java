@@ -30,16 +30,15 @@ public class ProductionLeaderCard extends LeaderCard{
      * @param requirements needed to play the leader card.
      * @param in is a set of resource needed to activate the production power.
      * @param out is a set of resource obtainable by the production power.
-     * @param productions reference of the ArrayList of ProductionDetails of the ProductionArea.
      */
-    ProductionLeaderCard(int points, Board board, LeaderCardRequirements requirements,SpendableResourceSet in, ObtainableResourceSet out, ArrayList<ProductionDetails> productions){
+    ProductionLeaderCard(int points, Board board, LeaderCardRequirements requirements,SpendableResourceSet in, ObtainableResourceSet out){
         this.points=points;
         this.board = board;
         this.requirements=requirements;
         this.in = in;
         this.out = out;
 
-        productions.add(new ProductionDetails(in, out));
+        board.addProduction(new ProductionDetails(in, out));
     }
 
 }
