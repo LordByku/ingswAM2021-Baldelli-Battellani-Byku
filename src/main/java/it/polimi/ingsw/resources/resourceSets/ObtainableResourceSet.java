@@ -23,8 +23,9 @@ public class ObtainableResourceSet extends TransactionResourceSet {
     /**
      * This constructor calls the constructor for TransactionResourceSet which uses a ChoiceResourceSet
      * @param choiceResourceSet The ChoiceResourceSet to copy from
+     * @throws InvalidResourceSetException choiceResourceSet is null
      */
-    public ObtainableResourceSet(ChoiceResourceSet choiceResourceSet) {
+    public ObtainableResourceSet(ChoiceResourceSet choiceResourceSet) throws InvalidResourceSetException {
         super(choiceResourceSet);
         faithPoints = 0;
     }
@@ -34,8 +35,9 @@ public class ObtainableResourceSet extends TransactionResourceSet {
      * and initializes faithPoints to the given value
      * @param choiceResourceSet The ChoiceResourceSet to copy from
      * @param faithPoints The initial value for faithPoints
+     * @throws InvalidResourceSetException choiceResourceSet is null
      */
-    public ObtainableResourceSet(ChoiceResourceSet choiceResourceSet, int faithPoints) {
+    public ObtainableResourceSet(ChoiceResourceSet choiceResourceSet, int faithPoints) throws InvalidResourceSetException {
         super(choiceResourceSet);
         this.faithPoints = faithPoints;
     }

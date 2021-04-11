@@ -1,6 +1,7 @@
 package it.polimi.ingsw.leaderCards;
 
 import it.polimi.ingsw.resources.ConcreteResource;
+import it.polimi.ingsw.resources.InvalidResourceException;
 import it.polimi.ingsw.resources.NotEnoughResourcesException;
 import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
 
@@ -29,9 +30,7 @@ public class DiscountEffect {
     public ConcreteResourceSet applyDiscount(ConcreteResourceSet set){
         try {
             set.removeResource(type);
-        } catch (NotEnoughResourcesException e) {
-            e.printStackTrace();
-        }
+        } catch (NotEnoughResourcesException | InvalidResourceException e) {}
         return set;
     }
 }

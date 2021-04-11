@@ -1,6 +1,7 @@
 package it.polimi.ingsw.leaderCards;
 
 import it.polimi.ingsw.playerBoard.Board;
+import it.polimi.ingsw.playerBoard.InvalidBoardException;
 import it.polimi.ingsw.playerBoard.Scoring;
 
 /**
@@ -42,7 +43,11 @@ public abstract class LeaderCard implements Scoring {
     public boolean isPlayable(){
         if(active || discarded)
             return false;
-        return requirements.isSatisfied(this.board);
+        try {
+            return requirements.isSatisfied(this.board);
+        } catch (InvalidBoardException e) {
+            return false;
+        }
     }
 
     /**

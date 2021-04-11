@@ -27,11 +27,13 @@ public class ChoiceResource implements Resource {
         }
         this.choices = choices.clone();
         if(choices.size() == 1) {
-            for(ConcreteResource resource: ConcreteResource.values()) {
-                if(choices.containsResource(resource)) {
-                    finalChoice = resource;
+            try {
+                for(ConcreteResource resource: ConcreteResource.values()) {
+                    if(choices.containsResource(resource)) {
+                        finalChoice = resource;
+                    }
                 }
-            }
+            } catch (InvalidResourceException e) {}
         } else {
             finalChoice = null;
         }
@@ -41,15 +43,16 @@ public class ChoiceResource implements Resource {
      * canChoose returns whether a given resource can be chosen
      * @param resource The resource to check
      * @return True iff resource is contained in choices
+     * @throws InvalidResourceException resource is null
      */
-    public boolean canChoose(ConcreteResource resource) {
+    public boolean canChoose(ConcreteResource resource) throws InvalidResourceException {
         return choices.containsResource(resource);
     }
 
     /**
      * makeChoice is the method that allows to select a (valid) resource
      * @param resource The resource to choose
-     * @throws InvalidResourceException resource is not a valid choice
+     * @throws InvalidResourceException resource is null or is not a valid choice
      */
     public void makeChoice(ConcreteResource resource) throws InvalidResourceException {
         if(!canChoose(resource)) {

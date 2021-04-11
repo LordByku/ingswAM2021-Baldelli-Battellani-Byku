@@ -30,8 +30,12 @@ public abstract class TransactionResourceSet {
     /**
      * This constructor initializes resources to a given ChoiceResourceSet
      * @param choiceResourceSet The ChoiceResourceSet to copy from
+     * @throws InvalidResourceSetException choiceResourceSet is null
      */
-    public TransactionResourceSet(ChoiceResourceSet choiceResourceSet) {
+    public TransactionResourceSet(ChoiceResourceSet choiceResourceSet) throws InvalidResourceSetException {
+        if(choiceResourceSet == null) {
+            throw new InvalidResourceSetException();
+        }
         resources = choiceResourceSet.clone();
         converted = false;
     }

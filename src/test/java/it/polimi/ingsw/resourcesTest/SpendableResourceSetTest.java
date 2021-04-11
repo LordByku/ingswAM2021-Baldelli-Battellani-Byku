@@ -21,10 +21,18 @@ public class SpendableResourceSetTest {
         assertTrue(resources.isEmpty());
 
         ChoiceResourceSet choiceResourceSet = new ChoiceResourceSet();
-        choiceResourceSet.addResource(ConcreteResource.COIN);
-        choiceResourceSet.addResource(ConcreteResource.COIN);
+        try {
+            choiceResourceSet.addResource(ConcreteResource.COIN);
+            choiceResourceSet.addResource(ConcreteResource.COIN);
+        } catch (InvalidResourceException e) {
+            fail();
+        }
 
-        spendableResourceSet = new SpendableResourceSet(choiceResourceSet);
+        try {
+            spendableResourceSet = new SpendableResourceSet(choiceResourceSet);
+        } catch (InvalidResourceSetException e) {
+            fail();
+        }
 
         resources = ((ChoiceResourceSet) spendableResourceSet.getResourceSet()).getResources();
 
@@ -32,11 +40,22 @@ public class SpendableResourceSetTest {
         assertEquals(ConcreteResource.COIN, resources.get(0));
         assertEquals(ConcreteResource.COIN, resources.get(1));
 
-        choiceResourceSet.addResource(ConcreteResource.SHIELD);
+        try {
+            choiceResourceSet.addResource(ConcreteResource.SHIELD);
+        } catch (InvalidResourceException e) {
+            fail();
+        }
 
         resources = ((ChoiceResourceSet) spendableResourceSet.getResourceSet()).getResources();
 
         assertEquals(2, resources.size());
+
+        try {
+            spendableResourceSet = new SpendableResourceSet(null);
+            fail();
+        } catch (InvalidResourceSetException e) {
+            assertTrue(true);
+        }
     }
 
     @Test
@@ -51,7 +70,7 @@ public class SpendableResourceSetTest {
             assertEquals(0, concreteResourceSet.getCount(ConcreteResource.SHIELD));
             assertEquals(0, concreteResourceSet.getCount(ConcreteResource.STONE));
             assertEquals(0, concreteResourceSet.getCount(ConcreteResource.SERVANT));
-        } catch (NotConcreteException e) {
+        } catch (NotConcreteException | InvalidResourceException e) {
             fail();
         }
 
@@ -60,11 +79,15 @@ public class SpendableResourceSetTest {
         try {
             choiceResourceSet.addResource(new ChoiceResource(new FullChoiceSet()));
             choiceResourceSet.addResource(ConcreteResource.SHIELD);
-        } catch (InvalidChoiceSetException e) {
+        } catch (InvalidChoiceSetException | InvalidResourceException e) {
             fail();
         }
 
-        spendableResourceSet = new SpendableResourceSet(choiceResourceSet);
+        try {
+            spendableResourceSet = new SpendableResourceSet(choiceResourceSet);
+        } catch (InvalidResourceSetException e) {
+            fail();
+        }
 
         try {
             spendableResourceSet.toConcrete();
@@ -92,7 +115,7 @@ public class SpendableResourceSetTest {
             assertEquals(1, concreteResourceSet.getCount(ConcreteResource.SHIELD));
             assertEquals(1, concreteResourceSet.getCount(ConcreteResource.STONE));
             assertEquals(0, concreteResourceSet.getCount(ConcreteResource.SERVANT));
-        } catch (NotConcreteException e) {
+        } catch (NotConcreteException | InvalidResourceException e) {
             fail();
         }
     }
@@ -109,25 +132,29 @@ public class SpendableResourceSetTest {
             choiceResourceSet1.addResource(new ChoiceResource(choiceSet));
             choiceResourceSet2.addResource(new ChoiceResource(choiceSet));
             choiceResourceSet2.addResource(ConcreteResource.COIN);
-        } catch (InvalidChoiceSetException e) {
+        } catch (InvalidChoiceSetException | InvalidResourceException e) {
             fail();
         }
 
-        SpendableResourceSet spendableResourceSet1 = new SpendableResourceSet(choiceResourceSet1);
-        SpendableResourceSet spendableResourceSet2 = new SpendableResourceSet(choiceResourceSet2);
-
         try {
-            spendableResourceSet1.union(spendableResourceSet2);
+            SpendableResourceSet spendableResourceSet1 = new SpendableResourceSet(choiceResourceSet1);
+            SpendableResourceSet spendableResourceSet2 = new SpendableResourceSet(choiceResourceSet2);
 
-            ChoiceResourceSet resourceSet = (ChoiceResourceSet) spendableResourceSet1.getResourceSet();
-            ArrayList<Resource> resources = resourceSet.getResources();
+            try {
+                spendableResourceSet1.union(spendableResourceSet2);
 
-            assertEquals(5, resources.size());
-            assertEquals(ConcreteResource.COIN, resources.get(0));
-            assertEquals(ConcreteResource.SHIELD, resources.get(1));
-            assertFalse(resources.get(2).isConcrete());
-            assertFalse(resources.get(3).isConcrete());
-            assertEquals(ConcreteResource.COIN, resources.get(4));
+                ChoiceResourceSet resourceSet = (ChoiceResourceSet) spendableResourceSet1.getResourceSet();
+                ArrayList<Resource> resources = resourceSet.getResources();
+
+                assertEquals(5, resources.size());
+                assertEquals(ConcreteResource.COIN, resources.get(0));
+                assertEquals(ConcreteResource.SHIELD, resources.get(1));
+                assertFalse(resources.get(2).isConcrete());
+                assertFalse(resources.get(3).isConcrete());
+                assertEquals(ConcreteResource.COIN, resources.get(4));
+            } catch (InvalidResourceSetException e) {
+                fail();
+            }
         } catch (InvalidResourceSetException e) {
             fail();
         }
@@ -151,11 +178,15 @@ public class SpendableResourceSetTest {
         try {
             choiceResourceSet.addResource(ConcreteResource.COIN);
             choiceResourceSet.addResource(new ChoiceResource(new FullChoiceSet()));
-        } catch (InvalidChoiceSetException e) {
+        } catch (InvalidChoiceSetException | InvalidResourceException e) {
             fail();
         }
 
-        spendableResourceSet1 = new SpendableResourceSet(choiceResourceSet);
+        try {
+            spendableResourceSet1 = new SpendableResourceSet(choiceResourceSet);
+        } catch (InvalidResourceSetException e) {
+            fail();
+        }
 
         try {
             spendableResourceSet1.union(spendableResourceSet2);
@@ -227,10 +258,14 @@ public class SpendableResourceSetTest {
             fail();
         } catch (InvalidResourceSetException e) {
             ConcreteResourceSet concreteResourceSet = (ConcreteResourceSet) spendableResourceSet2.getResourceSet();
-            assertEquals(2, concreteResourceSet.getCount(ConcreteResource.COIN));
-            assertEquals(2, concreteResourceSet.getCount(ConcreteResource.SHIELD));
-            assertEquals(0, concreteResourceSet.getCount(ConcreteResource.STONE));
-            assertEquals(0, concreteResourceSet.getCount(ConcreteResource.SERVANT));
+            try {
+                assertEquals(2, concreteResourceSet.getCount(ConcreteResource.COIN));
+                assertEquals(2, concreteResourceSet.getCount(ConcreteResource.SHIELD));
+                assertEquals(0, concreteResourceSet.getCount(ConcreteResource.STONE));
+                assertEquals(0, concreteResourceSet.getCount(ConcreteResource.SERVANT));
+            } catch (InvalidResourceException e1) {
+                fail();
+            }
         }
     }
 }

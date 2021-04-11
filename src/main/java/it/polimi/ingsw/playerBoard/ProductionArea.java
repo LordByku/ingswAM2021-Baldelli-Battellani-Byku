@@ -4,7 +4,9 @@ import it.polimi.ingsw.devCards.ProductionDetails;
 import it.polimi.ingsw.resources.ChoiceResource;
 import it.polimi.ingsw.resources.FullChoiceSet;
 import it.polimi.ingsw.resources.InvalidChoiceSetException;
+import it.polimi.ingsw.resources.InvalidResourceException;
 import it.polimi.ingsw.resources.resourceSets.ChoiceResourceSet;
+import it.polimi.ingsw.resources.resourceSets.InvalidResourceSetException;
 import it.polimi.ingsw.resources.resourceSets.ObtainableResourceSet;
 import it.polimi.ingsw.resources.resourceSets.SpendableResourceSet;
 
@@ -22,9 +24,9 @@ public class ProductionArea {
             inputChoiceResourceSet.addResource(new ChoiceResource(new FullChoiceSet()));
             inputChoiceResourceSet.addResource(new ChoiceResource(new FullChoiceSet()));
             outputChoiceResourceSet.addResource(new ChoiceResource(new FullChoiceSet()));
-        } catch (InvalidChoiceSetException e) {}
-        productions.add(new ProductionDetails(new SpendableResourceSet(inputChoiceResourceSet),
-                                              new ObtainableResourceSet(outputChoiceResourceSet)));
+            productions.add(new ProductionDetails(new SpendableResourceSet(inputChoiceResourceSet),
+                                                  new ObtainableResourceSet(outputChoiceResourceSet)));
+        } catch (InvalidChoiceSetException | InvalidResourceException | InvalidResourceSetException e) {}
     }
 
     public void addProduction(ProductionDetails productionDetails) {

@@ -23,8 +23,12 @@ public class ChoiceSet implements Cloneable {
     /**
      * addChoice inserts a new resource into the set
      * @param resource The ConcreteResource to add
+     * @throws InvalidResourceException resource is null
      */
-    public void addChoice(ConcreteResource resource) {
+    public void addChoice(ConcreteResource resource) throws InvalidResourceException {
+        if(resource == null) {
+            throw new InvalidResourceException();
+        }
         set.add(resource);
     }
 
@@ -32,8 +36,12 @@ public class ChoiceSet implements Cloneable {
      * containsResource checks whether a given resource is in the set
      * @param resource The ConcreteResource to check
      * @return True iff resource is contained in the set
+     * @throws InvalidResourceException resource is null
      */
-    public boolean containsResource(ConcreteResource resource) {
+    public boolean containsResource(ConcreteResource resource) throws InvalidResourceException {
+        if(resource == null) {
+            throw new InvalidResourceException();
+        }
         return set.contains(resource);
     }
 

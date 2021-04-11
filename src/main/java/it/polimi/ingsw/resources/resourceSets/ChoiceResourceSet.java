@@ -1,5 +1,6 @@
 package it.polimi.ingsw.resources.resourceSets;
 
+import it.polimi.ingsw.resources.InvalidResourceException;
 import it.polimi.ingsw.resources.NotConcreteException;
 import it.polimi.ingsw.resources.Resource;
 
@@ -43,16 +44,22 @@ public class ChoiceResourceSet implements ResourceSet {
             throw new NotConcreteException();
         }
         ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
-        for(Resource resource: resources)
-            concreteResourceSet.addResource(resource.getResource());
+        try {
+            for(Resource resource: resources)
+                concreteResourceSet.addResource(resource.getResource());
+        } catch (InvalidResourceException e) {}
         return concreteResourceSet;
     }
 
     /**
      * addResource inserts a new Resource
      * @param resource The Resource to add
+     * @throws InvalidResourceException resource is null
      */
-    public void addResource(Resource resource) {
+    public void addResource(Resource resource) throws InvalidResourceException {
+        if(resource == null) {
+            throw new InvalidResourceException();
+        }
         resources.add(resource);
     }
 
@@ -82,7 +89,7 @@ public class ChoiceResourceSet implements ResourceSet {
             }
         } catch (ClassCastException e) {
             throw new InvalidResourceSetException();
-        }
+        } catch (InvalidResourceException e) {}
     }
 
     /**

@@ -16,8 +16,9 @@ public class SpendableResourceSet extends TransactionResourceSet {
     /**
      * This constructor calls the constructor for TransactionResourceSet which uses a ChoiceResourceSet
      * @param choiceResourceSet The ChoiceResourceSet to copy from
+     * @throws InvalidResourceSetException choiceResourceSet is null
      */
-    public SpendableResourceSet(ChoiceResourceSet choiceResourceSet) {
+    public SpendableResourceSet(ChoiceResourceSet choiceResourceSet) throws InvalidResourceSetException {
         super(choiceResourceSet);
     }
 
