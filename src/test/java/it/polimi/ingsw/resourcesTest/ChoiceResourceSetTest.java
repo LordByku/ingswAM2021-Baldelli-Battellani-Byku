@@ -189,7 +189,11 @@ public class ChoiceResourceSetTest {
             fail();
         }
 
+        resources1 = choiceResourceSet1.getResources();
+        resources2 = choiceResourceSet2.getResources();
+        assertEquals(3, resources1.size());
         assertEquals(2, resources2.size());
-        assertEquals(ConcreteResource.SERVANT, resources2.get(1).getResource());
+        assertEquals(ConcreteResource.STONE, resources1.get(1).getResource());
+        assertEquals(ConcreteResource.STONE, resources2.get(1).getResource());
     }
 }

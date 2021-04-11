@@ -77,19 +77,4 @@ public class ChoiceResource implements Resource {
     public boolean isConcrete() {
         return finalChoice != null;
     }
-
-    /**
-     * copy returns a copy of the object
-     * @return A copy of the object
-     */
-    @Override
-    public Resource copy() {
-        try {
-            ChoiceResource copyResource = new ChoiceResource(choices);
-            copyResource.finalChoice = finalChoice;
-            return copyResource;
-        } catch (InvalidChoiceSetException e) {
-            return null;
-        }
-    }
 }

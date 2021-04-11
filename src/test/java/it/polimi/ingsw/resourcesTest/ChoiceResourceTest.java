@@ -124,26 +124,4 @@ public class ChoiceResourceTest {
             fail();
         }
     }
-
-    @Test
-    public void copyTest() {
-        ChoiceSet choiceSet = new FullChoiceSet();
-        try {
-            ChoiceResource choiceResource1 = new ChoiceResource(choiceSet);
-            choiceResource1.makeChoice(ConcreteResource.COIN);
-
-            ChoiceResource choiceResource2 = (ChoiceResource) choiceResource1.copy();
-
-            assertEquals(ConcreteResource.COIN, choiceResource2.getResource());
-
-            choiceResource1.makeChoice(ConcreteResource.SHIELD);
-            assertEquals(ConcreteResource.COIN, choiceResource2.getResource());
-
-            choiceResource2.makeChoice(ConcreteResource.STONE);
-            assertEquals(ConcreteResource.STONE, choiceResource2.getResource());
-            assertEquals(ConcreteResource.SHIELD, choiceResource1.getResource());
-        } catch (InvalidChoiceSetException | InvalidResourceException e) {
-            fail();
-        }
-    }
 }

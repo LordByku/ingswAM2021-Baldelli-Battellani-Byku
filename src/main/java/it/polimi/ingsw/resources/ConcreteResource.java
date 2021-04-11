@@ -26,13 +26,4 @@ public enum ConcreteResource implements Resource {
     public boolean isConcrete() {
         return true;
     }
-
-    /**
-     * As this is an enum, copy simply returns the value of the ConcreteResource
-     * @return The ConcreteResource
-     */
-    @Override
-    public Resource copy() {
-        return this;
-    }
 }

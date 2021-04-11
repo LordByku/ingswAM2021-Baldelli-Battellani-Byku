@@ -18,9 +18,9 @@ public class DevCard {
        // this.level=level;
     }
 
-    public void buy(Board board) {
+    //public void buy(Board board) {
         //TBD
-    }
+    //}
 
     public CardLevel getLevel() {
         return level;

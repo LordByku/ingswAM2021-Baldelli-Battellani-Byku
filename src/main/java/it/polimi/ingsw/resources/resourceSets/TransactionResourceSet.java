@@ -20,15 +20,25 @@ public abstract class TransactionResourceSet {
     boolean converted;
 
     /**
-     * The constructor initializes resources to an empty ChoiceSet and converted to false
+     * The default constructor initializes resources to an empty ChoiceSet and converted to false
      */
-    TransactionResourceSet() {
+    public TransactionResourceSet() {
         resources = new ChoiceResourceSet();
         converted = false;
     }
 
     /**
-     * toConcrete converts resources from a ChoiceResourceSet to a ConcreteResourceSet
+     * This constructor initializes resources to a given ChoiceResourceSet
+     * @param choiceResourceSet The ChoiceResourceSet to copy from
+     */
+    public TransactionResourceSet(ChoiceResourceSet choiceResourceSet) {
+        resources = choiceResourceSet.clone();
+        converted = false;
+    }
+
+    /**
+     * toConcrete converts resources to a ConcreteResourceSet
+     * If resources is already a ConcreteResourceSet, it will not be modified
      * @throws NotConcreteException Not all choices have been made for the ChoiceResourceSet
      */
     public void toConcrete() throws NotConcreteException {

@@ -3,11 +3,13 @@ package it.polimi.ingsw.devCards;
 public class DevCardDeck {
 
     public DevCard top(){
-        //TBD
+        // TODO
+        return null;
     }
 
     public boolean isEmpty(){
-        // TBD
+        // TODO
+        return false;
     }
 
 }

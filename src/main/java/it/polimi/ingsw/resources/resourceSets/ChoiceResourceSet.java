@@ -87,6 +87,7 @@ public class ChoiceResourceSet implements ResourceSet {
 
     /**
      * clone returns a copy of the object
+     * Note that ChoiceResources in resources are not copied
      * @return A copy of the object
      */
     @Override
@@ -94,9 +95,6 @@ public class ChoiceResourceSet implements ResourceSet {
         try {
             ChoiceResourceSet cloneResourceSet = (ChoiceResourceSet) super.clone();
             cloneResourceSet.resources = (ArrayList<Resource>) resources.clone();
-            for(int i = 0; i < resources.size(); i++) {
-                cloneResourceSet.resources.set(i, resources.get(i).copy());
-            }
             return cloneResourceSet;
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();

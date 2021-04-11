@@ -12,12 +12,32 @@ public class ObtainableResourceSet extends TransactionResourceSet {
     private int faithPoints;
 
     /**
-     * The constructor calls the default constructor for TransactionResourceSet
+     * The default constructor calls the default constructor for TransactionResourceSet
      * and initializes faithPoints to 0
      */
     public ObtainableResourceSet() {
         super();
         faithPoints = 0;
+    }
+
+    /**
+     * This constructor calls the constructor for TransactionResourceSet which uses a ChoiceResourceSet
+     * @param choiceResourceSet The ChoiceResourceSet to copy from
+     */
+    public ObtainableResourceSet(ChoiceResourceSet choiceResourceSet) {
+        super(choiceResourceSet);
+        faithPoints = 0;
+    }
+
+    /**
+     * This constructor calls the constructor for TransactionResourceSet which uses a ChoiceResourceSet
+     * and initializes faithPoints to the given value
+     * @param choiceResourceSet The ChoiceResourceSet to copy from
+     * @param faithPoints The initial value for faithPoints
+     */
+    public ObtainableResourceSet(ChoiceResourceSet choiceResourceSet, int faithPoints) {
+        super(choiceResourceSet);
+        this.faithPoints = faithPoints;
     }
 
     /**

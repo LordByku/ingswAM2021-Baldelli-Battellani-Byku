@@ -7,6 +7,21 @@ package it.polimi.ingsw.resources.resourceSets;
  */
 public class SpendableResourceSet extends TransactionResourceSet {
     /**
+     * The default constructor calls the default constructor for TransactionResourceSet
+     */
+    public SpendableResourceSet() {
+        super();
+    }
+
+    /**
+     * This constructor calls the constructor for TransactionResourceSet which uses a ChoiceResourceSet
+     * @param choiceResourceSet The ChoiceResourceSet to copy from
+     */
+    public SpendableResourceSet(ChoiceResourceSet choiceResourceSet) {
+        super(choiceResourceSet);
+    }
+
+    /**
      * union adds to this SpendableResourceSet all the resources
      * contained in another SpendableResourceSet
      * @param other The SpendableResourceSet to add resources from
