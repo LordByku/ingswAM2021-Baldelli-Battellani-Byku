@@ -9,6 +9,6 @@ public class DevCardLev1 extends DevCard{
 
     DevCardLev1 (ConcreteResourceSet reqResources, CardColour colour){
         super(reqResources, colour);
-        this.level=CardLevel.I;
+        this.level=CardLevel.III;
     }
 }

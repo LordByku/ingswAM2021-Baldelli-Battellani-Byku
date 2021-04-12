@@ -1,5 +1,12 @@
 package it.polimi.ingsw.devCards;
 
+/**
+ * CardColour represents all possible cards' colours
+ */
 public enum CardColour {
-    // TODO
+    BLUE,
+    GREEN,
+    PURPLE,
+    YELLOW,
 }
+

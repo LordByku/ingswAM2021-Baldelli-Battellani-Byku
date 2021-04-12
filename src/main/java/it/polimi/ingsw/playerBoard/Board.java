@@ -1,5 +1,6 @@
 package it.polimi.ingsw.playerBoard;
 
+import it.polimi.ingsw.devCards.CardTypeSet;
 import it.polimi.ingsw.devCards.ProductionDetails;
 import it.polimi.ingsw.leaderCards.ConversionEffect;
 import it.polimi.ingsw.leaderCards.DiscountEffect;
@@ -10,6 +11,10 @@ import it.polimi.ingsw.playerBoard.resourceLocations.StrongBox;
 import it.polimi.ingsw.playerBoard.resourceLocations.Warehouse;
 import it.polimi.ingsw.resources.ConcreteResource;
 
+/**
+ * Board represents the board of each player
+ * It is a container of the classes which represents board's elements
+ */
 public class Board implements ResourceLocation, Scoring {
     private FaithTrack faithTrack;
     private ProductionArea productionArea;
@@ -19,6 +24,10 @@ public class Board implements ResourceLocation, Scoring {
     private ConversionEffectArea conversionEffectArea;
     private StrongBox strongBox;
     private Warehouse warehouse;
+
+    public static void setLastTurn() {}
+
+    public void hasCardTypeSet(CardTypeSet cardSet) {}
 
     public void addProduction(ProductionDetails productionDetails) {
         productionArea.addProduction(productionDetails);

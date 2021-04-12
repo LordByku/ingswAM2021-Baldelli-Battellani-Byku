@@ -1,5 +1,6 @@
 package it.polimi.ingsw.devCards;
 
+import it.polimi.ingsw.playerBoard.Board;
 import it.polimi.ingsw.playerBoard.Scoring;
 import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
 
@@ -19,14 +20,21 @@ public class DevCard implements Scoring {
        // this.level=level;
     }
 
-    //public void buy(Board board) {
-        //TBD
-    //}
+    public void buy(Board board) {
+        //TODO
+    }
 
+    /**
+     * getLevel() is a getter of the class
+     * @return the level of the development card
+     */
     public CardLevel getLevel() {
         return level;
     }
 
+    /**
+     * @return the colour of the development card
+     */
     public CardColour getColour() {
 
         return colour;
