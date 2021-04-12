@@ -1,6 +1,7 @@
 package it.polimi.ingsw.leaderCards;
 
 import it.polimi.ingsw.playerBoard.Board;
+import it.polimi.ingsw.playerBoard.resourceLocations.InvalidDepotSizeException;
 import it.polimi.ingsw.resources.ConcreteResource;
 
 /**
@@ -20,7 +21,9 @@ public class DepotLeaderCard extends LeaderCard{
         this.requirements=requirements;
         this.type=type;
 
-        board.addLeaderCardDepot(new LeaderCardDepot(this.type));
+        try {
+            board.addLeaderCardDepot(new LeaderCardDepot(this.type));
+        } catch (InvalidDepotSizeException e) {}
     }
 
 }

@@ -10,6 +10,9 @@ import it.polimi.ingsw.playerBoard.resourceLocations.ResourceLocation;
 import it.polimi.ingsw.playerBoard.resourceLocations.StrongBox;
 import it.polimi.ingsw.playerBoard.resourceLocations.Warehouse;
 import it.polimi.ingsw.resources.ConcreteResource;
+import it.polimi.ingsw.resources.InvalidResourceException;
+import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
+import it.polimi.ingsw.resources.resourceSets.InvalidResourceSetException;
 
 /**
  * Board represents the board of each player
@@ -43,5 +46,20 @@ public class Board implements ResourceLocation, Scoring {
 
     public void addDiscountEffect(DiscountEffect discountEffect) {
         discountArea.addDiscountEffect(discountEffect);
+    }
+
+    @Override
+    public boolean containsResources(ConcreteResourceSet concreteResourceSet) throws InvalidResourceSetException {
+        ConcreteResourceSet resources = getResources();
+        return resources.contains(concreteResourceSet);
+    }
+
+    @Override
+    public ConcreteResourceSet getResources() {
+        ConcreteResourceSet result = warehouse.getResources();
+        try {
+            result.union(strongBox.getResources());
+        } catch (InvalidResourceSetException e) {}
+        return result;
     }
 }

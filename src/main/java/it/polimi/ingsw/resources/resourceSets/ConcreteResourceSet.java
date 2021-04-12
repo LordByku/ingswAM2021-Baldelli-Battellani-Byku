@@ -133,6 +133,33 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
     }
 
     /**
+     * difference removes from this set all the resources contained in another ConcreteResourceSet
+     * @param other The given ConcreteResourceSet
+     * @throws InvalidResourceSetException other is null
+     * @throws NotEnoughResourcesException There aren't enough resources in this set
+     * to perform the operation
+     */
+    public void difference(ConcreteResourceSet other) throws InvalidResourceSetException, NotEnoughResourcesException {
+        if(other == null) {
+            throw new InvalidResourceSetException();
+        }
+
+        for(ConcreteResource resource: ConcreteResource.values()) {
+            try {
+                if(other.getCount(resource) > getCount(resource)) {
+                    throw new NotEnoughResourcesException();
+                }
+            } catch (InvalidResourceException e) {}
+        }
+
+        for(ConcreteResource resource: ConcreteResource.values()) {
+            try {
+                removeResource(resource, other.getCount(resource));
+            } catch (InvalidQuantityException | InvalidResourceException | NotEnoughResourcesException e) {}
+        }
+    }
+
+    /**
      * clone returns a copy of the object
      * @return A copy of the object
      */
@@ -148,12 +175,45 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
         }
     }
 
+    /**
+     * contains checks whether a given ConcreteResourceSet is a subset of this ConcreteResourceSet
+     * @param other The ConcreteResourceSet to check
+     * @return True iff other is a subset of this ConcreteResourceSet
+     * @throws InvalidResourceSetException other is null
+     */
+    public boolean contains(ConcreteResourceSet other) throws InvalidResourceSetException {
+        if(other == null) {
+            throw new InvalidResourceSetException();
+        }
+
+        for(ConcreteResource resource: ConcreteResource.values()) {
+            try {
+                if(other.getCount(resource) > getCount(resource)) {
+                    return false;
+                }
+            } catch (InvalidResourceException e) {}
+        }
+
+        return true;
+    }
+
+    /**
+     * isSatisfied implements the method of the LeaderCardRequirements interface
+     * It checks whether a given board contains all the resources indicated
+     * by this ConcreteResourceSet
+     * @param board The board of the current player.
+     * @return True iff board contains this ConcreteResourceSet
+     * @throws InvalidBoardException board is null
+     */
     @Override
     public boolean isSatisfied(Board board) throws InvalidBoardException {
         if(board == null) {
             throw new InvalidBoardException();
         }
-        // TODO return board.hasConcreteResourceSet((ConcreteResourceSet) clone());
-        return false;
+        try {
+            return board.containsResources((ConcreteResourceSet) clone());
+        } catch(InvalidResourceSetException e) {
+            return false;
+        }
     }
 }
