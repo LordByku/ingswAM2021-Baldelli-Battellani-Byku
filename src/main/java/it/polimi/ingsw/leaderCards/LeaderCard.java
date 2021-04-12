@@ -3,6 +3,7 @@ package it.polimi.ingsw.leaderCards;
 import it.polimi.ingsw.playerBoard.Board;
 import it.polimi.ingsw.playerBoard.InvalidBoardException;
 import it.polimi.ingsw.playerBoard.Scoring;
+import it.polimi.ingsw.resources.InvalidResourceException;
 
 /**
  * LeaderCard refers to all the leader cards.
@@ -60,22 +61,38 @@ public abstract class LeaderCard implements Scoring {
     /**
      * Check if the card is playable and plays it.
      */
-    public void play(){
-        if(!active && !discarded && isPlayable())
-            active = true;
-    }
+    public abstract void play() throws InvalidResourceException;
 
     /**
      * Discard the leader card to get 1 faith point.
      */
     public void discard(){
-        if(!active) {
+        if(!active && !discarded) {
             discarded = true;
-            //TODO:
-            // method addFaithPoints() in Board
-
-            // board.addFaithPoints();
+            board.addFaithPoints();
         }
+    }
+
+    /**
+     * initDiscard allows to discard the leaderCard without getting faithPoints.
+     * Used when the game starts and the leaderCards are hand out.
+     */
+    public void initDiscard(){
+        if(!active && !discarded) {
+            discarded = true;
+        }
+    }
+
+    /**
+     * Assign the LeaderCard to the board.
+     * @param board containing the LeaderCard.
+     * @throws InvalidBoardException board is null
+     */
+    public void assignToBoard(Board board) throws InvalidBoardException {
+        if(board == null) {
+            throw new InvalidBoardException();
+        }
+        this.board = board.clone();
     }
 
 }

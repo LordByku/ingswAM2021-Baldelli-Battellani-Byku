@@ -9,8 +9,6 @@ import it.polimi.ingsw.playerBoard.faithTrack.FaithTrack;
 import it.polimi.ingsw.playerBoard.resourceLocations.ResourceLocation;
 import it.polimi.ingsw.playerBoard.resourceLocations.StrongBox;
 import it.polimi.ingsw.playerBoard.resourceLocations.Warehouse;
-import it.polimi.ingsw.resources.ConcreteResource;
-import it.polimi.ingsw.resources.InvalidResourceException;
 import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.resources.resourceSets.InvalidResourceSetException;
 
@@ -18,7 +16,7 @@ import it.polimi.ingsw.resources.resourceSets.InvalidResourceSetException;
  * Board represents the board of each player
  * It is a container of the classes which represents board's elements
  */
-public class Board implements ResourceLocation, Scoring {
+public class Board implements ResourceLocation, Scoring, Cloneable {
     private FaithTrack faithTrack;
     private ProductionArea productionArea;
     private DevelopmentCardArea developmentCardArea;
@@ -27,6 +25,17 @@ public class Board implements ResourceLocation, Scoring {
     private ConversionEffectArea conversionEffectArea;
     private StrongBox strongBox;
     private Warehouse warehouse;
+
+    public Board(){
+        faithTrack = new FaithTrack();
+        productionArea = new ProductionArea();
+        developmentCardArea = new DevelopmentCardArea();
+        leaderCardArea = new LeaderCardArea();
+        discountArea = new DiscountArea();
+        conversionEffectArea = new ConversionEffectArea();
+        strongBox = new StrongBox();
+        warehouse = new Warehouse();
+    }
 
     public static void setLastTurn() {}
 
@@ -61,5 +70,23 @@ public class Board implements ResourceLocation, Scoring {
             result.union(strongBox.getResources());
         } catch (InvalidResourceSetException e) {}
         return result;
+    }
+
+    public void addFaithPoints() {
+        faithTrack.addFaithPoints();
+    }
+
+    /**
+     * clone returns a copy of the object
+     * @return A copy of the object
+     */
+    public Board clone() {
+        try {
+            Board cloneBoard = (Board) super.clone();
+            return cloneBoard;
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

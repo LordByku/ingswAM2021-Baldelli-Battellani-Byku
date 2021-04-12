@@ -78,6 +78,7 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
      */
     public void removeResource(ConcreteResource resource, int quantity)
             throws InvalidResourceException, InvalidQuantityException, NotEnoughResourcesException {
+
         if(resource == null) {
             throw new InvalidResourceException();
         }

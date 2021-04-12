@@ -15,5 +15,5 @@ public interface ResourceSet extends Cloneable {
      * clone returns a copy of the object
      * @return A copy of the object
      */
-    ResourceSet clone();
+    Object clone();
 }

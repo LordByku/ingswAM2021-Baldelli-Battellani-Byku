@@ -6,7 +6,7 @@ import it.polimi.ingsw.resources.NotConcreteException;
  * TransactionResourceSet is a container for all the resources (including potentially
  * faith points) that are being moved from a resource location to another one.
  */
-public abstract class TransactionResourceSet {
+public abstract class TransactionResourceSet implements Cloneable{
     /**
      * resources is the ResourceSet that contains regular resources (not faith points)
      * Initially this ResourceSet is a ChoiceResourceSet, then, after all choices for that
@@ -57,7 +57,7 @@ public abstract class TransactionResourceSet {
      * @return A copy of resources
      */
     public ResourceSet getResourceSet() {
-        return resources.clone();
+        return (ResourceSet) resources.clone();
     }
 
     /**
@@ -66,5 +66,19 @@ public abstract class TransactionResourceSet {
      */
     public boolean isConverted() {
         return converted;
+    }
+
+    /**
+     * clone returns a copy of the object
+     * @return A copy of the object
+     */
+    public Object clone(){
+        try {
+            Object cloneObject = super.clone();
+            return cloneObject;
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

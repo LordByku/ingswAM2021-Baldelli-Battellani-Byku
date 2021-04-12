@@ -1,5 +1,7 @@
 package it.polimi.ingsw.resources.resourceSets;
 
+import it.polimi.ingsw.playerBoard.Board;
+
 /**
  * ObtainableResourceSet is a TransactionResourceSet where the resource set
  * is going to be given to a player (board)
@@ -64,5 +66,16 @@ public class ObtainableResourceSet extends TransactionResourceSet {
         ResourceSet otherResources = other.getResourceSet();
         resources.union(otherResources);
         faithPoints += other.getFaithPoints();
+    }
+
+    /**
+     * clone returns a copy of the object
+     * @return A copy of the object
+     */
+    @Override
+    public ObtainableResourceSet clone() {
+        ObtainableResourceSet cloneORS = (ObtainableResourceSet) super.clone();
+        cloneORS.faithPoints = faithPoints;
+        return cloneORS;
     }
 }

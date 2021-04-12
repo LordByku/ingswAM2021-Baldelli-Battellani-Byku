@@ -36,4 +36,14 @@ public class SpendableResourceSet extends TransactionResourceSet {
         ResourceSet otherResources = other.getResourceSet();
         resources.union(otherResources);
     }
+
+    /**
+     * clone returns a copy of the object
+     * @return A copy of the object
+     */
+    @Override
+    public SpendableResourceSet clone() {
+        SpendableResourceSet cloneSRS = (SpendableResourceSet) super.clone();
+        return cloneSRS;
+    }
 }

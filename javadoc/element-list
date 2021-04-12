@@ -3,6 +3,7 @@ it.polimi.ingsw.leaderCards
 it.polimi.ingsw.playerBoard
 it.polimi.ingsw.playerBoard.faithTrack
 it.polimi.ingsw.playerBoard.resourceLocations
+it.polimi.ingsw.resourceLocationsTest
 it.polimi.ingsw.resources
 it.polimi.ingsw.resources.resourceSets
 it.polimi.ingsw.resourcesTest

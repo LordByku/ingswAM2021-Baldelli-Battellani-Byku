@@ -34,8 +34,7 @@ public class FaithTrack implements Scoring {
      *
      */
     private void notifyEndOfTrack(){
-        if(markerPosition==23) Board.setLastTurn();
-
+        Board.setLastTurn();
     }
 
     /**
@@ -44,5 +43,24 @@ public class FaithTrack implements Scoring {
      */
     public int getMarkerPosition(){
         return this.markerPosition;
+    }
+
+    /**
+     * addFaithPoints adds one faithPoint.
+     */
+    public void addFaithPoints() {
+        markerPosition++;
+        if(markerPosition>=23)
+            Board.setLastTurn();
+    }
+
+    /**
+     * addFaithPoints adds "points" FaithPoints
+     * @param points to add.
+     */
+    public void addFaithPoints(int points) {
+        markerPosition+= points;
+        if(markerPosition>=23)
+            Board.setLastTurn();
     }
 }

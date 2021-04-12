@@ -3,6 +3,7 @@ package it.polimi.ingsw.leaderCards;
 import it.polimi.ingsw.playerBoard.resourceLocations.Depot;
 import it.polimi.ingsw.playerBoard.resourceLocations.InvalidDepotSizeException;
 import it.polimi.ingsw.resources.ConcreteResource;
+import it.polimi.ingsw.resources.InvalidResourceException;
 import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
 
 /**
@@ -28,9 +29,13 @@ public class LeaderCardDepot extends Depot {
     /**
      * Constructor sets the type of resources that can be stored and calls the Depot constructor with 2 slots.
      * @param type of resources that can be stored.
+     * @throws InvalidResourceException type is null.
      */
-    LeaderCardDepot(ConcreteResource type) throws InvalidDepotSizeException {
+    LeaderCardDepot(ConcreteResource type) throws InvalidDepotSizeException , InvalidResourceException {
         super(2);
+        if(type == null){
+            throw new InvalidResourceException();
+        }
         this.type = type;
     }
 }
