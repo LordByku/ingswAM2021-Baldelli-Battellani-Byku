@@ -51,7 +51,7 @@ public class DepotLeaderCard extends LeaderCard{
 
         try {
             board.addLeaderCardDepot(new LeaderCardDepot(this.type));
-        } catch (InvalidDepotSizeException | InvalidResourceException e) {}
+        } catch (InvalidDepotSizeException | InvalidResourceException | InvalidLeaderCardDepotException e) {}
     }
 
 }
