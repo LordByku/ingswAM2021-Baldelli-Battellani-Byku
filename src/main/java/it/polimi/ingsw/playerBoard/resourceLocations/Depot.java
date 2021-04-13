@@ -5,6 +5,7 @@ import it.polimi.ingsw.resources.InvalidResourceException;
 import it.polimi.ingsw.resources.NotEnoughResourcesException;
 import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.resources.resourceSets.InvalidResourceSetException;
+import it.polimi.ingsw.resources.resourceSets.NotSingleTypeException;
 
 public class Depot implements ConcreteResourceLocation {
     private int slots;
@@ -19,17 +20,11 @@ public class Depot implements ConcreteResourceLocation {
     }
 
     public ConcreteResource getResourceType() {
-        ConcreteResource resourceType = null;
-
-        for(ConcreteResource resource: ConcreteResource.values()) {
-            try {
-                if(resources.getCount(resource) > 0) {
-                    resourceType = resource;
-                }
-            } catch (InvalidResourceException e) {}
+        try {
+            return resources.getResourceType();
+        } catch (NotSingleTypeException e) {
+            return null;
         }
-
-        return resourceType;
     }
 
     @Override
@@ -56,26 +51,14 @@ public class Depot implements ConcreteResourceLocation {
             throw new InvalidResourceSetException();
         }
 
-        int resourceTypes = 0;
-        ConcreteResource otherResourceType = null;
-        for(ConcreteResource resource: ConcreteResource.values()) {
-            try {
-                if(concreteResourceSet.getCount(resource) > 0) {
-                    otherResourceType = resource;
-                    resourceTypes++;
-                }
-            } catch (InvalidResourceException e) {}
+        ConcreteResource otherResourceType;
+        try {
+            otherResourceType = concreteResourceSet.getResourceType();
+        } catch (NotSingleTypeException e) {
+            throw new InvalidResourceSetException();
         }
 
         ConcreteResource currentResourceType = getResourceType();
-
-        if(resourceTypes == 0) {
-            return true;
-        }
-
-        if(resourceTypes > 1) {
-            return false;
-        }
 
         int otherAmount = 0, currentAmount = 0;
         try {

@@ -5,6 +5,7 @@ import it.polimi.ingsw.playerBoard.resourceLocations.InvalidDepotSizeException;
 import it.polimi.ingsw.resources.ConcreteResource;
 import it.polimi.ingsw.resources.InvalidResourceException;
 import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
+import it.polimi.ingsw.resources.resourceSets.InvalidResourceSetException;
 
 /**
  * A special depot created by the activation of a DepotLeaderCard, it can store just 2 resource of a defined type.
@@ -17,16 +18,6 @@ public class LeaderCardDepot extends Depot {
     private ConcreteResource type;
 
     /**
-     * Dimension of the depot
-     */
-    private final int slots = 2;
-
-    /**
-     * Set of Resources stored into the depot.
-     */
-    private ConcreteResourceSet resources;
-
-    /**
      * Constructor sets the type of resources that can be stored and calls the Depot constructor with 2 slots.
      * @param type of resources that can be stored.
      * @throws InvalidResourceException type is null.
@@ -37,5 +28,10 @@ public class LeaderCardDepot extends Depot {
             throw new InvalidResourceException();
         }
         this.type = type;
+    }
+
+    @Override
+    public ConcreteResource getResourceType() {
+        return type;
     }
 }

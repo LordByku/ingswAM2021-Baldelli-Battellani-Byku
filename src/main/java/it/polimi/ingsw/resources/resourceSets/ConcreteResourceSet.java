@@ -217,4 +217,22 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
             return false;
         }
     }
+
+    /**
+     * getResourceType returns what type of resource is contained in this ConcreteResourceSet
+     * @return The only type of ConcreteResource contained in this set or null if this set
+     * contains no resources
+     * @throws NotSingleTypeException This set contains more than one type of resources
+     */
+    public ConcreteResource getResourceType() throws NotSingleTypeException {
+        if(resources.size() > 1) {
+            throw new NotSingleTypeException();
+        }
+
+        if(resources.size() == 0) {
+            return null;
+        }
+
+        return (ConcreteResource) resources.keySet().toArray()[0];
+    }
 }
