@@ -1,6 +1,7 @@
 package it.polimi.ingsw.playerBoard.resourceLocations;
 
 import it.polimi.ingsw.leaderCards.LeaderCardDepot;
+import it.polimi.ingsw.resources.ConcreteResource;
 import it.polimi.ingsw.resources.InvalidChoiceSetException;
 import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.resources.resourceSets.InvalidResourceSetException;
@@ -52,13 +53,20 @@ public class Warehouse implements ResourceLocation {
             throw new InvalidResourceSetException();
         }
 
+        ConcreteResource resourceSetType = null;
+        try {
+            resourceSetType = concreteResourceSet.getResourceType();
+        } catch (NotSingleTypeException e) {
+            return false;
+        }
+
+        if(resourceSetType == null) {
+            return true;
+        }
+
         if(depotIndex < initialDepots) {
             for(int i = 0; i < initialDepots; ++i) {
-                try {
-                    if(i != depotIndex && depots.get(i).getResourceType() == concreteResourceSet.getResourceType()) {
-                        return false;
-                    }
-                } catch (NotSingleTypeException e) {
+                if(i != depotIndex && depots.get(i).getResourceType() == resourceSetType) {
                     return false;
                 }
             }

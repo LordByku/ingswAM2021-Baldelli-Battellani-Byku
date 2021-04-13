@@ -58,6 +58,10 @@ public class Depot implements ConcreteResourceLocation {
             throw new InvalidResourceSetException();
         }
 
+        if(otherResourceType == null) {
+            return true;
+        }
+
         ConcreteResource currentResourceType = getResourceType();
 
         int otherAmount = 0, currentAmount = 0;
