@@ -4,12 +4,10 @@ import it.polimi.ingsw.devCards.CardTypeSet;
 import it.polimi.ingsw.devCards.ProductionDetails;
 import it.polimi.ingsw.leaderCards.ConversionEffect;
 import it.polimi.ingsw.leaderCards.DiscountEffect;
+import it.polimi.ingsw.leaderCards.InvalidLeaderCardDepotException;
 import it.polimi.ingsw.leaderCards.LeaderCardDepot;
 import it.polimi.ingsw.playerBoard.faithTrack.FaithTrack;
-import it.polimi.ingsw.playerBoard.resourceLocations.ResourceLocation;
-import it.polimi.ingsw.playerBoard.resourceLocations.StrongBox;
-import it.polimi.ingsw.playerBoard.resourceLocations.Warehouse;
-import it.polimi.ingsw.resources.InvalidResourceException;
+import it.polimi.ingsw.playerBoard.resourceLocations.*;
 import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.resources.resourceSets.InvalidResourceSetException;
 
@@ -103,6 +101,6 @@ public class Board implements ResourceLocation, Scoring, Cloneable {
     public void removeResourcesFromWarehouse(int depotIndex, ConcreteResourceSet concreteResourceSet)
             throws InvalidResourceSetException, InvalidDepotIndexException, InvalidResourceLocationOperationException {
 
-        warehouse.removeResource(depotIndex,concreteResourceSet);
+        warehouse.removeResources(depotIndex,concreteResourceSet);
     }
 }
