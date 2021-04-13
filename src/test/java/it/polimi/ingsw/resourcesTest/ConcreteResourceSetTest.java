@@ -1,10 +1,11 @@
 package it.polimi.ingsw.resourcesTest;
 
+import it.polimi.ingsw.playerBoard.Board;
+import it.polimi.ingsw.playerBoard.InvalidBoardException;
+import it.polimi.ingsw.playerBoard.resourceLocations.InvalidDepotIndexException;
+import it.polimi.ingsw.playerBoard.resourceLocations.InvalidResourceLocationOperationException;
 import it.polimi.ingsw.resources.*;
-import it.polimi.ingsw.resources.resourceSets.ChoiceResourceSet;
-import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
-import it.polimi.ingsw.resources.resourceSets.InvalidQuantityException;
-import it.polimi.ingsw.resources.resourceSets.InvalidResourceSetException;
+import it.polimi.ingsw.resources.resourceSets.*;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -281,6 +282,193 @@ public class ConcreteResourceSetTest {
             assertEquals(0, concreteResourceSet2.getCount(ConcreteResource.STONE));
             assertEquals(0, concreteResourceSet2.getCount(ConcreteResource.SERVANT));
         } catch (InvalidResourceException e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void containsTest() {
+        ConcreteResourceSet concreteResourceSet1 = new ConcreteResourceSet();
+        ConcreteResourceSet concreteResourceSet2 = null;
+
+        try {
+            boolean tmp = concreteResourceSet1.contains(concreteResourceSet2);
+            fail();
+        } catch (InvalidResourceSetException e) {
+            assertTrue(true);
+        }
+
+        concreteResourceSet2 = new ConcreteResourceSet();
+
+        try {
+            assertTrue(concreteResourceSet1.contains(concreteResourceSet2));
+            assertTrue(concreteResourceSet2.contains(concreteResourceSet1));
+        } catch (InvalidResourceSetException e) {
+            fail();
+        }
+
+        try {
+            concreteResourceSet1.addResource(ConcreteResource.COIN, 3);
+            concreteResourceSet1.addResource(ConcreteResource.STONE, 1);
+        } catch (InvalidQuantityException | InvalidResourceException e) {
+            fail();
+        }
+
+        try {
+            assertTrue(concreteResourceSet1.contains(concreteResourceSet2));
+            assertFalse(concreteResourceSet2.contains(concreteResourceSet1));
+        } catch (InvalidResourceSetException e) {
+            fail();
+        }
+
+        try {
+            concreteResourceSet2.addResource(ConcreteResource.COIN, 2);
+        } catch (InvalidQuantityException | InvalidResourceException e) {
+            fail();
+        }
+
+        try {
+            assertTrue(concreteResourceSet1.contains(concreteResourceSet2));
+            assertFalse(concreteResourceSet2.contains(concreteResourceSet1));
+        } catch (InvalidResourceSetException e) {
+            fail();
+        }
+
+        try {
+            concreteResourceSet2.addResource(ConcreteResource.SHIELD, 2);
+        } catch (InvalidQuantityException | InvalidResourceException e) {
+            fail();
+        }
+
+        try {
+            assertFalse(concreteResourceSet1.contains(concreteResourceSet2));
+            assertFalse(concreteResourceSet2.contains(concreteResourceSet1));
+        } catch (InvalidResourceSetException e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void isSatisfiedTest() {
+        ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
+
+        try {
+            boolean tmp = concreteResourceSet.isSatisfied(null);
+            fail();
+        } catch (InvalidBoardException e) {
+            assertTrue(true);
+        }
+
+        Board board = new Board();
+
+        ConcreteResourceSet toAdd;
+
+        try {
+            toAdd = new ConcreteResourceSet();
+            toAdd.addResource(ConcreteResource.COIN, 1);
+            board.addResourceToWarehouse(1, toAdd);
+
+            toAdd = new ConcreteResourceSet();
+            toAdd.addResource(ConcreteResource.STONE, 3);
+            board.addResourceToWarehouse(2, toAdd);
+
+            toAdd = new ConcreteResourceSet();
+            toAdd.addResource(ConcreteResource.COIN, 2);
+            toAdd.addResource(ConcreteResource.SHIELD, 3);
+            board.addResourceToStrongbox(toAdd);
+        } catch (InvalidResourceSetException | InvalidDepotIndexException | InvalidResourceLocationOperationException | InvalidQuantityException | InvalidResourceException e) {
+            fail();
+        }
+
+        try {
+            assertTrue(concreteResourceSet.isSatisfied(board));
+        } catch (InvalidBoardException e) {
+            fail();
+        }
+
+        try {
+            concreteResourceSet.addResource(ConcreteResource.COIN, 3);
+            concreteResourceSet.addResource(ConcreteResource.STONE, 2);
+        } catch (InvalidQuantityException | InvalidResourceException e) {
+            fail();
+        }
+
+        try {
+            assertTrue(concreteResourceSet.isSatisfied(board));
+        } catch (InvalidBoardException e) {
+            fail();
+        }
+
+        try {
+            concreteResourceSet.addResource(ConcreteResource.SHIELD, 4);
+        } catch (InvalidQuantityException | InvalidResourceException e) {
+            fail();
+        }
+
+        try {
+            assertFalse(concreteResourceSet.isSatisfied(board));
+        } catch (InvalidBoardException e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void getResourceTypeTest() {
+        ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
+
+        try {
+            assertNull(concreteResourceSet.getResourceType());
+        } catch (NotSingleTypeException e) {
+            fail();
+        }
+
+        try {
+            concreteResourceSet.addResource(ConcreteResource.COIN);
+        } catch (InvalidResourceException e) {
+            fail();
+        }
+
+        try {
+            assertEquals(ConcreteResource.COIN, concreteResourceSet.getResourceType());
+        } catch (NotSingleTypeException e) {
+            fail();
+        }
+
+        try {
+            concreteResourceSet.addResource(ConcreteResource.COIN);
+        } catch (InvalidResourceException e) {
+            fail();
+        }
+
+        try {
+            assertEquals(ConcreteResource.COIN, concreteResourceSet.getResourceType());
+        } catch (NotSingleTypeException e) {
+            fail();
+        }
+
+        try {
+            concreteResourceSet.addResource(ConcreteResource.STONE);
+        } catch (InvalidResourceException e) {
+            fail();
+        }
+
+        try {
+            ConcreteResource tmp = concreteResourceSet.getResourceType();
+            fail();
+        } catch (NotSingleTypeException e) {
+            assertTrue(true);
+        }
+
+        try {
+            concreteResourceSet.removeResource(ConcreteResource.STONE);
+            concreteResourceSet.removeResource(ConcreteResource.COIN, 2);
+        } catch (NotEnoughResourcesException | InvalidQuantityException | InvalidResourceException e) {
+            fail();
+        }
+
+        try {
+            assertNull(concreteResourceSet.getResourceType());
+        } catch (NotSingleTypeException e) {
             fail();
         }
     }
