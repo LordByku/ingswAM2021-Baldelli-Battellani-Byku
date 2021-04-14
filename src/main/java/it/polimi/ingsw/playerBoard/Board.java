@@ -2,10 +2,7 @@ package it.polimi.ingsw.playerBoard;
 
 import it.polimi.ingsw.devCards.CardTypeSet;
 import it.polimi.ingsw.devCards.ProductionDetails;
-import it.polimi.ingsw.leaderCards.ConversionEffect;
-import it.polimi.ingsw.leaderCards.DiscountEffect;
-import it.polimi.ingsw.leaderCards.InvalidLeaderCardDepotException;
-import it.polimi.ingsw.leaderCards.LeaderCardDepot;
+import it.polimi.ingsw.leaderCards.*;
 import it.polimi.ingsw.playerBoard.faithTrack.FaithTrack;
 import it.polimi.ingsw.playerBoard.resourceLocations.*;
 import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
@@ -101,7 +98,29 @@ public class Board implements ResourceLocation, Scoring, Cloneable {
         strongBox.addResources(concreteResourceSet);
     }
 
+    /**
+     * Removes resources from Strongbox
+     * @param concreteResourceSet The set of Resources to be removed.
+     * @throws InvalidResourceSetException concreteResourceSet is null or .
+     * @throws InvalidResourceLocationOperationException The strongbox doesn't contain the resourceSet to be removed.
+     */
     public void removeResourcesFromStrongbox(ConcreteResourceSet concreteResourceSet) throws InvalidResourceSetException, InvalidResourceLocationOperationException {
         strongBox.removeResources(concreteResourceSet);
+    }
+
+    /**
+     * Adds a leaderCard to the leaderCardsArea.
+     * @param leaderCard The leaderCard to be added to the leaderCardArea
+     */
+    public void addLeaderCard(LeaderCard leaderCard){
+        leaderCardArea.addLeaderCard(leaderCard);
+    }
+
+    /**
+     * Remove leaderCard from the ArrayList.
+     * @param leaderCard The leaderCard to be removed.
+     */
+    public void removeLeaderCard(LeaderCard leaderCard){
+        leaderCardArea.removeLeaderCard(leaderCard);
     }
 }

@@ -23,7 +23,7 @@ public class ProductionArea {
         try {
             inputChoiceResourceSet.addResource(new ChoiceResource(new FullChoiceSet()));
             inputChoiceResourceSet.addResource(new ChoiceResource(new FullChoiceSet()));
-            outputChoiceResourceSet.addResource(new ChoiceResource(new FullChoiceSet()));
+        outputChoiceResourceSet.addResource(new ChoiceResource(new FullChoiceSet()));
             productions.add(new ProductionDetails(new SpendableResourceSet(inputChoiceResourceSet),
                                                   new ObtainableResourceSet(outputChoiceResourceSet)));
         } catch (InvalidChoiceSetException | InvalidResourceException | InvalidResourceSetException e) {}

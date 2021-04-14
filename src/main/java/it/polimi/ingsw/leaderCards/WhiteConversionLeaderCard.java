@@ -22,7 +22,8 @@ public class WhiteConversionLeaderCard extends LeaderCard{
      * @throws InvalidRequirementsException requirements is null.
      * @throws InvalidResourceException type is null.
      */
-    public WhiteConversionLeaderCard(int points, LeaderCardRequirements requirements, ConcreteResource type) throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceException {
+    public WhiteConversionLeaderCard(int points, LeaderCardRequirements requirements, ConcreteResource type)
+            throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceException {
 
         if(points<=0){
             throw new InvalidPointsValueException();
@@ -46,6 +47,7 @@ public class WhiteConversionLeaderCard extends LeaderCard{
     public void play() {
         if(isPlayable()){
             active = true;
+            board.addLeaderCard(this);
             try {
                 board.addConversionEffect(new ConversionEffect(this.type));
             } catch (InvalidResourceException e) {

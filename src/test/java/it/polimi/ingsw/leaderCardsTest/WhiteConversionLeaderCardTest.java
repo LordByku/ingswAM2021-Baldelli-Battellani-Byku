@@ -5,13 +5,9 @@ import it.polimi.ingsw.leaderCards.InvalidRequirementsException;
 import it.polimi.ingsw.leaderCards.WhiteConversionLeaderCard;
 import it.polimi.ingsw.playerBoard.Board;
 import it.polimi.ingsw.playerBoard.InvalidBoardException;
-import it.polimi.ingsw.playerBoard.resourceLocations.InvalidDepotIndexException;
-import it.polimi.ingsw.playerBoard.resourceLocations.InvalidResourceLocationOperationException;
 import it.polimi.ingsw.resources.ConcreteResource;
 import it.polimi.ingsw.resources.InvalidResourceException;
 import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
-import it.polimi.ingsw.resources.resourceSets.InvalidQuantityException;
-import it.polimi.ingsw.resources.resourceSets.InvalidResourceSetException;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -30,16 +26,9 @@ public class WhiteConversionLeaderCardTest {
         }
 
         ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
-        try {
-            concreteResourceSet.addResource(ConcreteResource.SERVANT,3);
-        } catch (InvalidResourceException | InvalidQuantityException e) {
-            fail();
-        }
-        try {
-            concreteResourceSet.addResource(ConcreteResource.STONE,1);
-        } catch (InvalidResourceException | InvalidQuantityException e) {
-            fail();
-        }
+        concreteResourceSet.addResource(ConcreteResource.SERVANT,3);
+        concreteResourceSet.addResource(ConcreteResource.STONE,1);
+
 
         try {
             WhiteConversionLeaderCard whiteConversionLeaderCard = new WhiteConversionLeaderCard(2,concreteResourceSet,null);
@@ -70,18 +59,9 @@ public class WhiteConversionLeaderCardTest {
         Board board = new Board();
 
         ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
-        try {
-            concreteResourceSet.addResource(ConcreteResource.SHIELD,3);
-        } catch (InvalidResourceException | InvalidQuantityException e) {
-            fail();
-        }
+        concreteResourceSet.addResource(ConcreteResource.SHIELD,3);
+        board.addResourcesToWarehouse(2,concreteResourceSet);
 
-
-        try {
-            board.addResourceToWarehouse(2,concreteResourceSet);
-        } catch (InvalidResourceSetException | InvalidDepotIndexException | InvalidResourceLocationOperationException e) {
-            fail();
-        }
 
         try {
             WhiteConversionLeaderCard whiteConversionLeaderCard = new WhiteConversionLeaderCard(2,concreteResourceSet,ConcreteResource.SERVANT);

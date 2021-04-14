@@ -10,7 +10,6 @@ import it.polimi.ingsw.playerBoard.resourceLocations.InvalidResourceLocationOper
 import it.polimi.ingsw.resources.ConcreteResource;
 import it.polimi.ingsw.resources.InvalidResourceException;
 import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
-import it.polimi.ingsw.resources.resourceSets.InvalidQuantityException;
 
 import static org.junit.Assert.*;
 
@@ -31,16 +30,9 @@ public class DepotLeaderCardTest {
         }
 
         ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
-        try {
-            concreteResourceSet.addResource(ConcreteResource.SERVANT,3);
-        } catch (InvalidResourceException | InvalidQuantityException e) {
-            fail();
-        }
-        try {
-            concreteResourceSet.addResource(ConcreteResource.STONE,1);
-        } catch (InvalidResourceException | InvalidQuantityException e) {
-            fail();
-        }
+        concreteResourceSet.addResource(ConcreteResource.SERVANT,3);
+        concreteResourceSet.addResource(ConcreteResource.STONE,1);
+
 
         try {
             DepotLeaderCard depotLeaderCard = new DepotLeaderCard(2,concreteResourceSet,null);
@@ -71,28 +63,14 @@ public class DepotLeaderCardTest {
         Board board = new Board();
 
         ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
-        try {
-            concreteResourceSet.addResource(ConcreteResource.SERVANT,3);
-        } catch (InvalidResourceException | InvalidQuantityException e) {
-            fail();
-        }
-
+        concreteResourceSet.addResource(ConcreteResource.SERVANT,3);
         ConcreteResourceSet concreteResourceSet2 = new ConcreteResourceSet();
-        try {
-            concreteResourceSet2.addResource(ConcreteResource.COIN);
-        } catch (InvalidResourceException e) {
-            fail();
-        }
-
+        concreteResourceSet2.addResource(ConcreteResource.COIN);
         ConcreteResourceSet concreteResourceSet3 = new ConcreteResourceSet();
-        try {
-            concreteResourceSet3.addResource(ConcreteResource.SERVANT);
-        } catch (InvalidResourceException e) {
-            fail();
-        }
+        concreteResourceSet3.addResource(ConcreteResource.SERVANT);
 
         try {
-            board.addResourceToWarehouse(2,concreteResourceSet);
+            board.addResourcesToWarehouse(2,concreteResourceSet);
         } catch (InvalidResourceSetException | InvalidDepotIndexException | InvalidResourceLocationOperationException e) {
             fail();
         }
@@ -103,12 +81,12 @@ public class DepotLeaderCardTest {
             assertFalse(depotLeaderCard.isActive());
             depotLeaderCard.play();
             assertTrue(depotLeaderCard.isActive());
-            board.addResourceToWarehouse(3,concreteResourceSet2);
+            board.addResourcesToWarehouse(3,concreteResourceSet2);
             assertTrue(true);
             DepotLeaderCard depotLeaderCardServant = new DepotLeaderCard(2,concreteResourceSet,ConcreteResource.SERVANT);
             depotLeaderCardServant.assignToBoard(board);
             depotLeaderCardServant.play();
-            board.addResourceToWarehouse(4,concreteResourceSet3);
+            board.addResourcesToWarehouse(4,concreteResourceSet3);
             assertTrue(true);
         } catch (InvalidPointsValueException | InvalidRequirementsException | InvalidResourceException | InvalidBoardException | InvalidResourceSetException | InvalidDepotIndexException | InvalidResourceLocationOperationException e) {
             fail();

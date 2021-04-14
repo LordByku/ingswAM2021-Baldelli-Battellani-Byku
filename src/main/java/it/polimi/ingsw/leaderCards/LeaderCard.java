@@ -70,6 +70,7 @@ public abstract class LeaderCard implements Scoring {
         if(!active && !discarded) {
             discarded = true;
             board.addFaithPoints();
+            board.removeLeaderCard(this);
         }
     }
 

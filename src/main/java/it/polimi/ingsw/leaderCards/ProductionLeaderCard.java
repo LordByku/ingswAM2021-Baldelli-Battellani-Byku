@@ -60,6 +60,7 @@ public class ProductionLeaderCard extends LeaderCard{
     public void play() {
         if(isPlayable()){
             active = true;
+            board.addLeaderCard(this);
             board.addProduction(new ProductionDetails(in, out));
         }
     }

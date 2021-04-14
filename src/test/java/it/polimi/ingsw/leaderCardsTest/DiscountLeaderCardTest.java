@@ -5,13 +5,9 @@ import it.polimi.ingsw.leaderCards.InvalidPointsValueException;
 import it.polimi.ingsw.leaderCards.InvalidRequirementsException;
 import it.polimi.ingsw.playerBoard.Board;
 import it.polimi.ingsw.playerBoard.InvalidBoardException;
-import it.polimi.ingsw.playerBoard.resourceLocations.InvalidDepotIndexException;
-import it.polimi.ingsw.playerBoard.resourceLocations.InvalidResourceLocationOperationException;
 import it.polimi.ingsw.resources.ConcreteResource;
 import it.polimi.ingsw.resources.InvalidResourceException;
 import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
-import it.polimi.ingsw.resources.resourceSets.InvalidQuantityException;
-import it.polimi.ingsw.resources.resourceSets.InvalidResourceSetException;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -30,16 +26,9 @@ public class DiscountLeaderCardTest {
         }
 
         ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
-        try {
-            concreteResourceSet.addResource(ConcreteResource.STONE,2);
-        } catch (InvalidResourceException | InvalidQuantityException e) {
-            fail();
-        }
-        try {
-            concreteResourceSet.addResource(ConcreteResource.COIN,1);
-        } catch (InvalidResourceException | InvalidQuantityException e) {
-            fail();
-        }
+        concreteResourceSet.addResource(ConcreteResource.STONE,2);
+        concreteResourceSet.addResource(ConcreteResource.COIN,1);
+
 
         try {
             DiscountLeaderCard discountLeaderCard = new DiscountLeaderCard(2,concreteResourceSet,null);
@@ -70,18 +59,8 @@ public class DiscountLeaderCardTest {
         Board board = new Board();
 
         ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
-        try {
-            concreteResourceSet.addResource(ConcreteResource.SHIELD,3);
-        } catch (InvalidResourceException | InvalidQuantityException e) {
-            fail();
-        }
-
-
-        try {
-            board.addResourceToWarehouse(2,concreteResourceSet);
-        } catch (InvalidResourceSetException | InvalidDepotIndexException | InvalidResourceLocationOperationException e) {
-            fail();
-        }
+        concreteResourceSet.addResource(ConcreteResource.SHIELD,3);
+        board.addResourcesToWarehouse(2,concreteResourceSet);
 
         try {
             DiscountLeaderCard discountLeaderCard = new DiscountLeaderCard(2,concreteResourceSet,ConcreteResource.SERVANT);

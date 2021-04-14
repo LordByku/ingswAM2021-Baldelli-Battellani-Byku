@@ -46,10 +46,11 @@ public class DepotLeaderCard extends LeaderCard{
      */
     @Override
     public void play() {
-        if(isPlayable())
+        if(isPlayable()) {
             active = true;
-
-        board.addLeaderCardDepot(new LeaderCardDepot(this.type));
+            board.addLeaderCard(this);
+            board.addLeaderCardDepot(new LeaderCardDepot(this.type));
+        }
     }
 
 }

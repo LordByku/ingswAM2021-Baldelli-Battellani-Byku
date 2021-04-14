@@ -6,13 +6,9 @@ import it.polimi.ingsw.leaderCards.InvalidRequirementsException;
 import it.polimi.ingsw.leaderCards.WhiteConversionLeaderCard;
 import it.polimi.ingsw.playerBoard.Board;
 import it.polimi.ingsw.playerBoard.InvalidBoardException;
-import it.polimi.ingsw.playerBoard.resourceLocations.InvalidDepotIndexException;
-import it.polimi.ingsw.playerBoard.resourceLocations.InvalidResourceLocationOperationException;
 import it.polimi.ingsw.resources.ConcreteResource;
 import it.polimi.ingsw.resources.InvalidResourceException;
 import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
-import it.polimi.ingsw.resources.resourceSets.InvalidQuantityException;
-import it.polimi.ingsw.resources.resourceSets.InvalidResourceSetException;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -24,11 +20,8 @@ public class LeaderCardTest {
         Board board = new Board();
 
         ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
-        try {
-            concreteResourceSet.addResource(ConcreteResource.STONE,3);
-        } catch (InvalidResourceException | InvalidQuantityException e) {
-            fail();
-        }
+        concreteResourceSet.addResource(ConcreteResource.STONE,3);
+
 
         try {
             WhiteConversionLeaderCard whiteConversionLeaderCard = new WhiteConversionLeaderCard(2,concreteResourceSet,ConcreteResource.SERVANT);
@@ -55,37 +48,19 @@ public class LeaderCardTest {
         Board board = new Board();
 
         ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
-        try {
-            concreteResourceSet.addResource(ConcreteResource.COIN, 3);
-        } catch (InvalidResourceException | InvalidQuantityException e) {
-            fail();
-        }
+        concreteResourceSet.addResource(ConcreteResource.COIN, 3);
+
 
         ConcreteResourceSet concreteResourceSet2 = new ConcreteResourceSet();
-        try {
-            concreteResourceSet2.addResource(ConcreteResource.SHIELD, 2);
-        } catch (InvalidResourceException | InvalidQuantityException e) {
-            fail();
-        }
+        concreteResourceSet2.addResource(ConcreteResource.SHIELD, 2);
+        board.addResourcesToWarehouse(2,concreteResourceSet);
+        board.addResourcesToWarehouse(1,concreteResourceSet2);
 
-        try {
-            board.addResourcesToWarehouse(2,concreteResourceSet);
-            board.addResourcesToWarehouse(1,concreteResourceSet2);
-        } catch (InvalidResourceSetException | InvalidDepotIndexException | InvalidResourceLocationOperationException e) {
-            fail();
-        }
 
         ConcreteResourceSet requirements = new ConcreteResourceSet();
-        try {
-            requirements.addResource(ConcreteResource.COIN, 2);
-        } catch (InvalidResourceException | InvalidQuantityException e) {
-            fail();
-        }
-        try {
-            requirements.addResource(ConcreteResource.SHIELD);
-        } catch (InvalidResourceException e) {
-            fail();
-        }
+        requirements.addResource(ConcreteResource.COIN, 2);
+        requirements.addResource(ConcreteResource.SHIELD);
+
 
 
         try {
@@ -124,18 +99,8 @@ public class LeaderCardTest {
         }
 
         ConcreteResourceSet concreteResourceSet3 = new ConcreteResourceSet();
-        try {
-            concreteResourceSet3.addResource(ConcreteResource.COIN, 2);
-        } catch (InvalidResourceException | InvalidQuantityException e) {
-            fail();
-        }
-
-
-        try {
-            board.removeResourcesFromWarehouse(2,concreteResourceSet3);
-        } catch (InvalidResourceSetException | InvalidResourceLocationOperationException | InvalidDepotIndexException e) {
-            e.printStackTrace();
-        }
+        concreteResourceSet3.addResource(ConcreteResource.COIN, 2);
+        board.removeResourcesFromWarehouse(2,concreteResourceSet3);
 
         try {
             DepotLeaderCard depotLeaderCard = new DepotLeaderCard(2, requirements, ConcreteResource.COIN);
