@@ -69,8 +69,8 @@ public class LeaderCardTest {
         }
 
         try {
-            board.addResourceToWarehouse(2,concreteResourceSet);
-            board.addResourceToWarehouse(1,concreteResourceSet2);
+            board.addResourcesToWarehouse(2,concreteResourceSet);
+            board.addResourcesToWarehouse(1,concreteResourceSet2);
         } catch (InvalidResourceSetException | InvalidDepotIndexException | InvalidResourceLocationOperationException e) {
             fail();
         }
