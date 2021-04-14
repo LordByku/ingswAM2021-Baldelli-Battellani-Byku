@@ -43,7 +43,6 @@ public class SpendableResourceSet extends TransactionResourceSet {
      */
     @Override
     public SpendableResourceSet clone() {
-        SpendableResourceSet cloneSRS = (SpendableResourceSet) super.clone();
-        return cloneSRS;
+        return (SpendableResourceSet) super.clone();
     }
 }

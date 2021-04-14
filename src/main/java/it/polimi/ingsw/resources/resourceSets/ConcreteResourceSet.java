@@ -63,9 +63,7 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
      * @throws InvalidResourceException resource is null
      */
     public void addResource(ConcreteResource resource) throws InvalidResourceException {
-        try {
-            addResource(resource, 1);
-        } catch (InvalidQuantityException e) {}
+        addResource(resource, 1);
     }
 
     /**
@@ -78,7 +76,6 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
      */
     public void removeResource(ConcreteResource resource, int quantity)
             throws InvalidResourceException, InvalidQuantityException, NotEnoughResourcesException {
-
         if(resource == null) {
             throw new InvalidResourceException();
         }
@@ -105,9 +102,7 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
      * @throws NotEnoughResourcesException There are no occurrences of resource in the set
      */
     public void removeResource(ConcreteResource resource) throws InvalidResourceException, NotEnoughResourcesException {
-        try {
-            removeResource(resource, 1);
-        } catch (InvalidQuantityException e) {}
+        removeResource(resource, 1);
     }
 
     /**
@@ -123,10 +118,10 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
         try {
             ConcreteResourceSet concreteOther = (ConcreteResourceSet) other;
             for(ConcreteResource resource: ConcreteResource.values()) {
-                try {
-                    int quantity = concreteOther.getCount(resource);
+                int quantity = concreteOther.getCount(resource);
+                if(quantity > 0) {
                     addResource(resource, quantity);
-                } catch (InvalidResourceException | InvalidQuantityException e) {}
+                }
             }
         } catch (ClassCastException e) {
             throw new InvalidResourceSetException();
@@ -145,18 +140,15 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
             throw new InvalidResourceSetException();
         }
 
-        for(ConcreteResource resource: ConcreteResource.values()) {
-            try {
-                if(other.getCount(resource) > getCount(resource)) {
-                    throw new NotEnoughResourcesException();
-                }
-            } catch (InvalidResourceException e) {}
+        if(!contains(other)) {
+            throw new NotEnoughResourcesException();
         }
 
         for(ConcreteResource resource: ConcreteResource.values()) {
-            try {
+            int otherQuantity = other.getCount(resource);
+            if(otherQuantity > 0) {
                 removeResource(resource, other.getCount(resource));
-            } catch (InvalidQuantityException | InvalidResourceException | NotEnoughResourcesException e) {}
+            }
         }
     }
 
@@ -188,11 +180,9 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
         }
 
         for(ConcreteResource resource: ConcreteResource.values()) {
-            try {
-                if(other.getCount(resource) > getCount(resource)) {
-                    return false;
-                }
-            } catch (InvalidResourceException e) {}
+            if(other.getCount(resource) > getCount(resource)) {
+                return false;
+            }
         }
 
         return true;
@@ -211,11 +201,7 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
         if(board == null) {
             throw new InvalidBoardException();
         }
-        try {
-            return board.containsResources((ConcreteResourceSet) clone());
-        } catch(InvalidResourceSetException e) {
-            return false;
-        }
+        return board.containsResources((ConcreteResourceSet) clone());
     }
 
     /**
@@ -225,7 +211,7 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
      * @throws NotSingleTypeException This set contains more than one type of resources
      */
     public ConcreteResource getResourceType() throws NotSingleTypeException {
-        if(resources.size() > 1) {
+        if(!isSingleType()) {
             throw new NotSingleTypeException();
         }
 
@@ -234,5 +220,13 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
         }
 
         return (ConcreteResource) resources.keySet().toArray()[0];
+    }
+
+    /**
+     * isSingleType checks whether this ConcreteResourceSet contains at most one type of resource
+     * @return True iff this set contains at most one type of resource
+     */
+    public boolean isSingleType() {
+        return resources.size() <= 1;
     }
 }

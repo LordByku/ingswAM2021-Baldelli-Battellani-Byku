@@ -1,7 +1,5 @@
 package it.polimi.ingsw.resources.resourceSets;
 
-import it.polimi.ingsw.playerBoard.Board;
-
 /**
  * ObtainableResourceSet is a TransactionResourceSet where the resource set
  * is going to be given to a player (board)

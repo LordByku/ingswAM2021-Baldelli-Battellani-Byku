@@ -366,16 +366,16 @@ public class ConcreteResourceSetTest {
         try {
             toAdd = new ConcreteResourceSet();
             toAdd.addResource(ConcreteResource.COIN, 1);
-            board.addResourceToWarehouse(1, toAdd);
+            board.addResourcesToWarehouse(1, toAdd);
 
             toAdd = new ConcreteResourceSet();
             toAdd.addResource(ConcreteResource.STONE, 3);
-            board.addResourceToWarehouse(2, toAdd);
+            board.addResourcesToWarehouse(2, toAdd);
 
             toAdd = new ConcreteResourceSet();
             toAdd.addResource(ConcreteResource.COIN, 2);
             toAdd.addResource(ConcreteResource.SHIELD, 3);
-            board.addResourceToStrongbox(toAdd);
+            board.addResourcesToStrongbox(toAdd);
         } catch (InvalidResourceSetException | InvalidDepotIndexException | InvalidResourceLocationOperationException | InvalidQuantityException | InvalidResourceException e) {
             fail();
         }

@@ -40,11 +40,7 @@ public class Depot implements ConcreteResourceLocation {
      * no resources are present
      */
     public ConcreteResource getResourceType() {
-        try {
-            return resources.getResourceType();
-        } catch (NotSingleTypeException e) {
-            return null;
-        }
+        return resources.getResourceType();
     }
 
     /**
@@ -72,11 +68,10 @@ public class Depot implements ConcreteResourceLocation {
      */
     @Override
     public void removeResources(ConcreteResourceSet concreteResourceSet) throws InvalidResourceSetException, InvalidResourceLocationOperationException {
-        try {
-            resources.difference(concreteResourceSet);
-        } catch (NotEnoughResourcesException e) {
+        if(!containsResources(concreteResourceSet)) {
             throw new InvalidResourceLocationOperationException();
         }
+        resources.difference(concreteResourceSet);
     }
 
     /**
@@ -91,32 +86,35 @@ public class Depot implements ConcreteResourceLocation {
             throw new InvalidResourceSetException();
         }
 
-        ConcreteResource otherResourceType;
-        try {
-            otherResourceType = concreteResourceSet.getResourceType();
-        } catch (NotSingleTypeException e) {
+        // concreteResourceSet has more than one type of resources: return false
+        if(!concreteResourceSet.isSingleType()) {
             return false;
         }
 
+        ConcreteResource otherResourceType = concreteResourceSet.getResourceType();
+
+        // concreteResourceSet has no resources: return true
         if(otherResourceType == null) {
             return true;
         }
 
+        // concreteResourceSet is single type
+        int otherAmount = concreteResourceSet.getCount(otherResourceType);
+
         ConcreteResource currentResourceType = getResourceType();
 
-        int otherAmount = 0, currentAmount = 0;
-        try {
-            otherAmount = concreteResourceSet.getCount(otherResourceType);
-        } catch (InvalidResourceException e) {}
-
-        if(currentResourceType == null && otherAmount <= slots) {
-            return true;
+        // There are currently no resources in this depot: return true
+        // if the amount of resources in concreteResourceSet is
+        // less than the capacity of the depot
+        if(currentResourceType == null) {
+            return otherAmount <= slots;
         }
 
-        try {
-            currentAmount = resources.getCount(currentResourceType);
-        } catch (InvalidResourceException e) {}
+        // The resource type in this depot is fixed to currentResourceType
+        int currentAmount = resources.getCount(currentResourceType);
 
+        // Return true if the resource types match and the total amount
+        // of resources fits within the capacity of the depot
         return otherResourceType == currentResourceType && otherAmount + currentAmount <= slots;
     }
 

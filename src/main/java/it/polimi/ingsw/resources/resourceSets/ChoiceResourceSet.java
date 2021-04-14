@@ -37,17 +37,16 @@ public class ChoiceResourceSet implements ResourceSet {
      * toConcrete() creates a new ConcreteResourceSet from the resources in this object
      * @return A ConcreteResourceSet that contains all resources in this object
      * @throws NotConcreteException There exist a non concrete resource,
-     *         i.e. a ChoiceResource that has not been selected.
+     * i.e. a ChoiceResource that has not been selected.
      */
     public ConcreteResourceSet toConcrete() throws NotConcreteException {
         if(!isConcrete()) {
             throw new NotConcreteException();
         }
         ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
-        try {
-            for(Resource resource: resources)
-                concreteResourceSet.addResource(resource.getResource());
-        } catch (InvalidResourceException e) {}
+        for(Resource resource: resources) {
+            concreteResourceSet.addResource(resource.getResource());
+        }
         return concreteResourceSet;
     }
 
@@ -89,7 +88,7 @@ public class ChoiceResourceSet implements ResourceSet {
             }
         } catch (ClassCastException e) {
             throw new InvalidResourceSetException();
-        } catch (InvalidResourceException e) {}
+        }
     }
 
     /**
@@ -101,7 +100,7 @@ public class ChoiceResourceSet implements ResourceSet {
     public ResourceSet clone() {
         try {
             ChoiceResourceSet cloneResourceSet = (ChoiceResourceSet) super.clone();
-            cloneResourceSet.resources = (ArrayList<Resource>) resources.clone();
+            cloneResourceSet.resources = getResources();
             return cloneResourceSet;
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
