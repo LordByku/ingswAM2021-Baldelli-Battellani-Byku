@@ -29,11 +29,9 @@ public class Warehouse implements ResourceLocation {
     public Warehouse() {
         initialDepots = 3;
         depots = new ArrayList<>();
-        try {
-            depots.add(new Depot(1));
-            depots.add(new Depot(2));
-            depots.add(new Depot(3));
-        } catch (InvalidDepotSizeException e) {}
+        depots.add(new Depot(1));
+        depots.add(new Depot(2));
+        depots.add(new Depot(3));
     }
 
     /**
@@ -69,9 +67,7 @@ public class Warehouse implements ResourceLocation {
     public ConcreteResourceSet getResources() {
         ConcreteResourceSet result = new ConcreteResourceSet();
         for(Depot depot: depots) {
-            try {
-                result.union(depot.getResources());
-            } catch (InvalidResourceSetException e) {}
+            result.union(depot.getResources());
         }
         return result;
     }
@@ -93,25 +89,30 @@ public class Warehouse implements ResourceLocation {
             throw new InvalidResourceSetException();
         }
 
-        ConcreteResource resourceSetType;
-        try {
-            resourceSetType = concreteResourceSet.getResourceType();
-        } catch (NotSingleTypeException e) {
+        // concreteResourceSet has more than one type of resources: return false
+        if(!concreteResourceSet.isSingleType()) {
             return false;
         }
 
+        ConcreteResource resourceSetType = concreteResourceSet.getResourceType();
+
+        // concreteResourceSet has no resources: return true
         if(resourceSetType == null) {
             return true;
         }
 
+        // concreteResourceSet is single type
         if(depotIndex < initialDepots) {
             for(int i = 0; i < initialDepots; ++i) {
+                // There is another depot with the same resource
+                // type as concreteResourceSet: return false
                 if(i != depotIndex && depots.get(i).getResourceType() == resourceSetType) {
                     return false;
                 }
             }
         }
 
+        // Return true if the given depot can add concreteResourceSet
         return depots.get(depotIndex).canAdd(concreteResourceSet);
     }
 
@@ -128,9 +129,8 @@ public class Warehouse implements ResourceLocation {
             throws InvalidDepotIndexException, InvalidResourceSetException, InvalidResourceLocationOperationException {
         if(!canAdd(depotIndex, concreteResourceSet)) {
             throw new InvalidResourceLocationOperationException();
-        } else {
-            depots.get(depotIndex).addResources(concreteResourceSet);
         }
+        depots.get(depotIndex).addResources(concreteResourceSet);
     }
 
     /**
@@ -144,10 +144,81 @@ public class Warehouse implements ResourceLocation {
      */
     public void removeResources(int depotIndex, ConcreteResourceSet concreteResourceSet)
             throws InvalidDepotIndexException, InvalidResourceSetException, InvalidResourceLocationOperationException {
-
         if(depotIndex < 0 || depotIndex >= depots.size()) {
             throw new InvalidDepotIndexException();
         }
         depots.get(depotIndex).removeResources(concreteResourceSet);
     }
+
+    /**
+     * canSwap checks whether the resources in two given depots can be swapped
+     * @param depotIndexA The index of the first depot
+     * @param depotIndexB The index of the second depot
+     * @return True iff the content of the two depots can be swapped
+     * @throws InvalidDepotIndexException depotIndexA or depotIndexB is outside the range of depots
+     */
+    public boolean canSwap(int depotIndexA, int depotIndexB) throws InvalidDepotIndexException {
+        if(depotIndexA < 0 || depotIndexA >= depots.size() ||
+                depotIndexB < 0 || depotIndexB >= depots.size()) {
+            throw new InvalidDepotIndexException();
+        }
+        ConcreteResourceSet resourceSetA = depots.get(depotIndexA).getResources();
+        ConcreteResourceSet resourceSetB = depots.get(depotIndexB).getResources();
+
+        depots.get(depotIndexA).removeResources(resourceSetA);
+        depots.get(depotIndexB).removeResources(resourceSetB);
+
+        boolean result = canAdd(depotIndexA, resourceSetB) && canAdd(depotIndexB, resourceSetA);
+
+        depots.get(depotIndexA).addResources(resourceSetA);
+        depots.get(depotIndexB).addResources(resourceSetB);
+
+        return result;
+    }
+
+    /**
+     * swapResources swaps the content of two given depots
+     * @param depotIndexA The index of the first depot
+     * @param depotIndexB The index of the second depot
+     * @throws InvalidDepotIndexException depotIndexA or depotIndexB is outside the range of depots
+     * @throws InvalidResourceLocationOperationException The content of the two depots
+     * cannot be swapped
+     */
+    public void swapResources(int depotIndexA, int depotIndexB) throws InvalidDepotIndexException, InvalidResourceLocationOperationException {
+        if(!canSwap(depotIndexA, depotIndexB)) {
+            throw new InvalidResourceLocationOperationException();
+        }
+
+        ConcreteResourceSet resourceSetA = depots.get(depotIndexA).getResources();
+        ConcreteResourceSet resourceSetB = depots.get(depotIndexB).getResources();
+
+        depots.get(depotIndexA).removeResources(resourceSetA);
+        depots.get(depotIndexB).removeResources(resourceSetB);
+
+        depots.get(depotIndexA).addResources(resourceSetB);
+        depots.get(depotIndexB).addResources(resourceSetA);
+    }
+
+    /**
+     * getDepotResources returns the resources contained in a given depot
+     * @param depotIndex The depot to get resources from
+     * @return The ConcreteResourceSet contained in the given depot
+     * @throws InvalidDepotIndexException depotIndex is outside the range of depots
+     */
+    public ConcreteResourceSet getDepotResources(int depotIndex) throws InvalidDepotIndexException {
+        if(depotIndex < 0 || depotIndex >= depots.size()) {
+            throw new InvalidDepotIndexException();
+        }
+
+        return depots.get(depotIndex).getResources();
+    }
+
+    /**
+     * numberOfDepots returns the number of depots currently in this warehouse
+     * @return The size of depots
+     */
+    public int numberOfDepots() {
+        return depots.size();
+    }
 }
+

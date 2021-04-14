@@ -49,9 +49,7 @@ public class DepotLeaderCard extends LeaderCard{
         if(isPlayable())
             active = true;
 
-        try {
-            board.addLeaderCardDepot(new LeaderCardDepot(this.type));
-        } catch (InvalidDepotSizeException | InvalidResourceException | InvalidLeaderCardDepotException e) {}
+        board.addLeaderCardDepot(new LeaderCardDepot(this.type));
     }
 
 }

@@ -65,9 +65,7 @@ public class Board implements ResourceLocation, Scoring, Cloneable {
     @Override
     public ConcreteResourceSet getResources() {
         ConcreteResourceSet result = warehouse.getResources();
-        try {
-            result.union(strongBox.getResources());
-        } catch (InvalidResourceSetException e) {}
+        result.union(strongBox.getResources());
         return result;
     }
 
@@ -89,18 +87,21 @@ public class Board implements ResourceLocation, Scoring, Cloneable {
         }
     }
 
-    public void addResourceToWarehouse(int depotIndex, ConcreteResourceSet concreteResourceSet)
+    public void addResourcesToWarehouse(int depotIndex, ConcreteResourceSet concreteResourceSet)
             throws InvalidResourceSetException, InvalidDepotIndexException, InvalidResourceLocationOperationException {
         warehouse.addResources(depotIndex,concreteResourceSet);
     }
 
-    public void addResourceToStrongbox(ConcreteResourceSet concreteResourceSet) throws InvalidResourceSetException {
+    public void removeResourcesFromWarehouse(int depotIndex, ConcreteResourceSet concreteResourceSet)
+            throws InvalidResourceSetException, InvalidDepotIndexException, InvalidResourceLocationOperationException {
+        warehouse.removeResources(depotIndex,concreteResourceSet);
+    }
+
+    public void addResourcesToStrongbox(ConcreteResourceSet concreteResourceSet) throws InvalidResourceSetException {
         strongBox.addResources(concreteResourceSet);
     }
 
-    public void removeResourcesFromWarehouse(int depotIndex, ConcreteResourceSet concreteResourceSet)
-            throws InvalidResourceSetException, InvalidDepotIndexException, InvalidResourceLocationOperationException {
-
-        warehouse.removeResources(depotIndex,concreteResourceSet);
+    public void removeResourcesFromStrongbox(ConcreteResourceSet concreteResourceSet) throws InvalidResourceSetException, InvalidResourceLocationOperationException {
+        strongBox.removeResources(concreteResourceSet);
     }
 }

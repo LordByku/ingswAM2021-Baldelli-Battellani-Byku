@@ -1,6 +1,5 @@
 package it.polimi.ingsw.playerBoard.resourceLocations;
 
-import it.polimi.ingsw.resources.NotEnoughResourcesException;
 import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.resources.resourceSets.InvalidResourceSetException;
 
@@ -14,7 +13,7 @@ public class StrongBox implements ConcreteResourceLocation {
     private ConcreteResourceSet resources;
 
     /**
-     * The constructore initializes resources to an empty set
+     * The constructor initializes resources to an empty set
      */
     public StrongBox() {
         resources = new ConcreteResourceSet();
@@ -39,11 +38,10 @@ public class StrongBox implements ConcreteResourceLocation {
      */
     @Override
     public void removeResources(ConcreteResourceSet concreteResourceSet) throws InvalidResourceSetException, InvalidResourceLocationOperationException {
-        try {
-            resources.difference(concreteResourceSet);
-        } catch (NotEnoughResourcesException e) {
+        if(!containsResources(concreteResourceSet)) {
             throw new InvalidResourceLocationOperationException();
         }
+        resources.difference(concreteResourceSet);
     }
 
     /**

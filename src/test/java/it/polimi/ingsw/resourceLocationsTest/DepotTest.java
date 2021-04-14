@@ -16,390 +16,308 @@ import static org.junit.Assert.*;
 public class DepotTest {
     @Test
     public void constructorTest() {
-        try {
-            Depot depot = new Depot(1);
+        Depot depot = new Depot(1);
 
-            ConcreteResourceSet resourceSet = depot.getResources();
+        ConcreteResourceSet resourceSet = depot.getResources();
+
+        assertNotNull(resourceSet);
+        assertEquals(0, resourceSet.getCount(ConcreteResource.COIN));
+        assertEquals(0, resourceSet.getCount(ConcreteResource.STONE));
+        assertEquals(0, resourceSet.getCount(ConcreteResource.SHIELD));
+        assertEquals(0, resourceSet.getCount(ConcreteResource.SERVANT));
+
+        try {
+            depot = new Depot(-1);
+            fail();
+        } catch (InvalidDepotSizeException e) {
+            resourceSet = depot.getResources();
 
             assertNotNull(resourceSet);
             assertEquals(0, resourceSet.getCount(ConcreteResource.COIN));
             assertEquals(0, resourceSet.getCount(ConcreteResource.STONE));
             assertEquals(0, resourceSet.getCount(ConcreteResource.SHIELD));
             assertEquals(0, resourceSet.getCount(ConcreteResource.SERVANT));
-        } catch (InvalidDepotSizeException | InvalidResourceException e) {
-            fail();
-        }
-
-        try {
-            Depot depot = new Depot(-1);
-            fail();
-        } catch (InvalidDepotSizeException e) {
-            assertTrue(true);
         }
     }
 
     @Test
     public void getResourceTypeTest() {
+        Depot depot = new Depot(2);
+
+        assertNull(depot.getResourceType());
+
+        ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
+        concreteResourceSet.addResource(ConcreteResource.COIN);
+
+        depot.addResources(concreteResourceSet);
+
+        assertEquals(ConcreteResource.COIN, depot.getResourceType());
+
+        depot.addResources(concreteResourceSet);
+
+        assertEquals(ConcreteResource.COIN, depot.getResourceType());
+
+        concreteResourceSet.addResource(ConcreteResource.COIN);
+
+        depot.removeResources(concreteResourceSet);
+
+        assertNull(depot.getResourceType());
+
+        concreteResourceSet.removeResource(ConcreteResource.COIN, 2);
+        concreteResourceSet.addResource(ConcreteResource.STONE);
+
+        depot.addResources(concreteResourceSet);
+
+        assertEquals(ConcreteResource.STONE, depot.getResourceType());
+    }
+
+    @Test
+    public void addNullResourceSetTest() {
+        Depot depot = new Depot(2);
+
         try {
-            Depot depot = new Depot(2);
-
-            assertNull(depot.getResourceType());
-
-            ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
-            try {
-                concreteResourceSet.addResource(ConcreteResource.COIN);
-            } catch (InvalidResourceException e) {
-                fail();
-            }
-
-            try {
-                depot.addResources(concreteResourceSet);
-            } catch (InvalidResourceSetException | InvalidResourceLocationOperationException e) {
-                fail();
-            }
-
-            assertEquals(ConcreteResource.COIN, depot.getResourceType());
-
-            try {
-                depot.addResources(concreteResourceSet);
-            } catch (InvalidResourceSetException | InvalidResourceLocationOperationException e) {
-                fail();
-            }
-
-            assertEquals(ConcreteResource.COIN, depot.getResourceType());
-
-            try {
-                concreteResourceSet.addResource(ConcreteResource.COIN);
-            } catch (InvalidResourceException e) {
-                fail();
-            }
-
-            try {
-                depot.removeResources(concreteResourceSet);
-            } catch (InvalidResourceSetException | InvalidResourceLocationOperationException e) {
-                fail();
-            }
-
-            assertNull(depot.getResourceType());
-
-            try {
-                concreteResourceSet.removeResource(ConcreteResource.COIN, 2);
-                concreteResourceSet.addResource(ConcreteResource.STONE);
-            } catch (InvalidResourceException | InvalidQuantityException | NotEnoughResourcesException e) {
-                fail();
-            }
-
-            try {
-                depot.addResources(concreteResourceSet);
-            } catch (InvalidResourceSetException | InvalidResourceLocationOperationException e) {
-                fail();
-            }
-
-            assertEquals(ConcreteResource.STONE, depot.getResourceType());
-        } catch (InvalidDepotSizeException e) {
+            depot.addResources(null);
             fail();
+        } catch (InvalidResourceSetException e) {
+            assertNull(depot.getResources().getResourceType());
         }
     }
 
     @Test
+    public void addEmptyResourceSetTest() {
+        Depot depot = new Depot(2);
+        ConcreteResourceSet emptyResourceSet = new ConcreteResourceSet();
+
+        depot.addResources(emptyResourceSet);
+
+        assertNull(depot.getResourceType());
+        ConcreteResourceSet resources = depot.getResources();
+
+        assertEquals(0, resources.getCount(ConcreteResource.COIN));
+        assertEquals(0, resources.getCount(ConcreteResource.STONE));
+        assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
+        assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
+
+        ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
+        concreteResourceSet.addResource(ConcreteResource.COIN, 1);
+
+        depot.addResources(concreteResourceSet);
+
+        resources = depot.getResources();
+
+        assertEquals(1, resources.getCount(ConcreteResource.COIN));
+        assertEquals(0, resources.getCount(ConcreteResource.STONE));
+        assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
+        assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
+
+        depot.addResources(emptyResourceSet);
+
+        resources = depot.getResources();
+
+        assertEquals(1, resources.getCount(ConcreteResource.COIN));
+        assertEquals(0, resources.getCount(ConcreteResource.STONE));
+        assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
+        assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
+
+        depot.addResources(concreteResourceSet);
+
+        resources = depot.getResources();
+
+        assertEquals(2, resources.getCount(ConcreteResource.COIN));
+        assertEquals(0, resources.getCount(ConcreteResource.STONE));
+        assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
+        assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
+
+        depot.addResources(emptyResourceSet);
+
+        resources = depot.getResources();
+
+        assertEquals(2, resources.getCount(ConcreteResource.COIN));
+        assertEquals(0, resources.getCount(ConcreteResource.STONE));
+        assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
+        assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
+    }
+
+    @Test
     public void addResourcesTest() {
+        Depot depot = new Depot(2);
+
+        ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
+
+        concreteResourceSet.addResource(ConcreteResource.COIN);
+        depot.addResources(concreteResourceSet);
+
+        ConcreteResourceSet resources = depot.getResources();
+
+        assertEquals(1, resources.getCount(ConcreteResource.COIN));
+        assertEquals(0, resources.getCount(ConcreteResource.STONE));
+        assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
+        assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
+
+        concreteResourceSet.addResource(ConcreteResource.COIN);
+
+        resources = depot.getResources();
+
+        assertEquals(1, resources.getCount(ConcreteResource.COIN));
+        assertEquals(0, resources.getCount(ConcreteResource.STONE));
+        assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
+        assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
+
         try {
-            Depot depot = new Depot(2);
-
-            try {
-                depot.addResources(null);
-                fail();
-            } catch (InvalidResourceSetException e) {
-                assertTrue(true);
-            } catch (InvalidResourceLocationOperationException e) {
-                fail();
-            }
-
-            ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
-            try {
-                concreteResourceSet.addResource(ConcreteResource.COIN);
-                depot.addResources(concreteResourceSet);
-
-                ConcreteResourceSet resources = depot.getResources();
-
-                assertEquals(1, resources.getCount(ConcreteResource.COIN));
-                assertEquals(0, resources.getCount(ConcreteResource.STONE));
-                assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
-                assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
-
-                concreteResourceSet.addResource(ConcreteResource.COIN);
-
-                resources = depot.getResources();
-
-                assertEquals(1, resources.getCount(ConcreteResource.COIN));
-                assertEquals(0, resources.getCount(ConcreteResource.STONE));
-                assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
-                assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
-            } catch (InvalidResourceLocationOperationException | InvalidResourceSetException | InvalidResourceException e) {
-                fail();
-            }
-
-            try {
-                depot.addResources(concreteResourceSet);
-                fail();
-            } catch (InvalidResourceSetException e) {
-                fail();
-            } catch (InvalidResourceLocationOperationException e) {
-                ConcreteResourceSet resources = depot.getResources();
-
-                try {
-                    assertEquals(1, resources.getCount(ConcreteResource.COIN));
-                    assertEquals(0, resources.getCount(ConcreteResource.STONE));
-                    assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
-                    assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
-                } catch (InvalidResourceException e1) {
-                    fail();
-                }
-            }
-
-            try {
-                concreteResourceSet.removeResource(ConcreteResource.COIN, 2);
-                concreteResourceSet.addResource(ConcreteResource.STONE);
-            } catch (NotEnoughResourcesException | InvalidQuantityException | InvalidResourceException e) {
-                fail();
-            }
-
-            try {
-                depot.addResources(concreteResourceSet);
-                fail();
-            } catch (InvalidResourceSetException e) {
-                fail();
-            } catch (InvalidResourceLocationOperationException e) {
-                ConcreteResourceSet resources = depot.getResources();
-
-                try {
-                    assertEquals(1, resources.getCount(ConcreteResource.COIN));
-                    assertEquals(0, resources.getCount(ConcreteResource.STONE));
-                    assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
-                    assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
-                } catch (InvalidResourceException e1) {
-                    fail();
-                }
-            }
-
-            try {
-                concreteResourceSet.removeResource(ConcreteResource.STONE, 1);
-                concreteResourceSet.addResource(ConcreteResource.COIN);
-            } catch (NotEnoughResourcesException | InvalidQuantityException | InvalidResourceException e) {
-                fail();
-            }
-
-            try {
-                depot.addResources(concreteResourceSet);
-
-                ConcreteResourceSet resources = depot.getResources();
-
-                assertEquals(2, resources.getCount(ConcreteResource.COIN));
-                assertEquals(0, resources.getCount(ConcreteResource.STONE));
-                assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
-                assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
-            } catch (InvalidResourceSetException | InvalidResourceLocationOperationException | InvalidResourceException e) {
-                fail();
-            }
-
-            try {
-                depot.addResources(concreteResourceSet);
-                fail();
-            } catch (InvalidResourceSetException e) {
-                fail();
-            } catch (InvalidResourceLocationOperationException e) {
-                assertTrue(true);
-            }
-
-            try {
-                concreteResourceSet.removeResource(ConcreteResource.COIN);
-            } catch (InvalidResourceException | NotEnoughResourcesException e) {
-                fail();
-            }
-
-            try {
-                depot.addResources(concreteResourceSet);
-
-                ConcreteResourceSet resources = depot.getResources();
-
-                assertEquals(2, resources.getCount(ConcreteResource.COIN));
-                assertEquals(0, resources.getCount(ConcreteResource.STONE));
-                assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
-                assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
-            } catch (InvalidResourceSetException | InvalidResourceLocationOperationException | InvalidResourceException e) {
-                fail();
-            }
-        } catch (InvalidDepotSizeException e) {
+            depot.addResources(concreteResourceSet);
             fail();
+        } catch (InvalidResourceLocationOperationException e) {
+            resources = depot.getResources();
+
+            assertEquals(1, resources.getCount(ConcreteResource.COIN));
+            assertEquals(0, resources.getCount(ConcreteResource.STONE));
+            assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
+            assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
+        }
+
+        concreteResourceSet.removeResource(ConcreteResource.COIN, 2);
+        concreteResourceSet.addResource(ConcreteResource.STONE);
+
+        try {
+            depot.addResources(concreteResourceSet);
+            fail();
+        } catch (InvalidResourceLocationOperationException e) {
+            resources = depot.getResources();
+
+            assertEquals(1, resources.getCount(ConcreteResource.COIN));
+            assertEquals(0, resources.getCount(ConcreteResource.STONE));
+            assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
+            assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
+        }
+
+        concreteResourceSet.removeResource(ConcreteResource.STONE, 1);
+        concreteResourceSet.addResource(ConcreteResource.COIN);
+
+        depot.addResources(concreteResourceSet);
+
+        resources = depot.getResources();
+
+        assertEquals(2, resources.getCount(ConcreteResource.COIN));
+        assertEquals(0, resources.getCount(ConcreteResource.STONE));
+        assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
+        assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
+
+        try {
+            depot.addResources(concreteResourceSet);
+            fail();
+        } catch (InvalidResourceLocationOperationException e) {
+            resources = depot.getResources();
+
+            assertEquals(2, resources.getCount(ConcreteResource.COIN));
+            assertEquals(0, resources.getCount(ConcreteResource.STONE));
+            assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
+            assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
         }
     }
 
     @Test
     public void removeResourcesTest() {
+        Depot depot = new Depot(2);
+
+        ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
+        concreteResourceSet.addResource(ConcreteResource.COIN, 2);
+
+        depot.addResources(concreteResourceSet);
+
+        ConcreteResourceSet resources = depot.getResources();
+        assertEquals(2, resources.getCount(ConcreteResource.COIN));
+        assertEquals(0, resources.getCount(ConcreteResource.STONE));
+        assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
+        assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
+
+        concreteResourceSet.removeResource(ConcreteResource.COIN);
+
+        depot.removeResources(concreteResourceSet);
+
+        resources = depot.getResources();
+        assertEquals(1, resources.getCount(ConcreteResource.COIN));
+        assertEquals(0, resources.getCount(ConcreteResource.STONE));
+        assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
+        assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
+
+        concreteResourceSet.addResource(ConcreteResource.COIN);
+
         try {
-            Depot depot = new Depot(2);
-
-            ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
-            try {
-                concreteResourceSet.addResource(ConcreteResource.COIN, 2);
-            } catch (InvalidQuantityException | InvalidResourceException e) {
-                fail();
-            }
-
-            try {
-                depot.addResources(concreteResourceSet);
-
-                ConcreteResourceSet resources = depot.getResources();
-                assertEquals(2, resources.getCount(ConcreteResource.COIN));
-                assertEquals(0, resources.getCount(ConcreteResource.STONE));
-                assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
-                assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
-            } catch (InvalidResourceSetException | InvalidResourceLocationOperationException | InvalidResourceException e) {
-                fail();
-            }
-
-            try {
-                concreteResourceSet.removeResource(ConcreteResource.COIN);
-            } catch (InvalidResourceException | NotEnoughResourcesException e) {
-                fail();
-            }
-
-            try {
-                depot.removeResources(concreteResourceSet);
-
-                ConcreteResourceSet resources = depot.getResources();
-                assertEquals(1, resources.getCount(ConcreteResource.COIN));
-                assertEquals(0, resources.getCount(ConcreteResource.STONE));
-                assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
-                assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
-            } catch (InvalidResourceSetException | InvalidResourceLocationOperationException | InvalidResourceException e) {
-                fail();
-            }
-
-            try {
-                concreteResourceSet.addResource(ConcreteResource.COIN);
-            } catch (InvalidResourceException e) {
-                fail();
-            }
-
-            try {
-                depot.removeResources(concreteResourceSet);
-                fail();
-            } catch (InvalidResourceSetException e) {
-                fail();
-            } catch (InvalidResourceLocationOperationException e) {
-                ConcreteResourceSet resources = depot.getResources();
-
-                try {
-                    assertEquals(1, resources.getCount(ConcreteResource.COIN));
-                    assertEquals(0, resources.getCount(ConcreteResource.STONE));
-                    assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
-                    assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
-                } catch (InvalidResourceException e1) {
-                    fail();
-                }
-            }
-
-            try {
-                concreteResourceSet.removeResource(ConcreteResource.COIN);
-                concreteResourceSet.addResource(ConcreteResource.SHIELD);
-            } catch (NotEnoughResourcesException | InvalidResourceException e) {
-                fail();
-            }
-
-            try {
-                depot.removeResources(concreteResourceSet);
-                fail();
-            } catch (InvalidResourceSetException e) {
-                fail();
-            } catch (InvalidResourceLocationOperationException e) {
-                ConcreteResourceSet resources = depot.getResources();
-
-                try {
-                    assertEquals(1, resources.getCount(ConcreteResource.COIN));
-                    assertEquals(0, resources.getCount(ConcreteResource.STONE));
-                    assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
-                    assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
-                } catch (InvalidResourceException e1) {
-                    fail();
-                }
-            }
-
-            try {
-                concreteResourceSet.removeResource(ConcreteResource.SHIELD);
-                concreteResourceSet.removeResource(ConcreteResource.COIN);
-            } catch (NotEnoughResourcesException | InvalidResourceException e) {
-                fail();
-            }
-
-            try {
-                depot.removeResources(concreteResourceSet);
-
-                ConcreteResourceSet resources = depot.getResources();
-                assertEquals(1, resources.getCount(ConcreteResource.COIN));
-                assertEquals(0, resources.getCount(ConcreteResource.STONE));
-                assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
-                assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
-            } catch (InvalidResourceSetException | InvalidResourceLocationOperationException | InvalidResourceException e) {
-                fail();
-            }
-
-            try {
-                depot.removeResources(null);
-                fail();
-            } catch (InvalidResourceSetException e) {
-                ConcreteResourceSet resources = depot.getResources();
-
-                try {
-                    assertEquals(1, resources.getCount(ConcreteResource.COIN));
-                    assertEquals(0, resources.getCount(ConcreteResource.STONE));
-                    assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
-                    assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
-                } catch (InvalidResourceException e1) {
-                    fail();
-                }
-            } catch (InvalidResourceLocationOperationException e) {
-                fail();
-            }
-
-            try {
-                concreteResourceSet.addResource(ConcreteResource.COIN);
-            } catch (InvalidResourceException e) {
-                fail();
-            }
-
-            try {
-                depot.removeResources(concreteResourceSet);
-
-                ConcreteResourceSet resources = depot.getResources();
-                assertEquals(0, resources.getCount(ConcreteResource.COIN));
-                assertEquals(0, resources.getCount(ConcreteResource.STONE));
-                assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
-                assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
-            } catch (InvalidResourceLocationOperationException | InvalidResourceSetException | InvalidResourceException e) {
-                fail();
-            }
-
-            try {
-                concreteResourceSet.removeResource(ConcreteResource.COIN);
-                concreteResourceSet.addResource(ConcreteResource.SHIELD);
-            } catch (NotEnoughResourcesException | InvalidResourceException e) {
-                fail();
-            }
-
-            try {
-                depot.addResources(concreteResourceSet);
-
-                ConcreteResourceSet resources = depot.getResources();
-                assertEquals(0, resources.getCount(ConcreteResource.COIN));
-                assertEquals(0, resources.getCount(ConcreteResource.STONE));
-                assertEquals(1, resources.getCount(ConcreteResource.SHIELD));
-                assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
-            } catch (InvalidResourceLocationOperationException | InvalidResourceSetException | InvalidResourceException e) {
-                fail();
-            }
-        } catch (InvalidDepotSizeException e) {
+            depot.removeResources(concreteResourceSet);
             fail();
+        } catch (InvalidResourceLocationOperationException e) {
+            resources = depot.getResources();
+
+            assertEquals(1, resources.getCount(ConcreteResource.COIN));
+            assertEquals(0, resources.getCount(ConcreteResource.STONE));
+            assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
+            assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
         }
+
+        concreteResourceSet.removeResource(ConcreteResource.COIN);
+        concreteResourceSet.addResource(ConcreteResource.SHIELD);
+
+        try {
+            depot.removeResources(concreteResourceSet);
+            fail();
+        } catch (InvalidResourceLocationOperationException e) {
+            resources = depot.getResources();
+
+            assertEquals(1, resources.getCount(ConcreteResource.COIN));
+            assertEquals(0, resources.getCount(ConcreteResource.STONE));
+            assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
+            assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
+        }
+
+        concreteResourceSet.removeResource(ConcreteResource.SHIELD);
+        concreteResourceSet.removeResource(ConcreteResource.COIN);
+
+        depot.removeResources(concreteResourceSet);
+
+        resources = depot.getResources();
+        assertEquals(1, resources.getCount(ConcreteResource.COIN));
+        assertEquals(0, resources.getCount(ConcreteResource.STONE));
+        assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
+        assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
+
+        try {
+            depot.removeResources(null);
+            fail();
+        } catch (InvalidResourceSetException e) {
+            resources = depot.getResources();
+
+            assertEquals(1, resources.getCount(ConcreteResource.COIN));
+            assertEquals(0, resources.getCount(ConcreteResource.STONE));
+            assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
+            assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
+        }
+
+        concreteResourceSet.addResource(ConcreteResource.COIN);
+
+        depot.removeResources(concreteResourceSet);
+
+        resources = depot.getResources();
+        assertEquals(0, resources.getCount(ConcreteResource.COIN));
+        assertEquals(0, resources.getCount(ConcreteResource.STONE));
+        assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
+        assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
+
+        concreteResourceSet.removeResource(ConcreteResource.COIN);
+        concreteResourceSet.addResource(ConcreteResource.SHIELD);
+
+        depot.addResources(concreteResourceSet);
+
+        resources = depot.getResources();
+        assertEquals(0, resources.getCount(ConcreteResource.COIN));
+        assertEquals(0, resources.getCount(ConcreteResource.STONE));
+        assertEquals(1, resources.getCount(ConcreteResource.SHIELD));
+        assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
+
+        depot.removeResources(concreteResourceSet);
+        resources = depot.getResources();
+        assertEquals(0, resources.getCount(ConcreteResource.COIN));
+        assertEquals(0, resources.getCount(ConcreteResource.STONE));
+        assertEquals(0, resources.getCount(ConcreteResource.SHIELD));
+        assertEquals(0, resources.getCount(ConcreteResource.SERVANT));
     }
 }

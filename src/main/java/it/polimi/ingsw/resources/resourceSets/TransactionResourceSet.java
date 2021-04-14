@@ -74,8 +74,7 @@ public abstract class TransactionResourceSet implements Cloneable{
      */
     public Object clone(){
         try {
-            Object cloneObject = super.clone();
-            return cloneObject;
+            return super.clone();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
             return null;

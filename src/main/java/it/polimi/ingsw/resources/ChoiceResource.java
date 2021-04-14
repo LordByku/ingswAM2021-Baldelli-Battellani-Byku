@@ -27,13 +27,11 @@ public class ChoiceResource implements Resource {
         }
         this.choices = choices.clone();
         if(choices.size() == 1) {
-            try {
-                for(ConcreteResource resource: ConcreteResource.values()) {
-                    if(choices.containsResource(resource)) {
-                        finalChoice = resource;
-                    }
+            for(ConcreteResource resource: ConcreteResource.values()) {
+                if(choices.containsResource(resource)) {
+                    finalChoice = resource;
                 }
-            } catch (InvalidResourceException e) {}
+            }
         } else {
             finalChoice = null;
         }

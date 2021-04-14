@@ -1,7 +1,5 @@
 package it.polimi.ingsw.resources;
 
-import java.awt.*;
-import java.util.Arrays;
 import java.util.HashSet;
 
 /**

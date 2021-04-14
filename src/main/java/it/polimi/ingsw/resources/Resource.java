@@ -1,7 +1,5 @@
 package it.polimi.ingsw.resources;
 
-import it.polimi.ingsw.resources.resourceSets.ResourceSet;
-
 /**
  * Resource is the interface for resources, including ChoiceResources
  */
