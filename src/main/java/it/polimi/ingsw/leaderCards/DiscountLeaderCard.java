@@ -23,7 +23,7 @@ public class DiscountLeaderCard extends LeaderCard{
      * @throws InvalidRequirementsException requirements is null.
      * @throws InvalidResourceException type is null.
      */
-    DiscountLeaderCard(int points, LeaderCardRequirements requirements, ConcreteResource type)
+    public DiscountLeaderCard(int points, LeaderCardRequirements requirements, ConcreteResource type)
             throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceException {
 
         if(points<=0){

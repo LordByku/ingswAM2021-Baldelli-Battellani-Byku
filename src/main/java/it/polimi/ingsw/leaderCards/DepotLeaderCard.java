@@ -23,7 +23,7 @@ public class DepotLeaderCard extends LeaderCard{
      * @throws InvalidRequirementsException requirements is null.
      * @throws InvalidResourceException type is null.
      */
-    DepotLeaderCard(int points, LeaderCardRequirements requirements, ConcreteResource type)
+    public DepotLeaderCard(int points, LeaderCardRequirements requirements, ConcreteResource type)
             throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceException{
 
         if(points<=0){

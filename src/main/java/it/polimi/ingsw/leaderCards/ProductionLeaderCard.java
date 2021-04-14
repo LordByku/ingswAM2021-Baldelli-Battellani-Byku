@@ -31,7 +31,8 @@ public class ProductionLeaderCard extends LeaderCard{
      * @throws InvalidRequirementsException requirements is null.
      * @throws InvalidResourceSetException in is null or out is null.
      */
-    ProductionLeaderCard(int points, LeaderCardRequirements requirements,SpendableResourceSet in, ObtainableResourceSet out) throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceSetException {
+    public ProductionLeaderCard(int points, LeaderCardRequirements requirements, SpendableResourceSet in, ObtainableResourceSet out)
+            throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceSetException {
 
         if(points<=0){
             throw new InvalidPointsValueException();

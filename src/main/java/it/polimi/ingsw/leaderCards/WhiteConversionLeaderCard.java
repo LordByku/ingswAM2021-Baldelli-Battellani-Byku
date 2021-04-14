@@ -22,7 +22,7 @@ public class WhiteConversionLeaderCard extends LeaderCard{
      * @throws InvalidRequirementsException requirements is null.
      * @throws InvalidResourceException type is null.
      */
-    WhiteConversionLeaderCard(int points, LeaderCardRequirements requirements, ConcreteResource type) throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceException {
+    public WhiteConversionLeaderCard(int points, LeaderCardRequirements requirements, ConcreteResource type) throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceException {
 
         if(points<=0){
             throw new InvalidPointsValueException();
