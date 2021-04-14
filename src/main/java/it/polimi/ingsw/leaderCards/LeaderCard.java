@@ -96,4 +96,11 @@ public abstract class LeaderCard implements Scoring {
         this.board = board.clone();
     }
 
+    /**
+     * getPoints returns the amount of points awarded by this LeaderCard
+     * @return The amount of points awarded by this LeaderCard
+     */
+    public int getPoints() {
+        return points;
+    }
 }

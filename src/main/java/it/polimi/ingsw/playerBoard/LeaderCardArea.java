@@ -8,7 +8,6 @@ import java.util.ArrayList;
  * The area of the board containing the leaderCards currently active.
  */
 public class LeaderCardArea implements Scoring {
-
     /**
      * leaderCards is an ArrayList containing the leaderCards currently active.
      */
@@ -43,5 +42,20 @@ public class LeaderCardArea implements Scoring {
      */
     public ArrayList<LeaderCard> getLeaderCards() {
         return leaderCards;
+    }
+
+    /**
+     * getPoints returns the points awarded by the LeaderCards played in this LeaderCardArea
+     * @return The amount of points awarded by played LeaderCards
+     */
+    @Override
+    public int getPoints() {
+        int points = 0;
+        for(LeaderCard leaderCard: leaderCards) {
+            if(leaderCard.isActive()) {
+                points += leaderCard.getPoints();
+            }
+        }
+        return points;
     }
 }
