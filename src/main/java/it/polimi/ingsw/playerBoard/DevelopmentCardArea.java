@@ -1,5 +1,6 @@
 package it.polimi.ingsw.playerBoard;
 
+import it.polimi.ingsw.devCards.CardLevel;
 import it.polimi.ingsw.devCards.DevCardDeck;
 
 import java.util.ArrayList;
@@ -21,5 +22,13 @@ public class DevelopmentCardArea implements Scoring {
             points += deck.getPoints();
         }
         return points;
+    }
+
+    public int IsLevelOnTop(CardLevel cardLevel){
+        for (int i=0; i<3;i++) {
+            if(decks.get(i).top().getLevel()==cardLevel)
+                return i;
+        }
+        return -1;
     }
 }

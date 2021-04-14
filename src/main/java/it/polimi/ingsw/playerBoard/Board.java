@@ -1,6 +1,7 @@
 package it.polimi.ingsw.playerBoard;
 
 import it.polimi.ingsw.devCards.CardTypeSet;
+import it.polimi.ingsw.devCards.DevCard;
 import it.polimi.ingsw.devCards.ProductionDetails;
 import it.polimi.ingsw.leaderCards.*;
 import it.polimi.ingsw.playerBoard.faithTrack.FaithTrack;
@@ -186,4 +187,16 @@ public class Board implements ResourceLocation, Scoring, Cloneable {
     public int getPoints() {
         return faithTrack.getPoints() + developmentCardArea.getPoints() + leaderCardArea.getPoints();
     }
+  /*
+    public void buyCardDev(DevCard devCard) {
+        int deckIndex = 0;
+        if(this.containsResources(devCard.getReqResources()))
+            deckIndex=developmentCardArea.IsLevelOnTop(devCard.getLevel().next());
+            if(deckIndex!=-1);
+
+                //TODO
+
+    }
+ */
+
 }

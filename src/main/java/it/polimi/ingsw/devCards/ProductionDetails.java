@@ -1,5 +1,6 @@
 package it.polimi.ingsw.devCards;
 
+import it.polimi.ingsw.resources.resourceSets.InvalidResourceSetException;
 import it.polimi.ingsw.resources.resourceSets.ObtainableResourceSet;
 import it.polimi.ingsw.resources.resourceSets.SpendableResourceSet;
 
@@ -14,8 +15,10 @@ public class ProductionDetails {
      * @param input the resources to be spend
      * @param output the resources to be obtained
      */
-    public ProductionDetails(SpendableResourceSet input,ObtainableResourceSet output) {
-        this.input = input;
-        this.output= output;
+    public ProductionDetails(SpendableResourceSet input,ObtainableResourceSet output) throws InvalidResourceSetException {
+        if(input==null || output==null)
+            throw new InvalidResourceSetException();
+        this.input = input.clone();
+        this.output= output.clone();
     }
 }

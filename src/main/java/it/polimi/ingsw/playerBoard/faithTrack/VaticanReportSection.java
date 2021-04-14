@@ -1,15 +1,17 @@
 package it.polimi.ingsw.playerBoard.faithTrack;
 
+import it.polimi.ingsw.resources.resourceSets.InvalidQuantityException;
+
 /**
  * VaticanReportSection represents the sections of the faith track where
  * happens the Vatican Report
  */
 public class VaticanReportSection {
 
-    int firstSpace;
-    int popeSpace;
-    int points;
-    boolean isVisited=false;
+    private int popeSpace;
+    private int points;
+    private int firstSpace;
+    private boolean isVisited=false;
 
 
     /**
@@ -17,11 +19,13 @@ public class VaticanReportSection {
      * @param popeSpace the position of the end of the Vatican Report section
      * @param points
      */
-    public VaticanReportSection (int firstSpace, int popeSpace, int points) {
+    public VaticanReportSection (int firstSpace, int popeSpace, int points) throws InvalidQuantityException {
+       if(firstSpace<=0 || popeSpace<=0 || points<=0)
         this.firstSpace = firstSpace;
         this.popeSpace = popeSpace;
-        //this.points = points;
+        this.points = points;
     }
+
 
     /**
      * @return true iff the attribute isVisited is true
@@ -49,7 +53,6 @@ public class VaticanReportSection {
      */
     public boolean reachedPopeSpace(int position){
         if(position>=popeSpace) {
-            //isVisited=true;
             return true;
         }        return false;
     }

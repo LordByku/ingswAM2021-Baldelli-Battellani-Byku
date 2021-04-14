@@ -1,5 +1,4 @@
 package it.polimi.ingsw.playerBoard.faithTrack;
-
 import java.util.ArrayList;
 
 /**
@@ -11,19 +10,23 @@ public class VRSObserver {
     private ArrayList<FaithTrack> tracks;
     private ArrayList<VaticanReportSection> vaticanReportSections;
 
-    private VRSObserver() {}
+    private VRSObserver() {
+    }
 
     public static VRSObserver getInstance() {
         if (instance == null) {
             instance = new VRSObserver();
+
         }
         return instance;
     }
 
+
     /**
      * updateVRS()
      */
-    public void updateVRS(){
-        // TODO
-    }
+   public void updateVRS() {
+
+   //    if ()
+   }
 }

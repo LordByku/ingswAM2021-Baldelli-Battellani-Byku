@@ -19,4 +19,9 @@ public class CardTypeSet{
 
         // return board.hasCardTypeSet(this.getCardTypes());
     //}
+
+    public void add(CardType cardType) {
+        int count = cardTypes.getOrDefault(cardType, 0);
+        cardTypes.put(cardType, count + 1);
+    }
 }

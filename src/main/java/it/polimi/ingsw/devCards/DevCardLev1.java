@@ -1,5 +1,6 @@
 package it.polimi.ingsw.devCards;
 
+import it.polimi.ingsw.playerBoard.Board;
 import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
 
 /**
@@ -11,4 +12,11 @@ public class DevCardLev1 extends DevCard{
         super(reqResources, colour);
         this.level=CardLevel.III;
     }
+
+    @Override
+    public void buy(Board board) {
+                //TODO
+
+    }
+
 }

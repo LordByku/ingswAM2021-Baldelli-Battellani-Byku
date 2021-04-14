@@ -2,6 +2,7 @@ package it.polimi.ingsw.playerBoard.faithTrack;
 
 import it.polimi.ingsw.playerBoard.Board;
 import it.polimi.ingsw.playerBoard.Scoring;
+import it.polimi.ingsw.resources.resourceSets.InvalidQuantityException;
 
 import java.util.ArrayList;
 
@@ -10,7 +11,14 @@ import java.util.ArrayList;
  *
  */
 public class FaithTrack implements Scoring {
-    int markerPosition;
+    /**
+     * markerPosition represents the position on the faith track
+     */
+    int markerPosition=0;
+    /**
+     * receivedPopeFavors represents a list of the pope favors card obtained
+     * on the faith track
+     */
     private ArrayList<PopeFavor> receivedPopeFavors;
 
     /**
@@ -24,7 +32,9 @@ public class FaithTrack implements Scoring {
      * receivePopeFavor inserts a 'pope favor' into the list
      * @param popeFavor the PopeFavor to add
      */
-    public void receivePopeFavor (PopeFavor popeFavor) {
+    public void receivePopeFavor (PopeFavor popeFavor) throws InvalidPopeFavorException {
+        if(popeFavor==null)
+            throw new InvalidPopeFavorException();
         receivedPopeFavors.add(popeFavor);
     }
 
@@ -46,21 +56,18 @@ public class FaithTrack implements Scoring {
     }
 
     /**
-     * addFaithPoints adds one faithPoint.
-     */
-    public void addFaithPoints() {
-        markerPosition++;
-        if(markerPosition>=23)
-            Board.setLastTurn();
-    }
-
-    /**
      * addFaithPoints adds "points" FaithPoints
      * @param points to add.
      */
-    public void addFaithPoints(int points) {
-        markerPosition+= points;
-        if(markerPosition>=23)
-            Board.setLastTurn();
+    public void addFaithPoints(int points) throws InvalidQuantityException {
+        if (points<=0)
+            throw new InvalidQuantityException();
+        else
+        {
+            markerPosition += points;
+            if (markerPosition >= 24)
+                notifyEndOfTrack();
+            VRSObserver.getInstance().updateVRS();
+        }
     }
 }
