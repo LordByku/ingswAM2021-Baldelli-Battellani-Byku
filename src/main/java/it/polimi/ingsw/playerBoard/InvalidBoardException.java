@@ -1,5 +1,9 @@
 package it.polimi.ingsw.playerBoard;
 
-public class InvalidBoardException extends Exception {
+/**
+ * InvalidBoardException is thrown when an invalid Board
+ * is trying to get used
+ */
+public class InvalidBoardException extends RuntimeException {
     public InvalidBoardException() {}
 }

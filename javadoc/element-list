@@ -1,4 +1,8 @@
 it.polimi.ingsw.devCards
+it.polimi.ingsw.game
+it.polimi.ingsw.game.actionTokens
+it.polimi.ingsw.gameZone
+it.polimi.ingsw.gameZone.marbles
 it.polimi.ingsw.leaderCards
 it.polimi.ingsw.leaderCardsTest
 it.polimi.ingsw.playerBoard

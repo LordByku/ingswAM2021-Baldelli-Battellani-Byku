@@ -16,6 +16,10 @@ public class DevelopmentCardArea implements Scoring {
 
     @Override
     public int getPoints() {
-        return 0;
+        int points = 0;
+        for(DevCardDeck deck: decks) {
+            points += deck.getPoints();
+        }
+        return points;
     }
 }

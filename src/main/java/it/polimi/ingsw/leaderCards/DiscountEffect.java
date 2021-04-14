@@ -34,12 +34,12 @@ public class DiscountEffect {
      * @throws InvalidResourceSetException set is null.
      */
     public ConcreteResourceSet applyDiscount(ConcreteResourceSet set) throws InvalidResourceSetException {
-        try {
-            if(set == null){
-                throw new InvalidResourceSetException();
-            }
+        if(set == null){
+            throw new InvalidResourceSetException();
+        }
+        if(set.getCount(type) > 0) {
             set.removeResource(type);
-        } catch (NotEnoughResourcesException | InvalidResourceException e) {}
+        }
         return set;
     }
 }

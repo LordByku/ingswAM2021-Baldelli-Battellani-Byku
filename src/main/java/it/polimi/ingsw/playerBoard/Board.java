@@ -173,6 +173,10 @@ public class Board implements ResourceLocation, Scoring, Cloneable {
         return conversionEffectArea.getConversionEffects();
     }
 
+    public ConcreteResourceSet applyDiscount(ConcreteResourceSet concreteResourceSet) {
+        return discountArea.applyDiscount((ConcreteResourceSet) concreteResourceSet.clone());
+    }
+
     /**
      * getPoints returns the total points obtained by this board, not including
      * points awarded by resources
