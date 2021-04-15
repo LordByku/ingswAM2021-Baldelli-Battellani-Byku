@@ -1,7 +1,10 @@
 package it.polimi.ingsw.gameZone;
 
 import it.polimi.ingsw.devCards.*;
+import it.polimi.ingsw.resources.ChoiceResource;
+import it.polimi.ingsw.resources.ChoiceSet;
 import it.polimi.ingsw.resources.ConcreteResource;
+import it.polimi.ingsw.resources.resourceSets.ChoiceResourceSet;
 import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.resources.resourceSets.ObtainableResourceSet;
 import it.polimi.ingsw.resources.resourceSets.SpendableResourceSet;
@@ -35,7 +38,46 @@ public class CardMarket {
         CardMarketDeck deckY3 = new CardMarketDeck(CardColour.YELLOW, CardLevel.III);
         CardMarketDeck deckP3 = new CardMarketDeck(CardColour.PURPLE, CardLevel.III);
 
-        //TODO: Load DevCards from JSON
+        //SOME CARDS
+        //GREEN level 1, 1VP, 1 STONE, (COIN --> SERVANT + 1FP)
+        ChoiceResourceSet obt = new ChoiceResourceSet();
+        ChoiceResourceSet spn = new ChoiceResourceSet();
+
+        spn.addResource(ConcreteResource.COIN);
+        obt.addResource(ConcreteResource.SERVANT);
+
+        SpendableResourceSet spendG1 = new SpendableResourceSet(spn);
+        ObtainableResourceSet obtG1 = new ObtainableResourceSet(obt,1);
+
+        ProductionDetails prodG1 = new ProductionDetails(spendG1,obtG1);
+        ConcreteResourceSet reqG1 = new ConcreteResourceSet();
+        reqG1.addResource(ConcreteResource.STONE);
+        DevCard green1 = new DevCard(reqG1, CardColour.GREEN,CardLevel.I,prodG1);
+        deckG1.appendToDeck(green1);
+
+        //BLUE level 2, 1VP, 1 COIN, (CHOICE --> CHOICE + 1FP)
+        ChoiceResourceSet obt2 = new ChoiceResourceSet();
+        ChoiceResourceSet spn2 = new ChoiceResourceSet();
+
+        ChoiceSet set = new ChoiceSet();
+        set.addChoice(ConcreteResource.COIN);
+        set.addChoice(ConcreteResource.STONE);
+        set.addChoice(ConcreteResource.SERVANT);
+        set.addChoice(ConcreteResource.SHIELD);
+        ChoiceResource choice = new ChoiceResource(set);
+
+        spn2.addResource(choice);
+        obt2.addResource(choice);
+
+        SpendableResourceSet spendB2 = new SpendableResourceSet(spn2);
+        ObtainableResourceSet obtB2 = new ObtainableResourceSet(obt2,1);
+
+        ProductionDetails prodB2 = new ProductionDetails(spendB2,obtB2);
+        ConcreteResourceSet reqB2 = new ConcreteResourceSet();
+        reqG1.addResource(ConcreteResource.COIN);
+        DevCard blue2 = new DevCard(reqB2, CardColour.BLUE,CardLevel.II,prodB2);
+        deckB2.appendToDeck(blue2);
+
 
         decks.add(deckG1);
         decks.add(deckB1);
