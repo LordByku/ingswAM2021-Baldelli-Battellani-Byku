@@ -27,6 +27,7 @@ public abstract class DevCard implements Scoring {
      * level represents the card's level
      */
     CardLevel level;
+
     /**
      * productionPower represents the production details of the card
      */
@@ -41,20 +42,22 @@ public abstract class DevCard implements Scoring {
      * @param reqResources set of resources required to buy the card
      * @param colour the colour to be set
      */
-    DevCard(ConcreteResourceSet reqResources,CardColour colour)throws InvalidResourceSetException,InvalidCardColour {
+    DevCard(ConcreteResourceSet reqResources,CardColour colour,ProductionDetails productionPower)throws InvalidResourceSetException,InvalidCardColour,InvalidResourceSetException {
         if(reqResources==null)
             throw new InvalidResourceSetException();
         if(colour==null)
             throw new InvalidCardColour();
+        if(productionPower==null)
+            throw new InvalidResourceSetException();
         this.reqResources = (ConcreteResourceSet) reqResources.clone();
         this.colour = colour;
-
+        this.productionPower = productionPower;
         }
 
     public void buy(Board board) {}
 
     public ConcreteResourceSet getReqResources() {
-        return reqResources;
+        return (ConcreteResourceSet) reqResources.clone();
     }
 
     /**
@@ -71,6 +74,10 @@ public abstract class DevCard implements Scoring {
     public CardColour getColour() {
 
         return colour;
+    }
+
+    public ProductionDetails getProductionPower() {
+        return productionPower;
     }
 
    public CardType getCardType(){

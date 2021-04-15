@@ -2,8 +2,7 @@ package it.polimi.ingsw.devCardsTest;
 
 import it.polimi.ingsw.devCards.*;
 import it.polimi.ingsw.resources.ConcreteResource;
-import it.polimi.ingsw.resources.resourceSets.InvalidResourceSetException;
-import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
+import it.polimi.ingsw.resources.resourceSets.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -18,9 +17,19 @@ public class DevCardTest {
         ConcreteResourceSet concreteResourceSet1 = new ConcreteResourceSet();
         concreteResourceSet1.addResource(ConcreteResource.COIN, 2);
         ConcreteResourceSet concreteResourceSet2 = new ConcreteResourceSet();
-        concreteResourceSet1.addResource(ConcreteResource.STONE, 3);
-        devCard1 = new DevCardLev1(concreteResourceSet1,blue);
-        devCard2 = new DevCardLev2(concreteResourceSet2,yellow);
+        concreteResourceSet2.addResource(ConcreteResource.STONE, 2);
+
+        ChoiceResourceSet choiceResourceSet1 = new ChoiceResourceSet();
+        choiceResourceSet1.addResource(ConcreteResource.SHIELD);
+        ChoiceResourceSet choiceResourceSet2 = new ChoiceResourceSet();
+        choiceResourceSet1.addResource(ConcreteResource.SERVANT);
+
+        SpendableResourceSet input1 = new SpendableResourceSet(choiceResourceSet1);
+        ObtainableResourceSet output1 = new ObtainableResourceSet(choiceResourceSet2);
+        ProductionDetails details1 = new ProductionDetails(input1,output1);
+
+        devCard1 = new DevCardLev1(concreteResourceSet1,blue,details1);
+        devCard2 = new DevCardLev2(concreteResourceSet2,yellow,details1);
         assertEquals(CardColour.BLUE,devCard1.getColour());
         assertEquals(CardLevel.I,devCard1.getLevel());
         assertEquals(CardColour.YELLOW,devCard2.getColour());
@@ -30,10 +39,12 @@ public class DevCardTest {
         assertNotEquals(CardColour.GREEN,devCard1.getColour());
         assertNotEquals(CardLevel.III,devCard1.getLevel());
         try {
-            new DevCardLev1(concreteResourceSet1, null);
+            devCard1=new DevCardLev1(concreteResourceSet1, null, details1);
             fail();
         }catch (InvalidResourceSetException| InvalidCardColour e){
-            //TODO
+            assertEquals(CardColour.BLUE,devCard1.getColour());
+            assertEquals(CardLevel.I,devCard1.getLevel());
         }
     }
+
 }

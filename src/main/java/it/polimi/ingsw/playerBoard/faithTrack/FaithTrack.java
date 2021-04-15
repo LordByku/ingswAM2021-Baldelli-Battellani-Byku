@@ -19,12 +19,14 @@ public class FaithTrack implements Scoring {
      * receivedPopeFavors represents a list of the pope favors card obtained
      * on the faith track
      */
-    private final ArrayList<PopeFavor> receivedPopeFavors = new ArrayList<>();
+    private ArrayList<PopeFavor> receivedPopeFavors = new ArrayList<>();
 
     /**
      * The constructor initializes receivedPopeFavors to an empty list
      */
+
     public FaithTrack() {
+        VRSObserver.getInstance().addFaithTrack(this);
     }
 
     /**

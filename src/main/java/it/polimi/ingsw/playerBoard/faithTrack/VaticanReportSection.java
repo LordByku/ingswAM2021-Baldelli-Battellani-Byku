@@ -46,7 +46,14 @@ public class VaticanReportSection {
         return firstSpace;
     }
 
+    public void setVisitedTrue() {
+        this.isVisited = true;
+    }
 
+    public void attach(VRSObserver vrsObserver)
+    {
+        VRSObserver.getInstance().addVaticanReportSection(this);
+    }
     /**
      * @return true iff the attribute isVisited is true
      */
@@ -59,7 +66,7 @@ public class VaticanReportSection {
      * @return true iff the position of the player is inside the section
      */
     public boolean isInsideSection(int position){
-        return position >= firstSpace && position <= popeSpace;
+        return position >= firstSpace;
     }
 
     /**

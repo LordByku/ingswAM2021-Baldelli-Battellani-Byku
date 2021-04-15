@@ -25,10 +25,10 @@ public class ProductionDetails {
     }
 
     public SpendableResourceSet getInput() {
-        return input;
+        return input.clone();
     }
 
     public ObtainableResourceSet getOutput() {
-        return output;
+        return output.clone();
     }
 }

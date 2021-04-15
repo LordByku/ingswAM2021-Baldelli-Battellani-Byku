@@ -8,8 +8,8 @@ import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
  */
 public class DevCardLev1 extends DevCard{
 
-    public DevCardLev1(ConcreteResourceSet reqResources, CardColour colour) {
-        super(reqResources, colour);
+    public DevCardLev1(ConcreteResourceSet reqResources, CardColour colour, ProductionDetails productionDetails) {
+        super(reqResources, colour,productionDetails);
         this.level=CardLevel.I;
     }
 
