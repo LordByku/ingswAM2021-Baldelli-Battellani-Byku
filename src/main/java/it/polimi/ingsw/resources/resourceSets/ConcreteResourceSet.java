@@ -105,26 +105,15 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
         removeResource(resource, 1);
     }
 
-    /**
-     * This method allows to add the resources contained in a ResourceSet to this resource set
-     * @param other The ResourceSet to add resources from
-     * @throws InvalidResourceSetException other is null or other is not a ConcreteResourceSet
-     */
-    @Override
-    public void union(ResourceSet other) throws InvalidResourceSetException {
+    public void union(ConcreteResourceSet other) throws InvalidResourceSetException {
         if(other == null) {
             throw new InvalidResourceSetException();
         }
-        try {
-            ConcreteResourceSet concreteOther = (ConcreteResourceSet) other;
-            for(ConcreteResource resource: ConcreteResource.values()) {
-                int quantity = concreteOther.getCount(resource);
-                if(quantity > 0) {
-                    addResource(resource, quantity);
-                }
+        for(ConcreteResource resource: ConcreteResource.values()) {
+            int quantity = other.getCount(resource);
+            if(quantity > 0) {
+                addResource(resource, quantity);
             }
-        } catch (ClassCastException e) {
-            throw new InvalidResourceSetException();
         }
     }
 
@@ -228,5 +217,14 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
      */
     public boolean isSingleType() {
         return resources.size() <= 1;
+    }
+
+    @Override
+    public int size() {
+        int result = 0;
+        for(ConcreteResource resource: ConcreteResource.values()) {
+            result += getCount(resource);
+        }
+        return result;
     }
 }

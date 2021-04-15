@@ -1,7 +1,6 @@
 package it.polimi.ingsw.playerBoard;
 
-import it.polimi.ingsw.devCards.CardLevel;
-import it.polimi.ingsw.devCards.DevCardDeck;
+import it.polimi.ingsw.devCards.*;
 
 import java.util.ArrayList;
 
@@ -30,5 +29,25 @@ public class DevelopmentCardArea implements Scoring {
                 return i;
         }
         return -1;
+    }
+
+    public CardLevel getTopLevel(int deckIndex) throws InvalidDevCardDeckException {
+        if(deckIndex < 0 || deckIndex >= decks.size()) {
+            throw new InvalidDevCardDeckException();
+        }
+
+        return decks.get(deckIndex).topLevel();
+    }
+
+    public int numberOfDecks() {
+        return decks.size();
+    }
+
+    public void addDevCard(DevCard devCard, int deckIndex) throws InvalidDevCardException, InvalidDevCardDeckException {
+        if(deckIndex < 0 || deckIndex >= decks.size()) {
+            throw new InvalidDevCardDeckException();
+        }
+
+        decks.get(deckIndex).add(devCard);
     }
 }

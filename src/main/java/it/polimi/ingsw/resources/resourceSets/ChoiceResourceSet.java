@@ -1,8 +1,6 @@
 package it.polimi.ingsw.resources.resourceSets;
 
-import it.polimi.ingsw.resources.InvalidResourceException;
-import it.polimi.ingsw.resources.NotConcreteException;
-import it.polimi.ingsw.resources.Resource;
+import it.polimi.ingsw.resources.*;
 
 import java.util.ArrayList;
 
@@ -70,24 +68,14 @@ public class ChoiceResourceSet implements ResourceSet {
         return new ArrayList<>(resources);
     }
 
-    /**
-     * This method allows to add the resources contained in a ResourceSet to this resource set
-     * @param other The ResourceSet to add resources from
-     * @throws InvalidResourceSetException other is null or other is not a ChoiceResourceSet
-     */
-    @Override
-    public void union(ResourceSet other) throws InvalidResourceSetException {
+    public void union(ChoiceResourceSet other) throws InvalidResourceSetException {
         if(other == null) {
             throw new InvalidResourceSetException();
         }
-        try {
-            ChoiceResourceSet choiceOther = (ChoiceResourceSet) other;
-            ArrayList<Resource> otherResources = choiceOther.getResources();
-            for(Resource resource: otherResources) {
-                addResource(resource);
-            }
-        } catch (ClassCastException e) {
-            throw new InvalidResourceSetException();
+
+        ArrayList<Resource> otherResources = other.getResources();
+        for(Resource resource: otherResources) {
+            addResource(resource);
         }
     }
 
@@ -106,5 +94,22 @@ public class ChoiceResourceSet implements ResourceSet {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public int size() {
+        return resources.size();
+    }
+
+    public ChoiceResourceSet cleanClone() {
+        ChoiceResourceSet cloneResourceSet = (ChoiceResourceSet) clone();
+
+        cloneResourceSet.resources = new ArrayList<>();
+
+        for(Resource resource: resources) {
+            cloneResourceSet.resources.add(resource.cleanClone());
+        }
+
+        return cloneResourceSet;
     }
 }

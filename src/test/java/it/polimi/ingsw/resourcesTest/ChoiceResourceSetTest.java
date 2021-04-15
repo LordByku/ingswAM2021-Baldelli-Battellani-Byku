@@ -126,17 +126,6 @@ public class ChoiceResourceSetTest {
             assertEquals(ConcreteResource.STONE, resources.get(0));
             assertEquals(ConcreteResource.SHIELD, resources.get(1));
         }
-
-        try {
-            choiceResourceSet1.union(concreteResourceSet);
-            fail();
-        } catch (InvalidResourceSetException e) {
-            resources = choiceResourceSet1.getResources();
-
-            assertEquals(2, resources.size());
-            assertEquals(ConcreteResource.STONE, resources.get(0));
-            assertEquals(ConcreteResource.SHIELD, resources.get(1));
-        }
     }
 
     @Test

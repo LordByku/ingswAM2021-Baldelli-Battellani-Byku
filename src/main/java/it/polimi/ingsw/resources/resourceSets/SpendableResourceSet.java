@@ -1,5 +1,9 @@
 package it.polimi.ingsw.resources.resourceSets;
 
+import it.polimi.ingsw.resources.Resource;
+
+import java.util.ArrayList;
+
 /**
  * SpendableResourceSet is a TransactionResourceSet where the resource set
  * is going to be consumed by a player (board)
@@ -33,8 +37,7 @@ public class SpendableResourceSet extends TransactionResourceSet {
         if(other == null) {
             throw new InvalidResourceSetException();
         }
-        ResourceSet otherResources = other.getResourceSet();
-        resources.union(otherResources);
+        resources.union(other.getResourceSet());
     }
 
     /**
@@ -44,5 +47,24 @@ public class SpendableResourceSet extends TransactionResourceSet {
     @Override
     public SpendableResourceSet clone() {
         return (SpendableResourceSet) super.clone();
+    }
+    
+    public boolean match(ConcreteResourceSet concreteResourceSet) {
+        if(getResourceSet().size() != concreteResourceSet.size()) {
+            return false;
+        }
+
+        ArrayList<Resource> resources = getResourceSet().getResources();
+
+        ConcreteResourceSet currentConcreteResourceSet = new ConcreteResourceSet();
+
+        // ChoiceResources in SpendableResourceSet always have a FullChoiceSet
+        for(Resource resource: resources) {
+            if(resource.isConcrete()) {
+                currentConcreteResourceSet.addResource(resource.getResource());
+            }
+        }
+
+        return concreteResourceSet.contains(currentConcreteResourceSet);
     }
 }

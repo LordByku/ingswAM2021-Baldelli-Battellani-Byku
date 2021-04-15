@@ -28,8 +28,8 @@ public class DevCardTest {
         ObtainableResourceSet output1 = new ObtainableResourceSet(choiceResourceSet2);
         ProductionDetails details1 = new ProductionDetails(input1,output1);
 
-        devCard1 = new DevCardLev1(concreteResourceSet1,blue,details1);
-        devCard2 = new DevCardLev2(concreteResourceSet2,yellow,details1);
+        devCard1 = new DevCard(concreteResourceSet1,blue,CardLevel.I,details1);
+        devCard2 = new DevCard(concreteResourceSet2,yellow,CardLevel.II,details1);
         assertEquals(CardColour.BLUE,devCard1.getColour());
         assertEquals(CardLevel.I,devCard1.getLevel());
         assertEquals(CardColour.YELLOW,devCard2.getColour());
@@ -39,9 +39,9 @@ public class DevCardTest {
         assertNotEquals(CardColour.GREEN,devCard1.getColour());
         assertNotEquals(CardLevel.III,devCard1.getLevel());
         try {
-            devCard1=new DevCardLev1(concreteResourceSet1, null, details1);
+            devCard1=new DevCard(concreteResourceSet1, null, CardLevel.I, details1);
             fail();
-        }catch (InvalidResourceSetException| InvalidCardColour e){
+        }catch (InvalidResourceSetException| InvalidCardColourException e){
             assertEquals(CardColour.BLUE,devCard1.getColour());
             assertEquals(CardLevel.I,devCard1.getLevel());
         }

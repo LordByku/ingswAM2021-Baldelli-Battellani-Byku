@@ -61,7 +61,7 @@ public class ObtainableResourceSet extends TransactionResourceSet {
         if(other == null) {
             throw new InvalidResourceSetException();
         }
-        ResourceSet otherResources = other.getResourceSet();
+        ChoiceResourceSet otherResources = other.getResourceSet();
         resources.union(otherResources);
         faithPoints += other.getFaithPoints();
     }

@@ -11,6 +11,7 @@ import it.polimi.ingsw.resources.resourceSets.ObtainableResourceSet;
 import it.polimi.ingsw.resources.resourceSets.SpendableResourceSet;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ProductionArea {
     private ArrayList<ProductionDetails> productions;
@@ -20,16 +21,27 @@ public class ProductionArea {
 
         ChoiceResourceSet inputChoiceResourceSet = new ChoiceResourceSet();
         ChoiceResourceSet outputChoiceResourceSet = new ChoiceResourceSet();
-        try {
-            inputChoiceResourceSet.addResource(new ChoiceResource(new FullChoiceSet()));
-            inputChoiceResourceSet.addResource(new ChoiceResource(new FullChoiceSet()));
+        inputChoiceResourceSet.addResource(new ChoiceResource(new FullChoiceSet()));
+        inputChoiceResourceSet.addResource(new ChoiceResource(new FullChoiceSet()));
         outputChoiceResourceSet.addResource(new ChoiceResource(new FullChoiceSet()));
-            productions.add(new ProductionDetails(new SpendableResourceSet(inputChoiceResourceSet),
-                                                  new ObtainableResourceSet(outputChoiceResourceSet)));
-        } catch (InvalidChoiceSetException | InvalidResourceException | InvalidResourceSetException e) {}
+        productions.add(new ProductionDetails(new SpendableResourceSet(inputChoiceResourceSet),
+                                              new ObtainableResourceSet(outputChoiceResourceSet)));
+        productions.add(null);
+        productions.add(null);
+        productions.add(null);
     }
 
-    public void addProduction(ProductionDetails productionDetails) {
+    public void addDevCardProduction(ProductionDetails productionDetails, int deckIndex) throws InvalidProductionDetailsException {
+        if(productionDetails == null) {
+            throw new InvalidProductionDetailsException();
+        }
+        productions.set(deckIndex + 1, productionDetails);
+    }
+
+    public void addLeaderCardProduction(ProductionDetails productionDetails) throws InvalidProductionDetailsException {
+        if(productionDetails == null) {
+            throw new InvalidProductionDetailsException();
+        }
         productions.add(productionDetails);
     }
 }

@@ -49,8 +49,8 @@ public class ProductionLeaderCard extends LeaderCard{
 
         this.points=points;
         this.requirements= (LeaderCardRequirements) requirements.clone();
-        this.in = (SpendableResourceSet) in.clone();
-        this.out = (ObtainableResourceSet) out.clone();
+        this.in = in.clone();
+        this.out = out.clone();
     }
 
     /**
@@ -61,7 +61,7 @@ public class ProductionLeaderCard extends LeaderCard{
         if(isPlayable()){
             active = true;
             board.addLeaderCard(this);
-            board.addProduction(new ProductionDetails(in, out));
+            board.addLeaderCardProduction(new ProductionDetails(in, out));
         }
     }
 }

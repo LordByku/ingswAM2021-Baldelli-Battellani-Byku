@@ -8,13 +8,11 @@ import it.polimi.ingsw.resources.resourceSets.SpendableResourceSet;
  * ProductionDetails represents the details of a production, both spent and obtained resources
  */
 public class ProductionDetails {
-
-
     private final SpendableResourceSet input;
     private final ObtainableResourceSet output;
 
     /**
-     * @param input the resources to be spend
+     * @param input the resources to be spent
      * @param output the resources to be obtained
      */
     public ProductionDetails(SpendableResourceSet input,ObtainableResourceSet output) throws InvalidResourceSetException {

@@ -1,8 +1,9 @@
 package it.polimi.ingsw.devCards;
 
 import it.polimi.ingsw.playerBoard.Board;
+import it.polimi.ingsw.playerBoard.InvalidBoardException;
+import it.polimi.ingsw.playerBoard.InvalidProductionDetailsException;
 import it.polimi.ingsw.playerBoard.Scoring;
-import it.polimi.ingsw.resources.InvalidResourceException;
 import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.resources.resourceSets.InvalidResourceSetException;
 
@@ -12,26 +13,23 @@ import java.util.HashSet;
  * DevCard represents development cards
  */
 
-public abstract class DevCard implements Scoring {
-
-
+public class DevCard implements Scoring {
     /**
      * reqResources represents the set of resources required to buy the card
      */
-    ConcreteResourceSet reqResources;
+    private ConcreteResourceSet reqResources;
     /**
      * colour represents the card's colour
      */
-    CardColour colour;
+    private CardColour colour;
     /**
      * level represents the card's level
      */
-    CardLevel level;
-
+    private CardLevel level;
     /**
      * productionPower represents the production details of the card
      */
-    ProductionDetails productionPower;
+    private ProductionDetails productionPower;
     /**
      * points represents the card's points
      */
@@ -42,19 +40,41 @@ public abstract class DevCard implements Scoring {
      * @param reqResources set of resources required to buy the card
      * @param colour the colour to be set
      */
-    DevCard(ConcreteResourceSet reqResources,CardColour colour,ProductionDetails productionPower)throws InvalidResourceSetException,InvalidCardColour,InvalidResourceSetException {
-        if(reqResources==null)
+    public DevCard(ConcreteResourceSet reqResources, CardColour colour, CardLevel level, ProductionDetails productionPower)
+            throws InvalidCardColourException, InvalidCardLevelException, InvalidResourceSetException {
+        if(reqResources == null) {
             throw new InvalidResourceSetException();
-        if(colour==null)
-            throw new InvalidCardColour();
-        if(productionPower==null)
-            throw new InvalidResourceSetException();
+        }
+        if(colour == null) {
+            throw new InvalidCardColourException();
+        }
+        if(level == null) {
+            throw new InvalidCardLevelException();
+        }
+        if(productionPower == null) {
+            throw new InvalidProductionDetailsException();
+        }
         this.reqResources = (ConcreteResourceSet) reqResources.clone();
         this.colour = colour;
+        this.level = level;
         this.productionPower = productionPower;
+    }
+
+    public boolean canPlay(Board board, int deckIndex) throws InvalidBoardException {
+        if(board == null) {
+            throw new InvalidBoardException();
+        }
+        return board.containsResources(reqResources) && board.getTopLevel(deckIndex) == level.prev();
+    }
+
+    public void play(Board board, int deckIndex) throws InvalidBoardException {
+        if(!canPlay(board, deckIndex)) {
+            throw new InvalidBoardException();
         }
 
-    public void buy(Board board) {}
+        board.addDevCard(this, deckIndex);
+        board.addDevCardProduction(productionPower, deckIndex);
+    }
 
     public ConcreteResourceSet getReqResources() {
         return (ConcreteResourceSet) reqResources.clone();
@@ -72,7 +92,6 @@ public abstract class DevCard implements Scoring {
      * @return the colour of the development card
      */
     public CardColour getColour() {
-
         return colour;
     }
 
@@ -80,7 +99,7 @@ public abstract class DevCard implements Scoring {
         return productionPower;
     }
 
-   public CardType getCardType(){
+    public CardType getCardType(){
         HashSet<CardLevel> levels = new HashSet<>();
         levels.add(this.getLevel());
        return new CardType(this.getColour(),levels);

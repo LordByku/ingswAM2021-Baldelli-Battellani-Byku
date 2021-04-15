@@ -1,8 +1,6 @@
 package it.polimi.ingsw.playerBoard;
 
-import it.polimi.ingsw.devCards.CardTypeSet;
-import it.polimi.ingsw.devCards.DevCard;
-import it.polimi.ingsw.devCards.ProductionDetails;
+import it.polimi.ingsw.devCards.*;
 import it.polimi.ingsw.leaderCards.*;
 import it.polimi.ingsw.playerBoard.faithTrack.FaithTrack;
 import it.polimi.ingsw.playerBoard.resourceLocations.*;
@@ -39,8 +37,20 @@ public class Board implements ResourceLocation, Scoring, Cloneable {
 
     public void hasCardTypeSet(CardTypeSet cardSet) {}
 
-    public void addProduction(ProductionDetails productionDetails) {
-        productionArea.addProduction(productionDetails);
+    public void addDevCard(DevCard devCard, int deckIndex) {
+        developmentCardArea.addDevCard(devCard, deckIndex);
+    }
+
+    public void addLeaderCardProduction(ProductionDetails productionDetails) throws InvalidProductionDetailsException {
+        productionArea.addLeaderCardProduction(productionDetails);
+    }
+
+    public void addDevCardProduction(ProductionDetails productionDetails, int deckIndex)
+            throws InvalidDevCardDeckException, InvalidProductionDetailsException {
+        if(deckIndex < 0 || deckIndex >= developmentCardArea.numberOfDecks()) {
+            throw new InvalidDevCardDeckException();
+        }
+        productionArea.addDevCardProduction(productionDetails, deckIndex);
     }
 
     public void addConversionEffect(ConversionEffect conversionEffect) {
@@ -186,6 +196,10 @@ public class Board implements ResourceLocation, Scoring, Cloneable {
     @Override
     public int getPoints() {
         return faithTrack.getPoints() + developmentCardArea.getPoints() + leaderCardArea.getPoints();
+    }
+
+    public CardLevel getTopLevel(int deckIndex) {
+        return developmentCardArea.getTopLevel(deckIndex);
     }
   /*
     public void buyCardDev(DevCard devCard) {
