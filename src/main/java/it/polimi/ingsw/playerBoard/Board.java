@@ -51,9 +51,6 @@ public class Board implements ResourceLocation, Scoring, Cloneable {
 
     public void addDevCardProduction(ProductionDetails productionDetails, int deckIndex)
             throws InvalidDevCardDeckException, InvalidProductionDetailsException {
-        if(deckIndex < 0 || deckIndex >= developmentCardArea.numberOfDecks()) {
-            throw new InvalidDevCardDeckException();
-        }
         productionArea.addDevCardProduction(productionDetails, deckIndex);
     }
 

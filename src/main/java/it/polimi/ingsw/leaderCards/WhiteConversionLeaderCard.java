@@ -48,11 +48,7 @@ public class WhiteConversionLeaderCard extends LeaderCard{
         if(isPlayable()){
             active = true;
             board.addLeaderCard(this);
-            try {
-                board.addConversionEffect(new ConversionEffect(this.type));
-            } catch (InvalidResourceException e) {
-                e.printStackTrace();
-            }
+            board.addConversionEffect(new ConversionEffect(this.type));
         }
     }
 }

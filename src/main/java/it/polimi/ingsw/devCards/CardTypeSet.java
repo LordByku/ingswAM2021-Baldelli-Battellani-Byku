@@ -15,7 +15,9 @@ import java.util.Map;
 public class CardTypeSet implements LeaderCardRequirements {
     private HashMap<CardType,Integer> cardTypes;
 
-    public HashMap<CardType, Integer> getCardTypes(){ return cardTypes; }
+    public CardTypeSet() {
+        cardTypes = new HashMap<>();
+    }
 
     public void add(CardType cardType) {
         int count = cardTypes.getOrDefault(cardType, 0);
@@ -28,6 +30,7 @@ public class CardTypeSet implements LeaderCardRequirements {
 
         for(Map.Entry<CardType, Integer> entry: cardTypes.entrySet()) {
             CardType cardType = entry.getKey();
+
             int satisfiedCount = 0;
             for(DevCard card: cards) {
                 if(cardType.isSatisfied(card)) {
@@ -46,7 +49,9 @@ public class CardTypeSet implements LeaderCardRequirements {
     @Override
     public Object clone() {
         try {
-            return super.clone();
+            CardTypeSet cloneSet = (CardTypeSet) super.clone();
+            cloneSet.cardTypes = (HashMap<CardType, Integer>) cardTypes.clone();
+            return cloneSet;
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
             return null;

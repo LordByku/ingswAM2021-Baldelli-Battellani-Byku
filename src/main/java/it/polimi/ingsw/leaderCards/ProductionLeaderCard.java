@@ -40,10 +40,7 @@ public class ProductionLeaderCard extends LeaderCard{
         if(requirements == null){
             throw new InvalidRequirementsException();
         }
-        if(in == null){
-            throw new InvalidResourceSetException();
-        }
-        if(out == null){
+        if(in == null || out == null){
             throw new InvalidResourceSetException();
         }
 

@@ -49,11 +49,7 @@ public class DiscountLeaderCard extends LeaderCard{
         if(isPlayable()){
             active = true;
             board.addLeaderCard(this);
-            try {
-                board.addDiscountEffect(new DiscountEffect(this.type));
-            } catch (InvalidResourceException e) {
-                e.printStackTrace();
-            }
+            board.addDiscountEffect(new DiscountEffect(this.type));
         }
     }
 }
