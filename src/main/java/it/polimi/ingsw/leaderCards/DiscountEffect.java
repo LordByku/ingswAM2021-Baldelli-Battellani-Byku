@@ -9,7 +9,7 @@ import it.polimi.ingsw.resources.resourceSets.InvalidResourceSetException;
 /**
  * DiscountEffect refers to the discount effects of active leader cards.
  */
-public class DiscountEffect {
+public class DiscountEffect implements Cloneable {
 
     /**
      * The type of ConcreteResource to convert the white marble into.
@@ -41,5 +41,19 @@ public class DiscountEffect {
             set.removeResource(type);
         }
         return set;
+    }
+
+    /**
+     * clone returns a copy of this object
+     * @return A copy of the object
+     */
+    @Override
+    public DiscountEffect clone() {
+        try {
+            return (DiscountEffect) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

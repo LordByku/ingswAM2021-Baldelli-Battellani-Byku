@@ -2,7 +2,6 @@ package it.polimi.ingsw.devCards;
 
 import it.polimi.ingsw.playerBoard.Board;
 import it.polimi.ingsw.playerBoard.InvalidBoardException;
-import it.polimi.ingsw.playerBoard.InvalidProductionDetailsException;
 import it.polimi.ingsw.playerBoard.Scoring;
 import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.resources.resourceSets.InvalidResourceSetException;
@@ -11,7 +10,7 @@ import it.polimi.ingsw.resources.resourceSets.InvalidResourceSetException;
  * DevCard represents development cards
  */
 
-public class DevCard implements Scoring {
+public class DevCard implements Scoring, Cloneable {
     /**
      * reqResources represents the set of resources required to buy the card
      */
@@ -104,5 +103,17 @@ public class DevCard implements Scoring {
      */
     public int getPoints() {
         return points;
+    }
+
+    public DevCard clone() {
+        try {
+            DevCard cloneDevCard = (DevCard) super.clone();
+            cloneDevCard.reqResources = getReqResources();
+            cloneDevCard.productionPower = getProductionPower();
+            return cloneDevCard;
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
