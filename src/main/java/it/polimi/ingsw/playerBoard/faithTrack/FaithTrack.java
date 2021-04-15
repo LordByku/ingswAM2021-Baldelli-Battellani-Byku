@@ -53,7 +53,7 @@ public class FaithTrack implements Scoring {
      * @return markerPosition of the object
      */
     public int getMarkerPosition(){
-        return this.markerPosition;
+        return markerPosition;
     }
 
     public boolean containsPopeFavor(PopeFavor popeFavor){
@@ -64,14 +64,14 @@ public class FaithTrack implements Scoring {
      * @param points to add.
      */
     public void addFaithPoints(int points) throws InvalidQuantityException {
-        if (points<=0)
+        if (points<=0) {
             throw new InvalidQuantityException();
-        else
-        {
+        } else {
             markerPosition += points;
-            if (markerPosition >= 24)
+            if (markerPosition >= 24) {
                 markerPosition=24;
                 notifyEndOfTrack();
+            }
             VRSObserver.getInstance().updateVRS();
         }
     }

@@ -50,10 +50,6 @@ public class VaticanReportSection {
         this.isVisited = true;
     }
 
-    public void attach(VRSObserver vrsObserver)
-    {
-        VRSObserver.getInstance().addVaticanReportSection(this);
-    }
     /**
      * @return true iff the attribute isVisited is true
      */
