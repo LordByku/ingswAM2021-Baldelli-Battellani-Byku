@@ -81,6 +81,7 @@ public abstract class LeaderCard implements Scoring {
     public void initDiscard(){
         if(!active && !discarded) {
             discarded = true;
+            board.removeLeaderCard(this);
         }
     }
 
@@ -94,6 +95,7 @@ public abstract class LeaderCard implements Scoring {
             throw new InvalidBoardException();
         }
         this.board = board.clone();
+        board.addLeaderCard(this);
     }
 
     /**
