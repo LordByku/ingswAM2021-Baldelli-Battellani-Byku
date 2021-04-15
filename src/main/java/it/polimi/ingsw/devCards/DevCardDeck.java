@@ -14,14 +14,18 @@ public class DevCardDeck {
         return devCardStack.peek();
     }
 
+    public boolean canAdd(DevCard devCard) {
+        return devCard.getLevel().prev() == topLevel();
+    }
+
     public void add(DevCard devCard) throws InvalidDevCardException, InvalidAddTopException {
         if(devCard == null) {
             throw new InvalidDevCardException();
         }
-        if(topLevel() != devCard.getLevel().prev()) {
+        if(!canAdd(devCard)) {
             throw new InvalidAddTopException();
         }
-        devCardStack.push(devCard);
+        devCardStack.push(devCard.clone());
     }
 
     public ArrayList<DevCard> getCards() {
