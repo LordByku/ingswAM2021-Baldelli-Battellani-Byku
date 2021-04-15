@@ -83,7 +83,7 @@ public class ObtainableResourceSetTest {
         ObtainableResourceSet obtainableResourceSet1 = new ObtainableResourceSet(choiceResourceSet);
         ObtainableResourceSet obtainableResourceSet2 = new ObtainableResourceSet(new ChoiceResourceSet(), 1);
 
-        obtainableResourceSet1.union(obtainableResourceSet2);
+        obtainableResourceSet1 = obtainableResourceSet1.union(obtainableResourceSet2);
 
         ArrayList<Resource> resources = obtainableResourceSet1.getResourceSet().getResources();
         assertEquals(1, resources.size());

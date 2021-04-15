@@ -7,8 +7,6 @@ import it.polimi.ingsw.playerBoard.Scoring;
 import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.resources.resourceSets.InvalidResourceSetException;
 
-import java.util.HashSet;
-
 /**
  * DevCard represents development cards
  */
@@ -57,7 +55,7 @@ public class DevCard implements Scoring {
         this.reqResources = (ConcreteResourceSet) reqResources.clone();
         this.colour = colour;
         this.level = level;
-        this.productionPower = productionPower;
+        this.productionPower = productionPower.clone();
     }
 
     public boolean canPlay(Board board, int deckIndex) throws InvalidBoardException {
@@ -96,13 +94,7 @@ public class DevCard implements Scoring {
     }
 
     public ProductionDetails getProductionPower() {
-        return productionPower;
-    }
-
-    public CardType getCardType(){
-        HashSet<CardLevel> levels = new HashSet<>();
-        levels.add(this.getLevel());
-       return new CardType(this.getColour(),levels);
+        return productionPower.clone();
     }
 
     /**

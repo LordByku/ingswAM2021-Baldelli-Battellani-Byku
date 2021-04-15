@@ -7,7 +7,7 @@ import it.polimi.ingsw.resources.resourceSets.SpendableResourceSet;
 /**
  * ProductionDetails represents the details of a production, both spent and obtained resources
  */
-public class ProductionDetails {
+public class ProductionDetails implements Cloneable {
     private final SpendableResourceSet input;
     private final ObtainableResourceSet output;
 
@@ -16,8 +16,9 @@ public class ProductionDetails {
      * @param output the resources to be obtained
      */
     public ProductionDetails(SpendableResourceSet input,ObtainableResourceSet output) throws InvalidResourceSetException {
-        if(input==null || output==null)
+        if(input == null || output == null) {
             throw new InvalidResourceSetException();
+        }
         this.input = input.clone();
         this.output= output.clone();
     }
@@ -28,5 +29,14 @@ public class ProductionDetails {
 
     public ObtainableResourceSet getOutput() {
         return output.clone();
+    }
+
+    public ProductionDetails clone() {
+        try {
+            return (ProductionDetails) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

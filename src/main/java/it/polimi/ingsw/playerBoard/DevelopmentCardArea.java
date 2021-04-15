@@ -50,4 +50,12 @@ public class DevelopmentCardArea implements Scoring {
 
         decks.get(deckIndex).add(devCard);
     }
+
+    public ArrayList<DevCard> getCards() {
+        ArrayList<DevCard> result = new ArrayList<>();
+        for(DevCardDeck deck: decks) {
+            result.addAll(deck.getCards());
+        }
+        return result;
+    }
 }

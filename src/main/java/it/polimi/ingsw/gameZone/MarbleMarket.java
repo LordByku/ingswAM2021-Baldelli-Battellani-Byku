@@ -81,7 +81,7 @@ public class MarbleMarket {
         ObtainableResourceSet result = new ObtainableResourceSet();
 
         for(int j = 0; j < columns; ++j) {
-            result.union(marbles[row][j].collect(board));
+            result = result.union(marbles[row][j].collect(board));
         }
 
         return result;
@@ -103,7 +103,7 @@ public class MarbleMarket {
         ObtainableResourceSet result = new ObtainableResourceSet();
 
         for(int i = 0; i < rows; ++i) {
-            result.union(marbles[i][column].collect(board));
+            result = result.union(marbles[i][column].collect(board));
         }
 
         return result;

@@ -64,7 +64,7 @@ public class SpendableResourceSetTest {
         SpendableResourceSet spendableResourceSet1 = new SpendableResourceSet(choiceResourceSet1);
         SpendableResourceSet spendableResourceSet2 = new SpendableResourceSet(choiceResourceSet2);
 
-        spendableResourceSet1.union(spendableResourceSet2);
+        spendableResourceSet1 = spendableResourceSet1.union(spendableResourceSet2);
 
         ChoiceResourceSet resourceSet = spendableResourceSet1.getResourceSet();
         ArrayList<Resource> resources = resourceSet.getResources();
@@ -82,7 +82,7 @@ public class SpendableResourceSetTest {
         SpendableResourceSet spendableResourceSet1 = new SpendableResourceSet();
         SpendableResourceSet spendableResourceSet2 = new SpendableResourceSet();
 
-        spendableResourceSet1.union(spendableResourceSet2);
+        spendableResourceSet1 = spendableResourceSet1.union(spendableResourceSet2);
 
         ArrayList<Resource> resources1 = spendableResourceSet1.getResourceSet().getResources();
         ArrayList<Resource> resources2 = spendableResourceSet2.getResourceSet().getResources();
@@ -96,7 +96,7 @@ public class SpendableResourceSetTest {
 
         spendableResourceSet1 = new SpendableResourceSet(choiceResourceSet);
 
-        spendableResourceSet1.union(spendableResourceSet2);
+        spendableResourceSet1 = spendableResourceSet1.union(spendableResourceSet2);
 
         resources1 = spendableResourceSet1.getResourceSet().getResources();
         resources2 = spendableResourceSet2.getResourceSet().getResources();
@@ -106,7 +106,7 @@ public class SpendableResourceSetTest {
         assertFalse(resources1.get(1).isConcrete());
         assertTrue(resources2.isEmpty());
 
-        spendableResourceSet2.union(spendableResourceSet1);
+        spendableResourceSet2 = spendableResourceSet2.union(spendableResourceSet1);
 
         resources1 = spendableResourceSet1.getResourceSet().getResources();
         resources2 = spendableResourceSet2.getResourceSet().getResources();
@@ -125,7 +125,7 @@ public class SpendableResourceSetTest {
         assertEquals(ConcreteResource.COIN, resources1.get(0).getResource());
         assertFalse(resources1.get(1).isConcrete());
 
-        spendableResourceSet1.union(spendableResourceSet1);
+        spendableResourceSet1 = spendableResourceSet1.union(spendableResourceSet1);
 
         resources1 = spendableResourceSet1.getResourceSet().getResources();
         assertEquals(4, resources1.size());

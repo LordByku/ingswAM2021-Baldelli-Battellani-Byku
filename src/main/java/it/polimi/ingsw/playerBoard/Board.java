@@ -8,6 +8,8 @@ import it.polimi.ingsw.resources.ChoiceSet;
 import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.resources.resourceSets.InvalidResourceSetException;
 
+import java.util.ArrayList;
+
 /**
  * Board represents the board of each player
  * It is a container of the classes which represents board's elements
@@ -35,7 +37,9 @@ public class Board implements ResourceLocation, Scoring, Cloneable {
 
     public static void setLastTurn() {}
 
-    public void hasCardTypeSet(CardTypeSet cardSet) {}
+    public ArrayList<DevCard> getCards() {
+        return developmentCardArea.getCards();
+    }
 
     public void addDevCard(DevCard devCard, int deckIndex) {
         developmentCardArea.addDevCard(devCard, deckIndex);

@@ -321,13 +321,13 @@ public class MarbleMarketTest {
                     expected.addResource(ConcreteResource.COIN, white + yellow);
                 }
                 if(grey > 0) {
-                    expected.addResource(ConcreteResource.STONE);
+                    expected.addResource(ConcreteResource.STONE, grey);
                 }
                 if(blue > 0) {
-                    expected.addResource(ConcreteResource.SHIELD);
+                    expected.addResource(ConcreteResource.SHIELD, blue);
                 }
                 if(purple > 0) {
-                    expected.addResource(ConcreteResource.SERVANT);
+                    expected.addResource(ConcreteResource.SERVANT, purple);
                 }
 
                 assertEquals(1, obtainableResourceSet.getFaithPoints());

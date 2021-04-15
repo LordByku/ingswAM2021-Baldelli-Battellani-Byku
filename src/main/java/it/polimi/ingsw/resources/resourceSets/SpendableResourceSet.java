@@ -33,11 +33,13 @@ public class SpendableResourceSet extends TransactionResourceSet {
      * @throws InvalidResourceSetException other is null, or this SpendableResourceSet
      * has been converted but other has not, or vice versa
      */
-    public void union(SpendableResourceSet other) throws InvalidResourceSetException {
+    public SpendableResourceSet union(SpendableResourceSet other) throws InvalidResourceSetException {
         if(other == null) {
             throw new InvalidResourceSetException();
         }
-        resources.union(other.getResourceSet());
+        ChoiceResourceSet resourceSet = getResourceSet();
+        resourceSet.union(other.getResourceSet());
+        return new SpendableResourceSet(resourceSet);
     }
 
     /**

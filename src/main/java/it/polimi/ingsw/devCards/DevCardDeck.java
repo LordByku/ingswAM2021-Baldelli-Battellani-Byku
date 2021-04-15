@@ -1,5 +1,6 @@
 package it.polimi.ingsw.devCards;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 public class DevCardDeck {
@@ -23,14 +24,8 @@ public class DevCardDeck {
         devCardStack.push(devCard);
     }
 
-    public CardTypeSet getCardTypeSet() {
-        CardTypeSet cardTypeSet = new CardTypeSet();
-
-        for (DevCard devCard : devCardStack) {
-            cardTypeSet.add(devCard.getCardType());
-        }
-
-        return cardTypeSet;
+    public ArrayList<DevCard> getCards() {
+        return new ArrayList<>(devCardStack);
     }
 
     public boolean isEmpty() {

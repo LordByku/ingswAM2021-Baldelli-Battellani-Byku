@@ -57,13 +57,13 @@ public class ObtainableResourceSet extends TransactionResourceSet {
      * @throws InvalidResourceSetException other is null, or this ObtainableResourceSet
      * has been converted but other has not, or vice versa
      */
-    public void union(ObtainableResourceSet other) throws InvalidResourceSetException {
+    public ObtainableResourceSet union(ObtainableResourceSet other) throws InvalidResourceSetException {
         if(other == null) {
             throw new InvalidResourceSetException();
         }
-        ChoiceResourceSet otherResources = other.getResourceSet();
-        resources.union(otherResources);
-        faithPoints += other.getFaithPoints();
+        ChoiceResourceSet resourceSet = getResourceSet();
+        resourceSet.union(other.getResourceSet());
+        return new ObtainableResourceSet(resourceSet, faithPoints + other.getFaithPoints());
     }
 
     /**
