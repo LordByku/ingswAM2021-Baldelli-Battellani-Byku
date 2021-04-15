@@ -2,7 +2,6 @@ package it.polimi.ingsw.devCards;
 
 import it.polimi.ingsw.playerBoard.Board;
 import it.polimi.ingsw.playerBoard.InvalidBoardException;
-import it.polimi.ingsw.playerBoard.InvalidProductionDetailsException;
 import it.polimi.ingsw.playerBoard.Scoring;
 import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.resources.resourceSets.InvalidResourceSetException;

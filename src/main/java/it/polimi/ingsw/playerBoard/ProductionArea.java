@@ -1,19 +1,15 @@
 package it.polimi.ingsw.playerBoard;
 
 import it.polimi.ingsw.devCards.InvalidDevCardDeckException;
-import it.polimi.ingsw.devCards.InvalidDevCardException;
+import it.polimi.ingsw.devCards.InvalidProductionDetailsException;
 import it.polimi.ingsw.devCards.ProductionDetails;
 import it.polimi.ingsw.resources.ChoiceResource;
 import it.polimi.ingsw.resources.FullChoiceSet;
-import it.polimi.ingsw.resources.InvalidChoiceSetException;
-import it.polimi.ingsw.resources.InvalidResourceException;
 import it.polimi.ingsw.resources.resourceSets.ChoiceResourceSet;
-import it.polimi.ingsw.resources.resourceSets.InvalidResourceSetException;
 import it.polimi.ingsw.resources.resourceSets.ObtainableResourceSet;
 import it.polimi.ingsw.resources.resourceSets.SpendableResourceSet;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * ProductionArea is a container for all production effects in a Board
