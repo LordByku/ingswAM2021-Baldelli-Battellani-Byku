@@ -19,7 +19,7 @@ public class ConversionEffect {
      * @param resource the resource to convert the white marble into.
      * @throws InvalidResourceException resource is null
      */
-    ConversionEffect(ConcreteResource resource) throws InvalidResourceException {
+    public ConversionEffect(ConcreteResource resource) throws InvalidResourceException {
         if(resource == null ){
             throw new InvalidResourceException();
         }

@@ -14,7 +14,7 @@ public class MarbleMarket {
     private final int rows;
     private final int columns;
 
-    MarbleMarket() {
+    public MarbleMarket() {
         rows = 3;
         columns = 4;
         ArrayList<Marble> tmp = new ArrayList<>();
