@@ -122,8 +122,7 @@ public class MarbleMarketTest {
         }
 
         ObtainableResourceSet obtained = marbleMarket.selectRow(1, board);
-        obtained.toConcrete();
-        ConcreteResourceSet obtainedResources = (ConcreteResourceSet) obtained.getResourceSet();
+        ConcreteResourceSet obtainedResources = obtained.getResourceSet().toConcrete();
 
         assertTrue(obtainedResources.contains(expected));
         assertTrue(expected.contains(obtainedResources));
@@ -164,8 +163,7 @@ public class MarbleMarketTest {
         }
 
         ObtainableResourceSet obtained = marbleMarket.selectColumn(2, board);
-        obtained.toConcrete();
-        ConcreteResourceSet obtainedResources = (ConcreteResourceSet) obtained.getResourceSet();
+        ConcreteResourceSet obtainedResources = obtained.getResourceSet().toConcrete();
 
         assertTrue(obtainedResources.contains(expected));
         assertTrue(expected.contains(obtainedResources));
@@ -218,7 +216,9 @@ public class MarbleMarketTest {
             if(white >= 2) {
                 ObtainableResourceSet obtainableResourceSet = marbleMarket.selectRow(i, board);
 
-                ArrayList<Resource> resources = ((ChoiceResourceSet) obtainableResourceSet.getResourceSet()).getResources();
+                ChoiceResourceSet choiceResourceSet = obtainableResourceSet.getResourceSet();
+
+                ArrayList<Resource> resources = choiceResourceSet.getResources();
                 ArrayList<ChoiceResource> choices = new ArrayList<>();
 
                 assertTrue(obtainableResourceSet.getFaithPoints() <= 1);
@@ -264,7 +264,7 @@ public class MarbleMarketTest {
                     }
                 }
 
-                obtainableResourceSet.toConcrete();
+                ConcreteResourceSet concreteResourceSet = choiceResourceSet.toConcrete();
 
                 assertEquals(0, white);
                 assertEquals(0, red);
@@ -314,10 +314,8 @@ public class MarbleMarketTest {
             if(red == 1) {
                 ObtainableResourceSet obtainableResourceSet = marbleMarket.selectColumn(j, board);
 
-                obtainableResourceSet.toConcrete();
-
                 ConcreteResourceSet expected = new ConcreteResourceSet();
-                ConcreteResourceSet obtained = (ConcreteResourceSet) obtainableResourceSet.getResourceSet();
+                ConcreteResourceSet obtained = obtainableResourceSet.getResourceSet().toConcrete();
 
                 if(white + yellow > 0) {
                     expected.addResource(ConcreteResource.COIN, white + yellow);

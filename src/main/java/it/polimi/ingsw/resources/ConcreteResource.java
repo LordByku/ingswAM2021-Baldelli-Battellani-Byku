@@ -26,4 +26,9 @@ public enum ConcreteResource implements Resource {
     public boolean isConcrete() {
         return true;
     }
+
+    @Override
+    public Resource cleanClone() {
+        return this;
+    }
 }

@@ -78,4 +78,9 @@ public class ChoiceResource implements Resource {
     public boolean isConcrete() {
         return finalChoice != null;
     }
+
+    @Override
+    public Resource cleanClone() {
+        return new ChoiceResource(choices);
+    }
 }

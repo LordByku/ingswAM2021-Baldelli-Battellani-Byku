@@ -16,4 +16,6 @@ public interface Resource {
      * @return True iff this Resource represents a ConcreteResource
      */
     boolean isConcrete();
+
+    Resource cleanClone();
 }

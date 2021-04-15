@@ -68,8 +68,7 @@ public class VaticanReportSectionTest {
         assertTrue(vaticanReportSection.isInsideSection(8));
         assertTrue(vaticanReportSection.isInsideSection(6));
         assertFalse(vaticanReportSection.isInsideSection(-2));
-        assertFalse(vaticanReportSection.isInsideSection(10));
-
+        assertTrue(vaticanReportSection.isInsideSection(10));
     }
 
     @Test
