@@ -2,7 +2,9 @@ package it.polimi.ingsw.devCards;
 
 import it.polimi.ingsw.playerBoard.Board;
 import it.polimi.ingsw.playerBoard.Scoring;
+import it.polimi.ingsw.resources.InvalidResourceException;
 import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
+import it.polimi.ingsw.resources.resourceSets.InvalidResourceSetException;
 
 import java.util.HashSet;
 
@@ -14,7 +16,7 @@ public abstract class DevCard implements Scoring {
 
 
     /**
-     * reqResources represents the set of resources required
+     * reqResources represents the set of resources required to buy the card
      */
     ConcreteResourceSet reqResources;
     /**
@@ -36,13 +38,18 @@ public abstract class DevCard implements Scoring {
 
     /**
      * The constructor
-     * @param reqResources
+     * @param reqResources set of resources required to buy the card
      * @param colour the colour to be set
      */
-    DevCard(ConcreteResourceSet reqResources,CardColour colour){
+    DevCard(ConcreteResourceSet reqResources,CardColour colour)throws InvalidResourceSetException,InvalidCardColour {
+        if(reqResources==null)
+            throw new InvalidResourceSetException();
+        if(colour==null)
+            throw new InvalidCardColour();
         this.reqResources = (ConcreteResourceSet) reqResources.clone();
-        this.colour=colour;
-    }
+        this.colour = colour;
+
+        }
 
     public void buy(Board board) {}
 
@@ -69,13 +76,12 @@ public abstract class DevCard implements Scoring {
    public CardType getCardType(){
         HashSet<CardLevel> levels = new HashSet<>();
         levels.add(this.getLevel());
-        CardType cardType = new CardType(this.getColour(),levels);
-        return cardType;
+       return new CardType(this.getColour(),levels);
     }
 
     /**
      * getPoints is a getter of card's points
-     * @return
+     * @return points of the card
      */
     public int getPoints() {
         return points;

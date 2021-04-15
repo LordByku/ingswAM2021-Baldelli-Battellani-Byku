@@ -8,8 +8,10 @@ import it.polimi.ingsw.resources.resourceSets.SpendableResourceSet;
  * ProductionDetails represents the details of a production, both spent and obtained resources
  */
 public class ProductionDetails {
-    SpendableResourceSet input;
-    ObtainableResourceSet output;
+
+
+    private final SpendableResourceSet input;
+    private final ObtainableResourceSet output;
 
     /**
      * @param input the resources to be spend
@@ -20,5 +22,13 @@ public class ProductionDetails {
             throw new InvalidResourceSetException();
         this.input = input.clone();
         this.output= output.clone();
+    }
+
+    public SpendableResourceSet getInput() {
+        return input;
+    }
+
+    public ObtainableResourceSet getOutput() {
+        return output;
     }
 }

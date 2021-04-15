@@ -19,13 +19,12 @@ public class FaithTrack implements Scoring {
      * receivedPopeFavors represents a list of the pope favors card obtained
      * on the faith track
      */
-    private ArrayList<PopeFavor> receivedPopeFavors;
+    private final ArrayList<PopeFavor> receivedPopeFavors = new ArrayList<>();
 
     /**
      * The constructor initializes receivedPopeFavors to an empty list
      */
     public FaithTrack() {
-        receivedPopeFavors = new ArrayList<PopeFavor>();
     }
 
     /**
@@ -55,6 +54,9 @@ public class FaithTrack implements Scoring {
         return this.markerPosition;
     }
 
+    public boolean containsPopeFavor(PopeFavor popeFavor){
+        return receivedPopeFavors.contains(popeFavor);
+    }
     /**
      * addFaithPoints adds "points" FaithPoints
      * @param points to add.
@@ -66,8 +68,17 @@ public class FaithTrack implements Scoring {
         {
             markerPosition += points;
             if (markerPosition >= 24)
+                markerPosition=24;
                 notifyEndOfTrack();
             VRSObserver.getInstance().updateVRS();
         }
+    }
+
+    @Override
+    public int getPoints() {
+        int points=0;
+        for(PopeFavor popeFavor: receivedPopeFavors)
+            points+=popeFavor.getPoints();
+        return points;
     }
 }

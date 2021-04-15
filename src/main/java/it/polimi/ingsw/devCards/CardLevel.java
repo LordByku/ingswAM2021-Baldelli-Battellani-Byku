@@ -9,6 +9,10 @@ public enum CardLevel {
     II,
     III;
 
+    public CardLevel getLevel(){
+        return this;
+    }
+
     public CardLevel next(){
         if(this==I)
             return II;

@@ -7,6 +7,11 @@ public enum CardColour {
     BLUE,
     GREEN,
     PURPLE,
-    YELLOW,
+    YELLOW;
+
+    public CardColour getColour(){
+        return this;
+    }
+
 }
 

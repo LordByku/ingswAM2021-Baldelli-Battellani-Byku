@@ -8,22 +8,42 @@ import it.polimi.ingsw.resources.resourceSets.InvalidQuantityException;
  */
 public class VaticanReportSection {
 
-    private int popeSpace;
-    private int points;
-    private int firstSpace;
+    private final int popeSpace;
+    private final int points;
+    private final int firstSpace;
     private boolean isVisited=false;
 
 
     /**
      * @param firstSpace the position of the start of the Vatican Report section
      * @param popeSpace the position of the end of the Vatican Report section
-     * @param points
+     * @param points the points received by the section's pope card
      */
-    public VaticanReportSection (int firstSpace, int popeSpace, int points) throws InvalidQuantityException {
+    public VaticanReportSection (int firstSpace, int popeSpace, int points) throws InvalidQuantityException,InvalidVaticanReportSectionSquarePositions {
        if(firstSpace<=0 || popeSpace<=0 || points<=0)
-        this.firstSpace = firstSpace;
-        this.popeSpace = popeSpace;
-        this.points = points;
+           throw new InvalidQuantityException();
+       else
+        {
+            if (firstSpace > popeSpace)
+                throw new InvalidVaticanReportSectionSquarePositions();
+            else {
+                this.firstSpace = firstSpace;
+                this.popeSpace = popeSpace;
+                this.points = points;
+            }
+        }
+    }
+
+    public int getPopeSpace() {
+        return popeSpace;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public int getFirstSpace() {
+        return firstSpace;
     }
 
 
@@ -31,9 +51,7 @@ public class VaticanReportSection {
      * @return true iff the attribute isVisited is true
      */
     public boolean isVisited(){
-        if(isVisited==true)
-            return true;
-        return false;
+        return isVisited;
     }
 
     /**
@@ -41,10 +59,7 @@ public class VaticanReportSection {
      * @return true iff the position of the player is inside the section
      */
     public boolean isInsideSection(int position){
-        if(position>=firstSpace && position<=popeSpace) {
-            return true;
-        }
-        return false;
+        return position >= firstSpace && position <= popeSpace;
     }
 
     /**
@@ -52,8 +67,6 @@ public class VaticanReportSection {
      * @return true iff the player's marker position is either on or past the Pope Space
      */
     public boolean reachedPopeSpace(int position){
-        if(position>=popeSpace) {
-            return true;
-        }        return false;
+        return position >= popeSpace;
     }
 }

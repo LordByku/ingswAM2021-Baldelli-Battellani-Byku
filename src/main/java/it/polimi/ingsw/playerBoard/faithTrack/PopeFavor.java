@@ -21,4 +21,9 @@ public class PopeFavor implements Scoring {
         this.points=points;
 
     }
+
+    @Override
+    public int getPoints() {
+        return points;
+    }
 }
