@@ -3,8 +3,8 @@ package it.polimi.ingsw.devCards;
 import java.util.HashSet;
 
 public class CardType {
-    private CardColour colour;
-    private HashSet<CardLevel> levelSet;
+    private final CardColour colour;
+    private final HashSet<CardLevel> levelSet;
 
     public CardType(CardColour colour) throws InvalidCardColourException {
         if(colour == null) {

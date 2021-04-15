@@ -8,9 +8,21 @@ import it.polimi.ingsw.resources.resourceSets.InvalidQuantityException;
  */
 public class VaticanReportSection {
 
-    private final int popeSpace;
-    private final int points;
+    /**
+     * popeSpace is the position of the start of the Vatican Report section
+     */
     private final int firstSpace;
+    /**
+     * the position of the end of the Vatican Report section
+     */
+    private final int popeSpace;
+    /**
+     * the points received by the section's pope card
+     */
+    private final int points;
+    /**
+     * isVisited is a flag for a section where occurred already a Vatican Report
+     */
     private boolean isVisited=false;
 
 
@@ -33,6 +45,7 @@ public class VaticanReportSection {
             }
         }
     }
+
 
     public int getPopeSpace() {
         return popeSpace;

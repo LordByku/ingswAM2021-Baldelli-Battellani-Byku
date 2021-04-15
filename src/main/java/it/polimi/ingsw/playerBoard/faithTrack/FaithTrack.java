@@ -76,6 +76,10 @@ public class FaithTrack implements Scoring {
         }
     }
 
+    /**
+     * getPoints represents sum of pope favor card's points
+     * @return sum of pope favor card's points
+     */
     @Override
     public int getPoints() {
         int points=0;

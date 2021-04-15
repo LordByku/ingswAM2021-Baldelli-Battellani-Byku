@@ -22,14 +22,14 @@ public class DevCardTest {
         ChoiceResourceSet choiceResourceSet1 = new ChoiceResourceSet();
         choiceResourceSet1.addResource(ConcreteResource.SHIELD);
         ChoiceResourceSet choiceResourceSet2 = new ChoiceResourceSet();
-        choiceResourceSet1.addResource(ConcreteResource.SERVANT);
+        choiceResourceSet2.addResource(ConcreteResource.SERVANT);
 
         SpendableResourceSet input1 = new SpendableResourceSet(choiceResourceSet1);
         ObtainableResourceSet output1 = new ObtainableResourceSet(choiceResourceSet2);
         ProductionDetails details1 = new ProductionDetails(input1,output1);
 
-        devCard1 = new DevCard(concreteResourceSet1,blue,CardLevel.I,details1);
-        devCard2 = new DevCard(concreteResourceSet2,yellow,CardLevel.II,details1);
+        devCard1 = new DevCard(concreteResourceSet1,blue,CardLevel.I,details1,5);
+        devCard2 = new DevCard(concreteResourceSet2,yellow,CardLevel.II,details1,6);
         assertEquals(CardColour.BLUE,devCard1.getColour());
         assertEquals(CardLevel.I,devCard1.getLevel());
         assertEquals(CardColour.YELLOW,devCard2.getColour());
@@ -39,12 +39,13 @@ public class DevCardTest {
         assertNotEquals(CardColour.GREEN,devCard1.getColour());
         assertNotEquals(CardLevel.III,devCard1.getLevel());
         try {
-            devCard1=new DevCard(concreteResourceSet1, null, CardLevel.I, details1);
+            devCard1=new DevCard(concreteResourceSet1, null, CardLevel.I, details1,1);
             fail();
         }catch (InvalidResourceSetException| InvalidCardColourException e){
             assertEquals(CardColour.BLUE,devCard1.getColour());
             assertEquals(CardLevel.I,devCard1.getLevel());
         }
     }
+    //TODO
 
 }

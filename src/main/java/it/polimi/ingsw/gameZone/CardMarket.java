@@ -52,7 +52,7 @@ public class CardMarket {
         ProductionDetails prodG1 = new ProductionDetails(spendG1,obtG1);
         ConcreteResourceSet reqG1 = new ConcreteResourceSet();
         reqG1.addResource(ConcreteResource.STONE);
-        DevCard green1 = new DevCard(reqG1, CardColour.GREEN,CardLevel.I,prodG1);
+        DevCard green1 = new DevCard(reqG1, CardColour.GREEN,CardLevel.I,prodG1,1);
         deckG1.appendToDeck(green1);
 
         //BLUE level 2, 1VP, 1 COIN, (CHOICE --> CHOICE + 1FP)
@@ -75,7 +75,7 @@ public class CardMarket {
         ProductionDetails prodB2 = new ProductionDetails(spendB2,obtB2);
         ConcreteResourceSet reqB2 = new ConcreteResourceSet();
         reqG1.addResource(ConcreteResource.COIN);
-        DevCard blue2 = new DevCard(reqB2, CardColour.BLUE,CardLevel.II,prodB2);
+        DevCard blue2 = new DevCard(reqB2, CardColour.BLUE,CardLevel.II,prodB2,1);
         deckB2.appendToDeck(blue2);
 
 

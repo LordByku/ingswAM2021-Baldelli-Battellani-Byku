@@ -1,8 +1,6 @@
 package it.polimi.ingsw.faithTrack;
 
-import it.polimi.ingsw.playerBoard.faithTrack.FaithTrack;
-import it.polimi.ingsw.playerBoard.faithTrack.VRSObserver;
-import it.polimi.ingsw.playerBoard.faithTrack.VaticanReportSection;
+import it.polimi.ingsw.playerBoard.faithTrack.*;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -21,10 +19,25 @@ public class VRSObserverTest {
         assertTrue(VRSObserver.getInstance().getTracks().contains(faithTrack1));
         assertTrue(VRSObserver.getInstance().getTracks().contains(faithTrack2));
         assertTrue(VRSObserver.getInstance().getTracks().contains(faithTrack3));
+        try{
+            FaithTrack faithTrack = null;
+        }catch (InvalidFaithTrackException e){
+
+            assertTrue(VRSObserver.getInstance().getTracks().contains(faithTrack1));
+            assertTrue(VRSObserver.getInstance().getTracks().contains(faithTrack2));
+            assertTrue(VRSObserver.getInstance().getTracks().contains(faithTrack3));
+        }
 
         VaticanReportSection vaticanReportSection = new VaticanReportSection(5,8,7);
-
+        VaticanReportSection vaticanReportSection2 = new VaticanReportSection(16,20,2);
+        VRSObserver.getInstance().addVaticanReportSection(vaticanReportSection2);
         VRSObserver.getInstance().addVaticanReportSection(vaticanReportSection);
+        try{
+            VRSObserver.getInstance().addVaticanReportSection(null);
+            fail();
+        }catch (InvalidVaticanReportSectionException e){
+            assertTrue(true);
+        }
 
         faithTrack1.addFaithPoints(2);
         faithTrack2.addFaithPoints(6);
@@ -42,5 +55,40 @@ public class VRSObserverTest {
         assertNotSame(vaticanReportSection.getPoints(),faithTrack1.getPoints());
         assertSame(vaticanReportSection.getPoints(),faithTrack2.getPoints());
         assertSame(vaticanReportSection.getPoints(),faithTrack3.getPoints());
+
+        faithTrack1.addFaithPoints(5);
+        assertNotSame(vaticanReportSection.getPoints(),faithTrack1.getPoints());
+        assertSame(0,faithTrack1.getPoints());
+        assertSame(vaticanReportSection.getPoints(),faithTrack2.getPoints());
+        assertSame(vaticanReportSection.getPoints(),faithTrack3.getPoints());
+
+        faithTrack2.addFaithPoints(1);
+        faithTrack3.addFaithPoints(1);
+        faithTrack1.addFaithPoints(6);
+        VRSObserver.getInstance().updateVRS();
+        assertEquals(3, faithTracks.size());
+        assertEquals(13, faithTracks.get(0).getMarkerPosition());
+        assertEquals(7, faithTracks.get(1).getMarkerPosition());
+        assertEquals(13, faithTracks.get(2).getMarkerPosition());
+        assertNotSame(vaticanReportSection2.getPoints(),faithTrack1.getPoints());
+        assertNotSame(vaticanReportSection2.getPoints()+vaticanReportSection.getPoints(),faithTrack2.getPoints());
+        assertNotSame(vaticanReportSection2.getPoints()+vaticanReportSection.getPoints(),faithTrack3.getPoints());
+
+        faithTrack3.addFaithPoints(3);
+        VRSObserver.getInstance().updateVRS();
+
+        assertNotSame(vaticanReportSection2.getPoints(),faithTrack1.getPoints());
+        assertNotSame(vaticanReportSection2.getPoints()+vaticanReportSection.getPoints(),faithTrack1.getPoints());
+        assertNotSame(vaticanReportSection2.getPoints()+vaticanReportSection.getPoints(),faithTrack1.getPoints());
+        faithTrack1.addFaithPoints(5);
+        faithTrack3.addFaithPoints(6);
+        faithTrack2.addFaithPoints(20);
+        VRSObserver.getInstance().updateVRS();
+        assertSame(vaticanReportSection2.getPoints()+vaticanReportSection.getPoints(),faithTrack3.getPoints());
+        assertSame(vaticanReportSection2.getPoints(),faithTrack1.getPoints());
+        assertSame(vaticanReportSection.getPoints(),faithTrack2.getPoints());
+
+
+
     }
 }

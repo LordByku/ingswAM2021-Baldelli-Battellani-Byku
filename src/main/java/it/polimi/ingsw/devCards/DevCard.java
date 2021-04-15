@@ -38,7 +38,7 @@ public class DevCard implements Scoring {
      * @param reqResources set of resources required to buy the card
      * @param colour the colour to be set
      */
-    public DevCard(ConcreteResourceSet reqResources, CardColour colour, CardLevel level, ProductionDetails productionPower)
+    public DevCard(ConcreteResourceSet reqResources, CardColour colour, CardLevel level, ProductionDetails productionPower,int points)
             throws InvalidCardColourException, InvalidCardLevelException, InvalidResourceSetException {
         if(reqResources == null) {
             throw new InvalidResourceSetException();
@@ -56,6 +56,7 @@ public class DevCard implements Scoring {
         this.colour = colour;
         this.level = level;
         this.productionPower = productionPower.clone();
+        this.points = points;
     }
 
     public boolean canPlay(Board board, int deckIndex) throws InvalidBoardException {
