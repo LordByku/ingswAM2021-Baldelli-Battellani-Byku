@@ -1,4 +1,4 @@
-package it.polimi.ingsw.faithTrack.devCardsTest;
+package it.polimi.ingsw.devCardsTest;
 
 import it.polimi.ingsw.devCards.ProductionDetails;
 import it.polimi.ingsw.resources.ConcreteResource;
@@ -6,10 +6,6 @@ import it.polimi.ingsw.resources.resourceSets.ChoiceResourceSet;
 import it.polimi.ingsw.resources.resourceSets.ObtainableResourceSet;
 import it.polimi.ingsw.resources.resourceSets.SpendableResourceSet;
 import org.junit.Test;
-
-import java.util.Objects;
-
-import static org.junit.Assert.*;
 
 
 public class ProductionDetailsTest {

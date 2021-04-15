@@ -1,4 +1,4 @@
-package it.polimi.ingsw.faithTrack.devCardsTest;
+package it.polimi.ingsw.devCardsTest;
 
 import it.polimi.ingsw.devCards.CardLevel;
 

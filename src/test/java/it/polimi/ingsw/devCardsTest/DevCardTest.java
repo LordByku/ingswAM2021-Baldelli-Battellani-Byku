@@ -1,10 +1,9 @@
-package it.polimi.ingsw.faithTrack.devCardsTest;
+package it.polimi.ingsw.devCardsTest;
 
 import it.polimi.ingsw.devCards.*;
 import it.polimi.ingsw.resources.ConcreteResource;
 import it.polimi.ingsw.resources.resourceSets.InvalidResourceSetException;
 import it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet;
-import it.polimi.ingsw.resources.resourceSets.InvalidResourceSetException;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
