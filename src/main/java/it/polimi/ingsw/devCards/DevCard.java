@@ -58,6 +58,12 @@ public class DevCard implements Scoring, Cloneable {
         this.points = points;
     }
 
+    /**
+     * @param board the board where the card can be played
+     * @param deckIndex the position of the deck where the card ca be played
+     * @return true iff the card is playable on the deck card
+     * @throws InvalidBoardException if the board is null
+     */
     public boolean canPlay(Board board, int deckIndex) throws InvalidBoardException {
         if(board == null) {
             throw new InvalidBoardException();
@@ -65,6 +71,12 @@ public class DevCard implements Scoring, Cloneable {
         return board.containsResources(reqResources) && board.getTopLevel(deckIndex) == level.prev();
     }
 
+    /**
+     * play represents the act of playing the card on a card deck
+     * @param board the board where the card is played
+     * @param deckIndex the position of the deck where the card ca be played
+     * @throws InvalidBoardException if the board is null
+     */
     public void play(Board board, int deckIndex) throws InvalidBoardException {
         if(!canPlay(board, deckIndex)) {
             throw new InvalidBoardException();
@@ -104,6 +116,7 @@ public class DevCard implements Scoring, Cloneable {
     public int getPoints() {
         return points;
     }
+
 
     public DevCard clone() {
         try {

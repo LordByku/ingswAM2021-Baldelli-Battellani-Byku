@@ -23,10 +23,16 @@ public class ProductionDetails implements Cloneable {
         this.output= output.clone();
     }
 
+    /**
+     * @return the resources to be spent in accord to the prod details
+     */
     public SpendableResourceSet getInput() {
         return input.clone();
     }
 
+    /**
+     * @return the resources to be obtained in accord to the prod details
+     */
     public ObtainableResourceSet getOutput() {
         return output.clone();
     }

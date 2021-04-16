@@ -13,17 +13,32 @@ import java.util.Map;
  */
 
 public class CardTypeSet implements LeaderCardRequirements {
+    /**
+     * cardTypes represents a hash map of card types and his quantity
+     */
     private HashMap<CardType,Integer> cardTypes;
 
+    /**
+     * the constructor initializes a empty HashMap
+     */
     public CardTypeSet() {
         cardTypes = new HashMap<>();
     }
 
+    /**
+     * @param cardType the cardType added
+     */
     public void add(CardType cardType) {
         int count = cardTypes.getOrDefault(cardType, 0);
         cardTypes.put(cardType, count + 1);
     }
 
+    /**
+     * @param board the board of the current player.
+     * @return true iff the card types and their quantities on the board contains
+     * the card types and their quantities expressed on the cardTypeSet
+     * @throws InvalidBoardException if the board is null
+     */
     @Override
     public boolean isSatisfied(Board board) throws InvalidBoardException {
         ArrayList<DevCard> cards = board.getCards();
