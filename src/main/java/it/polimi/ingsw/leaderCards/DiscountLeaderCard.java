@@ -48,7 +48,6 @@ public class DiscountLeaderCard extends LeaderCard{
     public void play() {
         if(isPlayable()){
             active = true;
-            board.addLeaderCard(this);
             board.addDiscountEffect(new DiscountEffect(this.type));
         }
     }

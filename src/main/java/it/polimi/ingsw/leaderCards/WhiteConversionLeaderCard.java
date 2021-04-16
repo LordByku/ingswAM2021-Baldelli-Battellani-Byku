@@ -47,7 +47,6 @@ public class WhiteConversionLeaderCard extends LeaderCard{
     public void play() {
         if(isPlayable()){
             active = true;
-            board.addLeaderCard(this);
             board.addConversionEffect(new ConversionEffect(this.type));
         }
     }
