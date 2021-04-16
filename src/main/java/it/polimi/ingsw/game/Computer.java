@@ -2,20 +2,36 @@ package it.polimi.ingsw.game;
 
 import it.polimi.ingsw.game.actionTokens.ActionTokenDeck;
 
+/**
+ * Computer is the class for the automated Player
+ * in single player mode
+ */
 public class Computer extends Player {
+    /**
+     * deck is the ActionTokenDeck of the Computer
+     */
     private ActionTokenDeck deck;
 
+    /**
+     * The constructor initializes deck to a new ActionTokenDeck
+     */
     public Computer() {
         super();
         deck = new ActionTokenDeck(getBoard());
     }
 
+    /**
+     * startTurn executes the Computer's turn and ends the turn
+     */
     @Override
     protected void startTurn() {
         deck = deck.flipFirstToken();
         endTurn();
     }
 
+    /**
+     * endTurn calls the turn handler method in Game
+     */
     @Override
     public void endTurn() {
         try {
