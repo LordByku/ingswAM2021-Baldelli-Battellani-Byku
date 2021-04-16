@@ -18,5 +18,9 @@ public interface LeaderCardRequirements extends Cloneable {
      */
     boolean isSatisfied(Board board) throws InvalidBoardException;
 
+    /**
+     * clone returns a copy of the object
+     * @return A copy of the object
+     */
     Object clone();
 }
