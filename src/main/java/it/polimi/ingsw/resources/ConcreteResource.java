@@ -27,6 +27,10 @@ public enum ConcreteResource implements Resource {
         return true;
     }
 
+    /**
+     * cleanClone simply return this value of the enum
+     * @return The value of this ConcreteResource
+     */
     @Override
     public Resource cleanClone() {
         return this;

@@ -50,8 +50,22 @@ public class SpendableResourceSet extends TransactionResourceSet {
     public SpendableResourceSet clone() {
         return (SpendableResourceSet) super.clone();
     }
-    
-    public boolean match(ConcreteResourceSet concreteResourceSet) {
+
+    /**
+     * match checks whether a given ConcreteResourceSet matches the ChoiceResourceSet in
+     * this SpendableResourceSet
+     * Note that the check is made assuming that all ChoiceResources in a
+     * SpendableResourceSet have a FullChoiceSet to choose from
+     * @param concreteResourceSet The ConcreteResourceSet to check
+     * @return True iff the ChoiceResourceSet in this SpendableResourceSet could be
+     * converted to concreteResourceSet
+     * @throws InvalidResourceSetException concreteResourceSet is null
+     */
+    public boolean match(ConcreteResourceSet concreteResourceSet) throws InvalidResourceSetException {
+        if(concreteResourceSet == null) {
+            throw new InvalidResourceSetException();
+        }
+
         if(getResourceSet().size() != concreteResourceSet.size()) {
             return false;
         }
