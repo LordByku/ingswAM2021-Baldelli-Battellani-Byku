@@ -50,7 +50,7 @@ public class DevelopmentCardAreaTest {
                 new SpendableResourceSet(inputChoiceResourceSet),
                 new ObtainableResourceSet(outputChoiceResourceSet, 2));
 
-        DevCard devCard = new DevCard(concreteResourceSet, CardColour.BLUE, CardLevel.I, productionDetails);
+        DevCard devCard = new DevCard(concreteResourceSet, CardColour.BLUE, CardLevel.I, productionDetails, 1);
 
         try {
             developmentCardArea.addDevCard(devCard, 3);
@@ -79,11 +79,11 @@ public class DevelopmentCardAreaTest {
                 new SpendableResourceSet(inputChoiceResourceSet),
                 new ObtainableResourceSet(outputChoiceResourceSet, 1));
 
-        DevCard devCard = new DevCard(concreteResourceSet, CardColour.BLUE, CardLevel.I, productionDetails);
+        DevCard devCard = new DevCard(concreteResourceSet, CardColour.BLUE, CardLevel.I, productionDetails, 1);
 
         developmentCardArea.addDevCard(devCard, 1);
 
-        devCard = new DevCard(concreteResourceSet, CardColour.YELLOW, CardLevel.II, productionDetails);
+        devCard = new DevCard(concreteResourceSet, CardColour.YELLOW, CardLevel.II, productionDetails, 2);
 
         try {
             developmentCardArea.addDevCard(devCard, 0);
@@ -131,15 +131,15 @@ public class DevelopmentCardAreaTest {
                 new SpendableResourceSet(inputChoiceResourceSet),
                 new ObtainableResourceSet(outputChoiceResourceSet));
 
-        DevCard devCard1 = new DevCard(concreteResourceSet, CardColour.BLUE, CardLevel.I, productionDetails);
-        DevCard devCard2 = new DevCard(concreteResourceSet, CardColour.YELLOW, CardLevel.I, productionDetails);
+        DevCard devCard1 = new DevCard(concreteResourceSet, CardColour.BLUE, CardLevel.I, productionDetails, 1);
+        DevCard devCard2 = new DevCard(concreteResourceSet, CardColour.YELLOW, CardLevel.I, productionDetails, 2);
 
         concreteResourceSet.addResource(ConcreteResource.COIN);
         outputChoiceResourceSet.addResource(ConcreteResource.SERVANT);
         productionDetails = new ProductionDetails(new SpendableResourceSet(inputChoiceResourceSet),
                                                   new ObtainableResourceSet(outputChoiceResourceSet));
 
-        DevCard devCard3 = new DevCard(concreteResourceSet, CardColour.PURPLE, CardLevel.II, productionDetails);
+        DevCard devCard3 = new DevCard(concreteResourceSet, CardColour.PURPLE, CardLevel.II, productionDetails, 2);
 
         developmentCardArea.addDevCard(devCard1, 0);
         developmentCardArea.addDevCard(devCard2, 2);

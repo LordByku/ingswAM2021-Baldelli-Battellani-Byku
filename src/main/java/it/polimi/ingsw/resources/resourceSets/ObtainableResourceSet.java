@@ -36,9 +36,14 @@ public class ObtainableResourceSet extends TransactionResourceSet {
      * @param choiceResourceSet The ChoiceResourceSet to copy from
      * @param faithPoints The initial value for faithPoints
      * @throws InvalidResourceSetException choiceResourceSet is null
+     * @throws InvalidQuantityException faithPoints is negative
      */
-    public ObtainableResourceSet(ChoiceResourceSet choiceResourceSet, int faithPoints) throws InvalidResourceSetException {
+    public ObtainableResourceSet(ChoiceResourceSet choiceResourceSet, int faithPoints)
+            throws InvalidResourceSetException, InvalidQuantityException {
         super(choiceResourceSet);
+        if(faithPoints < 0) {
+            throw new InvalidQuantityException();
+        }
         this.faithPoints = faithPoints;
     }
 

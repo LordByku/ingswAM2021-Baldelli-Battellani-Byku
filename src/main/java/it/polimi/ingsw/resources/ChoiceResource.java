@@ -79,6 +79,10 @@ public class ChoiceResource implements Resource {
         return finalChoice != null;
     }
 
+    /**
+     * cleanClone returns a new ChoiceResource with the same ChoiceSet
+     * @return A new ChoiceResource with the same ChoiceSet
+     */
     @Override
     public Resource cleanClone() {
         return new ChoiceResource(choices);

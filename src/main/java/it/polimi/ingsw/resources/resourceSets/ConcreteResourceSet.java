@@ -105,6 +105,12 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
         removeResource(resource, 1);
     }
 
+    /**
+     * union adds to this ConcreteResourceSet all the resources contained
+     * in another ConcreteResourceSet
+     * @param other The ConcreteResourceSet to add resources from
+     * @throws InvalidResourceSetException other is null
+     */
     public void union(ConcreteResourceSet other) throws InvalidResourceSetException {
         if(other == null) {
             throw new InvalidResourceSetException();
@@ -219,6 +225,10 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
         return resources.size() <= 1;
     }
 
+    /**
+     * size returns the number of Resources in this ResourceSet
+     * @return The number of Resources in this ResourceSet
+     */
     @Override
     public int size() {
         int result = 0;

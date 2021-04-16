@@ -10,5 +10,9 @@ public interface ResourceSet extends Cloneable {
      */
     Object clone();
 
+    /**
+     * size returns the number of Resources in this ResourceSet
+     * @return The number of Resources in this ResourceSet
+     */
     int size();
 }

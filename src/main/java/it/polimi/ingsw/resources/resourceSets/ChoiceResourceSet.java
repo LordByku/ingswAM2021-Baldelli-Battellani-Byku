@@ -68,6 +68,12 @@ public class ChoiceResourceSet implements ResourceSet {
         return new ArrayList<>(resources);
     }
 
+    /**
+     * union adds to this ChoiceResourceSet all the resources contained in another
+     * ChoiceResourceSet
+     * @param other The ChoiceResourceSet to add resources from
+     * @throws InvalidResourceSetException other is null
+     */
     public void union(ChoiceResourceSet other) throws InvalidResourceSetException {
         if(other == null) {
             throw new InvalidResourceSetException();
@@ -96,11 +102,19 @@ public class ChoiceResourceSet implements ResourceSet {
         }
     }
 
+    /**
+     * size returns the number of Resources in this ResourceSet
+     * @return The number of Resources in this ResourceSet
+     */
     @Override
     public int size() {
         return resources.size();
     }
 
+    /**
+     * cleanClone returns a clone where ChoiceResources are cloned too
+     * @return A new ChoiceResourceSet where all Resources are cleanCloned
+     */
     public ChoiceResourceSet cleanClone() {
         ChoiceResourceSet cloneResourceSet = (ChoiceResourceSet) clone();
 

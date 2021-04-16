@@ -31,7 +31,8 @@ public class Game {
         return instance;
     }
 
-    public void addPlayer(String nickname) throws FullLobbyException, ExistingNicknameException {
+    public void addPlayer(String nickname)
+            throws FullLobbyException, ExistingNicknameException, InvalidNicknameException {
         if(players.size() == 4) {
             throw new FullLobbyException();
         }

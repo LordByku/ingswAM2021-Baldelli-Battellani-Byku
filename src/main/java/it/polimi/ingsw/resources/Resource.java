@@ -17,5 +17,9 @@ public interface Resource {
      */
     boolean isConcrete();
 
+    /**
+     * cleanClone returns a new copy of this Resource
+     * @return A copy of this Resource
+     */
     Resource cleanClone();
 }

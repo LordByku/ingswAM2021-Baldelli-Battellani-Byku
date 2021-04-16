@@ -30,6 +30,10 @@ public class LeaderCardDepot extends Depot {
         this.type = type;
     }
 
+    /**
+     * getResourceType returns the type of resource that can be stored in this Depot
+     * @return The type of ConcreteResource that can be stored in this Depot
+     */
     @Override
     public ConcreteResource getResourceType() {
         return type;

@@ -15,15 +15,42 @@ import java.util.ArrayList;
  * It is a container of the classes which represents board's elements
  */
 public class Board implements ResourceLocation, Scoring, Cloneable {
+    /**
+     * faithTrack is the FaithTrack of this Board
+     */
     private FaithTrack faithTrack;
+    /**
+     * productionArea stores all ProductionEffects in this Board
+     */
     private ProductionArea productionArea;
+    /**
+     * developmentCardArea stores all development cards in this Board
+     */
     private DevelopmentCardArea developmentCardArea;
+    /**
+     * leaderCardArea stores all LeaderCards in this Board
+     */
     private LeaderCardArea leaderCardArea;
+    /**
+     * discountArea stores all DiscountEffects in this Board
+     */
     private DiscountArea discountArea;
+    /**
+     * conversionEffectArea stores all ConversionEffects in this Board
+     */
     private ConversionEffectArea conversionEffectArea;
+    /**
+     * strongBox is the StrongBox of this Board
+     */
     private StrongBox strongBox;
+    /**
+     * warehouse is the StrongBox of this Board
+     */
     private Warehouse warehouse;
 
+    /**
+     * The constructor calls the constructor of all the components
+     */
     public Board(){
         faithTrack = new FaithTrack();
         productionArea = new ProductionArea();
@@ -202,16 +229,8 @@ public class Board implements ResourceLocation, Scoring, Cloneable {
     public CardLevel getTopLevel(int deckIndex) {
         return developmentCardArea.getTopLevel(deckIndex);
     }
-  /*
-    public void buyCardDev(DevCard devCard) {
-        int deckIndex = 0;
-        if(this.containsResources(devCard.getReqResources()))
-            deckIndex=developmentCardArea.IsLevelOnTop(devCard.getLevel().next());
-            if(deckIndex!=-1);
 
-                //TODO
-
+    public int getFaithPoints() {
+        return faithTrack.getMarkerPosition();
     }
- */
-
 }

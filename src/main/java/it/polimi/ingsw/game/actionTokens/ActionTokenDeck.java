@@ -64,4 +64,12 @@ public class ActionTokenDeck {
     public Board getBoard() {
         return board.clone();
     }
+
+    /**
+     * size returns the size of this deck
+     * @return The number of ActionToken remaining in the deck
+     */
+    public int size() {
+        return deck.size();
+    }
 }
