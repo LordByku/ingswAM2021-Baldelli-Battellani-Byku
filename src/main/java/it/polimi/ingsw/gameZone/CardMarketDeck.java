@@ -4,7 +4,10 @@ import it.polimi.ingsw.devCards.CardColour;
 import it.polimi.ingsw.devCards.CardLevel;
 import it.polimi.ingsw.devCards.DevCard;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Stack;
+
 
 /**
  * Deck of DevCards of the CardMarket
@@ -24,7 +27,7 @@ public class CardMarketDeck {
     /**
      * The deck.
      */
-    private Stack<DevCard> devCardStack;
+    private final Stack<DevCard> devCardStack;
 
     /**
      * Constructor creates a new stack and initialize attributes.
@@ -78,5 +81,21 @@ public class CardMarketDeck {
 
     public boolean isEmpty(){
         return devCardStack.isEmpty();
+    }
+
+    /**
+     * Shuffle the deck.
+     */
+    public void shuffleDeck(){
+        ArrayList<DevCard> arrayList = new ArrayList<>();
+        while (!devCardStack.isEmpty()){
+            arrayList.add(devCardStack.pop());
+        }
+
+        Collections.shuffle(arrayList);
+
+        for(int i=0; i < arrayList.size(); i++){
+            devCardStack.add(i, arrayList.get(i));
+        }
     }
 }
