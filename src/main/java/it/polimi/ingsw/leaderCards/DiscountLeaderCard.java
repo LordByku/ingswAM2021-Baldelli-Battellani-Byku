@@ -25,19 +25,11 @@ public class DiscountLeaderCard extends LeaderCard{
      */
     public DiscountLeaderCard(int points, LeaderCardRequirements requirements, ConcreteResource type)
             throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceException {
-
-        if(points<=0){
-            throw new InvalidPointsValueException();
-        }
-        if(requirements == null){
-            throw new InvalidRequirementsException();
-        }
+        super(points, requirements);
         if(type == null){
             throw new InvalidResourceException();
         }
 
-        this.points=points;
-        this.requirements = (LeaderCardRequirements) requirements.clone();
         this.type=type;
     }
 
@@ -48,7 +40,7 @@ public class DiscountLeaderCard extends LeaderCard{
     public void play() {
         if(isPlayable()){
             active = true;
-            board.addDiscountEffect(new DiscountEffect(this.type));
+            board.getDiscountArea().addDiscountEffect(new DiscountEffect(this.type));
         }
     }
 }

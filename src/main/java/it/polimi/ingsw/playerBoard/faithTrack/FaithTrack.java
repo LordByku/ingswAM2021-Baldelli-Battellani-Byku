@@ -33,7 +33,7 @@ public class FaithTrack implements Scoring {
      * receivePopeFavor inserts a 'pope favor' into the list
      * @param popeFavor the PopeFavor to add
      */
-    public void receivePopeFavor (PopeFavor popeFavor) throws InvalidPopeFavorException {
+    public void addPopeFavor(PopeFavor popeFavor) throws InvalidPopeFavorException {
         if(popeFavor==null)
             throw new InvalidPopeFavorException();
         receivedPopeFavors.add(popeFavor);
@@ -74,6 +74,10 @@ public class FaithTrack implements Scoring {
             }
             VRSObserver.getInstance().updateVRS();
         }
+    }
+
+    public void addFaithPoints() {
+        addFaithPoints(1);
     }
 
     /**

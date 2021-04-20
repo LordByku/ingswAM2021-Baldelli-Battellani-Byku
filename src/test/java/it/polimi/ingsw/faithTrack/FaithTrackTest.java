@@ -27,13 +27,13 @@ public class FaithTrackTest {
         FaithTrack faithTrack=new FaithTrack();
         PopeFavor p1 = new PopeFavor(1);
         PopeFavor p2 = new PopeFavor(5);
-        faithTrack.receivePopeFavor(p1);
+        faithTrack.addPopeFavor(p1);
         assertTrue(faithTrack.containsPopeFavor(p1));
-        faithTrack.receivePopeFavor(p2);
+        faithTrack.addPopeFavor(p2);
         assertTrue(faithTrack.containsPopeFavor(p1));
         assertTrue(faithTrack.containsPopeFavor(p2));
         try {
-            faithTrack.receivePopeFavor(null);
+            faithTrack.addPopeFavor(null);
             fail();
         } catch (InvalidPopeFavorException e){
             assertTrue(faithTrack.containsPopeFavor(p1));
@@ -47,15 +47,15 @@ public class FaithTrackTest {
         FaithTrack faithTrack= new FaithTrack();
         PopeFavor p1 = new PopeFavor(4);
         PopeFavor p2 = new PopeFavor(5);
-        faithTrack.receivePopeFavor(p1);
-        faithTrack.receivePopeFavor(p2);
+        faithTrack.addPopeFavor(p1);
+        faithTrack.addPopeFavor(p2);
         assertEquals(9,faithTrack.getPoints());
         try {
-            faithTrack.receivePopeFavor(null);
+            faithTrack.addPopeFavor(null);
             fail();
         } catch (InvalidPopeFavorException e){
             PopeFavor p3 = new PopeFavor(3);
-            faithTrack.receivePopeFavor(p3);
+            faithTrack.addPopeFavor(p3);
             assertEquals(12,faithTrack.getPoints());
 
         }

@@ -14,28 +14,39 @@ public abstract class LeaderCard implements Scoring {
     /**
      * points are the victory points of the card.
      */
-    int points;
-
-    /**
-     * board is the reference to the board.
-     */
-    Board board;
+    private int points;
 
     /**
      * requirements needed to play the card.
      */
-    LeaderCardRequirements requirements;
+    private LeaderCardRequirements requirements;
+
+    /**
+     * board is the reference to the board.
+     */
+    protected Board board;
 
     /**
      * attribute active used to know if the card's been played.
      */
-    boolean active = false;
+    protected boolean active = false;
 
     /**
      * attribute discard used to know if the card's been discarded.
      */
-    boolean discarded = false;
+    protected boolean discarded = false;
 
+    public LeaderCard(int points, LeaderCardRequirements requirements)
+            throws InvalidPointsValueException, InvalidRequirementsException {
+        if(points<=0){
+            throw new InvalidPointsValueException();
+        }
+        if(requirements == null){
+            throw new InvalidRequirementsException();
+        }
+        this.points = points;
+        this.requirements = (LeaderCardRequirements) requirements.clone();
+    }
 
     /**
      * isPlayable calls the Board to check if we match the requirements
@@ -69,8 +80,8 @@ public abstract class LeaderCard implements Scoring {
     public void discard(){
         if(!active && !discarded) {
             discarded = true;
-            board.addFaithPoints();
-            board.removeLeaderCard(this);
+            board.getFaithTrack().addFaithPoints();
+            board.getLeaderCardArea().removeLeaderCard(this);
         }
     }
 
@@ -81,7 +92,7 @@ public abstract class LeaderCard implements Scoring {
     public void initDiscard(){
         if(!active && !discarded) {
             discarded = true;
-            board.removeLeaderCard(this);
+            board.getLeaderCardArea().removeLeaderCard(this);
         }
     }
 
@@ -95,7 +106,7 @@ public abstract class LeaderCard implements Scoring {
             throw new InvalidBoardException();
         }
         this.board = board.clone();
-        board.addLeaderCard(this);
+        board.getLeaderCardArea().addLeaderCard(this);
     }
 
     /**

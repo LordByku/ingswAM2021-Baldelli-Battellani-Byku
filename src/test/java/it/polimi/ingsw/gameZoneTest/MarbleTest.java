@@ -42,66 +42,66 @@ public class MarbleTest {
         Marble red = new RedMarble();
         Marble white = new WhiteMarble();
 
-        ObtainableResourceSet obtainableResourceSet = yellow.collect(board);
+        ObtainableResourceSet obtainableResourceSet = yellow.collect(board.getConversionEffectArea().getConversionEffects());
 
-        ArrayList<Resource> resources = ((ChoiceResourceSet) obtainableResourceSet.getResourceSet()).getResources();
+        ArrayList<Resource> resources = obtainableResourceSet.getResourceSet().getResources();
 
         assertEquals(1, resources.size());
         assertEquals(ConcreteResource.COIN, resources.get(0).getResource());
         assertEquals(0, obtainableResourceSet.getFaithPoints());
 
-        obtainableResourceSet = red.collect(board);
+        obtainableResourceSet = red.collect(board.getConversionEffectArea().getConversionEffects());
 
-        resources = ((ChoiceResourceSet) obtainableResourceSet.getResourceSet()).getResources();
+        resources = obtainableResourceSet.getResourceSet().getResources();
         assertTrue(resources.isEmpty());
         assertEquals(1, obtainableResourceSet.getFaithPoints());
 
-        obtainableResourceSet = white.collect(board);
+        obtainableResourceSet = white.collect(board.getConversionEffectArea().getConversionEffects());
 
-        resources = ((ChoiceResourceSet) obtainableResourceSet.getResourceSet()).getResources();
+        resources = obtainableResourceSet.getResourceSet().getResources();
         assertTrue(resources.isEmpty());
         assertEquals(0, obtainableResourceSet.getFaithPoints());
 
-        board.addConversionEffect(new ConversionEffect(ConcreteResource.SHIELD));
+        board.getConversionEffectArea().addConversionEffect(new ConversionEffect(ConcreteResource.SHIELD));
 
-        obtainableResourceSet = grey.collect(board);
+        obtainableResourceSet = grey.collect(board.getConversionEffectArea().getConversionEffects());
 
-        resources = ((ChoiceResourceSet) obtainableResourceSet.getResourceSet()).getResources();
+        resources = obtainableResourceSet.getResourceSet().getResources();
         assertEquals(1, resources.size());
         assertEquals(ConcreteResource.STONE, resources.get(0).getResource());
         assertEquals(0, obtainableResourceSet.getFaithPoints());
 
-        obtainableResourceSet = red.collect(board);
+        obtainableResourceSet = red.collect(board.getConversionEffectArea().getConversionEffects());
 
-        resources = ((ChoiceResourceSet) obtainableResourceSet.getResourceSet()).getResources();
+        resources = obtainableResourceSet.getResourceSet().getResources();
         assertTrue(resources.isEmpty());
         assertEquals(1, obtainableResourceSet.getFaithPoints());
 
-        obtainableResourceSet = white.collect(board);
+        obtainableResourceSet = white.collect(board.getConversionEffectArea().getConversionEffects());
 
-        resources = ((ChoiceResourceSet) obtainableResourceSet.getResourceSet()).getResources();
+        resources = obtainableResourceSet.getResourceSet().getResources();
         assertEquals(1, resources.size());
         assertEquals(ConcreteResource.SHIELD, resources.get(0).getResource());
         assertEquals(0, obtainableResourceSet.getFaithPoints());
 
-        board.addConversionEffect(new ConversionEffect(ConcreteResource.COIN));
+        board.getConversionEffectArea().addConversionEffect(new ConversionEffect(ConcreteResource.COIN));
 
-        obtainableResourceSet = purple.collect(board);
+        obtainableResourceSet = purple.collect(board.getConversionEffectArea().getConversionEffects());
 
-        resources = ((ChoiceResourceSet) obtainableResourceSet.getResourceSet()).getResources();
+        resources = obtainableResourceSet.getResourceSet().getResources();
         assertEquals(1, resources.size());
         assertEquals(ConcreteResource.SERVANT, resources.get(0).getResource());
         assertEquals(0, obtainableResourceSet.getFaithPoints());
 
-        obtainableResourceSet = red.collect(board);
+        obtainableResourceSet = red.collect(board.getConversionEffectArea().getConversionEffects());
 
-        resources = ((ChoiceResourceSet) obtainableResourceSet.getResourceSet()).getResources();
+        resources = obtainableResourceSet.getResourceSet().getResources();
         assertTrue(resources.isEmpty());
         assertEquals(1, obtainableResourceSet.getFaithPoints());
 
-        obtainableResourceSet = white.collect(board);
+        obtainableResourceSet = white.collect(board.getConversionEffectArea().getConversionEffects());
 
-        resources = ((ChoiceResourceSet) obtainableResourceSet.getResourceSet()).getResources();
+        resources = obtainableResourceSet.getResourceSet().getResources();
         assertEquals(1, resources.size());
         assertFalse(resources.get(0).isConcrete());
         ChoiceResource choiceResource = (ChoiceResource) resources.get(0);

@@ -1,8 +1,9 @@
 package it.polimi.ingsw.gameZone;
 
 import it.polimi.ingsw.gameZone.marbles.*;
-import it.polimi.ingsw.playerBoard.Board;
 import it.polimi.ingsw.playerBoard.InvalidBoardException;
+import it.polimi.ingsw.resources.ChoiceSet;
+import it.polimi.ingsw.resources.InvalidChoiceSetException;
 import it.polimi.ingsw.resources.resourceSets.ObtainableResourceSet;
 
 import java.util.ArrayList;
@@ -68,12 +69,13 @@ public class MarbleMarket {
     /**
      * selectRow returns the ObtainableResourceSet obtained by selecting a given row of the market
      * @param row The chosen row
-     * @param board The Board of the player selecting this row (this is used for applying ConversionEffects)
+     * @param choiceSet The ChoiceSet of possible conversions for this operation
      * @return An ObtainableResourceSet representing all resources collected by selecting the given row
      * @throws InvalidMarbleMarketIndexException row is outside the range of marbles
-     * @throws InvalidBoardException board is null
+     * @throws InvalidChoiceSetException choiceSet is null
      */
-    public ObtainableResourceSet selectRow(int row, Board board) throws InvalidMarbleMarketIndexException, InvalidBoardException {
+    public ObtainableResourceSet selectRow(int row, ChoiceSet choiceSet)
+            throws InvalidMarbleMarketIndexException, InvalidChoiceSetException {
         if(row < 0 || row >= rows) {
             throw new InvalidMarbleMarketIndexException();
         }
@@ -81,7 +83,7 @@ public class MarbleMarket {
         ObtainableResourceSet result = new ObtainableResourceSet();
 
         for(int j = 0; j < columns; ++j) {
-            result = result.union(marbles[row][j].collect(board));
+            result = result.union(marbles[row][j].collect(choiceSet));
         }
 
         return result;
@@ -90,12 +92,13 @@ public class MarbleMarket {
     /**
      * selectColumn returns the ObtainableResourceSet obtained by selecting a given column of the market
      * @param column The chosen column
-     * @param board The Board of the player selecting this row (this is used for applying ConversionEffects)
+     * @param choiceSet The ChoiceSet of possible conversions for this operation
      * @return An ObtainableResourceSet representing all resources collected by selecting the given column
      * @throws InvalidMarbleMarketIndexException column is outside the range of marbles
-     * @throws InvalidBoardException board is null
+     * @throws InvalidChoiceSetException choiceSet is null
      */
-    public ObtainableResourceSet selectColumn(int column, Board board) throws InvalidMarbleMarketIndexException, InvalidBoardException {
+    public ObtainableResourceSet selectColumn(int column, ChoiceSet choiceSet)
+            throws InvalidMarbleMarketIndexException, InvalidChoiceSetException {
         if(column < 0 || column >= columns) {
             throw new InvalidMarbleMarketIndexException();
         }
@@ -103,7 +106,7 @@ public class MarbleMarket {
         ObtainableResourceSet result = new ObtainableResourceSet();
 
         for(int i = 0; i < rows; ++i) {
-            result = result.union(marbles[i][column].collect(board));
+            result = result.union(marbles[i][column].collect(choiceSet));
         }
 
         return result;

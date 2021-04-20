@@ -1,7 +1,7 @@
 package it.polimi.ingsw.gameZone.marbles;
 
-import it.polimi.ingsw.playerBoard.Board;
-import it.polimi.ingsw.playerBoard.InvalidBoardException;
+import it.polimi.ingsw.resources.ChoiceSet;
+import it.polimi.ingsw.resources.InvalidChoiceSetException;
 import it.polimi.ingsw.resources.resourceSets.ObtainableResourceSet;
 
 /**
@@ -26,12 +26,12 @@ public abstract class Marble {
 
     /**
      * collect returns an ObtainableResourceSet representing the resources obtained by collecting this Marble
-     * @param board The Board of the player collecting this Marble (this is used for applying ConversionEffects)
+     * @param choiceSet The ChoiceSet of possible conversions for this operation
      * @return An ObtainableResourceSet with at most one resource or faith point representing the resources
      * obtained by collecting this Marble
-     * @throws InvalidBoardException board is null
+     * @throws InvalidChoiceSetException choiceSet is null
      */
-    public abstract ObtainableResourceSet collect(Board board) throws InvalidBoardException;
+    public abstract ObtainableResourceSet collect(ChoiceSet choiceSet) throws InvalidChoiceSetException;
 
     /**
      * getColour returns the colour of this Marble

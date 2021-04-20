@@ -68,23 +68,23 @@ public class CardTypeSetTest {
         devCard5 = new DevCard(concreteResourceSet2,CardColour.PURPLE,CardLevel.II,details1,1);
 
 
-        board1.addDevCard(devCard1,1);
-        board1.addDevCard(devCard2,2);
-        board1.addDevCard(devCard3,1);
-        board1.addDevCard(devCard4,1);
-        board1.addDevCard(devCard5,2);
-        board1.addDevCard(devCard4,2);
+        board1.getDevelopmentCardArea().addDevCard(devCard1,1);
+        board1.getDevelopmentCardArea().addDevCard(devCard2,2);
+        board1.getDevelopmentCardArea().addDevCard(devCard3,1);
+        board1.getDevelopmentCardArea().addDevCard(devCard4,1);
+        board1.getDevelopmentCardArea().addDevCard(devCard5,2);
+        board1.getDevelopmentCardArea().addDevCard(devCard4,2);
 
-        board2.addDevCard(devCard1,0);
-        board2.addDevCard(devCard3,0);
+        board2.getDevelopmentCardArea().addDevCard(devCard1,0);
+        board2.getDevelopmentCardArea().addDevCard(devCard3,0);
 
 
         assertTrue(cardTypeSet1.isSatisfied(board1));
 
         assertFalse(cardTypeSet1.isSatisfied(board2));
 
-        board2.addDevCard(devCard2,1);
-        board2.addDevCard(devCard4,0);
+        board2.getDevelopmentCardArea().addDevCard(devCard2,1);
+        board2.getDevelopmentCardArea().addDevCard(devCard4,0);
 
         assertTrue(cardTypeSet1.isSatisfied(board2));
 

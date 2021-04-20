@@ -79,7 +79,7 @@ public class VRSObserver {
                     PopeFavor popeFavor = new PopeFavor(vaticanReportSection.getPoints());
                     for (FaithTrack faithTrack : tracks) {
                         if (vaticanReportSection.isInsideSection(faithTrack.getMarkerPosition())) {
-                            faithTrack.receivePopeFavor(popeFavor);
+                            faithTrack.addPopeFavor(popeFavor);
                         }
                     }
                 }

@@ -41,7 +41,7 @@ public class CardTypeSet implements LeaderCardRequirements {
      */
     @Override
     public boolean isSatisfied(Board board) throws InvalidBoardException {
-        ArrayList<DevCard> cards = board.getCards();
+        ArrayList<DevCard> cards = board.getDevelopmentCardArea().getCards();
 
         for(Map.Entry<CardType, Integer> entry: cardTypes.entrySet()) {
             CardType cardType = entry.getKey();

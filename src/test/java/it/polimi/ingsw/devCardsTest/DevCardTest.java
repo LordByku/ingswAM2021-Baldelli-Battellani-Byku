@@ -107,27 +107,27 @@ public class DevCardTest {
         devCard4 = new DevCard(concreteResourceSet2,yellow,CardLevel.III,details1,1);
         devCard5 = new DevCard(concreteResourceSet2,CardColour.PURPLE,CardLevel.II,details1,1);
 
-        board1.addResourcesToStrongbox(concreteResourceSet2);
-        board1.addResourcesToStrongbox(concreteResourceSet1);
+        board1.getStrongBox().addResources(concreteResourceSet2);
+        board1.getStrongBox().addResources(concreteResourceSet1);
 
         assertTrue(devCard1.canPlay(board1,0));
         assertFalse(devCard3.canPlay(board1,0));
 
         assertTrue(board1.containsResources(concreteResourceSet3));
         devCard1.play(board1,0);
-        assertSame(board1.getCards().get(0).getLevel(), devCard1.getLevel());
-        assertSame(board1.getCards().get(0).getColour(), devCard1.getColour());
-        assertSame(board1.getCards().get(0).getReqResources().getResourceType().getResource(), devCard1.getReqResources().getResourceType().getResource());
-        assertSame(board1.getCards().get(0).getPoints(), devCard1.getPoints());
-        assertSame(board1.getCards().get(0).getProductionPower().getInput().getResourceSet().getResources().get(0).getResource(),devCard1.getProductionPower().getInput().getResourceSet().getResources().get(0).getResource());
+        assertSame(board1.getDevelopmentCardArea().getCards().get(0).getLevel(), devCard1.getLevel());
+        assertSame(board1.getDevelopmentCardArea().getCards().get(0).getColour(), devCard1.getColour());
+        assertSame(board1.getDevelopmentCardArea().getCards().get(0).getReqResources().getResourceType().getResource(), devCard1.getReqResources().getResourceType().getResource());
+        assertSame(board1.getDevelopmentCardArea().getCards().get(0).getPoints(), devCard1.getPoints());
+        assertSame(board1.getDevelopmentCardArea().getCards().get(0).getProductionPower().getInput().getResourceSet().getResources().get(0).getResource(),devCard1.getProductionPower().getInput().getResourceSet().getResources().get(0).getResource());
 
         assertFalse((devCard2.canPlay(board1,0)));
         assertTrue(devCard2.canPlay(board1,1));
         devCard2.play(board1,1);
 
-        assertSame(board1.getCards().get(1).getLevel(), devCard2.getLevel());
-        assertSame(board1.getCards().get(1).getColour(), devCard2.getColour());
-        assertSame(board1.getCards().get(1).getPoints(), devCard2.getPoints());
+        assertSame(board1.getDevelopmentCardArea().getCards().get(1).getLevel(), devCard2.getLevel());
+        assertSame(board1.getDevelopmentCardArea().getCards().get(1).getColour(), devCard2.getColour());
+        assertSame(board1.getDevelopmentCardArea().getCards().get(1).getPoints(), devCard2.getPoints());
 
 
     }

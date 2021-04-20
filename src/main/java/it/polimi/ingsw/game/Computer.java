@@ -1,6 +1,7 @@
 package it.polimi.ingsw.game;
 
 import it.polimi.ingsw.game.actionTokens.ActionTokenDeck;
+import it.polimi.ingsw.playerBoard.faithTrack.FaithTrack;
 
 /**
  * Computer is the class for the automated Player
@@ -11,13 +12,17 @@ public class Computer extends Player {
      * deck is the ActionTokenDeck of the Computer
      */
     private ActionTokenDeck deck;
+    /**
+     * faithTrack is the FaithTrack of the Computer
+     */
+    private FaithTrack faithTrack;
 
     /**
      * The constructor initializes deck to a new ActionTokenDeck
      */
     public Computer() {
-        super();
-        deck = new ActionTokenDeck(getBoard());
+        faithTrack = new FaithTrack();
+        deck = new ActionTokenDeck(faithTrack);
     }
 
     /**
@@ -39,5 +44,13 @@ public class Computer extends Player {
         } catch (GameNotStartedException | GameEndedException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * getFaithTrack returns the FaithTrack of the Computer
+     * @return The FaithTrack of the Computer
+     */
+    public FaithTrack getFaithTrack() {
+        return faithTrack;
     }
 }

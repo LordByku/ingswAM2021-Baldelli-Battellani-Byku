@@ -1,6 +1,5 @@
 package it.polimi.ingsw.leaderCards;
 
-import it.polimi.ingsw.playerBoard.resourceLocations.InvalidDepotSizeException;
 import it.polimi.ingsw.resources.ConcreteResource;
 import it.polimi.ingsw.resources.InvalidResourceException;
 
@@ -25,19 +24,11 @@ public class DepotLeaderCard extends LeaderCard{
      */
     public DepotLeaderCard(int points, LeaderCardRequirements requirements, ConcreteResource type)
             throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceException{
-
-        if(points<=0){
-            throw new InvalidPointsValueException();
-        }
-        if(requirements == null){
-            throw new InvalidRequirementsException();
-        }
+        super(points, requirements);
         if(type == null){
             throw new InvalidResourceException();
         }
 
-        this.points=points;
-        this.requirements= (LeaderCardRequirements) requirements.clone();
         this.type=type;
     }
 
@@ -48,7 +39,7 @@ public class DepotLeaderCard extends LeaderCard{
     public void play() {
         if(isPlayable()) {
             active = true;
-            board.addLeaderCardDepot(new LeaderCardDepot(this.type));
+            board.getWarehouse().addLeaderCardDepot(new LeaderCardDepot(this.type));
         }
     }
 

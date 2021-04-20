@@ -60,7 +60,7 @@ public class DiscountLeaderCardTest {
 
         ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
         concreteResourceSet.addResource(ConcreteResource.SHIELD,3);
-        board.addResourcesToWarehouse(2,concreteResourceSet);
+        board.getWarehouse().addResources(2,concreteResourceSet);
 
         try {
             DiscountLeaderCard discountLeaderCard = new DiscountLeaderCard(2,concreteResourceSet,ConcreteResource.SERVANT);

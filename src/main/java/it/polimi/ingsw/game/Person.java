@@ -1,5 +1,7 @@
 package it.polimi.ingsw.game;
 
+import it.polimi.ingsw.playerBoard.Board;
+
 /**
  * Person represents human players
  */
@@ -13,6 +15,10 @@ public class Person extends Player {
      * the turn of this Player
      */
     boolean isActivePlayer;
+    /**
+     * board is the personal Board of the player
+     */
+    private Board board;
 
     /**
      * The constructor creates a new Person given his/her nickname
@@ -20,12 +26,12 @@ public class Person extends Player {
      * @throws InvalidNicknameException nickname is null
      */
     public Person(String nickname) throws InvalidNicknameException {
-        super();
         if(nickname == null) {
             throw new InvalidNicknameException();
         }
         this.nickname = nickname;
         isActivePlayer = false;
+        board = new Board();
     }
 
     /**
@@ -54,5 +60,13 @@ public class Person extends Player {
     public void endTurn() throws GameEndedException, GameNotStartedException {
         isActivePlayer = false;
         Game.getInstance().handleTurnOrder();
+    }
+
+    /**
+     * getBoard returns a copy of the Board of this Player
+     * @return A copy of the Board of this Player
+     */
+    public Board getBoard() {
+        return board.clone();
     }
 }

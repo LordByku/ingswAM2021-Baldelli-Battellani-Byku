@@ -15,7 +15,7 @@ public class CardType {
     /**
      * the constructor initializes a empty set for the level and colour of the set of levels
      * @param colour the colour of the set
-     * @throws InvalidCardColourException
+     * @throws InvalidCardColourException colour is null
      */
     public CardType(CardColour colour) throws InvalidCardColourException {
         if(colour == null) {

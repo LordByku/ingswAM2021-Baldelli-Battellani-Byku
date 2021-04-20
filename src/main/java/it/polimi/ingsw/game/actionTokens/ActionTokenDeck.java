@@ -1,7 +1,8 @@
 package it.polimi.ingsw.game.actionTokens;
 
-import it.polimi.ingsw.playerBoard.Board;
 import it.polimi.ingsw.playerBoard.InvalidBoardException;
+import it.polimi.ingsw.playerBoard.faithTrack.FaithTrack;
+import it.polimi.ingsw.playerBoard.faithTrack.InvalidFaithTrackException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,9 +12,9 @@ import java.util.Collections;
  */
 public class ActionTokenDeck {
     /**
-     * board is the Computer's Board
+     * faithTrack is the Computer's Faith Track
      */
-    private Board board;
+    private FaithTrack faithTrack;
     /**
      * deck is the container of the ActionTokens
      */
@@ -21,14 +22,14 @@ public class ActionTokenDeck {
 
     /**
      * The constructor builds a new deck and initializes board to the given board
-     * @param board The Board of the Computer
-     * @throws InvalidBoardException board is null
+     * @param faithTrack The FaithTrack of the Computer
+     * @throws InvalidFaithTrackException faithTrack is null
      */
-    public ActionTokenDeck(Board board) throws InvalidBoardException {
-        if(board == null) {
+    public ActionTokenDeck(FaithTrack faithTrack) throws InvalidFaithTrackException {
+        if(faithTrack == null) {
             throw new InvalidBoardException();
         }
-        this.board = board.clone();
+        this.faithTrack = faithTrack;
 
         deck = new ArrayList<>();
         deck.add(new DiscardBlueToken());
@@ -61,8 +62,8 @@ public class ActionTokenDeck {
      * getBoard returns a copy of the board
      * @return A copy of the board
      */
-    public Board getBoard() {
-        return board.clone();
+    public FaithTrack getFaithTrack() {
+        return faithTrack;
     }
 
     /**

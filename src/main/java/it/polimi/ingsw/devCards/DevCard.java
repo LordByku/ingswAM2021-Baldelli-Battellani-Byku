@@ -36,9 +36,16 @@ public class DevCard implements Scoring, Cloneable {
      * The constructor
      * @param reqResources set of resources required to buy the card
      * @param colour the colour to be set
+     * @param level The level of the card
+     * @param productionPower The Production effect of the card
+     * @param points The points awarded by the card
+     * @throws InvalidCardColourException colour is null
+     * @throws InvalidCardLevelException level is null
+     * @throws InvalidResourceSetException reqResources is null
+     * @throws InvalidProductionDetailsException productionPower is null
      */
     public DevCard(ConcreteResourceSet reqResources, CardColour colour, CardLevel level, ProductionDetails productionPower,int points)
-            throws InvalidCardColourException, InvalidCardLevelException, InvalidResourceSetException {
+            throws InvalidCardColourException, InvalidCardLevelException, InvalidResourceSetException, InvalidProductionDetailsException {
         if(reqResources == null) {
             throw new InvalidResourceSetException();
         }
@@ -68,7 +75,7 @@ public class DevCard implements Scoring, Cloneable {
         if(board == null) {
             throw new InvalidBoardException();
         }
-        return board.containsResources(reqResources) && board.getTopLevel(deckIndex) == level.prev();
+        return board.containsResources(reqResources) && board.getDevelopmentCardArea().getTopLevel(deckIndex) == level.prev();
     }
 
     /**
@@ -82,8 +89,8 @@ public class DevCard implements Scoring, Cloneable {
             throw new InvalidBoardException();
         }
 
-        board.addDevCard(this, deckIndex);
-        board.addDevCardProduction(productionPower, deckIndex);
+        board.getDevelopmentCardArea().addDevCard(this, deckIndex);
+        board.getProductionArea().addDevCardProduction(productionPower, deckIndex);
     }
 
     public ConcreteResourceSet getReqResources() {

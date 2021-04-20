@@ -24,19 +24,11 @@ public class WhiteConversionLeaderCard extends LeaderCard{
      */
     public WhiteConversionLeaderCard(int points, LeaderCardRequirements requirements, ConcreteResource type)
             throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceException {
-
-        if(points<=0){
-            throw new InvalidPointsValueException();
-        }
-        if(requirements == null){
-            throw new InvalidRequirementsException();
-        }
+        super(points, requirements);
         if(type == null){
             throw new InvalidResourceException();
         }
 
-        this.points=points;
-        this.requirements = (LeaderCardRequirements) requirements.clone();
         this.type=type;
     }
 
@@ -47,7 +39,7 @@ public class WhiteConversionLeaderCard extends LeaderCard{
     public void play() {
         if(isPlayable()){
             active = true;
-            board.addConversionEffect(new ConversionEffect(this.type));
+            board.getConversionEffectArea().addConversionEffect(new ConversionEffect(this.type));
         }
     }
 }

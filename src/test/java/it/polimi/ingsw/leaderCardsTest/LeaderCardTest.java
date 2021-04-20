@@ -53,8 +53,8 @@ public class LeaderCardTest {
 
         ConcreteResourceSet concreteResourceSet2 = new ConcreteResourceSet();
         concreteResourceSet2.addResource(ConcreteResource.SHIELD, 2);
-        board.addResourcesToWarehouse(2,concreteResourceSet);
-        board.addResourcesToWarehouse(1,concreteResourceSet2);
+        board.getWarehouse().addResources(2,concreteResourceSet);
+        board.getWarehouse().addResources(1,concreteResourceSet2);
 
 
         ConcreteResourceSet requirements = new ConcreteResourceSet();
@@ -100,7 +100,7 @@ public class LeaderCardTest {
 
         ConcreteResourceSet concreteResourceSet3 = new ConcreteResourceSet();
         concreteResourceSet3.addResource(ConcreteResource.COIN, 2);
-        board.removeResourcesFromWarehouse(2,concreteResourceSet3);
+        board.getWarehouse().removeResources(2,concreteResourceSet3);
 
         try {
             DepotLeaderCard depotLeaderCard = new DepotLeaderCard(2, requirements, ConcreteResource.COIN);

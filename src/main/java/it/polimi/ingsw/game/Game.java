@@ -57,12 +57,14 @@ public class Game {
 
         Collections.shuffle(players);
 
-        // TODO: handle leader cards distribution
-
         if(players.size() == 1) {
             players.add(new Computer());
+
+            // TODO: handle leader cards distribution to single player
         } else {
             // TODO: handle initial resources distribution
+
+            // TODO: handle leader cards distribution to all players
         }
 
         gameStarted = true;

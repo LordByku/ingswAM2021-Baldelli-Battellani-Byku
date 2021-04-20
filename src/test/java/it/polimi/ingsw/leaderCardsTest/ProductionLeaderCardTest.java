@@ -105,8 +105,8 @@ public class ProductionLeaderCardTest {
         ConcreteResourceSet concreteResourceSet2 = new ConcreteResourceSet();
         concreteResourceSet2.addResource(ConcreteResource.STONE);
 
-        board.addResourcesToWarehouse(2,concreteResourceSet);
-        board.addResourcesToWarehouse(0,concreteResourceSet2);
+        board.getWarehouse().addResources(2,concreteResourceSet);
+        board.getWarehouse().addResources(0,concreteResourceSet2);
 
 
 

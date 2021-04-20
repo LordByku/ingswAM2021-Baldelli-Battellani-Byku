@@ -121,7 +121,7 @@ public class MarbleMarketTest {
             }
         }
 
-        ObtainableResourceSet obtained = marbleMarket.selectRow(1, board);
+        ObtainableResourceSet obtained = marbleMarket.selectRow(1, board.getConversionEffectArea().getConversionEffects());
         ConcreteResourceSet obtainedResources = obtained.getResourceSet().toConcrete();
 
         assertTrue(obtainedResources.contains(expected));
@@ -134,7 +134,7 @@ public class MarbleMarketTest {
         MarbleMarket marbleMarket = new MarbleMarket();
         Board board = new Board();
 
-        board.addConversionEffect(new ConversionEffect(ConcreteResource.COIN));
+        board.getConversionEffectArea().addConversionEffect(new ConversionEffect(ConcreteResource.COIN));
 
         int expectedFaithPoints = 0;
         ConcreteResourceSet expected = new ConcreteResourceSet();
@@ -162,7 +162,7 @@ public class MarbleMarketTest {
             }
         }
 
-        ObtainableResourceSet obtained = marbleMarket.selectColumn(2, board);
+        ObtainableResourceSet obtained = marbleMarket.selectColumn(2, board.getConversionEffectArea().getConversionEffects());
         ConcreteResourceSet obtainedResources = obtained.getResourceSet().toConcrete();
 
         assertTrue(obtainedResources.contains(expected));
@@ -175,8 +175,8 @@ public class MarbleMarketTest {
         MarbleMarket marbleMarket = new MarbleMarket();
         Board board = new Board();
 
-        board.addConversionEffect(new ConversionEffect(ConcreteResource.COIN));
-        board.addConversionEffect(new ConversionEffect(ConcreteResource.STONE));
+        board.getConversionEffectArea().addConversionEffect(new ConversionEffect(ConcreteResource.COIN));
+        board.getConversionEffectArea().addConversionEffect(new ConversionEffect(ConcreteResource.STONE));
 
         Random rng = new Random();
 
@@ -214,7 +214,7 @@ public class MarbleMarketTest {
                 }
             }
             if(white >= 2) {
-                ObtainableResourceSet obtainableResourceSet = marbleMarket.selectRow(i, board);
+                ObtainableResourceSet obtainableResourceSet = marbleMarket.selectRow(i, board.getConversionEffectArea().getConversionEffects());
 
                 ChoiceResourceSet choiceResourceSet = obtainableResourceSet.getResourceSet();
 
@@ -276,7 +276,7 @@ public class MarbleMarketTest {
         }
 
         board = new Board();
-        board.addConversionEffect(new ConversionEffect(ConcreteResource.COIN));
+        board.getConversionEffectArea().addConversionEffect(new ConversionEffect(ConcreteResource.COIN));
 
         while(marbleMarket.getFreeMarbleColour() == MarbleColour.RED) {
             marbleMarket.pushRow(rng.nextInt(3));
@@ -312,7 +312,7 @@ public class MarbleMarketTest {
                 }
             }
             if(red == 1) {
-                ObtainableResourceSet obtainableResourceSet = marbleMarket.selectColumn(j, board);
+                ObtainableResourceSet obtainableResourceSet = marbleMarket.selectColumn(j, board.getConversionEffectArea().getConversionEffects());
 
                 ConcreteResourceSet expected = new ConcreteResourceSet();
                 ConcreteResourceSet obtained = obtainableResourceSet.getResourceSet().toConcrete();

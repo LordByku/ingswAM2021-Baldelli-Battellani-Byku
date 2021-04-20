@@ -70,7 +70,7 @@ public class DepotLeaderCardTest {
         concreteResourceSet3.addResource(ConcreteResource.SERVANT);
 
         try {
-            board.addResourcesToWarehouse(2,concreteResourceSet);
+            board.getWarehouse().addResources(2,concreteResourceSet);
         } catch (InvalidResourceSetException | InvalidDepotIndexException | InvalidResourceLocationOperationException e) {
             fail();
         }
@@ -81,12 +81,12 @@ public class DepotLeaderCardTest {
             assertFalse(depotLeaderCard.isActive());
             depotLeaderCard.play();
             assertTrue(depotLeaderCard.isActive());
-            board.addResourcesToWarehouse(3,concreteResourceSet2);
+            board.getWarehouse().addResources(3,concreteResourceSet2);
             assertTrue(true);
             DepotLeaderCard depotLeaderCardServant = new DepotLeaderCard(2,concreteResourceSet,ConcreteResource.SERVANT);
             depotLeaderCardServant.assignToBoard(board);
             depotLeaderCardServant.play();
-            board.addResourcesToWarehouse(4,concreteResourceSet3);
+            board.getWarehouse().addResources(4,concreteResourceSet3);
             assertTrue(true);
         } catch (InvalidPointsValueException | InvalidRequirementsException | InvalidResourceException | InvalidBoardException | InvalidResourceSetException | InvalidDepotIndexException | InvalidResourceLocationOperationException e) {
             fail();

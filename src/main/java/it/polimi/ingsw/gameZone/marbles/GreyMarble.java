@@ -1,8 +1,8 @@
 package it.polimi.ingsw.gameZone.marbles;
 
-import it.polimi.ingsw.playerBoard.Board;
-import it.polimi.ingsw.playerBoard.InvalidBoardException;
+import it.polimi.ingsw.resources.ChoiceSet;
 import it.polimi.ingsw.resources.ConcreteResource;
+import it.polimi.ingsw.resources.InvalidChoiceSetException;
 import it.polimi.ingsw.resources.resourceSets.ChoiceResourceSet;
 import it.polimi.ingsw.resources.resourceSets.ObtainableResourceSet;
 
@@ -19,14 +19,14 @@ public class GreyMarble extends Marble {
 
     /**
      * collect returns an ObtainableResourceSet containing a STONE
-     * @param board The Board of the player collecting this Marble (this is used for applying ConversionEffects)
+     * @param choiceSet The ChoiceSet of possible conversions for this operation
      * @return An ObtainableResourceSet containing a STONE
-     * @throws InvalidBoardException board is null
+     * @throws InvalidChoiceSetException choiceSet is null
      */
     @Override
-    public ObtainableResourceSet collect(Board board) throws InvalidBoardException {
-        if(board == null) {
-            throw new InvalidBoardException();
+    public ObtainableResourceSet collect(ChoiceSet choiceSet) throws InvalidChoiceSetException {
+        if(choiceSet == null) {
+            throw new InvalidChoiceSetException();
         }
         ChoiceResourceSet choiceResourceSet = new ChoiceResourceSet();
         choiceResourceSet.addResource(ConcreteResource.STONE);

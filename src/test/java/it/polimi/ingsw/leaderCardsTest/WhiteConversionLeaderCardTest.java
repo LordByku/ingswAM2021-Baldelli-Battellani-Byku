@@ -60,7 +60,7 @@ public class WhiteConversionLeaderCardTest {
 
         ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
         concreteResourceSet.addResource(ConcreteResource.SHIELD,3);
-        board.addResourcesToWarehouse(2,concreteResourceSet);
+        board.getWarehouse().addResources(2,concreteResourceSet);
 
 
         try {

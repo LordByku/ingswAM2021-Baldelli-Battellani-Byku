@@ -41,7 +41,7 @@ public class LeaderCardArea implements Scoring {
      * @return The leaderCards active on the Board.
      */
     public ArrayList<LeaderCard> getLeaderCards() {
-        return leaderCards;
+        return (ArrayList<LeaderCard>) leaderCards.clone();
     }
 
     /**

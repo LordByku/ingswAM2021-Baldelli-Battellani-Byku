@@ -1,11 +1,9 @@
 package it.polimi.ingsw.gameZone.marbles;
 
-import it.polimi.ingsw.playerBoard.Board;
-import it.polimi.ingsw.playerBoard.InvalidBoardException;
 import it.polimi.ingsw.resources.ChoiceResource;
 import it.polimi.ingsw.resources.ChoiceSet;
+import it.polimi.ingsw.resources.InvalidChoiceSetException;
 import it.polimi.ingsw.resources.resourceSets.ChoiceResourceSet;
-import it.polimi.ingsw.resources.resourceSets.InvalidResourceSetException;
 import it.polimi.ingsw.resources.resourceSets.ObtainableResourceSet;
 
 /**
@@ -23,21 +21,19 @@ public class WhiteMarble extends Marble {
      * collect returns an empty ObtainableResourceSet if the given board has no ConversionEffects,
      * otherwise an ObtainableResourceSet containing a ChoiceResource where possible choices are
      * those of ConversionEffects
-     * @param board The Board of the player collecting this Marble
+     * @param choiceSet The ChoiceSet of possible conversions for this operation
      * @return An empty ObtainableResourceSet or an ObtainableResourceSet containing a ChoiceResource
-     * @throws InvalidBoardException board is null
+     * @throws InvalidChoiceSetException choiceSet is null
      */
     @Override
-    public ObtainableResourceSet collect(Board board) throws InvalidBoardException {
-        if(board == null) {
-            throw new InvalidBoardException();
+    public ObtainableResourceSet collect(ChoiceSet choiceSet) throws InvalidChoiceSetException {
+        if(choiceSet == null) {
+            throw new InvalidChoiceSetException();
         }
         ChoiceResourceSet choiceResourceSet = new ChoiceResourceSet();
 
-        ChoiceSet conversionChoices = board.getConversionEffects();
-
-        if(!conversionChoices.empty()) {
-            choiceResourceSet.addResource(new ChoiceResource(conversionChoices));
+        if(!choiceSet.empty()) {
+            choiceResourceSet.addResource(new ChoiceResource(choiceSet));
         }
 
         return new ObtainableResourceSet(choiceResourceSet);

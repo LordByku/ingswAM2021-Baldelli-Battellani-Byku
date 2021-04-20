@@ -6,13 +6,13 @@ package it.polimi.ingsw.game.actionTokens;
  */
 public class AdvanceOnceAndReshuffleToken extends ActionToken {
     /**
-     * flip adds a faith point to the Computer's Board and returns a new deck
+     * flip adds a faith point to the Computer's Faith Track and returns a new deck
      * @param deck The current state of the deck
      * @return A new ActionTokenDeck
      */
     @Override
     public ActionTokenDeck flip(ActionTokenDeck deck) {
-        deck.getBoard().addFaithPoints();
-        return new ActionTokenDeck(deck.getBoard());
+        deck.getFaithTrack().addFaithPoints();
+        return new ActionTokenDeck(deck.getFaithTrack());
     }
 }

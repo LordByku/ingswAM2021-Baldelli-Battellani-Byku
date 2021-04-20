@@ -33,19 +33,11 @@ public class ProductionLeaderCard extends LeaderCard{
      */
     public ProductionLeaderCard(int points, LeaderCardRequirements requirements, SpendableResourceSet in, ObtainableResourceSet out)
             throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceSetException {
-
-        if(points<=0){
-            throw new InvalidPointsValueException();
-        }
-        if(requirements == null){
-            throw new InvalidRequirementsException();
-        }
+        super(points, requirements);
         if(in == null || out == null){
             throw new InvalidResourceSetException();
         }
 
-        this.points=points;
-        this.requirements= (LeaderCardRequirements) requirements.clone();
         this.in = in.clone();
         this.out = out.clone();
     }
@@ -57,7 +49,7 @@ public class ProductionLeaderCard extends LeaderCard{
     public void play() {
         if(isPlayable()){
             active = true;
-            board.addLeaderCardProduction(new ProductionDetails(in, out));
+            board.getProductionArea().addLeaderCardProduction(new ProductionDetails(in, out));
         }
     }
 }
