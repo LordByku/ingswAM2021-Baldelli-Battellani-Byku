@@ -6,7 +6,7 @@
 <title>LeaderCard</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="dc.created" content="2021-04-20">
-<meta name="description" content="declaration: package: it.polimi.ingsw.leaderCards, class: LeaderCard">
+<meta name="description" content="declaration: package: it.polimi.ingsw.model.leaderCards, class: LeaderCard">
 <meta name="generator" content="javadoc/ClassWriterImpl">
 <link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
 <link rel="stylesheet" type="text/css" href="../../../../script-dir/jquery-ui.min.css" title="Style">
@@ -73,25 +73,25 @@ loadScripts(document, 'script');</script>
 <main role="main">
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">it.polimi.ingsw.leaderCards</a></div>
+<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">it.polimi.ingsw.model.leaderCards</a></div>
 <h1 title="Class LeaderCard" class="title">Class LeaderCard</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree">java.lang.Object
-<div class="inheritance">it.polimi.ingsw.leaderCards.LeaderCard</div>
+<div class="inheritance">it.polimi.ingsw.model.leaderCards.LeaderCard</div>
 </div>
 <section class="description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../playerBoard/Scoring.html" title="interface in it.polimi.ingsw.playerBoard">Scoring</a></code></dd>
+<dd><code><a href="../playerBoard/Scoring.html" title="interface in it.polimi.ingsw.model.playerBoard">Scoring</a></code></dd>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="DepotLeaderCard.html" title="class in it.polimi.ingsw.leaderCards">DepotLeaderCard</a></code>, <code><a href="DiscountLeaderCard.html" title="class in it.polimi.ingsw.leaderCards">DiscountLeaderCard</a></code>, <code><a href="ProductionLeaderCard.html" title="class in it.polimi.ingsw.leaderCards">ProductionLeaderCard</a></code>, <code><a href="WhiteConversionLeaderCard.html" title="class in it.polimi.ingsw.leaderCards">WhiteConversionLeaderCard</a></code></dd>
+<dd><code><a href="DepotLeaderCard.html" title="class in it.polimi.ingsw.model.leaderCards">DepotLeaderCard</a></code>, <code><a href="DiscountLeaderCard.html" title="class in it.polimi.ingsw.model.leaderCards">DiscountLeaderCard</a></code>, <code><a href="ProductionLeaderCard.html" title="class in it.polimi.ingsw.model.leaderCards">ProductionLeaderCard</a></code>, <code><a href="WhiteConversionLeaderCard.html" title="class in it.polimi.ingsw.model.leaderCards">WhiteConversionLeaderCard</a></code></dd>
 </dl>
 <hr>
 <pre>public abstract class <span class="type-name-label">LeaderCard</span>
 extends java.lang.Object
-implements <a href="../playerBoard/Scoring.html" title="interface in it.polimi.ingsw.playerBoard">Scoring</a></pre>
+implements <a href="../playerBoard/Scoring.html" title="interface in it.polimi.ingsw.model.playerBoard">Scoring</a></pre>
 <div class="block">LeaderCard refers to all the leader cards.</div>
 </section>
 <section class="summary">
@@ -119,7 +119,7 @@ implements <a href="../playerBoard/Scoring.html" title="interface in it.polimi.i
 </td>
 </tr>
 <tr class="row-color">
-<td class="col-first"><code>protected <a href="../playerBoard/Board.html" title="class in it.polimi.ingsw.playerBoard">Board</a></code></td>
+<td class="col-first"><code>protected <a href="../playerBoard/Board.html" title="class in it.polimi.ingsw.model.playerBoard">Board</a></code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#board">board</a></span></code></th>
 <td class="col-last">
 <div class="block">board is the reference to the board.</div>
@@ -153,7 +153,7 @@ implements <a href="../playerBoard/Scoring.html" title="interface in it.polimi.i
 <tbody>
 <tr class="alt-color">
 <th class="col-constructor-name" scope="row"><code><span class="member-name-link"><a href="#%3Cinit%3E(int,it.polimi.ingsw.leaderCards.LeaderCardRequirements)">LeaderCard</a></span>&#8203;(int&nbsp;points,
-<a href="LeaderCardRequirements.html" title="interface in it.polimi.ingsw.leaderCards">LeaderCardRequirements</a>&nbsp;requirements)</code></th>
+<a href="LeaderCardRequirements.html" title="interface in it.polimi.ingsw.model.leaderCards">LeaderCardRequirements</a>&nbsp;requirements)</code></th>
 <td class="col-last">&nbsp;</td>
 </tr>
 </tbody>
@@ -179,7 +179,7 @@ implements <a href="../playerBoard/Scoring.html" title="interface in it.polimi.i
 <tbody>
 <tr class="alt-color" id="i0">
 <td class="col-first"><code>void</code></td>
-<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#assignToBoard(it.polimi.ingsw.playerBoard.Board)">assignToBoard</a></span>&#8203;(<a href="../playerBoard/Board.html" title="class in it.polimi.ingsw.playerBoard">Board</a>&nbsp;board)</code></th>
+<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#assignToBoard(it.polimi.ingsw.playerBoard.Board)">assignToBoard</a></span>&#8203;(<a href="../playerBoard/Board.html" title="class in it.polimi.ingsw.model.playerBoard">Board</a>&nbsp;board)</code></th>
 <td class="col-last">
 <div class="block">Assign the LeaderCard to the board.</div>
 </td>
@@ -245,7 +245,7 @@ implements <a href="../playerBoard/Scoring.html" title="interface in it.polimi.i
 <li>
 <section class="detail" id="board">
 <h3>board</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../playerBoard/Board.html" title="class in it.polimi.ingsw.playerBoard">Board</a></span>&nbsp;<span class="member-name">board</span></div>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../playerBoard/Board.html" title="class in it.polimi.ingsw.model.playerBoard">Board</a></span>&nbsp;<span class="member-name">board</span></div>
 <div class="block">board is the reference to the board.</div>
 </section>
 </li>
@@ -275,13 +275,13 @@ implements <a href="../playerBoard/Scoring.html" title="interface in it.polimi.i
 <section class="detail" id="&lt;init&gt;(int,it.polimi.ingsw.leaderCards.LeaderCardRequirements)">
 <h3>LeaderCard</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="member-name">LeaderCard</span>&#8203;(<span class="parameters">int&nbsp;points,
-<a href="LeaderCardRequirements.html" title="interface in it.polimi.ingsw.leaderCards">LeaderCardRequirements</a>&nbsp;requirements)</span>
-           throws <span class="exceptions"><a href="InvalidPointsValueException.html" title="class in it.polimi.ingsw.leaderCards">InvalidPointsValueException</a>,
-<a href="InvalidRequirementsException.html" title="class in it.polimi.ingsw.leaderCards">InvalidRequirementsException</a></span></div>
+<a href="LeaderCardRequirements.html" title="interface in it.polimi.ingsw.model.leaderCards">LeaderCardRequirements</a>&nbsp;requirements)</span>
+           throws <span class="exceptions"><a href="InvalidPointsValueException.html" title="class in it.polimi.ingsw.model.leaderCards">InvalidPointsValueException</a>,
+<a href="InvalidRequirementsException.html" title="class in it.polimi.ingsw.model.leaderCards">InvalidRequirementsException</a></span></div>
 <dl class="notes">
 <dt>Throws:</dt>
-<dd><code><a href="InvalidPointsValueException.html" title="class in it.polimi.ingsw.leaderCards">InvalidPointsValueException</a></code></dd>
-<dd><code><a href="InvalidRequirementsException.html" title="class in it.polimi.ingsw.leaderCards">InvalidRequirementsException</a></code></dd>
+<dd><code><a href="InvalidPointsValueException.html" title="class in it.polimi.ingsw.model.leaderCards">InvalidPointsValueException</a></code></dd>
+<dd><code><a href="InvalidRequirementsException.html" title="class in it.polimi.ingsw.model.leaderCards">InvalidRequirementsException</a></code></dd>
 </dl>
 </section>
 </li>
@@ -318,11 +318,11 @@ implements <a href="../playerBoard/Scoring.html" title="interface in it.polimi.i
 <section class="detail" id="play()">
 <h3>play</h3>
 <div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="member-name">play</span>()
-                   throws <span class="exceptions"><a href="../resources/InvalidResourceException.html" title="class in it.polimi.ingsw.resources">InvalidResourceException</a></span></div>
+                   throws <span class="exceptions"><a href="../resources/InvalidResourceException.html" title="class in it.polimi.ingsw.model.resources">InvalidResourceException</a></span></div>
 <div class="block">Check if the card is playable and plays it.</div>
 <dl class="notes">
 <dt>Throws:</dt>
-<dd><code><a href="../resources/InvalidResourceException.html" title="class in it.polimi.ingsw.resources">InvalidResourceException</a></code></dd>
+<dd><code><a href="../resources/InvalidResourceException.html" title="class in it.polimi.ingsw.model.resources">InvalidResourceException</a></code></dd>
 </dl>
 </section>
 </li>
@@ -344,14 +344,14 @@ implements <a href="../playerBoard/Scoring.html" title="interface in it.polimi.i
 <li>
 <section class="detail" id="assignToBoard(it.polimi.ingsw.playerBoard.Board)">
 <h3>assignToBoard</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="member-name">assignToBoard</span>&#8203;(<span class="parameters"><a href="../playerBoard/Board.html" title="class in it.polimi.ingsw.playerBoard">Board</a>&nbsp;board)</span>
-                   throws <span class="exceptions"><a href="../playerBoard/InvalidBoardException.html" title="class in it.polimi.ingsw.playerBoard">InvalidBoardException</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="member-name">assignToBoard</span>&#8203;(<span class="parameters"><a href="../playerBoard/Board.html" title="class in it.polimi.ingsw.model.playerBoard">Board</a>&nbsp;board)</span>
+                   throws <span class="exceptions"><a href="../playerBoard/InvalidBoardException.html" title="class in it.polimi.ingsw.model.playerBoard">InvalidBoardException</a></span></div>
 <div class="block">Assign the LeaderCard to the board.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>board</code> - containing the LeaderCard.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../playerBoard/InvalidBoardException.html" title="class in it.polimi.ingsw.playerBoard">InvalidBoardException</a></code> - board is null</dd>
+<dd><code><a href="../playerBoard/InvalidBoardException.html" title="class in it.polimi.ingsw.model.playerBoard">InvalidBoardException</a></code> - board is null</dd>
 </dl>
 </section>
 </li>
@@ -362,7 +362,7 @@ implements <a href="../playerBoard/Scoring.html" title="interface in it.polimi.i
 <div class="block">getPoints returns the amount of points awarded by this LeaderCard</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../playerBoard/Scoring.html#getPoints()">getPoints</a></code>&nbsp;in interface&nbsp;<code><a href="../playerBoard/Scoring.html" title="interface in it.polimi.ingsw.playerBoard">Scoring</a></code></dd>
+<dd><code><a href="../playerBoard/Scoring.html#getPoints()">getPoints</a></code>&nbsp;in interface&nbsp;<code><a href="../playerBoard/Scoring.html" title="interface in it.polimi.ingsw.model.playerBoard">Scoring</a></code></dd>
 <dt>Returns:</dt>
 <dd>The amount of points awarded by this LeaderCard</dd>
 </dl>

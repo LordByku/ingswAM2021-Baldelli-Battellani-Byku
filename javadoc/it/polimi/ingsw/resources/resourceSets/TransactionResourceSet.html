@@ -6,7 +6,7 @@
 <title>TransactionResourceSet</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="dc.created" content="2021-04-20">
-<meta name="description" content="declaration: package: it.polimi.ingsw.resources.resourceSets, class: TransactionResourceSet">
+<meta name="description" content="declaration: package: it.polimi.ingsw.model.resources.resourceSets, class: TransactionResourceSet">
 <meta name="generator" content="javadoc/ClassWriterImpl">
 <link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
 <link rel="stylesheet" type="text/css" href="../../../../../script-dir/jquery-ui.min.css" title="Style">
@@ -73,11 +73,11 @@ loadScripts(document, 'script');</script>
 <main role="main">
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">it.polimi.ingsw.resources.resourceSets</a></div>
+<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">it.polimi.ingsw.model.resources.resourceSets</a></div>
 <h1 title="Class TransactionResourceSet" class="title">Class TransactionResourceSet</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree">java.lang.Object
-<div class="inheritance">it.polimi.ingsw.resources.resourceSets.TransactionResourceSet</div>
+<div class="inheritance">it.polimi.ingsw.model.resources.resourceSets.TransactionResourceSet</div>
 </div>
 <section class="description">
 <dl class="notes">
@@ -86,7 +86,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="ObtainableResourceSet.html" title="class in it.polimi.ingsw.resources.resourceSets">ObtainableResourceSet</a></code>, <code><a href="SpendableResourceSet.html" title="class in it.polimi.ingsw.resources.resourceSets">SpendableResourceSet</a></code></dd>
+<dd><code><a href="ObtainableResourceSet.html" title="class in it.polimi.ingsw.model.resources.resourceSets">ObtainableResourceSet</a></code>, <code><a href="SpendableResourceSet.html" title="class in it.polimi.ingsw.model.resources.resourceSets">SpendableResourceSet</a></code></dd>
 </dl>
 <hr>
 <pre>public abstract class <span class="type-name-label">TransactionResourceSet</span>
@@ -118,7 +118,7 @@ implements java.lang.Cloneable</pre>
 </td>
 </tr>
 <tr class="row-color">
-<th class="col-constructor-name" scope="row"><code><span class="member-name-link"><a href="#%3Cinit%3E(it.polimi.ingsw.resources.resourceSets.ChoiceResourceSet)">TransactionResourceSet</a></span>&#8203;(<a href="ChoiceResourceSet.html" title="class in it.polimi.ingsw.resources.resourceSets">ChoiceResourceSet</a>&nbsp;choiceResourceSet)</code></th>
+<th class="col-constructor-name" scope="row"><code><span class="member-name-link"><a href="#%3Cinit%3E(it.polimi.ingsw.resources.resourceSets.ChoiceResourceSet)">TransactionResourceSet</a></span>&#8203;(<a href="ChoiceResourceSet.html" title="class in it.polimi.ingsw.model.resources.resourceSets">ChoiceResourceSet</a>&nbsp;choiceResourceSet)</code></th>
 <td class="col-last">
 <div class="block">This constructor initializes resources to a given ChoiceResourceSet</div>
 </td>
@@ -152,7 +152,7 @@ implements java.lang.Cloneable</pre>
 </td>
 </tr>
 <tr class="row-color" id="i1">
-<td class="col-first"><code><a href="ChoiceResourceSet.html" title="class in it.polimi.ingsw.resources.resourceSets">ChoiceResourceSet</a></code></td>
+<td class="col-first"><code><a href="ChoiceResourceSet.html" title="class in it.polimi.ingsw.model.resources.resourceSets">ChoiceResourceSet</a></code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#getResourceSet()">getResourceSet</a></span>()</code></th>
 <td class="col-last">
 <div class="block">getResourceSet returns a copy of resources</div>
@@ -186,14 +186,14 @@ implements java.lang.Cloneable</pre>
 <li>
 <section class="detail" id="&lt;init&gt;(it.polimi.ingsw.resources.resourceSets.ChoiceResourceSet)">
 <h3>TransactionResourceSet</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="member-name">TransactionResourceSet</span>&#8203;(<span class="parameters"><a href="ChoiceResourceSet.html" title="class in it.polimi.ingsw.resources.resourceSets">ChoiceResourceSet</a>&nbsp;choiceResourceSet)</span>
-                       throws <span class="exceptions"><a href="InvalidResourceSetException.html" title="class in it.polimi.ingsw.resources.resourceSets">InvalidResourceSetException</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="member-name">TransactionResourceSet</span>&#8203;(<span class="parameters"><a href="ChoiceResourceSet.html" title="class in it.polimi.ingsw.model.resources.resourceSets">ChoiceResourceSet</a>&nbsp;choiceResourceSet)</span>
+                       throws <span class="exceptions"><a href="InvalidResourceSetException.html" title="class in it.polimi.ingsw.model.resources.resourceSets">InvalidResourceSetException</a></span></div>
 <div class="block">This constructor initializes resources to a given ChoiceResourceSet</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>choiceResourceSet</code> - The ChoiceResourceSet to copy from</dd>
 <dt>Throws:</dt>
-<dd><code><a href="InvalidResourceSetException.html" title="class in it.polimi.ingsw.resources.resourceSets">InvalidResourceSetException</a></code> - choiceResourceSet is null</dd>
+<dd><code><a href="InvalidResourceSetException.html" title="class in it.polimi.ingsw.model.resources.resourceSets">InvalidResourceSetException</a></code> - choiceResourceSet is null</dd>
 </dl>
 </section>
 </li>
@@ -208,7 +208,7 @@ implements java.lang.Cloneable</pre>
 <li>
 <section class="detail" id="getResourceSet()">
 <h3>getResourceSet</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ChoiceResourceSet.html" title="class in it.polimi.ingsw.resources.resourceSets">ChoiceResourceSet</a></span>&nbsp;<span class="member-name">getResourceSet</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ChoiceResourceSet.html" title="class in it.polimi.ingsw.model.resources.resourceSets">ChoiceResourceSet</a></span>&nbsp;<span class="member-name">getResourceSet</span>()</div>
 <div class="block">getResourceSet returns a copy of resources</div>
 <dl class="notes">
 <dt>Returns:</dt>

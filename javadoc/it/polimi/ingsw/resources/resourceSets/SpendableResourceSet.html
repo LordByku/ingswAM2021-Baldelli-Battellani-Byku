@@ -6,7 +6,7 @@
 <title>SpendableResourceSet</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="dc.created" content="2021-04-20">
-<meta name="description" content="declaration: package: it.polimi.ingsw.resources.resourceSets, class: SpendableResourceSet">
+<meta name="description" content="declaration: package: it.polimi.ingsw.model.resources.resourceSets, class: SpendableResourceSet">
 <meta name="generator" content="javadoc/ClassWriterImpl">
 <link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
 <link rel="stylesheet" type="text/css" href="../../../../../script-dir/jquery-ui.min.css" title="Style">
@@ -73,12 +73,12 @@ loadScripts(document, 'script');</script>
 <main role="main">
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">it.polimi.ingsw.resources.resourceSets</a></div>
+<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">it.polimi.ingsw.model.resources.resourceSets</a></div>
 <h1 title="Class SpendableResourceSet" class="title">Class SpendableResourceSet</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree">java.lang.Object
-<div class="inheritance"><a href="TransactionResourceSet.html" title="class in it.polimi.ingsw.resources.resourceSets">it.polimi.ingsw.resources.resourceSets.TransactionResourceSet</a>
-<div class="inheritance">it.polimi.ingsw.resources.resourceSets.SpendableResourceSet</div>
+<div class="inheritance"><a href="TransactionResourceSet.html" title="class in it.polimi.ingsw.model.resources.resourceSets">it.polimi.ingsw.model.resources.resourceSets.TransactionResourceSet</a>
+<div class="inheritance">it.polimi.ingsw.model.resources.resourceSets.SpendableResourceSet</div>
 </div>
 </div>
 <section class="description">
@@ -88,7 +88,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <pre>public class <span class="type-name-label">SpendableResourceSet</span>
-extends <a href="TransactionResourceSet.html" title="class in it.polimi.ingsw.resources.resourceSets">TransactionResourceSet</a></pre>
+extends <a href="TransactionResourceSet.html" title="class in it.polimi.ingsw.model.resources.resourceSets">TransactionResourceSet</a></pre>
 <div class="block">SpendableResourceSet is a TransactionResourceSet where the resource set
  is going to be consumed by a player (board)
  This TransactionResourceSet does not include faith points as they cannot be spent.</div>
@@ -116,7 +116,7 @@ extends <a href="TransactionResourceSet.html" title="class in it.polimi.ingsw.re
 </td>
 </tr>
 <tr class="row-color">
-<th class="col-constructor-name" scope="row"><code><span class="member-name-link"><a href="#%3Cinit%3E(it.polimi.ingsw.resources.resourceSets.ChoiceResourceSet)">SpendableResourceSet</a></span>&#8203;(<a href="ChoiceResourceSet.html" title="class in it.polimi.ingsw.resources.resourceSets">ChoiceResourceSet</a>&nbsp;choiceResourceSet)</code></th>
+<th class="col-constructor-name" scope="row"><code><span class="member-name-link"><a href="#%3Cinit%3E(it.polimi.ingsw.resources.resourceSets.ChoiceResourceSet)">SpendableResourceSet</a></span>&#8203;(<a href="ChoiceResourceSet.html" title="class in it.polimi.ingsw.model.resources.resourceSets">ChoiceResourceSet</a>&nbsp;choiceResourceSet)</code></th>
 <td class="col-last">
 <div class="block">This constructor calls the constructor for TransactionResourceSet which uses a ChoiceResourceSet</div>
 </td>
@@ -143,7 +143,7 @@ extends <a href="TransactionResourceSet.html" title="class in it.polimi.ingsw.re
 </thead>
 <tbody>
 <tr class="alt-color" id="i0">
-<td class="col-first"><code><a href="SpendableResourceSet.html" title="class in it.polimi.ingsw.resources.resourceSets">SpendableResourceSet</a></code></td>
+<td class="col-first"><code><a href="SpendableResourceSet.html" title="class in it.polimi.ingsw.model.resources.resourceSets">SpendableResourceSet</a></code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#clone()">clone</a></span>()</code></th>
 <td class="col-last">
 <div class="block">clone returns a copy of the object</div>
@@ -151,7 +151,7 @@ extends <a href="TransactionResourceSet.html" title="class in it.polimi.ingsw.re
 </tr>
 <tr class="row-color" id="i1">
 <td class="col-first"><code>boolean</code></td>
-<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#match(it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet)">match</a></span>&#8203;(<a href="ConcreteResourceSet.html" title="class in it.polimi.ingsw.resources.resourceSets">ConcreteResourceSet</a>&nbsp;concreteResourceSet)</code></th>
+<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#match(it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet)">match</a></span>&#8203;(<a href="ConcreteResourceSet.html" title="class in it.polimi.ingsw.model.resources.resourceSets">ConcreteResourceSet</a>&nbsp;concreteResourceSet)</code></th>
 <td class="col-last">
 <div class="block">match checks whether a given ConcreteResourceSet matches the ChoiceResourceSet in
  this SpendableResourceSet
@@ -160,8 +160,8 @@ extends <a href="TransactionResourceSet.html" title="class in it.polimi.ingsw.re
 </td>
 </tr>
 <tr class="alt-color" id="i2">
-<td class="col-first"><code><a href="SpendableResourceSet.html" title="class in it.polimi.ingsw.resources.resourceSets">SpendableResourceSet</a></code></td>
-<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#union(it.polimi.ingsw.resources.resourceSets.SpendableResourceSet)">union</a></span>&#8203;(<a href="SpendableResourceSet.html" title="class in it.polimi.ingsw.resources.resourceSets">SpendableResourceSet</a>&nbsp;other)</code></th>
+<td class="col-first"><code><a href="SpendableResourceSet.html" title="class in it.polimi.ingsw.model.resources.resourceSets">SpendableResourceSet</a></code></td>
+<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#union(it.polimi.ingsw.resources.resourceSets.SpendableResourceSet)">union</a></span>&#8203;(<a href="SpendableResourceSet.html" title="class in it.polimi.ingsw.model.resources.resourceSets">SpendableResourceSet</a>&nbsp;other)</code></th>
 <td class="col-last">
 <div class="block">union adds to this SpendableResourceSet all the resources
  contained in another SpendableResourceSet</div>
@@ -172,7 +172,7 @@ extends <a href="TransactionResourceSet.html" title="class in it.polimi.ingsw.re
 </div>
 </div>
 <div class="inherited-list">
-<h3 id="methods.inherited.from.class.it.polimi.ingsw.resources.resourceSets.TransactionResourceSet">Methods inherited from class&nbsp;it.polimi.ingsw.resources.resourceSets.<a href="TransactionResourceSet.html" title="class in it.polimi.ingsw.resources.resourceSets">TransactionResourceSet</a></h3>
+<h3 id="methods.inherited.from.class.it.polimi.ingsw.resources.resourceSets.TransactionResourceSet">Methods inherited from class&nbsp;it.polimi.ingsw.model.resources.resourceSets.<a href="TransactionResourceSet.html" title="class in it.polimi.ingsw.model.resources.resourceSets">TransactionResourceSet</a></h3>
 <code><a href="TransactionResourceSet.html#getResourceSet()">getResourceSet</a></code></div>
 <div class="inherited-list">
 <h3 id="methods.inherited.from.class.java.lang.Object">Methods inherited from class&nbsp;java.lang.Object</h3>
@@ -198,14 +198,14 @@ extends <a href="TransactionResourceSet.html" title="class in it.polimi.ingsw.re
 <li>
 <section class="detail" id="&lt;init&gt;(it.polimi.ingsw.resources.resourceSets.ChoiceResourceSet)">
 <h3>SpendableResourceSet</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="member-name">SpendableResourceSet</span>&#8203;(<span class="parameters"><a href="ChoiceResourceSet.html" title="class in it.polimi.ingsw.resources.resourceSets">ChoiceResourceSet</a>&nbsp;choiceResourceSet)</span>
-                     throws <span class="exceptions"><a href="InvalidResourceSetException.html" title="class in it.polimi.ingsw.resources.resourceSets">InvalidResourceSetException</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="member-name">SpendableResourceSet</span>&#8203;(<span class="parameters"><a href="ChoiceResourceSet.html" title="class in it.polimi.ingsw.model.resources.resourceSets">ChoiceResourceSet</a>&nbsp;choiceResourceSet)</span>
+                     throws <span class="exceptions"><a href="InvalidResourceSetException.html" title="class in it.polimi.ingsw.model.resources.resourceSets">InvalidResourceSetException</a></span></div>
 <div class="block">This constructor calls the constructor for TransactionResourceSet which uses a ChoiceResourceSet</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>choiceResourceSet</code> - The ChoiceResourceSet to copy from</dd>
 <dt>Throws:</dt>
-<dd><code><a href="InvalidResourceSetException.html" title="class in it.polimi.ingsw.resources.resourceSets">InvalidResourceSetException</a></code> - choiceResourceSet is null</dd>
+<dd><code><a href="InvalidResourceSetException.html" title="class in it.polimi.ingsw.model.resources.resourceSets">InvalidResourceSetException</a></code> - choiceResourceSet is null</dd>
 </dl>
 </section>
 </li>
@@ -220,15 +220,15 @@ extends <a href="TransactionResourceSet.html" title="class in it.polimi.ingsw.re
 <li>
 <section class="detail" id="union(it.polimi.ingsw.resources.resourceSets.SpendableResourceSet)">
 <h3>union</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="SpendableResourceSet.html" title="class in it.polimi.ingsw.resources.resourceSets">SpendableResourceSet</a></span>&nbsp;<span class="member-name">union</span>&#8203;(<span class="parameters"><a href="SpendableResourceSet.html" title="class in it.polimi.ingsw.resources.resourceSets">SpendableResourceSet</a>&nbsp;other)</span>
-                           throws <span class="exceptions"><a href="InvalidResourceSetException.html" title="class in it.polimi.ingsw.resources.resourceSets">InvalidResourceSetException</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="SpendableResourceSet.html" title="class in it.polimi.ingsw.model.resources.resourceSets">SpendableResourceSet</a></span>&nbsp;<span class="member-name">union</span>&#8203;(<span class="parameters"><a href="SpendableResourceSet.html" title="class in it.polimi.ingsw.model.resources.resourceSets">SpendableResourceSet</a>&nbsp;other)</span>
+                           throws <span class="exceptions"><a href="InvalidResourceSetException.html" title="class in it.polimi.ingsw.model.resources.resourceSets">InvalidResourceSetException</a></span></div>
 <div class="block">union adds to this SpendableResourceSet all the resources
  contained in another SpendableResourceSet</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>other</code> - The SpendableResourceSet to add resources from</dd>
 <dt>Throws:</dt>
-<dd><code><a href="InvalidResourceSetException.html" title="class in it.polimi.ingsw.resources.resourceSets">InvalidResourceSetException</a></code> - other is null, or this SpendableResourceSet
+<dd><code><a href="InvalidResourceSetException.html" title="class in it.polimi.ingsw.model.resources.resourceSets">InvalidResourceSetException</a></code> - other is null, or this SpendableResourceSet
  has been converted but other has not, or vice versa</dd>
 </dl>
 </section>
@@ -236,11 +236,11 @@ extends <a href="TransactionResourceSet.html" title="class in it.polimi.ingsw.re
 <li>
 <section class="detail" id="clone()">
 <h3>clone</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="SpendableResourceSet.html" title="class in it.polimi.ingsw.resources.resourceSets">SpendableResourceSet</a></span>&nbsp;<span class="member-name">clone</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="SpendableResourceSet.html" title="class in it.polimi.ingsw.model.resources.resourceSets">SpendableResourceSet</a></span>&nbsp;<span class="member-name">clone</span>()</div>
 <div class="block">clone returns a copy of the object</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="TransactionResourceSet.html#clone()">clone</a></code>&nbsp;in class&nbsp;<code><a href="TransactionResourceSet.html" title="class in it.polimi.ingsw.resources.resourceSets">TransactionResourceSet</a></code></dd>
+<dd><code><a href="TransactionResourceSet.html#clone()">clone</a></code>&nbsp;in class&nbsp;<code><a href="TransactionResourceSet.html" title="class in it.polimi.ingsw.model.resources.resourceSets">TransactionResourceSet</a></code></dd>
 <dt>Returns:</dt>
 <dd>A copy of the object</dd>
 </dl>
@@ -249,8 +249,8 @@ extends <a href="TransactionResourceSet.html" title="class in it.polimi.ingsw.re
 <li>
 <section class="detail" id="match(it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet)">
 <h3>match</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="member-name">match</span>&#8203;(<span class="parameters"><a href="ConcreteResourceSet.html" title="class in it.polimi.ingsw.resources.resourceSets">ConcreteResourceSet</a>&nbsp;concreteResourceSet)</span>
-              throws <span class="exceptions"><a href="InvalidResourceSetException.html" title="class in it.polimi.ingsw.resources.resourceSets">InvalidResourceSetException</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="member-name">match</span>&#8203;(<span class="parameters"><a href="ConcreteResourceSet.html" title="class in it.polimi.ingsw.model.resources.resourceSets">ConcreteResourceSet</a>&nbsp;concreteResourceSet)</span>
+              throws <span class="exceptions"><a href="InvalidResourceSetException.html" title="class in it.polimi.ingsw.model.resources.resourceSets">InvalidResourceSetException</a></span></div>
 <div class="block">match checks whether a given ConcreteResourceSet matches the ChoiceResourceSet in
  this SpendableResourceSet
  Note that the check is made assuming that all ChoiceResources in a
@@ -262,7 +262,7 @@ extends <a href="TransactionResourceSet.html" title="class in it.polimi.ingsw.re
 <dd>True iff the ChoiceResourceSet in this SpendableResourceSet could be
  converted to concreteResourceSet</dd>
 <dt>Throws:</dt>
-<dd><code><a href="InvalidResourceSetException.html" title="class in it.polimi.ingsw.resources.resourceSets">InvalidResourceSetException</a></code> - concreteResourceSet is null</dd>
+<dd><code><a href="InvalidResourceSetException.html" title="class in it.polimi.ingsw.model.resources.resourceSets">InvalidResourceSetException</a></code> - concreteResourceSet is null</dd>
 </dl>
 </section>
 </li>

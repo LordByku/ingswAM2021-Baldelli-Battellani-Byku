@@ -6,7 +6,7 @@
 <title>LeaderCardRequirements</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="dc.created" content="2021-04-20">
-<meta name="description" content="declaration: package: it.polimi.ingsw.leaderCards, interface: LeaderCardRequirements">
+<meta name="description" content="declaration: package: it.polimi.ingsw.model.leaderCards, interface: LeaderCardRequirements">
 <meta name="generator" content="javadoc/ClassWriterImpl">
 <link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
 <link rel="stylesheet" type="text/css" href="../../../../script-dir/jquery-ui.min.css" title="Style">
@@ -73,7 +73,7 @@ loadScripts(document, 'script');</script>
 <main role="main">
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">it.polimi.ingsw.leaderCards</a></div>
+<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">it.polimi.ingsw.model.leaderCards</a></div>
 <h1 title="Interface LeaderCardRequirements" class="title">Interface LeaderCardRequirements</h1>
 </div>
 <section class="description">
@@ -83,7 +83,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>All Known Implementing Classes:</dt>
-<dd><code><a href="../devCards/CardTypeSet.html" title="class in it.polimi.ingsw.devCards">CardTypeSet</a></code>, <code><a href="../resources/resourceSets/ConcreteResourceSet.html" title="class in it.polimi.ingsw.resources.resourceSets">ConcreteResourceSet</a></code></dd>
+<dd><code><a href="../devCards/CardTypeSet.html" title="class in it.polimi.ingsw.model.devCards">CardTypeSet</a></code>, <code><a href="../resources/resourceSets/ConcreteResourceSet.html" title="class in it.polimi.ingsw.model.resources.resourceSets">ConcreteResourceSet</a></code></dd>
 </dl>
 <hr>
 <pre>public interface <span class="type-name-label">LeaderCardRequirements</span>
@@ -117,7 +117,7 @@ extends java.lang.Cloneable</pre>
 </tr>
 <tr class="row-color" id="i1">
 <td class="col-first"><code>boolean</code></td>
-<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#isSatisfied(it.polimi.ingsw.playerBoard.Board)">isSatisfied</a></span>&#8203;(<a href="../playerBoard/Board.html" title="class in it.polimi.ingsw.playerBoard">Board</a>&nbsp;board)</code></th>
+<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#isSatisfied(it.polimi.ingsw.playerBoard.Board)">isSatisfied</a></span>&#8203;(<a href="../playerBoard/Board.html" title="class in it.polimi.ingsw.model.playerBoard">Board</a>&nbsp;board)</code></th>
 <td class="col-last">
 <div class="block">isSatisfied calls the board to check if it match the requirements.</div>
 </td>
@@ -140,8 +140,8 @@ extends java.lang.Cloneable</pre>
 <li>
 <section class="detail" id="isSatisfied(it.polimi.ingsw.playerBoard.Board)">
 <h3>isSatisfied</h3>
-<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="member-name">isSatisfied</span>&#8203;(<span class="parameters"><a href="../playerBoard/Board.html" title="class in it.polimi.ingsw.playerBoard">Board</a>&nbsp;board)</span>
-             throws <span class="exceptions"><a href="../playerBoard/InvalidBoardException.html" title="class in it.polimi.ingsw.playerBoard">InvalidBoardException</a></span></div>
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="member-name">isSatisfied</span>&#8203;(<span class="parameters"><a href="../playerBoard/Board.html" title="class in it.polimi.ingsw.model.playerBoard">Board</a>&nbsp;board)</span>
+             throws <span class="exceptions"><a href="../playerBoard/InvalidBoardException.html" title="class in it.polimi.ingsw.model.playerBoard">InvalidBoardException</a></span></div>
 <div class="block">isSatisfied calls the board to check if it match the requirements.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -149,7 +149,7 @@ extends java.lang.Cloneable</pre>
 <dt>Returns:</dt>
 <dd>true if the board matches the requirements, false otherwise.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../playerBoard/InvalidBoardException.html" title="class in it.polimi.ingsw.playerBoard">InvalidBoardException</a></code> - board is null.</dd>
+<dd><code><a href="../playerBoard/InvalidBoardException.html" title="class in it.polimi.ingsw.model.playerBoard">InvalidBoardException</a></code> - board is null.</dd>
 </dl>
 </section>
 </li>

@@ -6,7 +6,7 @@
 <title>ConcreteResourceLocation</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="dc.created" content="2021-04-20">
-<meta name="description" content="declaration: package: it.polimi.ingsw.playerBoard.resourceLocations, interface: ConcreteResourceLocation">
+<meta name="description" content="declaration: package: it.polimi.ingsw.model.playerBoard.resourceLocations, interface: ConcreteResourceLocation">
 <meta name="generator" content="javadoc/ClassWriterImpl">
 <link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
 <link rel="stylesheet" type="text/css" href="../../../../../script-dir/jquery-ui.min.css" title="Style">
@@ -73,21 +73,21 @@ loadScripts(document, 'script');</script>
 <main role="main">
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">it.polimi.ingsw.playerBoard.resourceLocations</a></div>
+<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">it.polimi.ingsw.model.playerBoard.resourceLocations</a></div>
 <h1 title="Interface ConcreteResourceLocation" class="title">Interface ConcreteResourceLocation</h1>
 </div>
 <section class="description">
 <dl class="notes">
 <dt>All Superinterfaces:</dt>
-<dd><code><a href="ResourceLocation.html" title="interface in it.polimi.ingsw.playerBoard.resourceLocations">ResourceLocation</a></code></dd>
+<dd><code><a href="ResourceLocation.html" title="interface in it.polimi.ingsw.model.playerBoard.resourceLocations">ResourceLocation</a></code></dd>
 </dl>
 <dl class="notes">
 <dt>All Known Implementing Classes:</dt>
-<dd><code><a href="Depot.html" title="class in it.polimi.ingsw.playerBoard.resourceLocations">Depot</a></code>, <code><a href="../../leaderCards/LeaderCardDepot.html" title="class in it.polimi.ingsw.leaderCards">LeaderCardDepot</a></code>, <code><a href="StrongBox.html" title="class in it.polimi.ingsw.playerBoard.resourceLocations">StrongBox</a></code></dd>
+<dd><code><a href="Depot.html" title="class in it.polimi.ingsw.model.playerBoard.resourceLocations">Depot</a></code>, <code><a href="../../leaderCards/LeaderCardDepot.html" title="class in it.polimi.ingsw.model.leaderCards">LeaderCardDepot</a></code>, <code><a href="StrongBox.html" title="class in it.polimi.ingsw.model.playerBoard.resourceLocations">StrongBox</a></code></dd>
 </dl>
 <hr>
 <pre>public interface <span class="type-name-label">ConcreteResourceLocation</span>
-extends <a href="ResourceLocation.html" title="interface in it.polimi.ingsw.playerBoard.resourceLocations">ResourceLocation</a></pre>
+extends <a href="ResourceLocation.html" title="interface in it.polimi.ingsw.model.playerBoard.resourceLocations">ResourceLocation</a></pre>
 <div class="block">ConcreteResourceLocation is the interface for resource locations
  that directly store resources</div>
 </section>
@@ -111,21 +111,21 @@ extends <a href="ResourceLocation.html" title="interface in it.polimi.ingsw.play
 <tbody>
 <tr class="alt-color" id="i0">
 <td class="col-first"><code>void</code></td>
-<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#addResources(it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet)">addResources</a></span>&#8203;(<a href="../../resources/resourceSets/ConcreteResourceSet.html" title="class in it.polimi.ingsw.resources.resourceSets">ConcreteResourceSet</a>&nbsp;concreteResourceSet)</code></th>
+<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#addResources(it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet)">addResources</a></span>&#8203;(<a href="../../resources/resourceSets/ConcreteResourceSet.html" title="class in it.polimi.ingsw.model.resources.resourceSets">ConcreteResourceSet</a>&nbsp;concreteResourceSet)</code></th>
 <td class="col-last">
 <div class="block">addResources adds a given ConcreteResourceSet to this ConcreteResourceLocation</div>
 </td>
 </tr>
 <tr class="row-color" id="i1">
 <td class="col-first"><code>boolean</code></td>
-<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#canAdd(it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet)">canAdd</a></span>&#8203;(<a href="../../resources/resourceSets/ConcreteResourceSet.html" title="class in it.polimi.ingsw.resources.resourceSets">ConcreteResourceSet</a>&nbsp;concreteResourceSet)</code></th>
+<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#canAdd(it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet)">canAdd</a></span>&#8203;(<a href="../../resources/resourceSets/ConcreteResourceSet.html" title="class in it.polimi.ingsw.model.resources.resourceSets">ConcreteResourceSet</a>&nbsp;concreteResourceSet)</code></th>
 <td class="col-last">
 <div class="block">canAdd checks whether a given ConcreteResourceSet can be added to this ConcreteResourceLocation</div>
 </td>
 </tr>
 <tr class="alt-color" id="i2">
 <td class="col-first"><code>void</code></td>
-<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#removeResources(it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet)">removeResources</a></span>&#8203;(<a href="../../resources/resourceSets/ConcreteResourceSet.html" title="class in it.polimi.ingsw.resources.resourceSets">ConcreteResourceSet</a>&nbsp;concreteResourceSet)</code></th>
+<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#removeResources(it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet)">removeResources</a></span>&#8203;(<a href="../../resources/resourceSets/ConcreteResourceSet.html" title="class in it.polimi.ingsw.model.resources.resourceSets">ConcreteResourceSet</a>&nbsp;concreteResourceSet)</code></th>
 <td class="col-last">
 <div class="block">removeResources removes a given ConcreteResourceSet to this ConcreteResourceLocation</div>
 </td>
@@ -135,7 +135,7 @@ extends <a href="ResourceLocation.html" title="interface in it.polimi.ingsw.play
 </div>
 </div>
 <div class="inherited-list">
-<h3 id="methods.inherited.from.class.it.polimi.ingsw.playerBoard.resourceLocations.ResourceLocation">Methods inherited from interface&nbsp;it.polimi.ingsw.playerBoard.resourceLocations.<a href="ResourceLocation.html" title="interface in it.polimi.ingsw.playerBoard.resourceLocations">ResourceLocation</a></h3>
+<h3 id="methods.inherited.from.class.it.polimi.ingsw.playerBoard.resourceLocations.ResourceLocation">Methods inherited from interface&nbsp;it.polimi.ingsw.model.playerBoard.resourceLocations.<a href="ResourceLocation.html" title="interface in it.polimi.ingsw.model.playerBoard.resourceLocations">ResourceLocation</a></h3>
 <code><a href="ResourceLocation.html#containsResources(it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet)">containsResources</a>, <a href="ResourceLocation.html#getResources()">getResources</a></code></div>
 </section>
 </li>
@@ -151,16 +151,16 @@ extends <a href="ResourceLocation.html" title="interface in it.polimi.ingsw.play
 <li>
 <section class="detail" id="addResources(it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet)">
 <h3>addResources</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="member-name">addResources</span>&#8203;(<span class="parameters"><a href="../../resources/resourceSets/ConcreteResourceSet.html" title="class in it.polimi.ingsw.resources.resourceSets">ConcreteResourceSet</a>&nbsp;concreteResourceSet)</span>
-           throws <span class="exceptions"><a href="../../resources/resourceSets/InvalidResourceSetException.html" title="class in it.polimi.ingsw.resources.resourceSets">InvalidResourceSetException</a>,
-<a href="InvalidResourceLocationOperationException.html" title="class in it.polimi.ingsw.playerBoard.resourceLocations">InvalidResourceLocationOperationException</a></span></div>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="member-name">addResources</span>&#8203;(<span class="parameters"><a href="../../resources/resourceSets/ConcreteResourceSet.html" title="class in it.polimi.ingsw.model.resources.resourceSets">ConcreteResourceSet</a>&nbsp;concreteResourceSet)</span>
+           throws <span class="exceptions"><a href="../../resources/resourceSets/InvalidResourceSetException.html" title="class in it.polimi.ingsw.model.resources.resourceSets">InvalidResourceSetException</a>,
+<a href="InvalidResourceLocationOperationException.html" title="class in it.polimi.ingsw.model.playerBoard.resourceLocations">InvalidResourceLocationOperationException</a></span></div>
 <div class="block">addResources adds a given ConcreteResourceSet to this ConcreteResourceLocation</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>concreteResourceSet</code> - The ConcreteResourceSet to add</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../resources/resourceSets/InvalidResourceSetException.html" title="class in it.polimi.ingsw.resources.resourceSets">InvalidResourceSetException</a></code> - concreteResourceSet is null</dd>
-<dd><code><a href="InvalidResourceLocationOperationException.html" title="class in it.polimi.ingsw.playerBoard.resourceLocations">InvalidResourceLocationOperationException</a></code> - concreteResourceSet cannot
+<dd><code><a href="../../resources/resourceSets/InvalidResourceSetException.html" title="class in it.polimi.ingsw.model.resources.resourceSets">InvalidResourceSetException</a></code> - concreteResourceSet is null</dd>
+<dd><code><a href="InvalidResourceLocationOperationException.html" title="class in it.polimi.ingsw.model.playerBoard.resourceLocations">InvalidResourceLocationOperationException</a></code> - concreteResourceSet cannot
  be added to this ConcreteResourceLocation</dd>
 </dl>
 </section>
@@ -168,16 +168,16 @@ extends <a href="ResourceLocation.html" title="interface in it.polimi.ingsw.play
 <li>
 <section class="detail" id="removeResources(it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet)">
 <h3>removeResources</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="member-name">removeResources</span>&#8203;(<span class="parameters"><a href="../../resources/resourceSets/ConcreteResourceSet.html" title="class in it.polimi.ingsw.resources.resourceSets">ConcreteResourceSet</a>&nbsp;concreteResourceSet)</span>
-              throws <span class="exceptions"><a href="../../resources/resourceSets/InvalidResourceSetException.html" title="class in it.polimi.ingsw.resources.resourceSets">InvalidResourceSetException</a>,
-<a href="InvalidResourceLocationOperationException.html" title="class in it.polimi.ingsw.playerBoard.resourceLocations">InvalidResourceLocationOperationException</a></span></div>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="member-name">removeResources</span>&#8203;(<span class="parameters"><a href="../../resources/resourceSets/ConcreteResourceSet.html" title="class in it.polimi.ingsw.model.resources.resourceSets">ConcreteResourceSet</a>&nbsp;concreteResourceSet)</span>
+              throws <span class="exceptions"><a href="../../resources/resourceSets/InvalidResourceSetException.html" title="class in it.polimi.ingsw.model.resources.resourceSets">InvalidResourceSetException</a>,
+<a href="InvalidResourceLocationOperationException.html" title="class in it.polimi.ingsw.model.playerBoard.resourceLocations">InvalidResourceLocationOperationException</a></span></div>
 <div class="block">removeResources removes a given ConcreteResourceSet to this ConcreteResourceLocation</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>concreteResourceSet</code> - The ConcreteResourceSet to remove</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../resources/resourceSets/InvalidResourceSetException.html" title="class in it.polimi.ingsw.resources.resourceSets">InvalidResourceSetException</a></code> - concreteResourceSet is null</dd>
-<dd><code><a href="InvalidResourceLocationOperationException.html" title="class in it.polimi.ingsw.playerBoard.resourceLocations">InvalidResourceLocationOperationException</a></code> - concreteResourceSet cannot
+<dd><code><a href="../../resources/resourceSets/InvalidResourceSetException.html" title="class in it.polimi.ingsw.model.resources.resourceSets">InvalidResourceSetException</a></code> - concreteResourceSet is null</dd>
+<dd><code><a href="InvalidResourceLocationOperationException.html" title="class in it.polimi.ingsw.model.playerBoard.resourceLocations">InvalidResourceLocationOperationException</a></code> - concreteResourceSet cannot
  be removed from this ConcreteResourceLocation</dd>
 </dl>
 </section>
@@ -185,8 +185,8 @@ extends <a href="ResourceLocation.html" title="interface in it.polimi.ingsw.play
 <li>
 <section class="detail" id="canAdd(it.polimi.ingsw.resources.resourceSets.ConcreteResourceSet)">
 <h3>canAdd</h3>
-<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="member-name">canAdd</span>&#8203;(<span class="parameters"><a href="../../resources/resourceSets/ConcreteResourceSet.html" title="class in it.polimi.ingsw.resources.resourceSets">ConcreteResourceSet</a>&nbsp;concreteResourceSet)</span>
-        throws <span class="exceptions"><a href="../../resources/resourceSets/InvalidResourceSetException.html" title="class in it.polimi.ingsw.resources.resourceSets">InvalidResourceSetException</a></span></div>
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="member-name">canAdd</span>&#8203;(<span class="parameters"><a href="../../resources/resourceSets/ConcreteResourceSet.html" title="class in it.polimi.ingsw.model.resources.resourceSets">ConcreteResourceSet</a>&nbsp;concreteResourceSet)</span>
+        throws <span class="exceptions"><a href="../../resources/resourceSets/InvalidResourceSetException.html" title="class in it.polimi.ingsw.model.resources.resourceSets">InvalidResourceSetException</a></span></div>
 <div class="block">canAdd checks whether a given ConcreteResourceSet can be added to this ConcreteResourceLocation</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -194,7 +194,7 @@ extends <a href="ResourceLocation.html" title="interface in it.polimi.ingsw.play
 <dt>Returns:</dt>
 <dd>True iff concreteResourceSet can be added to this ConcreteResourceLocation</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../resources/resourceSets/InvalidResourceSetException.html" title="class in it.polimi.ingsw.resources.resourceSets">InvalidResourceSetException</a></code> - concreteResourceSet is null</dd>
+<dd><code><a href="../../resources/resourceSets/InvalidResourceSetException.html" title="class in it.polimi.ingsw.model.resources.resourceSets">InvalidResourceSetException</a></code> - concreteResourceSet is null</dd>
 </dl>
 </section>
 </li>

@@ -6,7 +6,7 @@
 <title>DevelopmentCardArea</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="dc.created" content="2021-04-20">
-<meta name="description" content="declaration: package: it.polimi.ingsw.playerBoard, class: DevelopmentCardArea">
+<meta name="description" content="declaration: package: it.polimi.ingsw.model.playerBoard, class: DevelopmentCardArea">
 <meta name="generator" content="javadoc/ClassWriterImpl">
 <link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
 <link rel="stylesheet" type="text/css" href="../../../../script-dir/jquery-ui.min.css" title="Style">
@@ -73,21 +73,21 @@ loadScripts(document, 'script');</script>
 <main role="main">
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">it.polimi.ingsw.playerBoard</a></div>
+<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">it.polimi.ingsw.model.playerBoard</a></div>
 <h1 title="Class DevelopmentCardArea" class="title">Class DevelopmentCardArea</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree">java.lang.Object
-<div class="inheritance">it.polimi.ingsw.playerBoard.DevelopmentCardArea</div>
+<div class="inheritance">it.polimi.ingsw.model.playerBoard.DevelopmentCardArea</div>
 </div>
 <section class="description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="Scoring.html" title="interface in it.polimi.ingsw.playerBoard">Scoring</a></code></dd>
+<dd><code><a href="Scoring.html" title="interface in it.polimi.ingsw.model.playerBoard">Scoring</a></code></dd>
 </dl>
 <hr>
 <pre>public class <span class="type-name-label">DevelopmentCardArea</span>
 extends java.lang.Object
-implements <a href="Scoring.html" title="interface in it.polimi.ingsw.playerBoard">Scoring</a></pre>
+implements <a href="Scoring.html" title="interface in it.polimi.ingsw.model.playerBoard">Scoring</a></pre>
 <div class="block">DevelopmentCardArea is the container for development cards
  in a Board</div>
 </section>
@@ -136,14 +136,14 @@ implements <a href="Scoring.html" title="interface in it.polimi.ingsw.playerBoar
 <tbody>
 <tr class="alt-color" id="i0">
 <td class="col-first"><code>void</code></td>
-<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#addDevCard(it.polimi.ingsw.devCards.DevCard,int)">addDevCard</a></span>&#8203;(<a href="../devCards/DevCard.html" title="class in it.polimi.ingsw.devCards">DevCard</a>&nbsp;devCard,
+<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#addDevCard(it.polimi.ingsw.devCards.DevCard,int)">addDevCard</a></span>&#8203;(<a href="../devCards/DevCard.html" title="class in it.polimi.ingsw.model.devCards">DevCard</a>&nbsp;devCard,
 int&nbsp;deckIndex)</code></th>
 <td class="col-last">
 <div class="block">addDevCard adds a DevCard on top of a given deck</div>
 </td>
 </tr>
 <tr class="row-color" id="i1">
-<td class="col-first"><code>java.util.ArrayList&lt;<a href="../devCards/DevCard.html" title="class in it.polimi.ingsw.devCards">DevCard</a>&gt;</code></td>
+<td class="col-first"><code>java.util.ArrayList&lt;<a href="../devCards/DevCard.html" title="class in it.polimi.ingsw.model.devCards">DevCard</a>&gt;</code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#getCards()">getCards</a></span>()</code></th>
 <td class="col-last">
 <div class="block">getCards returns an ArrayList of all DevCards contained
@@ -158,7 +158,7 @@ int&nbsp;deckIndex)</code></th>
 </td>
 </tr>
 <tr class="row-color" id="i3">
-<td class="col-first"><code><a href="../devCards/CardLevel.html" title="enum in it.polimi.ingsw.devCards">CardLevel</a></code></td>
+<td class="col-first"><code><a href="../devCards/CardLevel.html" title="enum in it.polimi.ingsw.model.devCards">CardLevel</a></code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#getTopLevel(int)">getTopLevel</a></span>&#8203;(int&nbsp;deckIndex)</code></th>
 <td class="col-last">
 <div class="block">getTopLevel returns the CardLevel of the top DevCard in a given deck</div>
@@ -204,7 +204,7 @@ int&nbsp;deckIndex)</code></th>
 <div class="block">getPoints returns the sum of points of DevCards in this DevelopmentCardArea</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="Scoring.html#getPoints()">getPoints</a></code>&nbsp;in interface&nbsp;<code><a href="Scoring.html" title="interface in it.polimi.ingsw.playerBoard">Scoring</a></code></dd>
+<dd><code><a href="Scoring.html#getPoints()">getPoints</a></code>&nbsp;in interface&nbsp;<code><a href="Scoring.html" title="interface in it.polimi.ingsw.model.playerBoard">Scoring</a></code></dd>
 <dt>Returns:</dt>
 <dd>The points awarded by all DevCards in this DevelopmentCardArea</dd>
 </dl>
@@ -213,8 +213,8 @@ int&nbsp;deckIndex)</code></th>
 <li>
 <section class="detail" id="getTopLevel(int)">
 <h3>getTopLevel</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../devCards/CardLevel.html" title="enum in it.polimi.ingsw.devCards">CardLevel</a></span>&nbsp;<span class="member-name">getTopLevel</span>&#8203;(<span class="parameters">int&nbsp;deckIndex)</span>
-                      throws <span class="exceptions"><a href="../devCards/InvalidDevCardDeckException.html" title="class in it.polimi.ingsw.devCards">InvalidDevCardDeckException</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../devCards/CardLevel.html" title="enum in it.polimi.ingsw.model.devCards">CardLevel</a></span>&nbsp;<span class="member-name">getTopLevel</span>&#8203;(<span class="parameters">int&nbsp;deckIndex)</span>
+                      throws <span class="exceptions"><a href="../devCards/InvalidDevCardDeckException.html" title="class in it.polimi.ingsw.model.devCards">InvalidDevCardDeckException</a></span></div>
 <div class="block">getTopLevel returns the CardLevel of the top DevCard in a given deck</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -223,34 +223,34 @@ int&nbsp;deckIndex)</code></th>
 <dd>The CardLevel of the DevCard on top of the given deck,
  or null if such deck is empty</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../devCards/InvalidDevCardDeckException.html" title="class in it.polimi.ingsw.devCards">InvalidDevCardDeckException</a></code> - deckIndex is outside the range of decks</dd>
+<dd><code><a href="../devCards/InvalidDevCardDeckException.html" title="class in it.polimi.ingsw.model.devCards">InvalidDevCardDeckException</a></code> - deckIndex is outside the range of decks</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="addDevCard(it.polimi.ingsw.devCards.DevCard,int)">
 <h3>addDevCard</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="member-name">addDevCard</span>&#8203;(<span class="parameters"><a href="../devCards/DevCard.html" title="class in it.polimi.ingsw.devCards">DevCard</a>&nbsp;devCard,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="member-name">addDevCard</span>&#8203;(<span class="parameters"><a href="../devCards/DevCard.html" title="class in it.polimi.ingsw.model.devCards">DevCard</a>&nbsp;devCard,
 int&nbsp;deckIndex)</span>
-                throws <span class="exceptions"><a href="../devCards/InvalidDevCardException.html" title="class in it.polimi.ingsw.devCards">InvalidDevCardException</a>,
-<a href="../devCards/InvalidDevCardDeckException.html" title="class in it.polimi.ingsw.devCards">InvalidDevCardDeckException</a>,
-<a href="../devCards/InvalidAddTopException.html" title="class in it.polimi.ingsw.devCards">InvalidAddTopException</a></span></div>
+                throws <span class="exceptions"><a href="../devCards/InvalidDevCardException.html" title="class in it.polimi.ingsw.model.devCards">InvalidDevCardException</a>,
+<a href="../devCards/InvalidDevCardDeckException.html" title="class in it.polimi.ingsw.model.devCards">InvalidDevCardDeckException</a>,
+<a href="../devCards/InvalidAddTopException.html" title="class in it.polimi.ingsw.model.devCards">InvalidAddTopException</a></span></div>
 <div class="block">addDevCard adds a DevCard on top of a given deck</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>devCard</code> - The DevCard to add</dd>
 <dd><code>deckIndex</code> - The index of the deck to add the card in</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../devCards/InvalidDevCardException.html" title="class in it.polimi.ingsw.devCards">InvalidDevCardException</a></code> - devCard is null</dd>
-<dd><code><a href="../devCards/InvalidDevCardDeckException.html" title="class in it.polimi.ingsw.devCards">InvalidDevCardDeckException</a></code> - deckIndex is outside the range of decks</dd>
-<dd><code><a href="../devCards/InvalidAddTopException.html" title="class in it.polimi.ingsw.devCards">InvalidAddTopException</a></code> - The card cannot be added in the given deck</dd>
+<dd><code><a href="../devCards/InvalidDevCardException.html" title="class in it.polimi.ingsw.model.devCards">InvalidDevCardException</a></code> - devCard is null</dd>
+<dd><code><a href="../devCards/InvalidDevCardDeckException.html" title="class in it.polimi.ingsw.model.devCards">InvalidDevCardDeckException</a></code> - deckIndex is outside the range of decks</dd>
+<dd><code><a href="../devCards/InvalidAddTopException.html" title="class in it.polimi.ingsw.model.devCards">InvalidAddTopException</a></code> - The card cannot be added in the given deck</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getCards()">
 <h3>getCards</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">java.util.ArrayList&lt;<a href="../devCards/DevCard.html" title="class in it.polimi.ingsw.devCards">DevCard</a>&gt;</span>&nbsp;<span class="member-name">getCards</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">java.util.ArrayList&lt;<a href="../devCards/DevCard.html" title="class in it.polimi.ingsw.model.devCards">DevCard</a>&gt;</span>&nbsp;<span class="member-name">getCards</span>()</div>
 <div class="block">getCards returns an ArrayList of all DevCards contained
  in this DevelopmentCardArea</div>
 <dl class="notes">

@@ -6,7 +6,7 @@
 <title>CardType</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="dc.created" content="2021-04-20">
-<meta name="description" content="declaration: package: it.polimi.ingsw.devCards, class: CardType">
+<meta name="description" content="declaration: package: it.polimi.ingsw.model.devCards, class: CardType">
 <meta name="generator" content="javadoc/ClassWriterImpl">
 <link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
 <link rel="stylesheet" type="text/css" href="../../../../script-dir/jquery-ui.min.css" title="Style">
@@ -73,11 +73,11 @@ loadScripts(document, 'script');</script>
 <main role="main">
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">it.polimi.ingsw.devCards</a></div>
+<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">it.polimi.ingsw.model.devCards</a></div>
 <h1 title="Class CardType" class="title">Class CardType</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree">java.lang.Object
-<div class="inheritance">it.polimi.ingsw.devCards.CardType</div>
+<div class="inheritance">it.polimi.ingsw.model.devCards.CardType</div>
 </div>
 <section class="description">
 <hr>
@@ -101,7 +101,7 @@ extends java.lang.Object</pre>
 </thead>
 <tbody>
 <tr class="alt-color">
-<th class="col-constructor-name" scope="row"><code><span class="member-name-link"><a href="#%3Cinit%3E(it.polimi.ingsw.devCards.CardColour)">CardType</a></span>&#8203;(<a href="CardColour.html" title="enum in it.polimi.ingsw.devCards">CardColour</a>&nbsp;colour)</code></th>
+<th class="col-constructor-name" scope="row"><code><span class="member-name-link"><a href="#%3Cinit%3E(it.polimi.ingsw.devCards.CardColour)">CardType</a></span>&#8203;(<a href="CardColour.html" title="enum in it.polimi.ingsw.model.devCards">CardColour</a>&nbsp;colour)</code></th>
 <td class="col-last">
 <div class="block">the constructor initializes a empty set for the level and colour of the set of levels</div>
 </td>
@@ -129,14 +129,14 @@ extends java.lang.Object</pre>
 <tbody>
 <tr class="alt-color" id="i0">
 <td class="col-first"><code>void</code></td>
-<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#addLevel(it.polimi.ingsw.devCards.CardLevel)">addLevel</a></span>&#8203;(<a href="CardLevel.html" title="enum in it.polimi.ingsw.devCards">CardLevel</a>&nbsp;cardLevel)</code></th>
+<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#addLevel(it.polimi.ingsw.devCards.CardLevel)">addLevel</a></span>&#8203;(<a href="CardLevel.html" title="enum in it.polimi.ingsw.model.devCards">CardLevel</a>&nbsp;cardLevel)</code></th>
 <td class="col-last">
 <div class="block">addLevel represents the action of adding levels to the set</div>
 </td>
 </tr>
 <tr class="row-color" id="i1">
 <td class="col-first"><code>boolean</code></td>
-<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#isSatisfied(it.polimi.ingsw.devCards.DevCard)">isSatisfied</a></span>&#8203;(<a href="DevCard.html" title="class in it.polimi.ingsw.devCards">DevCard</a>&nbsp;devCard)</code></th>
+<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#isSatisfied(it.polimi.ingsw.devCards.DevCard)">isSatisfied</a></span>&#8203;(<a href="DevCard.html" title="class in it.polimi.ingsw.model.devCards">DevCard</a>&nbsp;devCard)</code></th>
 <td class="col-last">&nbsp;</td>
 </tr>
 </tbody>
@@ -160,14 +160,14 @@ extends java.lang.Object</pre>
 <li>
 <section class="detail" id="&lt;init&gt;(it.polimi.ingsw.devCards.CardColour)">
 <h3>CardType</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="member-name">CardType</span>&#8203;(<span class="parameters"><a href="CardColour.html" title="enum in it.polimi.ingsw.devCards">CardColour</a>&nbsp;colour)</span>
-         throws <span class="exceptions"><a href="InvalidCardColourException.html" title="class in it.polimi.ingsw.devCards">InvalidCardColourException</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="member-name">CardType</span>&#8203;(<span class="parameters"><a href="CardColour.html" title="enum in it.polimi.ingsw.model.devCards">CardColour</a>&nbsp;colour)</span>
+         throws <span class="exceptions"><a href="InvalidCardColourException.html" title="class in it.polimi.ingsw.model.devCards">InvalidCardColourException</a></span></div>
 <div class="block">the constructor initializes a empty set for the level and colour of the set of levels</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>colour</code> - the colour of the set</dd>
 <dt>Throws:</dt>
-<dd><code><a href="InvalidCardColourException.html" title="class in it.polimi.ingsw.devCards">InvalidCardColourException</a></code> - colour is null</dd>
+<dd><code><a href="InvalidCardColourException.html" title="class in it.polimi.ingsw.model.devCards">InvalidCardColourException</a></code> - colour is null</dd>
 </dl>
 </section>
 </li>
@@ -182,21 +182,21 @@ extends java.lang.Object</pre>
 <li>
 <section class="detail" id="addLevel(it.polimi.ingsw.devCards.CardLevel)">
 <h3>addLevel</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="member-name">addLevel</span>&#8203;(<span class="parameters"><a href="CardLevel.html" title="enum in it.polimi.ingsw.devCards">CardLevel</a>&nbsp;cardLevel)</span>
-              throws <span class="exceptions"><a href="InvalidCardLevelException.html" title="class in it.polimi.ingsw.devCards">InvalidCardLevelException</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="member-name">addLevel</span>&#8203;(<span class="parameters"><a href="CardLevel.html" title="enum in it.polimi.ingsw.model.devCards">CardLevel</a>&nbsp;cardLevel)</span>
+              throws <span class="exceptions"><a href="InvalidCardLevelException.html" title="class in it.polimi.ingsw.model.devCards">InvalidCardLevelException</a></span></div>
 <div class="block">addLevel represents the action of adding levels to the set</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>cardLevel</code> - the level of the card to be added</dd>
 <dt>Throws:</dt>
-<dd><code><a href="InvalidCardLevelException.html" title="class in it.polimi.ingsw.devCards">InvalidCardLevelException</a></code> - the cardLevel is null</dd>
+<dd><code><a href="InvalidCardLevelException.html" title="class in it.polimi.ingsw.model.devCards">InvalidCardLevelException</a></code> - the cardLevel is null</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="isSatisfied(it.polimi.ingsw.devCards.DevCard)">
 <h3>isSatisfied</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="member-name">isSatisfied</span>&#8203;(<span class="parameters"><a href="DevCard.html" title="class in it.polimi.ingsw.devCards">DevCard</a>&nbsp;devCard)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="member-name">isSatisfied</span>&#8203;(<span class="parameters"><a href="DevCard.html" title="class in it.polimi.ingsw.model.devCards">DevCard</a>&nbsp;devCard)</span></div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>devCard</code> - the devCard to be checked</dd>

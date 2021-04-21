@@ -6,7 +6,7 @@
 <title>CardTypeSet</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="dc.created" content="2021-04-20">
-<meta name="description" content="declaration: package: it.polimi.ingsw.devCards, class: CardTypeSet">
+<meta name="description" content="declaration: package: it.polimi.ingsw.model.devCards, class: CardTypeSet">
 <meta name="generator" content="javadoc/ClassWriterImpl">
 <link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
 <link rel="stylesheet" type="text/css" href="../../../../script-dir/jquery-ui.min.css" title="Style">
@@ -73,21 +73,21 @@ loadScripts(document, 'script');</script>
 <main role="main">
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">it.polimi.ingsw.devCards</a></div>
+<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">it.polimi.ingsw.model.devCards</a></div>
 <h1 title="Class CardTypeSet" class="title">Class CardTypeSet</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree">java.lang.Object
-<div class="inheritance">it.polimi.ingsw.devCards.CardTypeSet</div>
+<div class="inheritance">it.polimi.ingsw.model.devCards.CardTypeSet</div>
 </div>
 <section class="description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../leaderCards/LeaderCardRequirements.html" title="interface in it.polimi.ingsw.leaderCards">LeaderCardRequirements</a></code>, <code>java.lang.Cloneable</code></dd>
+<dd><code><a href="../leaderCards/LeaderCardRequirements.html" title="interface in it.polimi.ingsw.model.leaderCards">LeaderCardRequirements</a></code>, <code>java.lang.Cloneable</code></dd>
 </dl>
 <hr>
 <pre>public class <span class="type-name-label">CardTypeSet</span>
 extends java.lang.Object
-implements <a href="../leaderCards/LeaderCardRequirements.html" title="interface in it.polimi.ingsw.leaderCards">LeaderCardRequirements</a></pre>
+implements <a href="../leaderCards/LeaderCardRequirements.html" title="interface in it.polimi.ingsw.model.leaderCards">LeaderCardRequirements</a></pre>
 <div class="block">CardTypeset represents a set of CardTypes</div>
 </section>
 <section class="summary">
@@ -135,7 +135,7 @@ implements <a href="../leaderCards/LeaderCardRequirements.html" title="interface
 <tbody>
 <tr class="alt-color" id="i0">
 <td class="col-first"><code>void</code></td>
-<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#add(it.polimi.ingsw.devCards.CardType)">add</a></span>&#8203;(<a href="CardType.html" title="class in it.polimi.ingsw.devCards">CardType</a>&nbsp;cardType)</code></th>
+<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#add(it.polimi.ingsw.devCards.CardType)">add</a></span>&#8203;(<a href="CardType.html" title="class in it.polimi.ingsw.model.devCards">CardType</a>&nbsp;cardType)</code></th>
 <td class="col-last">&nbsp;</td>
 </tr>
 <tr class="row-color" id="i1">
@@ -147,7 +147,7 @@ implements <a href="../leaderCards/LeaderCardRequirements.html" title="interface
 </tr>
 <tr class="alt-color" id="i2">
 <td class="col-first"><code>boolean</code></td>
-<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#isSatisfied(it.polimi.ingsw.playerBoard.Board)">isSatisfied</a></span>&#8203;(<a href="../playerBoard/Board.html" title="class in it.polimi.ingsw.playerBoard">Board</a>&nbsp;board)</code></th>
+<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#isSatisfied(it.polimi.ingsw.playerBoard.Board)">isSatisfied</a></span>&#8203;(<a href="../playerBoard/Board.html" title="class in it.polimi.ingsw.model.playerBoard">Board</a>&nbsp;board)</code></th>
 <td class="col-last">
 <div class="block">isSatisfied calls the board to check if it match the requirements.</div>
 </td>
@@ -188,7 +188,7 @@ implements <a href="../leaderCards/LeaderCardRequirements.html" title="interface
 <li>
 <section class="detail" id="add(it.polimi.ingsw.devCards.CardType)">
 <h3>add</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="member-name">add</span>&#8203;(<span class="parameters"><a href="CardType.html" title="class in it.polimi.ingsw.devCards">CardType</a>&nbsp;cardType)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="member-name">add</span>&#8203;(<span class="parameters"><a href="CardType.html" title="class in it.polimi.ingsw.model.devCards">CardType</a>&nbsp;cardType)</span></div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>cardType</code> - the cardType added</dd>
@@ -198,20 +198,20 @@ implements <a href="../leaderCards/LeaderCardRequirements.html" title="interface
 <li>
 <section class="detail" id="isSatisfied(it.polimi.ingsw.playerBoard.Board)">
 <h3>isSatisfied</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="member-name">isSatisfied</span>&#8203;(<span class="parameters"><a href="../playerBoard/Board.html" title="class in it.polimi.ingsw.playerBoard">Board</a>&nbsp;board)</span>
-                    throws <span class="exceptions"><a href="../playerBoard/InvalidBoardException.html" title="class in it.polimi.ingsw.playerBoard">InvalidBoardException</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="member-name">isSatisfied</span>&#8203;(<span class="parameters"><a href="../playerBoard/Board.html" title="class in it.polimi.ingsw.model.playerBoard">Board</a>&nbsp;board)</span>
+                    throws <span class="exceptions"><a href="../playerBoard/InvalidBoardException.html" title="class in it.polimi.ingsw.model.playerBoard">InvalidBoardException</a></span></div>
 <div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="../leaderCards/LeaderCardRequirements.html#isSatisfied(it.polimi.ingsw.playerBoard.Board)">LeaderCardRequirements</a></code></span></div>
 <div class="block">isSatisfied calls the board to check if it match the requirements.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../leaderCards/LeaderCardRequirements.html#isSatisfied(it.polimi.ingsw.playerBoard.Board)">isSatisfied</a></code>&nbsp;in interface&nbsp;<code><a href="../leaderCards/LeaderCardRequirements.html" title="interface in it.polimi.ingsw.leaderCards">LeaderCardRequirements</a></code></dd>
+<dd><code><a href="../leaderCards/LeaderCardRequirements.html#isSatisfied(it.polimi.ingsw.playerBoard.Board)">isSatisfied</a></code>&nbsp;in interface&nbsp;<code><a href="../leaderCards/LeaderCardRequirements.html" title="interface in it.polimi.ingsw.model.leaderCards">LeaderCardRequirements</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>board</code> - the board of the current player.</dd>
 <dt>Returns:</dt>
 <dd>true iff the card types and their quantities on the board contains
  the card types and their quantities expressed on the cardTypeSet</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../playerBoard/InvalidBoardException.html" title="class in it.polimi.ingsw.playerBoard">InvalidBoardException</a></code> - if the board is null</dd>
+<dd><code><a href="../playerBoard/InvalidBoardException.html" title="class in it.polimi.ingsw.model.playerBoard">InvalidBoardException</a></code> - if the board is null</dd>
 </dl>
 </section>
 </li>
@@ -223,7 +223,7 @@ implements <a href="../leaderCards/LeaderCardRequirements.html" title="interface
 <div class="block">clone returns a copy of the object</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../leaderCards/LeaderCardRequirements.html#clone()">clone</a></code>&nbsp;in interface&nbsp;<code><a href="../leaderCards/LeaderCardRequirements.html" title="interface in it.polimi.ingsw.leaderCards">LeaderCardRequirements</a></code></dd>
+<dd><code><a href="../leaderCards/LeaderCardRequirements.html#clone()">clone</a></code>&nbsp;in interface&nbsp;<code><a href="../leaderCards/LeaderCardRequirements.html" title="interface in it.polimi.ingsw.model.leaderCards">LeaderCardRequirements</a></code></dd>
 <dt>Overrides:</dt>
 <dd><code>clone</code>&nbsp;in class&nbsp;<code>java.lang.Object</code></dd>
 <dt>Returns:</dt>
