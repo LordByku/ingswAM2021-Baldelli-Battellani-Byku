@@ -98,4 +98,8 @@ public class CardMarketDeck {
             devCardStack.add(i, arrayList.get(i));
         }
     }
+
+    public int size() {
+        return devCardStack.size();
+    }
 }

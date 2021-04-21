@@ -1,581 +1,1428 @@
-
 {
-    "devCards": {
-		"1green1": {
-		    "colour": "GREEN",
-		    "level": 1,
-		    "points": 1,
-		    "reqRsc":["SHIELD"],
-		    "reqQty": [2],
-		    "productionInRsc":["COIN"],
-		    "productionInQty": [1],
-		    "productionOutRsc":["FAITH POINTS"],
-		    "productionOutQty": [1]
-		},
-
-		"1purple1": {
-		    "colour": "PURPLE",
-		    "level": 1,
-		    "points": 1,
-		    "reqRsc":["SERVANT"],
-		    "reqQty": [2],
-		    "productionInRsc":["STONE"],
-		    "productionInQty": [1],
-		    "productionOutRsc":["FAITH POINTS"],
-		    "productionOutQty": [1]
-		},
-
-		"1blue1": {
-		    "colour": "BLUE",
-		    "level": 1,
-		    "points": 1,
-		    "reqRsc":["COIN"],
-		    "reqQty": [2],
-		    "productionInRsc":["SHIELD"],
-		    "productionInQty": [1],
-		    "productionOutRsc":["FAITH POINTS"],
-		    "productionOutQty": [1]
-		},
-
-		"1yellow1": {
-		    "colour": "YELLOW",
-		    "level": 1,
-		    "points": 1,
-		    "reqRsc":["STONE"],
-		    "reqQty": [2],
-		    "productionInRsc":["SERVANT"],
-		    "productionInQty": [1],
-		    "productionOutRsc":["FAITH POINTS"],
-		    "productionOutQty": [1]
-		},
-
-		"2green1": {
-		    "colour": "GREEN",
-		    "level": 1,
-		    "points": 2,
-		    "reqRsc":["SHIELD","STONE","SERVANT"],
-		    "reqQty": [1,1,1],
-		    "productionInRsc":["STONE"],
-		    "productionInQty": [1],
-		    "productionOutRsc":["SERVANT"],
-		    "productionOutQty": [1]
-		},
-
-		"2purple1": {
-		    "colour": "PURPLE",
-		    "level": 1,
-		    "points": 2,
-		    "reqRsc":["SHIELD","COIN","SERVANT"],
-		    "reqQty": [1,1,1],
-		    "productionInRsc":["COIN"],
-		    "productionInQty": [1],
-		    "productionOutRsc":["SHIELD"],
-		    "productionOutQty": [1]
-		},
-
-		"2blue1": {
-		    "colour": "BLUE",
-		    "level": 1,
-		    "points": 2,
-		    "reqRsc":["COIN","STONE","SERVANT"],
-		    "reqQty": [1,1,1],
-		    "productionInRsc":["SERVANT"],
-		    "productionInQty": [1],
-		    "productionOutRsc":["STONE"],
-		    "productionOutQty": [1]
-		},
-
-		"2yellow1": {
-		    "colour": "YELLOW",
-		    "level": 1,
-		    "points": 2,
-		    "reqRsc":["SHIELD","STONE","COIN"],
-		    "reqQty": [1,1,1],
-		    "productionInRsc":["SHIELD"],
-		    "productionInQty": [1],
-		    "productionOutRsc":["COIN"],
-		    "productionOutQty": [1]
-		},
-
-		"3green1": {
-		    "colour": "GREEN",
-		    "level": 1,
-		    "points": 3,
-		    "reqRsc":["SHIELD"],
-		    "reqQty": [3],
-		    "productionInRsc":["SERVANT"],
-		    "productionInQty": [2],
-		    "productionOutRsc":["COIN","SHIELD","STONE"],
-		    "productionOutQty": [1,1,1]
-		},
-
-		"3purple1": {
-		    "colour": "PURPLE",
-		    "level": 1,
-		    "points": 3,
-		    "reqRsc":["SERVANT"],
-		    "reqQty": [3],
-		    "productionInRsc":["COIN"],
-		    "productionInQty": [2],
-		    "productionOutRsc":["SERVANT","SHIELD","STONE"],
-		    "productionOutQty": [1,1,1]
-		},
-
-		"3blue1": {
-		    "colour": "BLUE",
-		    "level": 1,
-		    "points": 3,
-		    "reqRsc":["COIN"],
-		    "reqQty": [3],
-		    "productionInRsc":["STONE"],
-		    "productionInQty": [2],
-		    "productionOutRsc":["COIN","SHIELD","SERVANT"],
-		    "productionOutQty": [1,1,1]
-		},
-
-		"3yellow1": {
-		    "colour": "YELLOW",
-		    "level": 1,
-		    "points": 3,
-		    "reqRsc":["STONE"],
-		    "reqQty": [3],
-		    "productionInRsc":["SHIELD"],
-		    "productionInQty": [2],
-		    "productionOutRsc":["COIN","SERVANT","STONE"],
-		    "productionOutQty": [1,1,1]
-		},
-
-		"4green1": {
-		    "colour": "GREEN",
-		    "level": 1,
-		    "points": 4,
-		    "reqRsc":["SHIELD","COIN"],
-		    "reqQty": [2,2],
-		    "productionInRsc":["STONE","SERVANT"],
-		    "productionInQty": [1,1],
-		    "productionOutRsc":["COIN","FAITH POINTS"],
-		    "productionOutQty": [2,1]
-		},
-
-		"4purple1": {
-		    "colour": "PURPLE",
-		    "level": 1,
-		    "points": 4,
-		    "reqRsc":["SERVANT","STONE"],
-		    "reqQty": [2,2],
-		    "productionInRsc":["COIN","SHIELD"],
-		    "productionInQty": [1,1],
-		    "productionOutRsc":["STONE","FAITH POINTS"],
-		    "productionOutQty": [2,1]
-		},
-
-		"4blue1": {
-		    "colour": "BLUE",
-		    "level": 1,
-		    "VPoints": 4,
-		    "reqRsc":["COIN","SERVANT"],
-		    "reqQty": [2,2],
-		    "productionInRsc":["SHIELD","STONE"],
-		    "productionInQty": [1,1],
-		    "productionOutRsc":["SERVANT","FAITH POINTS"],
-		    "productionOutQty": [2,1]
-		},
-
-		"4yellow1": {
-		    "colour": "YELLOW",
-		    "level": 1,
-		    "VPoints": 4,
-		    "reqRsc":["STONE","SHIELD"],
-		    "reqQty": [2,2],
-		    "productionInRsc":["COIN","SERVANT"],
-		    "productionInQty": [1,1],
-		    "productionOutRsc":["SHIELD","FAITH POINTS"],
-		    "productionOutQty": [2,1]
-		},
-
-		"1green2": {
-		    "colour": "GREEN",
-		    "level": 2,
-		    "VPoints": 5,
-		    "reqRsc":["SHIELD"],
-		    "reqQty": [4],
-		    "productionInRsc":["STONE"],
-		    "productionInQty": [1],
-		    "productionOutRsc":["FAITH POINTS"],
-		    "productionOutQty": [2]
-		},
-
-		"1purple2": {
-		    "colour": "PURPLE",
-		    "level": 2,
-		    "VPoints": 5,
-		    "reqRsc":["SERVANT"],
-		    "reqQty": [4],
-		    "productionInRsc":["COIN"],
-		    "productionInQty": [1],
-		    "productionOutRsc":["FAITH POINTS"],
-		    "productionOutQty": [2]
-		},
-
-		"1blue2": {
-		    "colour": "BLUE",
-		    "level": 2,
-		    "VPoints": 5,
-		    "reqRsc":["COIN"],
-		    "reqQty": [4],
-		    "productionInRsc":["SERVANT"],
-		    "productionInQty": [1],
-		    "productionOutRsc":["FAITH POINTS"],
-		    "productionOutQty": [2]
-		},
-
-		"1yellow2": {
-		    "colour": "YELLOW",
-		    "level": 2,
-		    "VPoints": 5,
-		    "reqRsc":["STONE"],
-		    "reqQty": [4],
-		    "productionInRsc":["SHIELD"],
-		    "productionInQty": [1],
-		    "productionOutRsc":["FAITH POINTS"],
-		    "productionOutQty": [2]
-		},
-
-		"2green2": {
-		    "colour": "GREEN",
-		    "level": 2,
-		    "VPoints": 6,
-		    "reqRsc":["SHIELD", "SERVANT"],
-		    "reqQty": [3,2],
-		    "productionInRsc":["SHIELD", "SERVANT"],
-		    "productionInQty": [1,1],
-		    "productionOutRsc":["STONE"],
-		    "productionOutQty": [3]
-		},
-
-		"2purple2": {
-		    "colour": "PURPLE",
-		    "level": 2,
-		    "VPoints": 6,
-		    "reqRsc":["SERVANT", "COIN"],
-		    "reqQty": [3,2],
-		    "productionInRsc":["SERVANT", "COIN"],
-		    "productionInQty": [1,1],
-		    "productionOutRsc":["SHIELD"],
-		    "productionOutQty": [3]
-		},
-
-		"2blue2": {
-		    "colour": "BLUE",
-		    "level": 2,
-		    "VPoints": 6,
-		    "reqRsc":["COIN", "STONE"],
-		    "reqQty": [3,2],
-		    "productionInRsc":["COIN", "STONE"],
-		    "productionInQty": [1,1],
-		    "productionOutRsc":["SERVANT"],
-		    "productionOutQty": [3]
-		},
-
-		"2yellow2": {
-		    "colour": "YELLOW",
-		    "level": 2,
-		    "VPoints": 6,
-		    "reqRsc":["STONE", "SHIELD"],
-		    "reqQty": [3,2],
-		    "productionInRsc":["STONE", "SHIELD"],
-		    "productionInQty": [1,1],
-		    "productionOutRsc":["COIN"],
-		    "productionOutQty": [3]
-		},
-
-		"3green2": {
-		    "colour": "GREEN",
-		    "level": 2,
-		    "VPoints": 7,
-		    "reqRsc":["SHIELD"],
-		    "reqQty": [5],
-		    "productionInRsc":["COIN"],
-		    "productionInQty": [2],
-		    "productionOutRsc":["STONE", "FAITH POINTS"],
-		    "productionOutQty": [2,2]
-		},
-
-		"3purple2": {
-		    "colour": "PURPLE",
-		    "level": 2,
-		    "VPoints": 7,
-		    "reqRsc":["SERVANT"],
-		    "reqQty": [5],
-		    "productionInRsc":["STONE"],
-		    "productionInQty": [2],
-		    "productionOutRsc":["COIN", "FAITH POINTS"],
-		    "productionOutQty": [2,2]
-		},
-
-		"3blue2": {
-		    "colour": "BLUE",
-		    "level": 2,
-		    "VPoints": 7,
-		    "reqRsc":["COIN"],
-		    "reqQty": [5],
-		    "productionInRsc":["SERVANT"],
-		    "productionInQty": [2],
-		    "productionOutRsc":["SHIELD", "FAITH POINTS"],
-		    "productionOutQty": [2,2]
-		},
-
-		"3yellow2": {
-		    "colour": "YELLOW",
-		    "level": 2,
-		    "VPoints": 7,
-		    "reqRsc":["STONE"],
-		    "reqQty": [5],
-		    "productionInRsc":["SHIELD"],
-		    "productionInQty": [2],
-		    "productionOutRsc":["SERVANT", "FAITH POINTS"],
-		    "productionOutQty": [2,2]
-		},
-
-		"4green2": {
-		    "colour": "GREEN",
-		    "level": 2,
-		    "VPoints": 8,
-		    "reqRsc":["SHIELD", "COIN"],
-		    "reqQty": [3,3],
-		    "productionInRsc":["COIN"],
-		    "productionInQty": [1],
-		    "productionOutRsc":["SHIELD", "FAITH POINTS"],
-		    "productionOutQty": [2,1]
-		},
-
-		"4purple2": {
-		    "colour": "PURPLE",
-		    "level": 2,
-		    "VPoints": 8,
-		    "reqRsc":["SERVANT", "SHIELD"],
-		    "reqQty": [3,3],
-		    "productionInRsc":["STONE"],
-		    "productionInQty": [1],
-		    "productionOutRsc":["SERVANT", "FAITH POINTS"],
-		    "productionOutQty": [2,1]
-		},
-
-		"4blue2": {
-		    "colour": "BLUE",
-		    "level": 2,
-		    "VPoints": 8,
-		    "reqRsc":["COIN", "STONE"],
-		    "reqQty": [3,3],
-		    "productionInRsc":["SERVANT"],
-		    "productionInQty": [1],
-		    "productionOutRsc":["STONE", "FAITH POINTS"],
-		    "productionOutQty": [2,1]
-		},
-
-		"4yellow2": {
-		    "colour": "YELLOW",
-		    "level": 2,
-		    "VPoints": 8,
-		    "reqRsc":["STONE", "SERVANT"],
-		    "reqQty": [3,3],
-		    "productionInRsc":["SHIELD"],
-		    "productionInQty": [1],
-		    "productionOutRsc":["COIN", "FAITH POINTS"],
-		    "productionOutQty": [2,1]
-		},
-
-		"1green3": {
-		    "colour": "GREEN",
-		    "level": 3,
-		    "VPoints": 9,
-		    "reqRsc":["SHIELD"],
-		    "reqQty": [6],
-		    "productionInRsc":["COIN"],
-		    "productionInQty": [2],
-		    "productionOutRsc":["STONE", "FAITH POINTS"],
-		    "productionOutQty": [3,2]
-		},
-
-		"1purple3": {
-		    "colour": "PURPLE",
-		    "level": 3,
-		    "VPoints": 9,
-		    "reqRsc":["SERVANT"],
-		    "reqQty": [6],
-		    "productionInRsc":["STONE"],
-		    "productionInQty": [2],
-		    "productionOutRsc":["COIN", "FAITH POINTS"],
-		    "productionOutQty": [3,2]
-		},
-
-		"1blue3": {
-		    "colour": "BLUE",
-		    "level": 3,
-		    "VPoints": 9,
-		    "reqRsc":["COIN"],
-		    "reqQty": [6],
-		    "productionInRsc":["SERVANT"],
-		    "productionInQty": [2],
-		    "productionOutRsc":["SHIELD", "FAITH POINTS"],
-		    "productionOutQty": [3,2]
-		},
-
-		"1yellow3": {
-		    "colour": "YELLOW",
-		    "level": 3,
-		    "VPoints": 9,
-		    "reqRsc":["STONE"],
-		    "reqQty": [6],
-		    "productionInRsc":["SHIELD"],
-		    "productionInQty": [2],
-		    "productionOutRsc":["SERVANT", "FAITH POINTS"],
-		    "productionOutQty": [3,2]
-		},
-
-
-		"2green3": {
-		    "colour": "GREEN",
-		    "level": 3,
-		    "VPoints": 10,
-		    "reqRsc":["SHIELD", "SERVANT"],
-		    "reqQty": [5,2],
-		    "productionInRsc":["COIN", "SERVANT"],
-		    "productionInQty": [1,1],
-		    "productionOutRsc":["SHIELD", "STONE", "FAITH POINTS"],
-		    "productionOutQty": [2,2,1]
-		},
-
-		"2purple3": {
-		    "colour": "PURPLE",
-		    "level": 3,
-		    "VPoints": 10,
-		    "reqRsc":["SERVANT", "COIN"],
-		    "reqQty": [5,2],
-		    "productionInRsc":["STONE", "SHIELD"],
-		    "productionInQty": [1,1],
-		    "productionOutRsc":["COIN", "SERVANT", "FAITH POINTS"],
-		    "productionOutQty": [2,2,1]
-		},
-
-		"2blue3": {
-		    "colour": "BLUE",
-		    "level": 3,
-		    "VPoints": 10,
-		    "reqRsc":["COIN", "STONE"],
-		    "reqQty": [5,2],
-		    "productionInRsc":["COIN", "SHIELD"],
-		    "productionInQty": [1,1],
-		    "productionOutRsc":["SERVANT", "STONE", "FAITH POINTS"],
-		    "productionOutQty": [2,2,1]
-		},
-
-		"2yellow3": {
-		    "colour": "YELLOW",
-		    "level": 3,
-		    "VPoints": 10,
-		    "reqRsc":["STONE", "SERVANT"],
-		    "reqQty": [5,2],
-		    "productionInRsc":["STONE", "SERVANT"],
-		    "productionInQty": [1,1],
-		    "productionOutRsc":["COIN", "SHIELD", "FAITH POINTS"],
-		    "productionOutQty": [2,2,1]
-		},
-
-		"3green3": {
-		    "colour": "GREEN",
-		    "level": 3,
-		    "VPoints": 11,
-		    "reqRsc":["SHIELD"],
-		    "reqQty": [7],
-		    "productionInRsc":["SERVANT"],
-		    "productionInQty": [1],
-		    "productionOutRsc":["COIN", "FAITH POINTS"],
-		    "productionOutQty": [1,3]
-		},
-
-		"3purple3": {
-		    "colour": "PURPLE",
-		    "level": 3,
-		    "VPoints": 11,
-		    "reqRsc":["SERVANT"],
-		    "reqQty": [7],
-		    "productionInRsc":["COIN"],
-		    "productionInQty": [1],
-		    "productionOutRsc":["STONE", "FAITH POINTS"],
-		    "productionOutQty": [1,3]
-		},
-
-		"3blue3": {
-		    "colour": "BLUE",
-		    "level": 3,
-		    "VPoints": 11,
-		    "reqRsc":["COIN"],
-		    "reqQty": [7],
-		    "productionInRsc":["STONE"],
-		    "productionInQty": [1],
-		    "productionOutRsc":["SHIELD", "FAITH POINTS"],
-		    "productionOutQty": [1,3]
-		},
-
-		"3yellow3": {
-		    "colour": "YELLOW",
-		    "level": 3,
-		    "VPoints": 11,
-		    "reqRsc":["STONE"],
-		    "reqQty": [7],
-		    "productionInRsc":["SHIELD"],
-		    "productionInQty": [1],
-		    "productionOutRsc":["SERVANT", "FAITH POINTS"],
-		    "productionOutQty": [1,3]
-		},
-
-		"4green3": {
-		    "colour": "GREEN",
-		    "level": 3,
-		    "VPoints": 12,
-		    "reqRsc":["SHIELD", "COIN"],
-		    "reqQty": [4,4],
-		    "productionInRsc":["STONE"],
-		    "productionInQty": [1],
-		    "productionOutRsc":["COIN", "SHIELD"],
-		    "productionOutQty": [3,1]
-		},
-
-		"4purple3": {
-		    "colour": "PURPLE",
-		    "level": 3,
-		    "VPoints": 12,
-		    "reqRsc":["SERVANT", "SHIELD"],
-		    "reqQty": [4,4],
-		    "productionInRsc":["COIN"],
-		    "productionInQty": [1],
-		    "productionOutRsc":["STONE", "SHIELD"],
-		    "productionOutQty": [3,1]
-		},
-
-		"4blue3": {
-		    "colour": "BLUE",
-		    "level": 3,
-		    "VPoints": 12,
-		    "reqRsc":["COIN", "STONE"],
-		    "reqQty": [4,4],
-		    "productionInRsc":["SERVANT"],
-		    "productionInQty": [1],
-		    "productionOutRsc":["SHIELD", "COIN"],
-		    "productionOutQty": [3,1]
-		},
-
-		"4yellow3": {
-		    "colour": "YELLOW",
-		    "level": 3,
-		    "VPoints": 12,
-		    "reqRsc":["STONE", "SERVANT"],
-		    "reqQty": [4,4],
-		    "productionInRsc":["SHIELD"],
-		    "productionInQty": [1],
-		    "productionOutRsc":["SERVANT", "STONE"],
-		    "productionOutQty": [3,1]
-		}
+  "developmentCards": [
+    {
+      "colour": "GREEN",
+      "level": "I",
+      "points": 1,
+      "requirements": [
+        {
+          "resource": "SHIELD",
+          "quantity": 2
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "COIN",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "colour": "PURPLE",
+      "level": "I",
+      "points": 1,
+      "requirements": [
+        {
+          "resource": "SERVANT",
+          "quantity": 2
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "STONE",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "colour": "BLUE",
+      "level": "I",
+      "points": 1,
+      "requirements": [
+        {
+          "resource": "COIN",
+          "quantity": 2
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "SHIELD",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "colour": "YELLOW",
+      "level": "I",
+      "points": 1,
+      "requirements": [
+        {
+          "resource": "STONE",
+          "quantity": 2
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "SERVANT",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "colour": "GREEN",
+      "level": "I",
+      "points": 2,
+      "requirements": [
+        {
+          "resource": "SHIELD",
+          "quantity": 1
+        },
+        {
+          "resource": "STONE",
+          "quantity": 1
+        },
+        {
+          "resource": "SERVANT",
+          "quantity": 1
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "STONE",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "SERVANT",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "colour": "PURPLE",
+      "level": "I",
+      "points": 2,
+      "requirements": [
+        {
+          "resource": "SHIELD",
+          "quantity": 1
+        },
+        {
+          "resource": "COIN",
+          "quantity": 1
+        },
+        {
+          "resource": "SERVANT",
+          "quantity": 1
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "COIN",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "SHIELD",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "colour": "BLUE",
+      "level": "I",
+      "points": 2,
+      "requirements": [
+        {
+          "resource": "COIN",
+          "quantity": 1
+        },
+        {
+          "resource": "STONE",
+          "quantity": 1
+        },
+        {
+          "resource": "SERVANT",
+          "quantity": 1
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "SERVANT",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "STONE",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "colour": "YELLOW",
+      "level": "I",
+      "points": 2,
+      "requirements": [
+        {
+          "resource": "SHIELD",
+          "quantity": 1
+        },
+        {
+          "resource": "STONE",
+          "quantity": 1
+        },
+        {
+          "resource": "COIN",
+          "quantity": 1
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "SHIELD",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "COIN",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "colour": "GREEN",
+      "level": "I",
+      "points": 3,
+      "requirements": [
+        {
+          "resource": "SHIELD",
+          "quantity": 3
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "SERVANT",
+          "quantity": 2
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "COIN",
+          "quantity": 1
+        },
+        {
+          "resource": "SHIELD",
+          "quantity": 1
+        },
+        {
+          "resource": "STONE",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "colour": "PURPLE",
+      "level": "I",
+      "points": 3,
+      "requirements": [
+        {
+          "resource": "SERVANT",
+          "quantity": 3
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "COIN",
+          "quantity": 2
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "SERVANT",
+          "quantity": 1
+        },
+        {
+          "resource": "SHIELD",
+          "quantity": 1
+        },
+        {
+          "resource": "STONE",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "colour": "BLUE",
+      "level": "I",
+      "points": 3,
+      "requirements": [
+        {
+          "resource": "COIN",
+          "quantity": 3
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "STONE",
+          "quantity": 2
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "COIN",
+          "quantity": 1
+        },
+        {
+          "resource": "SHIELD",
+          "quantity": 1
+        },
+        {
+          "resource": "SERVANT",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "colour": "YELLOW",
+      "level": "I",
+      "points": 3,
+      "requirements": [
+        {
+          "resource": "STONE",
+          "quantity": 3
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "SHIELD",
+          "quantity": 2
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "COIN",
+          "quantity": 1
+        },
+        {
+          "resource": "SERVANT",
+          "quantity": 1
+        },
+        {
+          "resource": "STONE",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "colour": "GREEN",
+      "level": "I",
+      "points": 4,
+      "requirements": [
+        {
+          "resource": "SHIELD",
+          "quantity": 2
+        },
+        {
+          "resource": "COIN",
+          "quantity": 2
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "STONE",
+          "quantity": 1
+        },
+        {
+          "resource": "SERVANT",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "COIN",
+          "quantity": 2
+        },
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "colour": "PURPLE",
+      "level": "I",
+      "points": 4,
+      "requirements": [
+        {
+          "resource": "SERVANT",
+          "quantity": 2
+        },
+        {
+          "resource": "STONE",
+          "quantity": 2
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "COIN",
+          "quantity": 1
+        },
+        {
+          "resource": "SHIELD",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "STONE",
+          "quantity": 2
+        },
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "colour": "BLUE",
+      "level": "I",
+      "points": 4,
+      "requirements": [
+        {
+          "resource": "COIN",
+          "quantity": 2
+        },
+        {
+          "resource": "SERVANT",
+          "quantity": 2
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "SHIELD",
+          "quantity": 1
+        },
+        {
+          "resource": "STONE",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "SERVANT",
+          "quantity": 2
+        },
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "colour": "YELLOW",
+      "level": "I",
+      "points": 4,
+      "requirements": [
+        {
+          "resource": "STONE",
+          "quantity": 2
+        },
+        {
+          "resource": "SHIELD",
+          "quantity": 2
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "COIN",
+          "quantity": 1
+        },
+        {
+          "resource": "SERVANT",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "SHIELD",
+          "quantity": 2
+        },
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "colour": "GREEN",
+      "level": "II",
+      "points": 5,
+      "requirements": [
+        {
+          "resource": "SHIELD",
+          "quantity": 4
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "STONE",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 2
+        }
+      ]
+    },
+    {
+      "colour": "PURPLE",
+      "level": "II",
+      "points": 5,
+      "requirements": [
+        {
+          "resource": "SERVANT",
+          "quantity": 4
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "COIN",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 2
+        }
+      ]
+    },
+    {
+      "colour": "BLUE",
+      "level": "II",
+      "points": 5,
+      "requirements": [
+        {
+          "resource": "COIN",
+          "quantity": 4
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "SERVANT",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 2
+        }
+      ]
+    },
+    {
+      "colour": "YELLOW",
+      "level": "II",
+      "points": 5,
+      "requirements": [
+        {
+          "resource": "STONE",
+          "quantity": 4
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "SHIELD",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 2
+        }
+      ]
+    },
+    {
+      "colour": "GREEN",
+      "level": "II",
+      "points": 6,
+      "requirements": [
+        {
+          "resource": "SHIELD",
+          "quantity": 3
+        },
+        {
+          "resource": "SERVANT",
+          "quantity": 2
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "SHIELD",
+          "quantity": 1
+        },
+        {
+          "resource": "SERVANT",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "STONE",
+          "quantity": 3
+        }
+      ]
+    },
+    {
+      "colour": "PURPLE",
+      "level": "II",
+      "points": 6,
+      "requirements": [
+        {
+          "resource": "SERVANT",
+          "quantity": 3
+        },
+        {
+          "resource": "COIN",
+          "quantity": 2
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "SERVANT",
+          "quantity": 1
+        },
+        {
+          "resource": "COIN",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "SHIELD",
+          "quantity": 3
+        }
+      ]
+    },
+    {
+      "colour": "BLUE",
+      "level": "II",
+      "points": 6,
+      "requirements": [
+        {
+          "resource": "COIN",
+          "quantity": 3
+        },
+        {
+          "resource": "STONE",
+          "quantity": 2
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "COIN",
+          "quantity": 1
+        },
+        {
+          "resource": "STONE",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "SERVANT",
+          "quantity": 3
+        }
+      ]
+    },
+    {
+      "colour": "YELLOW",
+      "level": "II",
+      "points": 6,
+      "requirements": [
+        {
+          "resource": "STONE",
+          "quantity": 3
+        },
+        {
+          "resource": "SHIELD",
+          "quantity": 2
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "STONE",
+          "quantity": 1
+        },
+        {
+          "resource": "SHIELD",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "COIN",
+          "quantity": 3
+        }
+      ]
+    },
+    {
+      "colour": "GREEN",
+      "level": "II",
+      "points": 7,
+      "requirements": [
+        {
+          "resource": "SHIELD",
+          "quantity": 5
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "COIN",
+          "quantity": 2
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "STONE",
+          "quantity": 2
+        },
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 2
+        }
+      ]
+    },
+    {
+      "colour": "PURPLE",
+      "level": "II",
+      "points": 7,
+      "requirements": [
+        {
+          "resource": "SERVANT",
+          "quantity": 5
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "STONE",
+          "quantity": 2
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "COIN",
+          "quantity": 2
+        },
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 2
+        }
+      ]
+    },
+    {
+      "colour": "BLUE",
+      "level": "II",
+      "points": 7,
+      "requirements": [
+        {
+          "resource": "COIN",
+          "quantity": 5
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "SERVANT",
+          "quantity": 2
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "SHIELD",
+          "quantity": 2
+        },
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 2
+        }
+      ]
+    },
+    {
+      "colour": "YELLOW",
+      "level": "II",
+      "points": 7,
+      "requirements": [
+        {
+          "resource": "STONE",
+          "quantity": 5
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "SHIELD",
+          "quantity": 2
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "SERVANT",
+          "quantity": 2
+        },
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 2
+        }
+      ]
+    },
+    {
+      "colour": "GREEN",
+      "level": "II",
+      "points": 8,
+      "requirements": [
+        {
+          "resource": "SHIELD",
+          "quantity": 3
+        },
+        {
+          "resource": "COIN",
+          "quantity": 3
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "COIN",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "SHIELD",
+          "quantity": 2
+        },
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "colour": "PURPLE",
+      "level": "II",
+      "points": 8,
+      "requirements": [
+        {
+          "resource": "SERVANT",
+          "quantity": 3
+        },
+        {
+          "resource": "SHIELD",
+          "quantity": 3
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "STONE",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "SERVANT",
+          "quantity": 2
+        },
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "colour": "BLUE",
+      "level": "II",
+      "points": 8,
+      "requirements": [
+        {
+          "resource": "COIN",
+          "quantity": 3
+        },
+        {
+          "resource": "STONE",
+          "quantity": 3
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "SERVANT",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "STONE",
+          "quantity": 2
+        },
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "colour": "YELLOW",
+      "level": "II",
+      "points": 8,
+      "requirements": [
+        {
+          "resource": "STONE",
+          "quantity": 3
+        },
+        {
+          "resource": "SERVANT",
+          "quantity": 3
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "SHIELD",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "COIN",
+          "quantity": 2
+        },
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "colour": "GREEN",
+      "level": "III",
+      "points": 9,
+      "requirements": [
+        {
+          "resource": "SHIELD",
+          "quantity": 6
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "COIN",
+          "quantity": 2
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "STONE",
+          "quantity": 3
+        },
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 2
+        }
+      ]
+    },
+    {
+      "colour": "PURPLE",
+      "level": "III",
+      "points": 9,
+      "requirements": [
+        {
+          "resource": "SERVANT",
+          "quantity": 6
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "STONE",
+          "quantity": 2
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "COIN",
+          "quantity": 3
+        },
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 2
+        }
+      ]
+    },
+    {
+      "colour": "BLUE",
+      "level": "III",
+      "points": 9,
+      "requirements": [
+        {
+          "resource": "COIN",
+          "quantity": 6
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "SERVANT",
+          "quantity": 2
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "SHIELD",
+          "quantity": 3
+        },
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 2
+        }
+      ]
+    },
+    {
+      "colour": "YELLOW",
+      "level": "III",
+      "points": 9,
+      "requirements": [
+        {
+          "resource": "STONE",
+          "quantity": 6
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "SHIELD",
+          "quantity": 2
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "SERVANT",
+          "quantity": 3
+        },
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 2
+        }
+      ]
+    },
+    {
+      "colour": "GREEN",
+      "level": "III",
+      "points": 10,
+      "requirements": [
+        {
+          "resource": "SHIELD",
+          "quantity": 5
+        },
+        {
+          "resource": "SERVANT",
+          "quantity": 2
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "COIN",
+          "quantity": 1
+        },
+        {
+          "resource": "SERVANT",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "SHIELD",
+          "quantity": 2
+        },
+        {
+          "resource": "STONE",
+          "quantity": 2
+        },
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "colour": "PURPLE",
+      "level": "III",
+      "points": 10,
+      "requirements": [
+        {
+          "resource": "SERVANT",
+          "quantity": 5
+        },
+        {
+          "resource": "COIN",
+          "quantity": 2
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "STONE",
+          "quantity": 1
+        },
+        {
+          "resource": "SHIELD",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "COIN",
+          "quantity": 2
+        },
+        {
+          "resource": "SERVANT",
+          "quantity": 2
+        },
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "colour": "BLUE",
+      "level": "III",
+      "points": 10,
+      "requirements": [
+        {
+          "resource": "COIN",
+          "quantity": 5
+        },
+        {
+          "resource": "STONE",
+          "quantity": 2
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "COIN",
+          "quantity": 1
+        },
+        {
+          "resource": "SHIELD",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "SERVANT",
+          "quantity": 2
+        },
+        {
+          "resource": "STONE",
+          "quantity": 2
+        },
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "colour": "YELLOW",
+      "level": "III",
+      "points": 10,
+      "requirements": [
+        {
+          "resource": "STONE",
+          "quantity": 5
+        },
+        {
+          "resource": "SERVANT",
+          "quantity": 2
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "STONE",
+          "quantity": 1
+        },
+        {
+          "resource": "SERVANT",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "COIN",
+          "quantity": 2
+        },
+        {
+          "resource": "SHIELD",
+          "quantity": 2
+        },
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "colour": "GREEN",
+      "level": "III",
+      "points": 11,
+      "requirements": [
+        {
+          "resource": "SHIELD",
+          "quantity": 7
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "SERVANT",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "COIN",
+          "quantity": 1
+        },
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 3
+        }
+      ]
+    },
+    {
+      "colour": "PURPLE",
+      "level": "III",
+      "points": 11,
+      "requirements": [
+        {
+          "resource": "SERVANT",
+          "quantity": 7
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "COIN",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "STONE",
+          "quantity": 1
+        },
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 3
+        }
+      ]
+    },
+    {
+      "colour": "BLUE",
+      "level": "III",
+      "points": 11,
+      "requirements": [
+        {
+          "resource": "COIN",
+          "quantity": 7
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "STONE",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "SHIELD",
+          "quantity": 1
+        },
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 3
+        }
+      ]
+    },
+    {
+      "colour": "YELLOW",
+      "level": "III",
+      "points": 11,
+      "requirements": [
+        {
+          "resource": "STONE",
+          "quantity": 7
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "SHIELD",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "SERVANT",
+          "quantity": 1
+        },
+        {
+          "resource": "FAITH POINTS",
+          "quantity": 3
+        }
+      ]
+    },
+    {
+      "colour": "GREEN",
+      "level": "III",
+      "points": 12,
+      "requirements": [
+        {
+          "resource": "SHIELD",
+          "quantity": 4
+        },
+        {
+          "resource": "COIN",
+          "quantity": 4
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "STONE",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "COIN",
+          "quantity": 3
+        },
+        {
+          "resource": "SHIELD",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "colour": "PURPLE",
+      "level": "III",
+      "points": 12,
+      "requirements": [
+        {
+          "resource": "SERVANT",
+          "quantity": 4
+        },
+        {
+          "resource": "SHIELD",
+          "quantity": 4
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "COIN",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "STONE",
+          "quantity": 3
+        },
+        {
+          "resource": "SHIELD",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "colour": "BLUE",
+      "level": "III",
+      "points": 12,
+      "requirements": [
+        {
+          "resource": "COIN",
+          "quantity": 4
+        },
+        {
+          "resource": "STONE",
+          "quantity": 4
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "SERVANT",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "SHIELD",
+          "quantity": 3
+        },
+        {
+          "resource": "COIN",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "colour": "YELLOW",
+      "level": "III",
+      "points": 12,
+      "requirements": [
+        {
+          "resource": "STONE",
+          "quantity": 4
+        },
+        {
+          "resource": "SERVANT",
+          "quantity": 4
+        }
+      ],
+      "productionIn": [
+        {
+          "resource": "SHIELD",
+          "quantity": 1
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "SERVANT",
+          "quantity": 3
+        },
+        {
+          "resource": "STONE",
+          "quantity": 1
+        }
+      ]
     }
+  ]
 }

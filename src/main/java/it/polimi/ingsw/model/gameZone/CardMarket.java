@@ -1,122 +1,144 @@
 package it.polimi.ingsw.model.gameZone;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import it.polimi.ingsw.DevCardsParser;
 import it.polimi.ingsw.model.devCards.*;
 import it.polimi.ingsw.model.game.Game;
-import it.polimi.ingsw.model.resources.ChoiceResource;
-import it.polimi.ingsw.model.resources.ChoiceSet;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ChoiceResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ObtainableResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.SpendableResourceSet;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * This class refers to the Card Market where you can buy the devCards.
  */
 public class CardMarket {
-
     /**
      * An ArrayList of the different decks of devCards of the devCardMarket.
      */
-    private ArrayList<CardMarketDeck> decks;
+    private final CardMarketDeck[][] decks;
+
+    private final String[] levelIndex = {"I", "II", "III"};
+    private final String[] colourIndex = {"GREEN", "BLUE", "YELLOW", "PURPLE"};
 
     /**
      * The constructor creates and adds the CardMarketDecks to the ArrayList.
      */
-    public CardMarket(){
-        CardMarketDeck deckG1 = new CardMarketDeck(CardColour.GREEN, CardLevel.I);
-        CardMarketDeck deckB1 = new CardMarketDeck(CardColour.BLUE, CardLevel.I);
-        CardMarketDeck deckY1 = new CardMarketDeck(CardColour.YELLOW, CardLevel.I);
-        CardMarketDeck deckP1 = new CardMarketDeck(CardColour.PURPLE, CardLevel.I);
-        CardMarketDeck deckG2 = new CardMarketDeck(CardColour.GREEN, CardLevel.II);
-        CardMarketDeck deckB2 = new CardMarketDeck(CardColour.BLUE, CardLevel.II);
-        CardMarketDeck deckY2 = new CardMarketDeck(CardColour.YELLOW, CardLevel.II);
-        CardMarketDeck deckP2 = new CardMarketDeck(CardColour.PURPLE, CardLevel.II);
-        CardMarketDeck deckG3 = new CardMarketDeck(CardColour.GREEN, CardLevel.III);
-        CardMarketDeck deckB3 = new CardMarketDeck(CardColour.BLUE, CardLevel.III);
-        CardMarketDeck deckY3 = new CardMarketDeck(CardColour.YELLOW, CardLevel.III);
-        CardMarketDeck deckP3 = new CardMarketDeck(CardColour.PURPLE, CardLevel.III);
+    public CardMarket() {
+        decks = new CardMarketDeck[levelIndex.length][colourIndex.length];
 
-        //SOME CARDS
-        //GREEN level 1, 1VP, 1 STONE, (COIN --> SERVANT + 1FP)
-        ChoiceResourceSet obt = new ChoiceResourceSet();
-        ChoiceResourceSet spn = new ChoiceResourceSet();
+        JsonArray jsonDevCards = DevCardsParser.getInstance().getDevelopmentCards();
+        Gson gson = new Gson();
 
-        spn.addResource(ConcreteResource.COIN);
-        obt.addResource(ConcreteResource.SERVANT);
+        for(int i = 0; i < levelIndex.length; ++i) {
+            for(int j = 0; j < colourIndex.length; ++j) {
+                decks[i][j] = new CardMarketDeck(
+                    gson.fromJson(colourIndex[j], CardColour.class),
+                    gson.fromJson(levelIndex[i], CardLevel.class)
+                );
+            }
+        }
 
-        SpendableResourceSet spendG1 = new SpendableResourceSet(spn);
-        ObtainableResourceSet obtG1 = new ObtainableResourceSet(obt,1);
+        for(JsonElement jsonElementDevCard: jsonDevCards) {
+            JsonObject jsonDevCard = (JsonObject) jsonElementDevCard;
 
-        ProductionDetails prodG1 = new ProductionDetails(spendG1,obtG1);
-        ConcreteResourceSet reqG1 = new ConcreteResourceSet();
-        reqG1.addResource(ConcreteResource.STONE);
-        DevCard green1 = new DevCard(reqG1, CardColour.GREEN,CardLevel.I,prodG1,1);
-        deckG1.appendToDeck(green1);
+            String levelString = jsonDevCard.get("level").getAsString();
+            String colourString = jsonDevCard.get("colour").getAsString();
 
-        //BLUE level 2, 1VP, 1 COIN, (CHOICE --> CHOICE + 1FP)
-        ChoiceResourceSet obt2 = new ChoiceResourceSet();
-        ChoiceResourceSet spn2 = new ChoiceResourceSet();
+            CardLevel level = gson.fromJson(levelString, CardLevel.class);
+            CardColour colour = gson.fromJson(colourString, CardColour.class);
+            int points = jsonDevCard.get("points").getAsInt();
+            ConcreteResourceSet reqResources = new ConcreteResourceSet();
+            ChoiceResourceSet productionIn = new ChoiceResourceSet(), productionOut = new ChoiceResourceSet();
+            int faithPointsOut = 0;
 
-        ChoiceSet set = new ChoiceSet();
-        set.addChoice(ConcreteResource.COIN);
-        set.addChoice(ConcreteResource.STONE);
-        set.addChoice(ConcreteResource.SERVANT);
-        set.addChoice(ConcreteResource.SHIELD);
-        ChoiceResource choice = new ChoiceResource(set);
+            for(JsonElement jsonElementResource: jsonDevCard.get("requirements").getAsJsonArray()) {
+                JsonObject jsonResource = (JsonObject) jsonElementResource;
 
-        spn2.addResource(choice);
-        obt2.addResource(choice);
+                ConcreteResource concreteResource = gson.fromJson(jsonResource.get("resource").getAsString(), ConcreteResource.class);
+                int quantity = jsonResource.get("quantity").getAsInt();
 
-        SpendableResourceSet spendB2 = new SpendableResourceSet(spn2);
-        ObtainableResourceSet obtB2 = new ObtainableResourceSet(obt2,1);
+                reqResources.addResource(concreteResource, quantity);
+            }
 
-        ProductionDetails prodB2 = new ProductionDetails(spendB2,obtB2);
-        ConcreteResourceSet reqB2 = new ConcreteResourceSet();
-        reqG1.addResource(ConcreteResource.COIN);
-        DevCard blue2 = new DevCard(reqB2, CardColour.BLUE,CardLevel.II,prodB2,1);
-        deckB2.appendToDeck(blue2);
+            for(JsonElement jsonElementResource: jsonDevCard.get("productionIn").getAsJsonArray()) {
+                JsonObject jsonResource = (JsonObject) jsonElementResource;
+
+                ConcreteResource concreteResource = gson.fromJson(jsonResource.get("resource").getAsString(), ConcreteResource.class);
+                int quantity = jsonResource.get("quantity").getAsInt();
+
+                for(int i = 0; i < quantity; ++i) {
+                    productionIn.addResource(concreteResource);
+                }
+            }
 
 
-        decks.add(deckG1);
-        decks.add(deckB1);
-        decks.add(deckY1);
-        decks.add(deckP1);
-        decks.add(deckG2);
-        decks.add(deckB2);
-        decks.add(deckY2);
-        decks.add(deckP2);
-        decks.add(deckG3);
-        decks.add(deckB3);
-        decks.add(deckY3);
-        decks.add(deckP3);
+            for(JsonElement jsonElementResource: jsonDevCard.get("productionOut").getAsJsonArray()) {
+                JsonObject jsonResource = (JsonObject) jsonElementResource;
 
+                String resourceString = jsonResource.get("resource").getAsString();
+                int quantity = jsonResource.get("quantity").getAsInt();
+
+                if(resourceString.equals("FAITH POINTS")) {
+                    faithPointsOut += quantity;
+                } else {
+                    ConcreteResource concreteResource = gson.fromJson(resourceString, ConcreteResource.class);
+                    for(int i = 0; i < quantity; ++i) {
+                        productionOut.addResource(concreteResource);
+                    }
+                }
+            }
+
+            DevCard devCard = new DevCard(reqResources, colour, level, new ProductionDetails(
+                    new SpendableResourceSet(productionIn),
+                    new ObtainableResourceSet(productionOut, faithPointsOut)
+            ), points);
+
+
+            int levelRow = Arrays.asList(levelIndex).indexOf(levelString);
+            int colourColumn = Arrays.asList(colourIndex).indexOf(colourString);
+
+            decks[levelRow][colourColumn].appendToDeck(devCard);
+        }
+
+        for(int i = 0; i < levelIndex.length; ++i) {
+            for(int j = 0; j < colourIndex.length; ++j) {
+                decks[i][j].shuffleDeck();
+            }
+        }
     }
 
-    /**
-     * @param cardMarketDeck The Deck of which we want to know the card a the top.
-     * @return The card at the top of the cardMarketDeck.
-     */
-    public DevCard top(CardMarketDeck cardMarketDeck){
-        return cardMarketDeck.top();
+    public DevCard top(int levelRow, int colourColumn){
+        if(levelRow < 0 || levelRow >= levelIndex.length ||
+           colourColumn < 0 || colourColumn >= colourIndex.length) {
+            throw new InvalidCardMarketIndexException();
+        }
+        return decks[levelRow][colourColumn].top();
     }
 
-    /**
-     * Removes the card a the top of the cardMarketDeck. It consider the end of the game in solo mode.
-     * @param cardMarketDeck The chosen deck from which remove the card at the top.
-     * @return The card removed.
-     */
-
-    public DevCard removeTop(CardMarketDeck cardMarketDeck){
-
-        DevCard card = cardMarketDeck.removeTop();
-        if(Game.getInstance().getNumberOfPlayers() == 1 && cardMarketDeck.isEmpty())
+    public DevCard removeTop(int levelRow, int colourColumn){
+        if(levelRow < 0 || levelRow >= levelIndex.length ||
+           colourColumn < 0 || colourColumn >= colourIndex.length) {
+            throw new InvalidCardMarketIndexException();
+        }
+        DevCard card = decks[levelRow][colourColumn].removeTop();
+        if(Game.getInstance().getNumberOfPlayers() == 1 && decks[levelRow][colourColumn].isEmpty())
             Game.getInstance().endGame();
 
         return card;
     }
 
-
+    public int size(int levelRow, int colourColumn) {
+        if(levelRow < 0 || levelRow >= levelIndex.length ||
+           colourColumn < 0 || colourColumn >= colourIndex.length) {
+            throw new InvalidCardMarketIndexException();
+        }
+        return decks[levelRow][colourColumn].size();
+    }
 }
