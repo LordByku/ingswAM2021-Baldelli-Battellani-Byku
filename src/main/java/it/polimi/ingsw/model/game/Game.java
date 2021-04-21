@@ -97,7 +97,11 @@ public class Game {
         }
     }
 
-    private void endGame() {
+    public int getNumberOfPlayers(){
+        return numberOfPlayers;
+    }
+
+    public void endGame() {
         gameEnded = true;
         // TODO
     }

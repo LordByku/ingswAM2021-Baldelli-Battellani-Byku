@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.gameZone;
 
 import it.polimi.ingsw.model.devCards.*;
+import it.polimi.ingsw.model.game.Game;
 import it.polimi.ingsw.model.resources.ChoiceResource;
 import it.polimi.ingsw.model.resources.ChoiceSet;
 import it.polimi.ingsw.model.resources.ConcreteResource;
@@ -103,12 +104,18 @@ public class CardMarket {
     }
 
     /**
-     * Removes the card a the top of the cardMarketDeck
+     * Removes the card a the top of the cardMarketDeck. It consider the end of the game in solo mode.
      * @param cardMarketDeck The chosen deck from which remove the card at the top.
      * @return The card removed.
      */
+
     public DevCard removeTop(CardMarketDeck cardMarketDeck){
-        return cardMarketDeck.removeTop();
+
+        DevCard card = cardMarketDeck.removeTop();
+        if(Game.getInstance().getNumberOfPlayers() == 1 && cardMarketDeck.isEmpty())
+            Game.getInstance().endGame();
+
+        return card;
     }
 
 
