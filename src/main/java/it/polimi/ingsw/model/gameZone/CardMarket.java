@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import it.polimi.ingsw.DevCardsParser;
+import it.polimi.ingsw.parsing.DevCardsParser;
 import it.polimi.ingsw.model.devCards.*;
 import it.polimi.ingsw.model.game.Game;
 import it.polimi.ingsw.model.resources.ConcreteResource;

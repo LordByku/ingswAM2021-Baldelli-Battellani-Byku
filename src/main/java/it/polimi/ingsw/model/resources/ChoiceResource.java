@@ -87,4 +87,13 @@ public class ChoiceResource implements Resource {
     public Resource cleanClone() {
         return new ChoiceResource(choices);
     }
+
+    @Override
+    public String toString() {
+        if(finalChoice == null) {
+            return "?";
+        } else {
+            return finalChoice.toString();
+        }
+    }
 }

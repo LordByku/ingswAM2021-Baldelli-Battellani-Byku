@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.parsing;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

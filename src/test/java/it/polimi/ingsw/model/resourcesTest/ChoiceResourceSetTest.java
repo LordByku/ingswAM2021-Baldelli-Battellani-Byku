@@ -151,4 +151,22 @@ public class ChoiceResourceSetTest {
         assertEquals(ConcreteResource.STONE, resources1.get(1).getResource());
         assertEquals(ConcreteResource.STONE, resources2.get(1).getResource());
     }
+
+    @Test
+    public void toStringTest() {
+        ChoiceResourceSet choiceResourceSet = new ChoiceResourceSet();
+
+        choiceResourceSet.addResource(ConcreteResource.COIN);
+        choiceResourceSet.addResource(new ChoiceResource(new FullChoiceSet()));
+        choiceResourceSet.addResource(ConcreteResource.STONE);
+
+        ChoiceResource choiceResource = new ChoiceResource(new FullChoiceSet());
+        choiceResourceSet.addResource(choiceResource);
+        choiceResource.makeChoice(ConcreteResource.SHIELD);
+
+        choiceResourceSet.addResource(ConcreteResource.SERVANT);
+        choiceResourceSet.addResource(ConcreteResource.COIN);
+
+        System.out.println(choiceResourceSet);
+    }
 }

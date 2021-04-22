@@ -126,4 +126,17 @@ public class ChoiceResourceSet implements ResourceSet {
 
         return cloneResourceSet;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder("( ");
+
+        for(Resource resource: resources) {
+            result.append(resource.toString()).append(" ");
+        }
+
+        result.append(")");
+
+        return result.toString();
+    }
 }

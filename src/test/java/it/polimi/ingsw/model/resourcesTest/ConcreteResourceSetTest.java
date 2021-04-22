@@ -472,4 +472,19 @@ public class ConcreteResourceSetTest {
             fail();
         }
     }
+
+    @Test
+    public void toStringTest() {
+        ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
+
+        concreteResourceSet.addResource(ConcreteResource.COIN);
+        concreteResourceSet.addResource(ConcreteResource.STONE, 3);
+
+        System.out.println(concreteResourceSet);
+
+        concreteResourceSet.addResource(ConcreteResource.COIN, 4);
+        concreteResourceSet.addResource(ConcreteResource.SERVANT, 2);
+
+        System.out.println(concreteResourceSet);
+    }
 }

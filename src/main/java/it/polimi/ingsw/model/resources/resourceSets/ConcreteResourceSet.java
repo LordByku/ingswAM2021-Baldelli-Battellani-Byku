@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.playerBoard.InvalidBoardException;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.InvalidResourceException;
 import it.polimi.ingsw.model.resources.NotEnoughResourcesException;
+import it.polimi.ingsw.model.resources.Resource;
 
 import java.util.HashMap;
 
@@ -236,5 +237,20 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
             result += getCount(resource);
         }
         return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder("( ");
+
+        for(ConcreteResource resource: ConcreteResource.values()) {
+            for(int i = 0; i < getCount(resource); ++i) {
+                result.append(resource.toString()).append(" ");
+            }
+        }
+
+        result.append(")");
+
+        return result.toString();
     }
 }

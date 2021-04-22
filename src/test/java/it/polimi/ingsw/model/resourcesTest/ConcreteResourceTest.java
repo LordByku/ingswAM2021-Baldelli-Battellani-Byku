@@ -18,4 +18,14 @@ public class ConcreteResourceTest {
         assertSame(servant.getResource(), ConcreteResource.SERVANT);
         assertSame(stone.getResource(), ConcreteResource.STONE);
     }
+
+    @Test
+    public void toStringTest() {
+        ConcreteResource coin = ConcreteResource.COIN;
+        ConcreteResource shield = ConcreteResource.SHIELD;
+        ConcreteResource servant = ConcreteResource.SERVANT;
+        ConcreteResource stone = ConcreteResource.STONE;
+
+        System.out.println(coin + " " + shield + " " + servant + " " + stone);
+    }
 }

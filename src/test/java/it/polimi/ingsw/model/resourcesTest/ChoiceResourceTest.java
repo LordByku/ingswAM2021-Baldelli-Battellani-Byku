@@ -107,4 +107,20 @@ public class ChoiceResourceTest {
             assertSame(choiceResource.getResource(), ConcreteResource.COIN);
         }
     }
+
+    @Test
+    public void toStringTest() {
+        ChoiceResource choiceResource = new ChoiceResource(new FullChoiceSet());
+        ChoiceResource coin = new ChoiceResource(new FullChoiceSet());
+        ChoiceResource stone = new ChoiceResource(new FullChoiceSet());
+        ChoiceResource servant = new ChoiceResource(new FullChoiceSet());
+        ChoiceResource shield = new ChoiceResource(new FullChoiceSet());
+
+        coin.makeChoice(ConcreteResource.COIN);
+        stone.makeChoice(ConcreteResource.STONE);
+        servant.makeChoice(ConcreteResource.SERVANT);
+        shield.makeChoice(ConcreteResource.SHIELD);
+
+        System.out.println(choiceResource + " " + coin + " " + shield + " " + servant + " " + stone);
+    }
 }
