@@ -64,7 +64,7 @@ public class LeaderCardTest {
 
 
         try {
-            DepotLeaderCard depotLeaderCard = new DepotLeaderCard(2, requirements, ConcreteResource.COIN);
+            DepotLeaderCard depotLeaderCard = new DepotLeaderCard(2, requirements, ConcreteResource.COIN, 2);
             depotLeaderCard.assignToBoard(board);
             assertTrue(depotLeaderCard.isPlayable());
         } catch (InvalidPointsValueException | InvalidRequirementsException | InvalidResourceException | InvalidBoardException e) {
@@ -72,7 +72,7 @@ public class LeaderCardTest {
         }
 
         try {
-            DepotLeaderCard depotLeaderCard = new DepotLeaderCard(2, requirements, ConcreteResource.COIN);
+            DepotLeaderCard depotLeaderCard = new DepotLeaderCard(2, requirements, ConcreteResource.COIN, 2);
             depotLeaderCard.assignToBoard(board);
             depotLeaderCard.initDiscard();
             assertFalse(depotLeaderCard.isPlayable());
@@ -81,7 +81,7 @@ public class LeaderCardTest {
         }
 
         try {
-            DepotLeaderCard depotLeaderCard = new DepotLeaderCard(2, requirements, ConcreteResource.COIN);
+            DepotLeaderCard depotLeaderCard = new DepotLeaderCard(2, requirements, ConcreteResource.COIN, 2);
             depotLeaderCard.assignToBoard(board);
             depotLeaderCard.discard();
             assertFalse(depotLeaderCard.isPlayable());
@@ -90,7 +90,7 @@ public class LeaderCardTest {
         }
 
         try {
-            DepotLeaderCard depotLeaderCard = new DepotLeaderCard(2, requirements, ConcreteResource.COIN);
+            DepotLeaderCard depotLeaderCard = new DepotLeaderCard(2, requirements, ConcreteResource.COIN, 2);
             depotLeaderCard.assignToBoard(board);
             depotLeaderCard.play();
             assertFalse(depotLeaderCard.isPlayable());
@@ -103,7 +103,7 @@ public class LeaderCardTest {
         board.getWarehouse().removeResources(2,concreteResourceSet3);
 
         try {
-            DepotLeaderCard depotLeaderCard = new DepotLeaderCard(2, requirements, ConcreteResource.COIN);
+            DepotLeaderCard depotLeaderCard = new DepotLeaderCard(2, requirements, ConcreteResource.COIN, 2);
             depotLeaderCard.assignToBoard(board);
             assertFalse(depotLeaderCard.isPlayable());
         } catch (InvalidPointsValueException | InvalidRequirementsException | InvalidResourceException | InvalidBoardException e) {

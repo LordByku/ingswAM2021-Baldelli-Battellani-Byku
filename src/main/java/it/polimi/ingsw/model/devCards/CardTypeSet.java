@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.devCards;
 import it.polimi.ingsw.model.leaderCards.LeaderCardRequirements;
 import it.polimi.ingsw.model.playerBoard.Board;
 import it.polimi.ingsw.model.playerBoard.InvalidBoardException;
+import it.polimi.ingsw.model.resources.resourceSets.InvalidQuantityException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,11 +27,31 @@ public class CardTypeSet implements LeaderCardRequirements {
     }
 
     /**
-     * @param cardType the cardType added
+     * add inserts a given amount of a new CardType in this set
+     * @param cardType The CardType to be added
+     * @param quantity The quantity to be added
+     * @throws InvalidCardTypeException cardType is null
+     * @throws InvalidQuantityException quantity is not strictly positive
      */
-    public void add(CardType cardType) {
+    public void add(CardType cardType, int quantity) throws InvalidCardTypeException, InvalidQuantityException {
+        if(cardType == null) {
+            throw new InvalidCardTypeException();
+        }
+        if(quantity <= 0) {
+            throw new InvalidQuantityException();
+        }
+
         int count = cardTypes.getOrDefault(cardType, 0);
-        cardTypes.put(cardType, count + 1);
+        cardTypes.put(cardType, count + quantity);
+    }
+
+    /**
+     * This method offers the option to add a single CardType
+     * @param cardType The CardType to be added
+     * @throws InvalidCardTypeException quantity is not strictly positive
+     */
+    public void add(CardType cardType) throws InvalidCardTypeException {
+        add(cardType, 1);
     }
 
     /**

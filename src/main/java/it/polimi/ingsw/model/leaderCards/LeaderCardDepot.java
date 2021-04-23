@@ -19,8 +19,8 @@ public class LeaderCardDepot extends Depot {
      * @param type of resources that can be stored.
      * @throws InvalidResourceException type is null.
      */
-    public LeaderCardDepot(ConcreteResource type) throws InvalidResourceException {
-        super(2);
+    public LeaderCardDepot(ConcreteResource type, int depotSize) throws InvalidResourceException {
+        super(depotSize);
         if(type == null){
             throw new InvalidResourceException();
         }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.leaderCardsTest;
 
+import it.polimi.ingsw.model.devCards.ProductionDetails;
 import it.polimi.ingsw.model.leaderCards.InvalidPointsValueException;
 import it.polimi.ingsw.model.leaderCards.InvalidRequirementsException;
 import it.polimi.ingsw.model.leaderCards.ProductionLeaderCard;
@@ -34,7 +35,7 @@ public class ProductionLeaderCardTest {
         ObtainableResourceSet obtainableResourceSet = new ObtainableResourceSet(choiceResourceSet, 3);
 
         try {
-            ProductionLeaderCard productionLeaderCard = new ProductionLeaderCard(2, null, spendableResourceSet, obtainableResourceSet);
+            ProductionLeaderCard productionLeaderCard = new ProductionLeaderCard(2, null, new ProductionDetails(spendableResourceSet, obtainableResourceSet));
         } catch (InvalidPointsValueException e) {
             fail();
         } catch (InvalidRequirementsException e) {
@@ -47,7 +48,7 @@ public class ProductionLeaderCardTest {
 
 
         try {
-            ProductionLeaderCard productionLeaderCard = new ProductionLeaderCard(2, requirements, null, obtainableResourceSet);
+            ProductionLeaderCard productionLeaderCard = new ProductionLeaderCard(2, requirements, new ProductionDetails(null, obtainableResourceSet));
         } catch (InvalidPointsValueException | InvalidRequirementsException e) {
             fail();
         } catch (InvalidResourceSetException e) {
@@ -56,7 +57,7 @@ public class ProductionLeaderCardTest {
 
 
         try {
-            ProductionLeaderCard productionLeaderCard = new ProductionLeaderCard(2, requirements, spendableResourceSet, null);
+            ProductionLeaderCard productionLeaderCard = new ProductionLeaderCard(2, requirements, new ProductionDetails(spendableResourceSet, null));
         } catch (InvalidPointsValueException | InvalidRequirementsException e) {
             fail();
         } catch (InvalidResourceSetException e) {
@@ -65,7 +66,7 @@ public class ProductionLeaderCardTest {
 
 
         try {
-            ProductionLeaderCard productionLeaderCard = new ProductionLeaderCard(2, requirements, null, null);
+            ProductionLeaderCard productionLeaderCard = new ProductionLeaderCard(2, requirements, new ProductionDetails(null, null));
         } catch (InvalidPointsValueException | InvalidRequirementsException e) {
             fail();
         } catch (InvalidResourceSetException e) {
@@ -73,7 +74,7 @@ public class ProductionLeaderCardTest {
         }
 
         try {
-            ProductionLeaderCard productionLeaderCard = new ProductionLeaderCard(-5, requirements, spendableResourceSet, obtainableResourceSet);
+            ProductionLeaderCard productionLeaderCard = new ProductionLeaderCard(-5, requirements, new ProductionDetails(spendableResourceSet, obtainableResourceSet));
         } catch (InvalidResourceSetException | InvalidRequirementsException e) {
             fail();
         } catch (InvalidPointsValueException e) {
@@ -122,7 +123,7 @@ public class ProductionLeaderCardTest {
 
 
         try {
-            ProductionLeaderCard productionLeaderCard = new ProductionLeaderCard(8,requirements,spendableResourceSet,obtainableResourceSet);
+            ProductionLeaderCard productionLeaderCard = new ProductionLeaderCard(8,requirements,new ProductionDetails(spendableResourceSet,obtainableResourceSet));
             productionLeaderCard.assignToBoard(board);
             assertFalse(productionLeaderCard.isActive());
             productionLeaderCard.play();

@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import it.polimi.ingsw.model.devCards.ProductionDetails;
+import it.polimi.ingsw.model.devCards.*;
 import it.polimi.ingsw.model.resources.ChoiceResource;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.FullChoiceSet;
@@ -40,6 +40,25 @@ public class Parser {
         }
 
         return concreteResourceSet;
+    }
+
+    public CardTypeSet parseCardTypeSet(JsonArray jsonArray) {
+        CardTypeSet cardTypeSet = new CardTypeSet();
+
+        for(JsonElement jsonElementCardType: jsonArray) {
+            JsonObject jsonCardType = (JsonObject) jsonElementCardType;
+
+            CardType cardType = new CardType(gson.fromJson(jsonCardType.get("colour").getAsString(), CardColour.class));
+            for(JsonElement jsonElementLevel: jsonCardType.getAsJsonArray("levelSet")) {
+                cardType.addLevel(gson.fromJson(jsonElementLevel.getAsString(), CardLevel.class));
+            }
+
+            int quantity = jsonCardType.get("quantity").getAsInt();
+
+            cardTypeSet.add(cardType, quantity);
+        }
+
+        return cardTypeSet;
     }
 
     public SpendableResourceSet parseSpendableResourceSet(JsonArray jsonArray) throws InvalidResourceException {

@@ -51,7 +51,7 @@ public class BoardParser {
     }
 
     public ProductionDetails getDefaultProductionPower() {
-        return Parser.getInstance().parseProductionDetails(board.getAsJsonObject("defaultProductionPower"));
+        return parser.parseProductionDetails(board.getAsJsonObject("defaultProductionPower"));
     }
 
     public int getDevelopmentCardsSlots() {

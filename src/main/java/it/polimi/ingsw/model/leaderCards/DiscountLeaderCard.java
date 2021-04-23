@@ -2,35 +2,45 @@ package it.polimi.ingsw.model.leaderCards;
 
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.InvalidResourceException;
+import it.polimi.ingsw.model.resources.resourceSets.InvalidQuantityException;
 
 /**
  * DiscountLeaderCard represents all LeaderCards with a discount power.
  */
 
 public class DiscountLeaderCard extends LeaderCard{
-
     /**
      * The type of ConcreteResource discounted.
      */
     private final ConcreteResource type;
+    /**
+     * The amount of resources discounted.
+     */
+    private final int discount;
 
     /**
      * The constructor sets the parameters of the leader cards.
      * @param points victory points given by the leader card.
-     * @param requirements needed to play the leader card.
-     * @param type of resource to discount.
+     * @param requirements requirements needed to play the leader card.
+     * @param type type of resource to discount.
+     * @param discount The amount of resources discounted
      * @throws InvalidPointsValueException points are less or equal to zero.
      * @throws InvalidRequirementsException requirements is null.
      * @throws InvalidResourceException type is null.
+     * @throws InvalidDiscountException discount is not strictly positive
      */
-    public DiscountLeaderCard(int points, LeaderCardRequirements requirements, ConcreteResource type)
-            throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceException {
+    public DiscountLeaderCard(int points, LeaderCardRequirements requirements, ConcreteResource type, int discount)
+            throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceException, InvalidDiscountException {
         super(points, requirements);
         if(type == null){
             throw new InvalidResourceException();
         }
+        if(discount <= 0) {
+            throw new InvalidQuantityException();
+        }
 
-        this.type=type;
+        this.type = type;
+        this.discount = discount;
     }
 
     /**

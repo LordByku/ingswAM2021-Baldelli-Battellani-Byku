@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.leaderCards;
 
 
+import it.polimi.ingsw.model.devCards.InvalidProductionDetailsException;
 import it.polimi.ingsw.model.devCards.ProductionDetails;
 import it.polimi.ingsw.model.resources.resourceSets.InvalidResourceSetException;
 import it.polimi.ingsw.model.resources.resourceSets.ObtainableResourceSet;
@@ -9,37 +10,29 @@ import it.polimi.ingsw.model.resources.resourceSets.SpendableResourceSet;
 /**
  * ProductionLeaderCard represents all LeaderCards with a production power.
  */
-public class ProductionLeaderCard extends LeaderCard{
-
+public class ProductionLeaderCard extends LeaderCard {
     /**
-     * in is a set of resource needed to activate this production power.
+     * The ProductionDetails of the power provided by this LeaderCard
      */
-    private final SpendableResourceSet in;
-
-    /**
-     * out is a set of resource obtainable by this production power.
-     */
-    private final ObtainableResourceSet out;
+    private final ProductionDetails productionPower;
 
     /**
      * The constructor sets the parameters of the leader cards.
      * @param points victory points given by the leader card.
-     * @param requirements needed to play the leader card.
-     * @param in is a set of resource needed to activate the production power.
-     * @param out is a set of resource obtainable by the production power.
+     * @param requirements requirements needed to play the leader card.
+     * @param productionDetails Production power of this card
      * @throws InvalidPointsValueException points are less or equal to zero.
      * @throws InvalidRequirementsException requirements is null.
-     * @throws InvalidResourceSetException in is null or out is null.
+     * @throws InvalidProductionDetailsException productionDetails is null
      */
-    public ProductionLeaderCard(int points, LeaderCardRequirements requirements, SpendableResourceSet in, ObtainableResourceSet out)
-            throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceSetException {
+    public ProductionLeaderCard(int points, LeaderCardRequirements requirements, ProductionDetails productionDetails)
+            throws InvalidPointsValueException, InvalidRequirementsException, InvalidProductionDetailsException {
         super(points, requirements);
-        if(in == null || out == null){
-            throw new InvalidResourceSetException();
+        if(productionDetails == null){
+            throw new InvalidProductionDetailsException();
         }
 
-        this.in = in.clone();
-        this.out = out.clone();
+        this.productionPower = productionDetails.clone();
     }
 
     /**
@@ -49,7 +42,7 @@ public class ProductionLeaderCard extends LeaderCard{
     public void play() {
         if(isPlayable()){
             active = true;
-            board.getProductionArea().addLeaderCardProduction(new ProductionDetails(in, out));
+            board.getProductionArea().addLeaderCardProduction(productionPower);
         }
     }
 }

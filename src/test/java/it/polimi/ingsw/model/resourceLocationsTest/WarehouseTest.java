@@ -48,8 +48,8 @@ public class WarehouseTest {
         assertTrue(warehouse.canAdd(2, concreteResourceSet));
         assertNull(warehouse.getResources().getResourceType());
 
-        warehouse.addLeaderCardDepot(new LeaderCardDepot(ConcreteResource.COIN));
-        warehouse.addLeaderCardDepot(new LeaderCardDepot(ConcreteResource.STONE));
+        warehouse.addLeaderCardDepot(new LeaderCardDepot(ConcreteResource.COIN, 2));
+        warehouse.addLeaderCardDepot(new LeaderCardDepot(ConcreteResource.STONE, 2));
 
         assertTrue(warehouse.canAdd(3, concreteResourceSet));
         assertTrue(warehouse.canAdd(4, concreteResourceSet));
@@ -125,7 +125,7 @@ public class WarehouseTest {
             assertEquals(3, warehouse.numberOfDepots());
         }
 
-        LeaderCardDepot leaderCardDepot = new LeaderCardDepot(ConcreteResource.COIN);
+        LeaderCardDepot leaderCardDepot = new LeaderCardDepot(ConcreteResource.COIN, 2);
 
         warehouse.addLeaderCardDepot(leaderCardDepot);
 
@@ -169,7 +169,7 @@ public class WarehouseTest {
         concreteResourceSet.addResource(ConcreteResource.STONE, 2);
         warehouse.addResources(2, concreteResourceSet);
 
-        warehouse.addLeaderCardDepot(new LeaderCardDepot(ConcreteResource.COIN));
+        warehouse.addLeaderCardDepot(new LeaderCardDepot(ConcreteResource.COIN, 2));
         concreteResourceSet = new ConcreteResourceSet();
         concreteResourceSet.addResource(ConcreteResource.COIN, 2);
         warehouse.addResources(3, concreteResourceSet);
@@ -257,7 +257,7 @@ public class WarehouseTest {
         concreteResourceSet = new ConcreteResourceSet();
         concreteResourceSet.addResource(ConcreteResource.COIN);
 
-        warehouse.addLeaderCardDepot(new LeaderCardDepot(ConcreteResource.COIN));
+        warehouse.addLeaderCardDepot(new LeaderCardDepot(ConcreteResource.COIN, 2));
         warehouse.addResources(3, concreteResourceSet);
 
         resources = warehouse.getResources();
@@ -269,7 +269,7 @@ public class WarehouseTest {
         concreteResourceSet = new ConcreteResourceSet();
         concreteResourceSet.addResource(ConcreteResource.SHIELD, 2);
 
-        warehouse.addLeaderCardDepot(new LeaderCardDepot(ConcreteResource.SHIELD));
+        warehouse.addLeaderCardDepot(new LeaderCardDepot(ConcreteResource.SHIELD, 2));
         warehouse.addResources(4, concreteResourceSet);
 
         resources = warehouse.getResources();
@@ -295,7 +295,7 @@ public class WarehouseTest {
     public void removeResourcesInvalidIndexTest() {
         Warehouse warehouse = new Warehouse();
 
-        warehouse.addLeaderCardDepot(new LeaderCardDepot(ConcreteResource.COIN));
+        warehouse.addLeaderCardDepot(new LeaderCardDepot(ConcreteResource.COIN, 2));
 
         try {
             warehouse.removeResources(4, new ConcreteResourceSet());
@@ -317,7 +317,7 @@ public class WarehouseTest {
         concreteResourceSet.addResource(ConcreteResource.STONE, 2);
         warehouse.addResources(1, concreteResourceSet);
 
-        warehouse.addLeaderCardDepot(new LeaderCardDepot(ConcreteResource.COIN));
+        warehouse.addLeaderCardDepot(new LeaderCardDepot(ConcreteResource.COIN, 2));
         concreteResourceSet = new ConcreteResourceSet();
         concreteResourceSet.addResource(ConcreteResource.COIN, 2);
         warehouse.addResources(3, concreteResourceSet);
@@ -435,7 +435,7 @@ public class WarehouseTest {
             assertEquals(0, resources1.getCount(ConcreteResource.SERVANT));
         }
 
-        warehouse.addLeaderCardDepot(new LeaderCardDepot(ConcreteResource.STONE));
+        warehouse.addLeaderCardDepot(new LeaderCardDepot(ConcreteResource.STONE, 2));
 
         warehouse.swapResources(1, 3);
 

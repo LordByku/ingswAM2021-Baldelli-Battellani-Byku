@@ -25,7 +25,8 @@
         "discount": 1
       }
     },
-    {      "points": 2,
+    {
+      "points": 2,
       "requirementsType": "cardSet",
       "requirements": [
         {
