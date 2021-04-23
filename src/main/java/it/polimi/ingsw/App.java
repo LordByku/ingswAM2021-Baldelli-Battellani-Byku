@@ -5,7 +5,10 @@ import it.polimi.ingsw.network.Server;
 
 public class App {
     private static void printUsage() {
-
+        System.out.println("To launch client:");
+        System.out.println("App client hostname port");
+        System.out.println("To launch server:");
+        System.out.println("App server port");
     }
 
     public static void main(String[] args) {

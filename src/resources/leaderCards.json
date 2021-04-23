@@ -1,0 +1,112 @@
+{
+  "leaderCards": [
+    {
+      "points": 2,
+      "requirementsType": "cardSet",
+      "requirements": [
+        {
+          "colour": "YELLOW",
+          "levelSet": [
+            "I", "II", "III"
+          ],
+          "quantity": 1
+        },
+        {
+          "colour": "GREEN",
+          "levelSet": [
+            "I", "II", "III"
+          ],
+          "quantity": 1
+        }
+      ],
+      "effect": {
+        "effectType": "discount",
+        "resource": "SERVANT",
+        "discount": 1
+      }
+    },
+    {},
+    {},
+    {},
+    {
+      "points": 3,
+      "requirementsType": "resources",
+      "requirements": [
+        {
+          "resource": "COIN",
+          "quantity": 5
+        }
+      ],
+      "effect": {
+        "effectType": "depot",
+        "resource": "STONE",
+        "slots": 2
+      }
+    },
+    {},
+    {},
+    {},
+    {
+      "points": 5,
+      "requirementsType": "cardSet",
+      "requirements": [
+        {
+          "colour": "YELLOW",
+          "levelSet": [
+            "I", "II", "III"
+          ],
+          "quantity": 2
+        },
+        {
+          "colour": "BLUE",
+          "levelSet": [
+            "I", "II", "III"
+          ],
+          "quantity": 1
+        }
+      ],
+      "effect": {
+        "effectType": "conversion",
+        "resource": "SERVANT"
+      }
+    },
+    {},
+    {},
+    {},
+    {
+      "points": 4,
+      "requirementsType": "cardSet",
+      "requirements": [
+        {
+          "colour": "YELLOW",
+          "levelSet": [
+            "II"
+          ],
+          "quantity": 1
+        }
+      ],
+      "effect": {
+        "effectType": "production",
+        "productionIn": [
+          {
+            "resource": "SHIELD",
+            "quantity": 1
+          }
+        ],
+        "productionOut": [
+          {
+            "resource": "CHOICE",
+            "quantity": 1
+          },
+          {
+            "resource": "FAITH POINTS",
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {},
+    {},
+    {}
+  ]
+}
