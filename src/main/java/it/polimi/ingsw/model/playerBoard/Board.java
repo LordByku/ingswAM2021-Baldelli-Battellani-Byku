@@ -1,9 +1,11 @@
 package it.polimi.ingsw.model.playerBoard;
 
+import com.google.gson.Gson;
 import it.polimi.ingsw.model.playerBoard.faithTrack.FaithTrack;
 import it.polimi.ingsw.model.playerBoard.resourceLocations.*;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.InvalidResourceSetException;
+import it.polimi.ingsw.parsing.BoardParser;
 
 /**
  * Board represents the board of each player
@@ -13,41 +15,41 @@ public class Board implements ResourceLocation, Scoring, Cloneable {
     /**
      * faithTrack is the FaithTrack of this Board
      */
-    private FaithTrack faithTrack;
+    private final FaithTrack faithTrack;
     /**
      * productionArea stores all ProductionEffects in this Board
      */
-    private ProductionArea productionArea;
+    private final ProductionArea productionArea;
     /**
      * developmentCardArea stores all development cards in this Board
      */
-    private DevelopmentCardArea developmentCardArea;
+    private final DevelopmentCardArea developmentCardArea;
     /**
      * leaderCardArea stores all LeaderCards in this Board
      */
-    private LeaderCardArea leaderCardArea;
+    private final LeaderCardArea leaderCardArea;
     /**
      * discountArea stores all DiscountEffects in this Board
      */
-    private DiscountArea discountArea;
+    private final DiscountArea discountArea;
     /**
      * conversionEffectArea stores all ConversionEffects in this Board
      */
-    private ConversionEffectArea conversionEffectArea;
+    private final ConversionEffectArea conversionEffectArea;
     /**
      * strongBox is the StrongBox of this Board
      */
-    private StrongBox strongBox;
+    private final StrongBox strongBox;
     /**
      * warehouse is the StrongBox of this Board
      */
-    private Warehouse warehouse;
+    private final Warehouse warehouse;
 
     /**
      * The constructor calls the constructor of all the components
      */
-    public Board(){
-        faithTrack = new FaithTrack();
+    public Board() {
+        faithTrack = FaithTrack.builder();
         productionArea = new ProductionArea();
         developmentCardArea = new DevelopmentCardArea();
         leaderCardArea = new LeaderCardArea();

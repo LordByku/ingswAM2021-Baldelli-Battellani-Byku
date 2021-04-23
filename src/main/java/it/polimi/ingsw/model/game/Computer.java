@@ -21,7 +21,7 @@ public class Computer extends Player {
      * The constructor initializes deck to a new ActionTokenDeck
      */
     public Computer() {
-        faithTrack = new FaithTrack();
+        faithTrack = FaithTrack.builder();
         deck = new ActionTokenDeck(faithTrack);
     }
 

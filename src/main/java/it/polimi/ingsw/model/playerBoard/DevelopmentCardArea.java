@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.playerBoard;
 
 import it.polimi.ingsw.model.devCards.*;
+import it.polimi.ingsw.parsing.BoardParser;
 
 import java.util.ArrayList;
 
@@ -19,10 +20,11 @@ public class DevelopmentCardArea implements Scoring {
      * The constructor initializes decks to contain 3 empty decks
      */
     public DevelopmentCardArea() {
+        int developmentCardsSlots = BoardParser.getInstance().getDevelopmentCardsSlots();
         decks = new ArrayList<>();
-        decks.add(new DevCardDeck());
-        decks.add(new DevCardDeck());
-        decks.add(new DevCardDeck());
+        for(int i = 0; i < developmentCardsSlots; ++i) {
+            decks.add(new DevCardDeck());
+        }
     }
 
     /**

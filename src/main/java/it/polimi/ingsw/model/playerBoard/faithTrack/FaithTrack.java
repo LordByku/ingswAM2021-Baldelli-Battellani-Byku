@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.playerBoard.faithTrack;
 import it.polimi.ingsw.model.playerBoard.Board;
 import it.polimi.ingsw.model.playerBoard.Scoring;
 import it.polimi.ingsw.model.resources.resourceSets.InvalidQuantityException;
+import it.polimi.ingsw.parsing.BoardParser;
 
 import java.util.ArrayList;
 
@@ -11,21 +12,30 @@ import java.util.ArrayList;
  *
  */
 public class FaithTrack implements Scoring {
+    private final int finalPosition;
+    private final ArrayList<CheckPoint> checkPoints;
     /**
      * markerPosition represents the position on the faith track
      */
-    int markerPosition=0;
+    private int markerPosition;
     /**
      * receivedPopeFavors represents a list of the pope favors card obtained
      * on the faith track
      */
-    private ArrayList<PopeFavor> receivedPopeFavors = new ArrayList<>();
+    private final ArrayList<PopeFavor> receivedPopeFavors;
+
+    public static FaithTrack builder() {
+        return BoardParser.getInstance().getFaithTrack();
+    }
 
     /**
      * The constructor initializes receivedPopeFavors to an empty list
      */
-
-    public FaithTrack() {
+    private FaithTrack() {
+        finalPosition = 0;
+        checkPoints = new ArrayList<>();
+        markerPosition = 0;
+        receivedPopeFavors = new ArrayList<>();
         VRSObserver.getInstance().addFaithTrack(this);
     }
 
@@ -68,11 +78,10 @@ public class FaithTrack implements Scoring {
             throw new InvalidQuantityException();
         } else {
             markerPosition += points;
-            if (markerPosition >= 24) {
-                markerPosition=24;
+            if (markerPosition >= finalPosition) {
+                markerPosition = finalPosition;
                 notifyEndOfTrack();
             }
-            VRSObserver.getInstance().updateVRS();
         }
     }
 
@@ -89,9 +98,19 @@ public class FaithTrack implements Scoring {
      */
     @Override
     public int getPoints() {
-        int points=0;
-        for(PopeFavor popeFavor: receivedPopeFavors)
-            points+=popeFavor.getPoints();
+        int points = 0;
+        for(CheckPoint checkPoint: checkPoints) {
+            if(checkPoint.getPosition() <= markerPosition) {
+                points = Math.max(points, checkPoint.getPoints());
+            }
+        }
+        for(PopeFavor popeFavor: receivedPopeFavors) {
+            points += popeFavor.getPoints();
+        }
         return points;
+    }
+
+    public int getFinalPosition() {
+        return finalPosition;
     }
 }

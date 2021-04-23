@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.resources.FullChoiceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ChoiceResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ObtainableResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.SpendableResourceSet;
+import it.polimi.ingsw.parsing.BoardParser;
 
 import java.util.ArrayList;
 
@@ -22,26 +23,21 @@ public class ProductionArea {
      * development card on top of the corresponding decks
      * Further positions are occupied by production powers provided by LeaderCards
      */
-    private ArrayList<ProductionDetails> productions;
+    private final ArrayList<ProductionDetails> productions;
+
+    private final int developmentCardsSlots;
 
     /**
      * The constructor initializes productions with the default production power
      */
     public ProductionArea() {
+        developmentCardsSlots = BoardParser.getInstance().getDevelopmentCardsSlots();
         productions = new ArrayList<>();
 
-        ChoiceResourceSet inputChoiceResourceSet = new ChoiceResourceSet();
-        inputChoiceResourceSet.addResource(new ChoiceResource(new FullChoiceSet()));
-        inputChoiceResourceSet.addResource(new ChoiceResource(new FullChoiceSet()));
-
-        ChoiceResourceSet outputChoiceResourceSet = new ChoiceResourceSet();
-        outputChoiceResourceSet.addResource(new ChoiceResource(new FullChoiceSet()));
-
-        productions.add(new ProductionDetails(new SpendableResourceSet(inputChoiceResourceSet),
-                                              new ObtainableResourceSet(outputChoiceResourceSet)));
-        productions.add(null);
-        productions.add(null);
-        productions.add(null);
+        productions.add(BoardParser.getInstance().getDefaultProductionPower());
+        for(int i = 0; i < developmentCardsSlots; ++i) {
+            productions.add(null);
+        }
     }
 
     /**
@@ -57,7 +53,7 @@ public class ProductionArea {
         if(productionDetails == null) {
             throw new InvalidProductionDetailsException();
         }
-        if(deckIndex < 0 || deckIndex >= 3) {
+        if(deckIndex < 0 || deckIndex >= developmentCardsSlots) {
             throw new InvalidDevCardDeckException();
         }
         productions.set(deckIndex + 1, productionDetails.clone());

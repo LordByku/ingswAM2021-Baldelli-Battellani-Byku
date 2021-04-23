@@ -12,7 +12,7 @@ public class FaithTrackTest {
 
     @Test
     public void addFaithPointsTest (){
-        FaithTrack faithTrack = new FaithTrack();
+        FaithTrack faithTrack = FaithTrack.builder();
         try{
             faithTrack.addFaithPoints(-5);
         }catch (InvalidQuantityException e){
@@ -31,7 +31,7 @@ public class FaithTrackTest {
     }
     @Test
     public void receivePopeFavorTest(){
-        FaithTrack faithTrack=new FaithTrack();
+        FaithTrack faithTrack = FaithTrack.builder();
         PopeFavor p1 = new PopeFavor(1);
         PopeFavor p2 = new PopeFavor(5);
         faithTrack.addPopeFavor(p1);
@@ -51,7 +51,7 @@ public class FaithTrackTest {
 
     @Test
     public void getPointsTest(){
-        FaithTrack faithTrack= new FaithTrack();
+        FaithTrack faithTrack = FaithTrack.builder();
         PopeFavor p1 = new PopeFavor(4);
         PopeFavor p2 = new PopeFavor(5);
         faithTrack.addPopeFavor(p1);

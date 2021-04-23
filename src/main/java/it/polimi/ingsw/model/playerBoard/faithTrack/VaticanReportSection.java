@@ -23,7 +23,7 @@ public class VaticanReportSection {
     /**
      * isVisited is a flag for a section where occurred already a Vatican Report
      */
-    private boolean isVisited=false;
+    private boolean isVisited = false;
 
 
     /**

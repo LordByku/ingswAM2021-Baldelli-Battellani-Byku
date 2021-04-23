@@ -12,9 +12,9 @@ public class VRSObserverTest {
     public void updateVRSTest() {
         VRSObserver.getInstance().resetObserver();
 
-        FaithTrack faithTrack1 = new FaithTrack();
-        FaithTrack faithTrack2 = new FaithTrack();
-        FaithTrack faithTrack3 = new FaithTrack();
+        FaithTrack faithTrack1 = FaithTrack.builder();
+        FaithTrack faithTrack2 = FaithTrack.builder();
+        FaithTrack faithTrack3 = FaithTrack.builder();
 
         assertTrue(VRSObserver.getInstance().getTracks().contains(faithTrack1));
         assertTrue(VRSObserver.getInstance().getTracks().contains(faithTrack2));
@@ -52,15 +52,15 @@ public class VRSObserverTest {
         assertEquals(6, faithTracks.get(1).getMarkerPosition());
         assertEquals(12, faithTracks.get(2).getMarkerPosition());
 
-        assertNotSame(vaticanReportSection.getPoints(),faithTrack1.getPoints());
-        assertSame(vaticanReportSection.getPoints(),faithTrack2.getPoints());
-        assertSame(vaticanReportSection.getPoints(),faithTrack3.getPoints());
+        assertNotSame(0 + vaticanReportSection.getPoints(),faithTrack1.getPoints());
+        assertSame(2 + vaticanReportSection.getPoints(),faithTrack2.getPoints());
+        assertSame(6 + vaticanReportSection.getPoints(),faithTrack3.getPoints());
 
         faithTrack1.addFaithPoints(5);
         assertNotSame(vaticanReportSection.getPoints(),faithTrack1.getPoints());
-        assertSame(0,faithTrack1.getPoints());
-        assertSame(vaticanReportSection.getPoints(),faithTrack2.getPoints());
-        assertSame(vaticanReportSection.getPoints(),faithTrack3.getPoints());
+        assertSame(2, faithTrack1.getPoints());
+        assertSame(2 + vaticanReportSection.getPoints(),faithTrack2.getPoints());
+        assertSame(6 + vaticanReportSection.getPoints(),faithTrack3.getPoints());
 
         faithTrack2.addFaithPoints(1);
         faithTrack3.addFaithPoints(1);
@@ -70,23 +70,23 @@ public class VRSObserverTest {
         assertEquals(13, faithTracks.get(0).getMarkerPosition());
         assertEquals(7, faithTracks.get(1).getMarkerPosition());
         assertEquals(13, faithTracks.get(2).getMarkerPosition());
-        assertNotSame(vaticanReportSection2.getPoints(),faithTrack1.getPoints());
-        assertNotSame(vaticanReportSection2.getPoints()+vaticanReportSection.getPoints(),faithTrack2.getPoints());
-        assertNotSame(vaticanReportSection2.getPoints()+vaticanReportSection.getPoints(),faithTrack3.getPoints());
+        assertNotSame(6 + vaticanReportSection2.getPoints(), faithTrack1.getPoints());
+        assertNotSame(2 + vaticanReportSection2.getPoints()+vaticanReportSection.getPoints(),faithTrack2.getPoints());
+        assertNotSame(6 + vaticanReportSection2.getPoints()+vaticanReportSection.getPoints(),faithTrack3.getPoints());
 
         faithTrack3.addFaithPoints(3);
         VRSObserver.getInstance().updateVRS();
 
-        assertNotSame(vaticanReportSection2.getPoints(),faithTrack1.getPoints());
-        assertNotSame(vaticanReportSection2.getPoints()+vaticanReportSection.getPoints(),faithTrack1.getPoints());
-        assertNotSame(vaticanReportSection2.getPoints()+vaticanReportSection.getPoints(),faithTrack1.getPoints());
+        assertNotSame(6 + vaticanReportSection2.getPoints(),faithTrack1.getPoints());
+        assertNotSame(6 + vaticanReportSection2.getPoints()+vaticanReportSection.getPoints(),faithTrack1.getPoints());
+        assertNotSame(6 + vaticanReportSection2.getPoints()+vaticanReportSection.getPoints(),faithTrack1.getPoints());
         faithTrack1.addFaithPoints(5);
         faithTrack3.addFaithPoints(6);
         faithTrack2.addFaithPoints(20);
         VRSObserver.getInstance().updateVRS();
-        assertSame(vaticanReportSection2.getPoints()+vaticanReportSection.getPoints(),faithTrack3.getPoints());
-        assertSame(vaticanReportSection2.getPoints(),faithTrack1.getPoints());
-        assertSame(vaticanReportSection.getPoints(),faithTrack2.getPoints());
+        assertSame(16 + vaticanReportSection2.getPoints()+vaticanReportSection.getPoints(),faithTrack3.getPoints());
+        assertSame(12 + vaticanReportSection2.getPoints(),faithTrack1.getPoints());
+        assertSame(20 + vaticanReportSection.getPoints() + vaticanReportSection2.getPoints(),faithTrack2.getPoints());
 
 
 

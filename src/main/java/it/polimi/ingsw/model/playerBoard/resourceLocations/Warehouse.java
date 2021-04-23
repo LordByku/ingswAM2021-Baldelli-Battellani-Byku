@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.leaderCards.LeaderCardDepot;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.InvalidResourceSetException;
+import it.polimi.ingsw.parsing.BoardParser;
 
 import java.util.ArrayList;
 
@@ -15,22 +16,20 @@ public class Warehouse implements ResourceLocation {
     /**
      * depots is the container for all the Depots in this Warehouse
      */
-    private ArrayList<Depot> depots;
+    private final ArrayList<Depot> depots;
     /**
      * initialDepots is the amount of default depots
      */
     private final int initialDepots;
 
-    /**
-     * The constructor initializes depots to contain three empty Depots of
-     * capacity respectively 1, 2, 3 and initializes initialDepots to 3
-     */
     public Warehouse() {
-        initialDepots = 3;
+        ArrayList<Integer> depotSizes = BoardParser.getInstance().getDepotSizes();
+
+        initialDepots = depotSizes.size();
         depots = new ArrayList<>();
-        depots.add(new Depot(1));
-        depots.add(new Depot(2));
-        depots.add(new Depot(3));
+        for(Integer depotSize: depotSizes) {
+            depots.add(new Depot(depotSize));
+        }
     }
 
     /**
