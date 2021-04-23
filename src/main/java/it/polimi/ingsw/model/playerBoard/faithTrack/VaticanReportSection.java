@@ -47,18 +47,33 @@ public class VaticanReportSection {
     }
 
 
+    /**
+     * getPopeSpace is a getter of the attribute popeSpace
+     * @return the attribute popeSpace of the object
+     */
     public int getPopeSpace() {
         return popeSpace;
     }
 
+    /**
+     * getPoints is a getter of the attribute points
+     * @return the attribute points of the object
+     */
     public int getPoints() {
         return points;
     }
 
+    /**
+     * getFirstSpace() is a getter of the attribute firstSpace
+     * @return the attribute firstSpace of the object
+     */
     public int getFirstSpace() {
         return firstSpace;
     }
 
+    /**
+     * setVisitedTrue sets true the boolean attribute isVisited of the object
+     */
     public void setVisitedTrue() {
         this.isVisited = true;
     }

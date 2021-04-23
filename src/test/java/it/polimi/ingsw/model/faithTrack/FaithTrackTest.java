@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.faithTrack;
 import it.polimi.ingsw.model.playerBoard.faithTrack.FaithTrack;
 import it.polimi.ingsw.model.playerBoard.faithTrack.InvalidPopeFavorException;
 import it.polimi.ingsw.model.playerBoard.faithTrack.PopeFavor;
+import it.polimi.ingsw.model.resources.resourceSets.InvalidQuantityException;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -12,6 +13,12 @@ public class FaithTrackTest {
     @Test
     public void addFaithPointsTest (){
         FaithTrack faithTrack = new FaithTrack();
+        try{
+            faithTrack.addFaithPoints(-5);
+        }catch (InvalidQuantityException e){
+            assertEquals(0, faithTrack.getMarkerPosition());
+        }
+
         faithTrack.addFaithPoints(5);
         faithTrack.addFaithPoints(6);
         faithTrack.addFaithPoints(10);

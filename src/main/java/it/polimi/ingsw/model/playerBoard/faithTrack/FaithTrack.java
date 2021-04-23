@@ -76,6 +76,9 @@ public class FaithTrack implements Scoring {
         }
     }
 
+    /**
+     * addFaithPoints() adds one faith point
+     */
     public void addFaithPoints() {
         addFaithPoints(1);
     }

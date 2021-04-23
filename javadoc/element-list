@@ -1,3 +1,4 @@
+it.polimi.ingsw
 it.polimi.ingsw.model.devCards
 it.polimi.ingsw.model.devCardsTest
 it.polimi.ingsw.model.faithTrack
@@ -17,3 +18,6 @@ it.polimi.ingsw.model.resourceLocationsTest
 it.polimi.ingsw.model.resources
 it.polimi.ingsw.model.resources.resourceSets
 it.polimi.ingsw.model.resourcesTest
+it.polimi.ingsw.network
+it.polimi.ingsw.parsing
+it.polimi.ingsw.view.cli

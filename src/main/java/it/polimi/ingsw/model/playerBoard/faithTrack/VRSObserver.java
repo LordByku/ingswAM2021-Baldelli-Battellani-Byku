@@ -5,14 +5,29 @@ import java.util.ArrayList;
  * VRSObserver is a singleton class representing an observer of the Vatican Report Section
  */
 public class VRSObserver {
+    /**
+     * instance represents the singleton instance
+     */
     private static VRSObserver instance = null;
 
+    /**
+     * tracks represents a list of the faith tracks observed
+     */
     private ArrayList<FaithTrack> tracks = new ArrayList<>();
+    /**
+     * vaticanReportSections represents a list of the Vatican Report Section observed
+     */
     private ArrayList<VaticanReportSection> vaticanReportSections = new ArrayList<>();
 
+    /**
+     * The constructor initialises a singleton observer
+     */
     private VRSObserver() {
     }
 
+    /**
+     * @return the instance "VRSObserver" to the caller
+     */
     public static VRSObserver getInstance() {
         if (instance == null) {
             instance = new VRSObserver();
@@ -20,11 +35,20 @@ public class VRSObserver {
         return instance;
     }
 
+    /**
+     * resetObserver empties both tracks and vaticanReportSections,
+     * re-initialising both attributes to new empty lists
+     *
+     */
     public void resetObserver() {
         tracks = new ArrayList<>();
         vaticanReportSections = new ArrayList<>();
     }
 
+    /**
+     * getTracks() is a getter of the attribute "tracks"
+     * @return a list of the tracks observed
+     */
     public ArrayList<FaithTrack> getTracks() {
         return tracks;
     }

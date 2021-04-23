@@ -13,6 +13,7 @@ public class PopeFavor implements Scoring {
     int points;
 
     /**
+     * The constructor creates a new Pope Favor
      * @param points The pope favor card's points
      */
     public PopeFavor(int points) throws InvalidQuantityException {
@@ -22,6 +23,10 @@ public class PopeFavor implements Scoring {
 
     }
 
+    /**
+     * getPoints is an overridden getter of the attribute points of the object
+     * @return the points of the Pope Favor card
+     */
     @Override
     public int getPoints() {
         return points;
