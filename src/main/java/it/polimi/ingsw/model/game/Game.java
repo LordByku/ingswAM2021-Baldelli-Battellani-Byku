@@ -31,7 +31,7 @@ public class Game {
         return instance;
     }
 
-    public void addPlayer(String nickname)
+    public synchronized void addPlayer(String nickname)
             throws FullLobbyException, ExistingNicknameException, InvalidNicknameException {
         if(players.size() == 4) {
             throw new FullLobbyException();
@@ -42,8 +42,12 @@ public class Game {
             }
         }
 
-        players.add(new Person(nickname));
-        numberOfPlayers++;
+        Person player = new Person(nickname);
+        if(++numberOfPlayers == 1) {
+            player.setHost();
+        }
+
+        players.add(player);
     }
 
     public void start() throws NoPlayersException, GameAlreadyStartedException {

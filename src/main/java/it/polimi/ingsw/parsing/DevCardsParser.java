@@ -5,11 +5,7 @@ import it.polimi.ingsw.model.devCards.CardColour;
 import it.polimi.ingsw.model.devCards.CardLevel;
 import it.polimi.ingsw.model.devCards.DevCard;
 import it.polimi.ingsw.model.devCards.ProductionDetails;
-import it.polimi.ingsw.model.resources.ConcreteResource;
-import it.polimi.ingsw.model.resources.resourceSets.ChoiceResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
-import it.polimi.ingsw.model.resources.resourceSets.ObtainableResourceSet;
-import it.polimi.ingsw.model.resources.resourceSets.SpendableResourceSet;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;

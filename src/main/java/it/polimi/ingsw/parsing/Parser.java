@@ -70,19 +70,23 @@ public class Parser {
             String resourceString = jsonResource.get("resource").getAsString();
             int quantity = jsonResource.get("quantity").getAsInt();
 
-            if(resourceString.equals("CHOICE")) {
-                for(int i = 0; i < quantity; ++i) {
-                    choiceResourceSet.addResource(new ChoiceResource(new FullChoiceSet()));
-                }
-            } else {
-                ConcreteResource concreteResource = gson.fromJson(resourceString, ConcreteResource.class);
-                for(int i = 0; i < quantity; ++i) {
-                    choiceResourceSet.addResource(concreteResource);
-                }
-            }
+            addResources(choiceResourceSet, resourceString, quantity);
         }
 
         return new SpendableResourceSet(choiceResourceSet);
+    }
+
+    private void addResources(ChoiceResourceSet choiceResourceSet, String resourceString, int quantity) {
+        if(resourceString.equals("CHOICE")) {
+            for(int i = 0; i < quantity; ++i) {
+                choiceResourceSet.addResource(new ChoiceResource(new FullChoiceSet()));
+            }
+        } else {
+            ConcreteResource concreteResource = gson.fromJson(resourceString, ConcreteResource.class);
+            for(int i = 0; i < quantity; ++i) {
+                choiceResourceSet.addResource(concreteResource);
+            }
+        }
     }
 
     public ObtainableResourceSet parseObtainableResourceSet(JsonArray jsonArray) {
@@ -97,15 +101,8 @@ public class Parser {
 
             if(resourceString.equals("FAITH POINTS")) {
                 faithPoints += quantity;
-            } else if(resourceString.equals("CHOICE")) {
-                for(int i = 0; i < quantity; ++i) {
-                    choiceResourceSet.addResource(new ChoiceResource(new FullChoiceSet()));
-                }
             } else {
-                ConcreteResource concreteResource = gson.fromJson(resourceString, ConcreteResource.class);
-                for(int i = 0; i < quantity; ++i) {
-                    choiceResourceSet.addResource(concreteResource);
-                }
+                addResources(choiceResourceSet, resourceString, quantity);
             }
         }
 

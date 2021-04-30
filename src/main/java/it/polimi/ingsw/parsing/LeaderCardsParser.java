@@ -4,11 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import it.polimi.ingsw.model.devCards.CardTypeSet;
 import it.polimi.ingsw.model.devCards.ProductionDetails;
 import it.polimi.ingsw.model.leaderCards.*;
 import it.polimi.ingsw.model.resources.ConcreteResource;
-import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -84,10 +82,11 @@ public class LeaderCardsParser {
 
                 return new WhiteConversionLeaderCard(points, requirements, resource);
             }
-            default:
+            default: {
                 ProductionDetails productionDetails = parser.parseProductionDetails(jsonEffect.getAsJsonObject("productionDetails"));
 
                 return new ProductionLeaderCard(points, requirements, productionDetails);
+            }
         }
     }
 }

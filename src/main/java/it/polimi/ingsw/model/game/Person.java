@@ -19,6 +19,10 @@ public class Person extends Player {
      * board is the personal Board of the player
      */
     private Board board;
+    /**
+     * isHost checks whether this Person is the host of the lobby
+     */
+    private boolean isHost;
 
     /**
      * The constructor creates a new Person given his/her nickname
@@ -32,6 +36,7 @@ public class Person extends Player {
         this.nickname = nickname;
         isActivePlayer = false;
         board = new Board();
+        isHost = false;
     }
 
     /**
@@ -68,5 +73,12 @@ public class Person extends Player {
      */
     public Board getBoard() {
         return board.clone();
+    }
+
+    /**
+     * setHost marks this Person as host of the lobby
+     */
+    protected void setHost() {
+        isHost = true;
     }
 }
