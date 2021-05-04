@@ -1,6 +1,6 @@
-package it.polimi.ingsw.network.clientStates;
+package it.polimi.ingsw.network.client.clientStates;
 
-import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.network.client.Client;
 
 public class LoadMultiPlayer extends ClientState {
     @Override

@@ -1,7 +1,7 @@
-package it.polimi.ingsw.network;
+package it.polimi.ingsw.network.client;
 
-import it.polimi.ingsw.network.clientStates.ClientState;
-import it.polimi.ingsw.network.clientStates.NicknameSelection;
+import it.polimi.ingsw.network.client.clientStates.ClientState;
+import it.polimi.ingsw.network.client.clientStates.NicknameSelection;
 import it.polimi.ingsw.view.cli.CLI;
 
 import java.io.IOException;

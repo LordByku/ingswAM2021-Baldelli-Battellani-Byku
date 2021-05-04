@@ -1,9 +1,8 @@
-package it.polimi.ingsw.network.clientStates;
+package it.polimi.ingsw.network.client.clientStates;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import it.polimi.ingsw.network.Client;
-import it.polimi.ingsw.view.cli.CLI;
+import it.polimi.ingsw.network.client.Client;
 
 public abstract class ClientState {
     private final JsonParser parser;

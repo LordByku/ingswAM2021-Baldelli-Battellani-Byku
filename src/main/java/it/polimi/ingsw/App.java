@@ -1,7 +1,7 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.network.Client;
-import it.polimi.ingsw.network.Server;
+import it.polimi.ingsw.network.client.Client;
+import it.polimi.ingsw.network.server.Server;
 
 public class App {
     private static void printUsage() {

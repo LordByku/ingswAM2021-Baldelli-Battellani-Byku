@@ -1,9 +1,9 @@
-package it.polimi.ingsw.network.clientStates;
+package it.polimi.ingsw.network.client.clientStates;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.view.cli.CLI;
 
 import java.util.ArrayList;

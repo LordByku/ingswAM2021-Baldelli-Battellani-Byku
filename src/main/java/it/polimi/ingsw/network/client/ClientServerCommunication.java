@@ -1,4 +1,6 @@
-package it.polimi.ingsw.network;
+package it.polimi.ingsw.network.client;
+
+import it.polimi.ingsw.network.client.Client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
