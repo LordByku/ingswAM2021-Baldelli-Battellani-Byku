@@ -93,4 +93,8 @@ public class DepotLeaderCardTest {
         }
     }
 
+    @Test
+    public void toStringTest() {
+        // TODO
+    }
 }

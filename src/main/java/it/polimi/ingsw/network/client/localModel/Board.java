@@ -11,4 +11,8 @@ public class Board {
     private ArrayList<ArrayList<Integer>> devCards;
     private ArrayList<Integer> playedLeaderCards;
     private ArrayList<Integer> handLeaderCards;
+
+    public ArrayList<Integer> getHandLeaderCards() {
+        return handLeaderCards;
+    }
 }

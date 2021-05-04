@@ -1,18 +1,17 @@
 package it.polimi.ingsw.view.cli;
 
-public enum TextColour {
-    RED("\u001B[31m"),
-    GREEN("\u001B[32m"),
-    YELLOW("\u001B[33m"),
-    BLUE("\u001B[34m"),
-    PURPLE("\u001B[35m"),
-    WHITE("\u001b[37m");
+public enum BackGroundColor {
+    GREEN("\u001b[42m"),
+    YELLOW("\u001B[43m"),
+    BLUE("\u001B[44m"),
+    PURPLE("\u001B[45m"),
+    WHITE("\u001b[47m");
 
     public static final String RESET = "\u001B[0m";
 
     private final String escape;
 
-    TextColour(String escape) {
+    BackGroundColor(String escape) {
         this.escape = escape;
     }
 

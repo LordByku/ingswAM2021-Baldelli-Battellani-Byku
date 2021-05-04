@@ -59,6 +59,10 @@ public class Client {
         this.localModel = localModel;
     }
 
+    public LocalModel getModel() {
+        return localModel;
+    }
+
     public void write(String message) {
         out.println(message);
     }

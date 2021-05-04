@@ -1,5 +1,8 @@
 package it.polimi.ingsw.view.cli;
 
+import it.polimi.ingsw.model.leaderCards.LeaderCard;
+import it.polimi.ingsw.parsing.LeaderCardsParser;
+
 import java.util.ArrayList;
 
 public class CLI {
@@ -33,7 +36,7 @@ public class CLI {
 
         for(String nickname: nicknames) {
             if(nickname.equals(hostname)) {
-                System.out.println(nickname + TextColour.ANSI_BLUE.escape() + " [HOST]" + TextColour.RESET);
+                System.out.println(nickname + TextColour.BLUE.escape() + " [HOST]" + TextColour.RESET);
             } else {
                 System.out.println(nickname);
             }
@@ -64,7 +67,14 @@ public class CLI {
         System.out.println("Game is loading...");
     }
 
-    public void showLeaderCards() {
+    public void showRowLeaderCards(ArrayList<LeaderCard> leaderCards, int firstIndex) {
 
+    }
+
+    public void showLeaderCards(ArrayList<Integer> leaderCards) {
+        for(int i = 0; i < leaderCards.size(); i++) {
+            System.out.println("[" + i + "]");
+            System.out.println(LeaderCardsParser.getInstance().getCard(leaderCards.get(i)));
+        }
     }
 }

@@ -6,6 +6,7 @@ import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.ClientParser;
 import it.polimi.ingsw.network.client.localModel.LocalModel;
 import it.polimi.ingsw.view.cli.CLI;
+import jdk.vm.ci.meta.Local;
 
 public class LoadMultiPlayer extends ClientState {
     public LoadMultiPlayer() {
@@ -26,9 +27,11 @@ public class LoadMultiPlayer extends ClientState {
                     case "update": {
                         JsonObject message = ClientParser.getInstance().getMessage(json);
 
-                        client.setModel(ClientParser.getInstance().getLocalModel(message));
+                        LocalModel model = ClientParser.getInstance().getLocalModel(message);
 
-                        CLI.getInstance().showLeaderCards();
+                        client.setModel(model);
+
+                        CLI.getInstance().showLeaderCards(model.getPlayer(client.getNickname()).getBoard().getHandLeaderCards());
 
                         client.setState(new InitDiscard());
                     }

@@ -49,6 +49,8 @@ public abstract class LeaderCard implements Scoring {
      */
     private final static HashSet<Integer> usedIds = new HashSet<>();
 
+    protected static int width = 0;
+
     public LeaderCard(int points, LeaderCardRequirements requirements, int id)
             throws InvalidPointsValueException, InvalidRequirementsException, InvalidIdException {
         if(points<=0){
@@ -64,6 +66,7 @@ public abstract class LeaderCard implements Scoring {
         this.requirements = (LeaderCardRequirements) requirements.clone();
         this.id = id;
         usedIds.add(id);
+        width = Math.max(width, requirements.toString().length());
     }
 
     /**
@@ -133,5 +136,33 @@ public abstract class LeaderCard implements Scoring {
      */
     public int getPoints() {
         return points;
+    }
+
+    @Override
+    public String toString() {
+        String requirements = this.requirements.toString();
+        StringBuilder result = new StringBuilder("|" + requirements);
+        for(int i = requirements.length(); i < width; ++i) {
+            result.append(" ");
+        }
+        result.append("|\n|");
+        for(int i = 0; i < width; ++i) {
+            result.append(" ");
+        }
+        result.append("|\n|");
+        String points = "(" + this.points + ")";
+        for(int i = 0; i < (width - points.length()) / 2; ++i) {
+            result.append(" ");
+        }
+        result.append(points);
+        for(int i = (width - points.length()) / 2 + points.length(); i < width; ++i) {
+            result.append(" ");
+        }
+        result.append("|\n|");
+        for(int i = 0; i < width; ++i) {
+            result.append(" ");
+        }
+        result.append("|\n");
+        return result.toString();
     }
 }

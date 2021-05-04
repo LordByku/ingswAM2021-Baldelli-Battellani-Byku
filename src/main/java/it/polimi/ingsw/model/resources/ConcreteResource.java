@@ -6,10 +6,10 @@ import it.polimi.ingsw.view.cli.TextColour;
  * ConcreteResource represents all possible in-game resources
  */
 public enum ConcreteResource implements Resource {
-    COIN(TextColour.ANSI_YELLOW),
-    STONE(TextColour.ANSI_WHITE),
-    SHIELD(TextColour.ANSI_BLUE),
-    SERVANT(TextColour.ANSI_PURPLE);
+    COIN(TextColour.YELLOW),
+    STONE(TextColour.WHITE),
+    SHIELD(TextColour.BLUE),
+    SERVANT(TextColour.PURPLE);
 
     private final TextColour colour;
 
@@ -42,6 +42,10 @@ public enum ConcreteResource implements Resource {
     @Override
     public Resource cleanClone() {
         return this;
+    }
+
+    public TextColour getColour() {
+        return colour;
     }
 
     @Override
