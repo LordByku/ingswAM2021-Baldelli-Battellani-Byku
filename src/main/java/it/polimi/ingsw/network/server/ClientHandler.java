@@ -3,6 +3,7 @@ package it.polimi.ingsw.network.server;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.model.game.*;
+import it.polimi.ingsw.parsing.Parser;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,7 +16,7 @@ public class ClientHandler implements Runnable {
     private final Scanner in;
     private final PrintWriter out;
     private final Server server;
-    private String nickname;
+    private Person person;
 
     public ClientHandler(Socket socket, Server server) throws IOException {
         in = new Scanner(socket.getInputStream());
@@ -44,9 +45,12 @@ public class ClientHandler implements Runnable {
         server.broadcast(type, message);
     }
 
+    public void sendOkMessage(JsonObject message){
+        ok("update", message);
+    }
+
     private JsonObject getJsonPlayerList() {
         ArrayList<Player> players = Game.getInstance().getPlayers();
-
         JsonObject jsonObject = new JsonObject();
         JsonArray playerList = new JsonArray();
 
@@ -68,12 +72,16 @@ public class ClientHandler implements Runnable {
     private void connectionClosed() {
         System.out.println("Connection with client has been interrupted");
         try {
-            Game.getInstance().removePlayer(nickname);
+            Game.getInstance().removePlayer(person.getNickname());
         } catch (GameAlreadyStartedException e) {
             e.printStackTrace();
         }
         server.removeClientHandler(this);
         broadcast("playerList", getJsonPlayerList());
+    }
+
+    public Person getPerson(){
+        return person;
     }
 
     public void run() {
@@ -87,11 +95,11 @@ public class ClientHandler implements Runnable {
                 connectionClosed();
                 return;
             }
-            nickname = line;
+            String nickname = line;
 
             System.out.println("Received nickname " + nickname);
             try {
-                Game.getInstance().addPlayer(nickname);
+                person = (Person) Game.getInstance().addPlayer(nickname);
                 validNickname = true;
             } catch (FullLobbyException e) {
                 error("Lobby is already full");
@@ -105,10 +113,38 @@ public class ClientHandler implements Runnable {
             }
         } while(!validNickname);
 
-        System.out.println("Accepted nickname " + nickname);
+        System.out.println("Accepted nickname " + person.getNickname());
 
         broadcast("playerList", getJsonPlayerList());
 
+        try {
+            line = in.nextLine();
+            if(person.isHost()){
+                if (Game.getInstance().getNumberOfPlayers() >= 2 && line.equals("start")) {
+                    JsonObject jsonMessage = new JsonObject();
+                    JsonArray playerOrder = new JsonArray();
+                    for (Player player: Game.getInstance().getPlayers()) {
+                        playerOrder.add(((Person) player).getNickname());
+                    }
+                    JsonObject config = Parser.getInstance().getConfig();
+                    jsonMessage.add("config", config);
+                    jsonMessage.add("turnOrder:", playerOrder);
+                    broadcast("config", jsonMessage);
+
+                    Game.getInstance().start();
+
+                    server.initialGameState();
+                }
+            }
+            else{
+                error("Not the host");
+            }
+        } catch (NoSuchElementException e) {
+            connectionClosed();
+            return;
+        } catch (GameAlreadyStartedException e) {
+            e.printStackTrace();
+        }
         while(true) {
             try {
                 line = in.nextLine();

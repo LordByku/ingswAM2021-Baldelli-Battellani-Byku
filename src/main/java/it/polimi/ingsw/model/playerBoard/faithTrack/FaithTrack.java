@@ -113,4 +113,8 @@ public class FaithTrack implements Scoring {
     public int getFinalPosition() {
         return finalPosition;
     }
+
+    public ArrayList<PopeFavor> getReceivedPopeFavors(){
+        return (ArrayList<PopeFavor>) receivedPopeFavors.clone();
+    }
 }

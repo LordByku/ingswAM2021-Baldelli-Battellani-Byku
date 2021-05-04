@@ -151,4 +151,8 @@ public class DevCard implements Scoring, Cloneable {
             return null;
         }
     }
+
+    public int getId() {
+        return id;
+    }
 }

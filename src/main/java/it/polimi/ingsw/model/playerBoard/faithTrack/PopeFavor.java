@@ -37,4 +37,8 @@ public class PopeFavor implements Scoring {
     public int getPoints() {
         return points;
     }
+
+    public int getId() {
+        return VRSId;
+    }
 }

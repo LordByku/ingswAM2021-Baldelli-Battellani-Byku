@@ -84,4 +84,7 @@ public class DevelopmentCardArea implements Scoring {
         }
         return result;
     }
+    public  ArrayList<DevCardDeck> getDecks() {
+        return (ArrayList<DevCardDeck>) decks.clone();
+    }
 }

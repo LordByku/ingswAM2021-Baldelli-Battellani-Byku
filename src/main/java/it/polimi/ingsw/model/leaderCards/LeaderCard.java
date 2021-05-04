@@ -165,4 +165,8 @@ public abstract class LeaderCard implements Scoring {
         result.append("|\n");
         return result.toString();
     }
+
+    public int getId() {
+        return id;
+    }
 }
