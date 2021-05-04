@@ -13,7 +13,6 @@ import java.io.FileReader;
 
 public class LeaderCardsParser {
     private static LeaderCardsParser instance;
-    private static final String path = "src/resources/leaderCards.json";
     private final JsonArray leaderCards;
     private int currentCard;
     private final Gson gson;
@@ -21,7 +20,7 @@ public class LeaderCardsParser {
 
     private LeaderCardsParser() throws FileNotFoundException {
         JsonParser parser = new JsonParser();
-        FileReader reader = new FileReader(path);
+        FileReader reader = new FileReader(Parser.path);
         JsonObject obj = (JsonObject) parser.parse(reader);
 
         gson = new Gson();
@@ -47,7 +46,7 @@ public class LeaderCardsParser {
             return null;
         }
 
-        JsonObject jsonLeaderCard = (JsonObject) leaderCards.get(currentCard++);
+        JsonObject jsonLeaderCard = (JsonObject) leaderCards.get(currentCard);
 
         int points = jsonLeaderCard.get("points").getAsInt();
         String requirementsType = jsonLeaderCard.get("requirementsType").getAsString();
@@ -69,23 +68,23 @@ public class LeaderCardsParser {
                 ConcreteResource resource = gson.fromJson(jsonEffect.get("resource").getAsString(), ConcreteResource.class);
                 int discount = jsonEffect.get("discount").getAsInt();
 
-                return new DiscountLeaderCard(points, requirements, resource, discount);
+                return new DiscountLeaderCard(points, requirements, resource, discount, currentCard++);
             }
             case "depot": {
                 ConcreteResource resource = gson.fromJson(jsonEffect.get("resource").getAsString(), ConcreteResource.class);
                 int slots = jsonEffect.get("slots").getAsInt();
 
-                return new DepotLeaderCard(points, requirements, resource, slots);
+                return new DepotLeaderCard(points, requirements, resource, slots, currentCard++);
             }
             case "conversion": {
                 ConcreteResource resource = gson.fromJson(jsonEffect.get("resource").getAsString(), ConcreteResource.class);
 
-                return new WhiteConversionLeaderCard(points, requirements, resource);
+                return new WhiteConversionLeaderCard(points, requirements, resource, currentCard++);
             }
             default: {
                 ProductionDetails productionDetails = parser.parseProductionDetails(jsonEffect.getAsJsonObject("productionDetails"));
 
-                return new ProductionLeaderCard(points, requirements, productionDetails);
+                return new ProductionLeaderCard(points, requirements, productionDetails, currentCard++);
             }
         }
     }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.leaderCards;
 
+import it.polimi.ingsw.model.devCards.InvalidIdException;
 import it.polimi.ingsw.model.devCards.InvalidProductionDetailsException;
 import it.polimi.ingsw.model.devCards.ProductionDetails;
 
@@ -21,9 +22,9 @@ public class ProductionLeaderCard extends LeaderCard {
      * @throws InvalidRequirementsException requirements is null.
      * @throws InvalidProductionDetailsException productionDetails is null
      */
-    public ProductionLeaderCard(int points, LeaderCardRequirements requirements, ProductionDetails productionDetails)
-            throws InvalidPointsValueException, InvalidRequirementsException, InvalidProductionDetailsException {
-        super(points, requirements);
+    public ProductionLeaderCard(int points, LeaderCardRequirements requirements, ProductionDetails productionDetails, int id)
+            throws InvalidPointsValueException, InvalidRequirementsException, InvalidProductionDetailsException, InvalidIdException {
+        super(points, requirements, id);
         if(productionDetails == null) {
             throw new InvalidProductionDetailsException();
         }

@@ -13,18 +13,19 @@ import java.util.ArrayList;
 
 public class BoardParser {
     private static BoardParser instance;
-    private static final String path = "src/resources/board.json";
     private final JsonObject board;
     private final Gson gson;
     private final Parser parser;
 
     private BoardParser() throws FileNotFoundException {
         JsonParser parser = new JsonParser();
-        FileReader reader = new FileReader(path);
-        board = (JsonObject) parser.parse(reader);
+        FileReader reader = new FileReader(Parser.path);
+        JsonObject obj = (JsonObject) parser.parse(reader);
 
         gson = new Gson();
         this.parser = Parser.getInstance();
+
+        board = obj.getAsJsonObject("board");
     }
 
     public static BoardParser getInstance() {

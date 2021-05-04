@@ -29,8 +29,8 @@ public class DevCardTest {
         ObtainableResourceSet output1 = new ObtainableResourceSet(choiceResourceSet2);
         ProductionDetails details1 = new ProductionDetails(input1,output1);
 
-        devCard1 = new DevCard(concreteResourceSet1,blue,CardLevel.I,details1,5);
-        devCard2 = new DevCard(concreteResourceSet2,yellow,CardLevel.II,details1,6);
+        devCard1 = new DevCard(concreteResourceSet1,blue,CardLevel.I,details1,5, 1011);
+        devCard2 = new DevCard(concreteResourceSet2,yellow,CardLevel.II,details1,6, 1012);
         assertEquals(CardColour.BLUE,devCard1.getColour());
         assertEquals(CardLevel.I,devCard1.getLevel());
         assertEquals(CardColour.YELLOW,devCard2.getColour());
@@ -40,7 +40,7 @@ public class DevCardTest {
         assertNotEquals(CardColour.GREEN,devCard1.getColour());
         assertNotEquals(CardLevel.III,devCard1.getLevel());
         try {
-            devCard1=new DevCard(concreteResourceSet1, null, CardLevel.I, details1,1);
+            devCard1=new DevCard(concreteResourceSet1, null, CardLevel.I, details1,1, 1013);
             fail();
         }catch (InvalidResourceSetException| InvalidCardColourException e){
             assertEquals(CardColour.BLUE,devCard1.getColour());
@@ -101,11 +101,11 @@ public class DevCardTest {
         ObtainableResourceSet output1 = new ObtainableResourceSet(choiceResourceSet2);
         ProductionDetails details1 = new ProductionDetails(input1,output1);
 
-        devCard1 = new DevCard(concreteResourceSet1,blue,CardLevel.I,details1,5);
-        devCard2 = new DevCard(concreteResourceSet2,yellow,CardLevel.I,details1,6);
-        devCard3 = new DevCard(concreteResourceSet1,blue,CardLevel.II,details1,3);
-        devCard4 = new DevCard(concreteResourceSet2,yellow,CardLevel.III,details1,1);
-        devCard5 = new DevCard(concreteResourceSet2,CardColour.PURPLE,CardLevel.II,details1,1);
+        devCard1 = new DevCard(concreteResourceSet1,blue,CardLevel.I,details1,5, 1014);
+        devCard2 = new DevCard(concreteResourceSet2,yellow,CardLevel.I,details1,6, 1015);
+        devCard3 = new DevCard(concreteResourceSet1,blue,CardLevel.II,details1,3, 1016);
+        devCard4 = new DevCard(concreteResourceSet2,yellow,CardLevel.III,details1,1, 1017);
+        devCard5 = new DevCard(concreteResourceSet2,CardColour.PURPLE,CardLevel.II,details1,1, 1018);
 
         board1.getStrongBox().addResources(concreteResourceSet2);
         board1.getStrongBox().addResources(concreteResourceSet1);

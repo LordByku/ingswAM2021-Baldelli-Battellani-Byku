@@ -54,10 +54,10 @@ public class CardTypeTest {
         SpendableResourceSet input1 = new SpendableResourceSet(choiceResourceSet1);
         ObtainableResourceSet output1 = new ObtainableResourceSet(choiceResourceSet2);
         ProductionDetails details1 = new ProductionDetails(input1,output1);
-        devCard1 = new DevCard(concreteResourceSet1,CardColour.BLUE,CardLevel.I,details1,3);
-        devCard2 = new DevCard(concreteResourceSet1,CardColour.YELLOW,CardLevel.II,details1,2);
-        devCard3 = new DevCard(concreteResourceSet1,CardColour.PURPLE,CardLevel.I,details1,2);
-        devCard4 = new DevCard(concreteResourceSet1,CardColour.BLUE,CardLevel.III,details1,1);
+        devCard1 = new DevCard(concreteResourceSet1,CardColour.BLUE,CardLevel.I,details1,3, 1019);
+        devCard2 = new DevCard(concreteResourceSet1,CardColour.YELLOW,CardLevel.II,details1,2,1020);
+        devCard3 = new DevCard(concreteResourceSet1,CardColour.PURPLE,CardLevel.I,details1,2, 1021);
+        devCard4 = new DevCard(concreteResourceSet1,CardColour.BLUE,CardLevel.III,details1,1, 1022);
 
 
         assertTrue(cardType.isSatisfied(devCard1));

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.leaderCards;
 
+import it.polimi.ingsw.model.devCards.InvalidIdException;
 import it.polimi.ingsw.model.playerBoard.resourceLocations.InvalidDepotSizeException;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.InvalidResourceException;
@@ -29,9 +30,9 @@ public class DepotLeaderCard extends LeaderCard{
      * @throws InvalidResourceException type is null.
      * @throws InvalidDepotSizeException depotSize is not strictly positive
      */
-    public DepotLeaderCard(int points, LeaderCardRequirements requirements, ConcreteResource type, int depotSize)
-            throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceException, InvalidDepotSizeException {
-        super(points, requirements);
+    public DepotLeaderCard(int points, LeaderCardRequirements requirements, ConcreteResource type, int depotSize, int id)
+            throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceException, InvalidDepotSizeException, InvalidIdException {
+        super(points, requirements, id);
         if(type == null) {
             throw new InvalidResourceException();
         }

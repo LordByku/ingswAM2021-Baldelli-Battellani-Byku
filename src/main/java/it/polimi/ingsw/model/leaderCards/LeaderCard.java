@@ -1,9 +1,12 @@
 package it.polimi.ingsw.model.leaderCards;
 
+import it.polimi.ingsw.model.devCards.InvalidIdException;
 import it.polimi.ingsw.model.playerBoard.Board;
 import it.polimi.ingsw.model.playerBoard.InvalidBoardException;
 import it.polimi.ingsw.model.playerBoard.Scoring;
 import it.polimi.ingsw.model.resources.InvalidResourceException;
+
+import java.util.HashSet;
 
 /**
  * LeaderCard refers to all the leader cards.
@@ -36,16 +39,31 @@ public abstract class LeaderCard implements Scoring {
      */
     protected boolean discarded = false;
 
-    public LeaderCard(int points, LeaderCardRequirements requirements)
-            throws InvalidPointsValueException, InvalidRequirementsException {
+    /**
+     * id is the unique id of this card
+     */
+    private final int id;
+
+    /**
+     * usedIds is a container for the ids already used for leader cards
+     */
+    private final static HashSet<Integer> usedIds = new HashSet<>();
+
+    public LeaderCard(int points, LeaderCardRequirements requirements, int id)
+            throws InvalidPointsValueException, InvalidRequirementsException, InvalidIdException {
         if(points<=0){
             throw new InvalidPointsValueException();
         }
         if(requirements == null){
             throw new InvalidRequirementsException();
         }
+        if(id < 0 || usedIds.contains(id)) {
+            throw new InvalidIdException();
+        }
         this.points = points;
         this.requirements = (LeaderCardRequirements) requirements.clone();
+        this.id = id;
+        usedIds.add(id);
     }
 
     /**

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.leaderCards;
 
+import it.polimi.ingsw.model.devCards.InvalidIdException;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.InvalidResourceException;
 
@@ -22,9 +23,9 @@ public class WhiteConversionLeaderCard extends LeaderCard{
      * @throws InvalidRequirementsException requirements is null.
      * @throws InvalidResourceException type is null.
      */
-    public WhiteConversionLeaderCard(int points, LeaderCardRequirements requirements, ConcreteResource type)
-            throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceException {
-        super(points, requirements);
+    public WhiteConversionLeaderCard(int points, LeaderCardRequirements requirements, ConcreteResource type, int id)
+            throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceException, InvalidIdException {
+        super(points, requirements, id);
         if(type == null){
             throw new InvalidResourceException();
         }

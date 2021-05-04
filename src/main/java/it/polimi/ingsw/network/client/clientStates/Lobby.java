@@ -4,6 +4,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.network.client.Client;
+import it.polimi.ingsw.network.client.ClientParser;
+import it.polimi.ingsw.network.client.LocalConfig;
 import it.polimi.ingsw.view.cli.CLI;
 
 import java.util.ArrayList;
@@ -15,24 +17,24 @@ public class Lobby extends ClientState {
 
     @Override
     public void handleServerMessage(Client client, String line) {
-        JsonObject json = parse(line);
+        JsonObject json = ClientParser.getInstance().parse(line);
 
-        String status = getStatus(json);
+        String status = ClientParser.getInstance().getStatus(json);
 
         switch (status) {
             case "error": {
-                String message = getMessage(json).toString();
+                String message = ClientParser.getInstance().getMessage(json).toString();
                 CLI.getInstance().serverError(message);
                 client.closeServerCommunication();
                 client.setState(new NicknameSelection());
                 break;
             }
             case "ok": {
-                String type = getType(json);
+                String type = ClientParser.getInstance().getType(json);
 
                 switch (type) {
                     case "playerList": {
-                        JsonObject message = getMessage(json);
+                        JsonObject message = ClientParser.getInstance().getMessage(json);
 
                         JsonArray playerList = message.get("playerList").getAsJsonArray();
                         ArrayList<String> nicknames = new ArrayList<>();
@@ -58,7 +60,14 @@ public class Lobby extends ClientState {
                         break;
                     }
                     case "config": {
-                        // TODO
+                        JsonObject message = ClientParser.getInstance().getMessage(json);
+
+                        ArrayList<String> turnOrder = ClientParser.getInstance().getTurnOrder(message);
+                        LocalConfig.getInstance().setTurnOrder(turnOrder);
+
+                        JsonObject config = ClientParser.getInstance().getConfig(message);
+                        LocalConfig.getInstance().setConfig(config);
+
                         client.setState(new LoadMultiPlayer());
                         break;
                     }

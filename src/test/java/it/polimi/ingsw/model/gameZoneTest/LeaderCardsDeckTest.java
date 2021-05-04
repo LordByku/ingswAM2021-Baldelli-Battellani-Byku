@@ -1,7 +1,9 @@
 package it.polimi.ingsw.model.gameZoneTest;
 
+import it.polimi.ingsw.model.game.Game;
 import it.polimi.ingsw.model.gameZone.LeaderCardsDeck;
 import it.polimi.ingsw.model.leaderCards.*;
+import it.polimi.ingsw.parsing.LeaderCardsParser;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -9,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 public class LeaderCardsDeckTest {
     @Test
     public void constructorTest() {
-        LeaderCardsDeck leaderCardsDeck = new LeaderCardsDeck();
+        LeaderCardsDeck leaderCardsDeck = Game.getInstance().getGameZone().getLeaderCardsDeck();
 
         int production = 0;
         int depot = 0;

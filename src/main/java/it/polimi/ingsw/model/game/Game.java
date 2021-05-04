@@ -114,6 +114,10 @@ public class Game {
         }
     }
 
+    public GameZone getGameZone() {
+        return gameZone;
+    }
+
     public void endGame() {
         gameEnded = true;
         // TODO

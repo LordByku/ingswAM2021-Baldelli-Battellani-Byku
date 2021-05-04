@@ -15,6 +15,8 @@ public class Parser {
     private static Parser instance;
     private final Gson gson;
 
+    public static String path = "src/resources/config.json";
+
     private Parser() {
         gson = new Gson();
     }

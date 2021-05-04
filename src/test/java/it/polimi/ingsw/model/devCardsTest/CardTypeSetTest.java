@@ -59,11 +59,11 @@ public class CardTypeSetTest {
         ObtainableResourceSet output1 = new ObtainableResourceSet(choiceResourceSet2);
         ProductionDetails details1 = new ProductionDetails(input1,output1);
 
-        devCard1 = new DevCard(concreteResourceSet1,blue,CardLevel.I,details1,5);
-        devCard2 = new DevCard(concreteResourceSet2,yellow,CardLevel.I,details1,6);
-        devCard3 = new DevCard(concreteResourceSet1,blue,CardLevel.II,details1,3);
-        devCard4 = new DevCard(concreteResourceSet2,yellow,CardLevel.III,details1,1);
-        devCard5 = new DevCard(concreteResourceSet2,CardColour.PURPLE,CardLevel.II,details1,1);
+        devCard1 = new DevCard(concreteResourceSet1,blue,CardLevel.I,details1,5, 1006);
+        devCard2 = new DevCard(concreteResourceSet2,yellow,CardLevel.I,details1,6, 1007);
+        devCard3 = new DevCard(concreteResourceSet1,blue,CardLevel.II,details1,3, 1008);
+        devCard4 = new DevCard(concreteResourceSet2,yellow,CardLevel.III,details1,1, 1009);
+        devCard5 = new DevCard(concreteResourceSet2,CardColour.PURPLE,CardLevel.II,details1,1, 1010);
 
 
         board1.getDevelopmentCardArea().addDevCard(devCard1,1);

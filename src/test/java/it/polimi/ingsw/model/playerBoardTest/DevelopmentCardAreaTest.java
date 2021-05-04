@@ -49,7 +49,7 @@ public class DevelopmentCardAreaTest {
                 new SpendableResourceSet(inputChoiceResourceSet),
                 new ObtainableResourceSet(outputChoiceResourceSet, 2));
 
-        DevCard devCard = new DevCard(concreteResourceSet, CardColour.BLUE, CardLevel.I, productionDetails, 1);
+        DevCard devCard = new DevCard(concreteResourceSet, CardColour.BLUE, CardLevel.I, productionDetails, 1, 1000);
 
         try {
             developmentCardArea.addDevCard(devCard, 3);
@@ -78,11 +78,11 @@ public class DevelopmentCardAreaTest {
                 new SpendableResourceSet(inputChoiceResourceSet),
                 new ObtainableResourceSet(outputChoiceResourceSet, 1));
 
-        DevCard devCard = new DevCard(concreteResourceSet, CardColour.BLUE, CardLevel.I, productionDetails, 1);
+        DevCard devCard = new DevCard(concreteResourceSet, CardColour.BLUE, CardLevel.I, productionDetails, 1, 1001);
 
         developmentCardArea.addDevCard(devCard, 1);
 
-        devCard = new DevCard(concreteResourceSet, CardColour.YELLOW, CardLevel.II, productionDetails, 2);
+        devCard = new DevCard(concreteResourceSet, CardColour.YELLOW, CardLevel.II, productionDetails, 2, 1002);
 
         try {
             developmentCardArea.addDevCard(devCard, 0);
@@ -130,15 +130,15 @@ public class DevelopmentCardAreaTest {
                 new SpendableResourceSet(inputChoiceResourceSet),
                 new ObtainableResourceSet(outputChoiceResourceSet));
 
-        DevCard devCard1 = new DevCard(concreteResourceSet, CardColour.BLUE, CardLevel.I, productionDetails, 1);
-        DevCard devCard2 = new DevCard(concreteResourceSet, CardColour.YELLOW, CardLevel.I, productionDetails, 2);
+        DevCard devCard1 = new DevCard(concreteResourceSet, CardColour.BLUE, CardLevel.I, productionDetails, 1, 1003);
+        DevCard devCard2 = new DevCard(concreteResourceSet, CardColour.YELLOW, CardLevel.I, productionDetails, 2, 1004);
 
         concreteResourceSet.addResource(ConcreteResource.COIN);
         outputChoiceResourceSet.addResource(ConcreteResource.SERVANT);
         productionDetails = new ProductionDetails(new SpendableResourceSet(inputChoiceResourceSet),
                                                   new ObtainableResourceSet(outputChoiceResourceSet));
 
-        DevCard devCard3 = new DevCard(concreteResourceSet, CardColour.PURPLE, CardLevel.II, productionDetails, 2);
+        DevCard devCard3 = new DevCard(concreteResourceSet, CardColour.PURPLE, CardLevel.II, productionDetails, 2, 1005);
 
         developmentCardArea.addDevCard(devCard1, 0);
         developmentCardArea.addDevCard(devCard2, 2);

@@ -12,7 +12,6 @@ import java.io.FileReader;
 
 public class DevCardsParser {
     private static DevCardsParser instance;
-    private static final String path = "src/resources/devCards.json";
     private final JsonArray developmentCards;
     private int currentCard;
     private final Gson gson;
@@ -20,7 +19,7 @@ public class DevCardsParser {
 
     private DevCardsParser() throws FileNotFoundException {
         JsonParser parser = new JsonParser();
-        FileReader reader = new FileReader(path);
+        FileReader reader = new FileReader(Parser.path);
         JsonObject obj = (JsonObject) parser.parse(reader);
 
         gson = new Gson();
@@ -46,7 +45,7 @@ public class DevCardsParser {
             return null;
         }
 
-        JsonObject jsonDevCard = (JsonObject) developmentCards.get(currentCard++);
+        JsonObject jsonDevCard = (JsonObject) developmentCards.get(currentCard);
 
         String levelString = jsonDevCard.get("level").getAsString();
         String colourString = jsonDevCard.get("colour").getAsString();
@@ -57,6 +56,6 @@ public class DevCardsParser {
         ConcreteResourceSet reqResources = parser.parseConcreteResourceSet(jsonDevCard.get("requirements").getAsJsonArray());
         ProductionDetails productionDetails = parser.parseProductionDetails(jsonDevCard.get("productionPower").getAsJsonObject());
 
-        return new DevCard(reqResources, colour, level, productionDetails, points);
+        return new DevCard(reqResources, colour, level, productionDetails, points, currentCard++);
     }
 }
