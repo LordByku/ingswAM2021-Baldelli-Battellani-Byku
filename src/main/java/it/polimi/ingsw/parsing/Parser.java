@@ -1,9 +1,6 @@
 package it.polimi.ingsw.parsing;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 import it.polimi.ingsw.model.devCards.*;
 import it.polimi.ingsw.model.resources.ChoiceResource;
 import it.polimi.ingsw.model.resources.ConcreteResource;
@@ -11,21 +8,36 @@ import it.polimi.ingsw.model.resources.FullChoiceSet;
 import it.polimi.ingsw.model.resources.InvalidResourceException;
 import it.polimi.ingsw.model.resources.resourceSets.*;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+
 public class Parser {
     private static Parser instance;
     private final Gson gson;
+    private final JsonObject config;
+    private static final String path = "src/resources/config.json";
 
-    public static String path = "src/resources/config.json";
+    private Parser() throws FileNotFoundException {
+        JsonParser parser = new JsonParser();
+        FileReader reader = new FileReader(Parser.path);
+        config = (JsonObject) parser.parse(reader);
 
-    private Parser() {
         gson = new Gson();
     }
 
     public static Parser getInstance() {
         if(instance == null) {
-            instance = new Parser();
+            try {
+                instance = new Parser();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
         return instance;
+    }
+
+    public JsonObject getConfig() {
+        return config;
     }
 
     public ConcreteResourceSet parseConcreteResourceSet(JsonArray jsonArray)

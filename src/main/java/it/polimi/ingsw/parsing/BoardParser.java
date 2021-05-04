@@ -17,24 +17,16 @@ public class BoardParser {
     private final Gson gson;
     private final Parser parser;
 
-    private BoardParser() throws FileNotFoundException {
-        JsonParser parser = new JsonParser();
-        FileReader reader = new FileReader(Parser.path);
-        JsonObject obj = (JsonObject) parser.parse(reader);
-
+    private BoardParser() {
         gson = new Gson();
         this.parser = Parser.getInstance();
 
-        board = obj.getAsJsonObject("board");
+        board = Parser.getInstance().getConfig().getAsJsonObject("board");
     }
 
     public static BoardParser getInstance() {
         if(instance == null) {
-            try {
-                instance = new BoardParser();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            instance = new BoardParser();
         }
         return instance;
     }

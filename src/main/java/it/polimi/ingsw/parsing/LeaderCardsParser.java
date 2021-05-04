@@ -19,14 +19,10 @@ public class LeaderCardsParser {
     private final Parser parser;
 
     private LeaderCardsParser() throws FileNotFoundException {
-        JsonParser parser = new JsonParser();
-        FileReader reader = new FileReader(Parser.path);
-        JsonObject obj = (JsonObject) parser.parse(reader);
-
         gson = new Gson();
         this.parser = Parser.getInstance();
 
-        leaderCards = (JsonArray) obj.get("leaderCards");
+        leaderCards = (JsonArray) Parser.getInstance().getConfig().get("leaderCards");
         currentCard = 0;
     }
 
