@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.client;
 
 import it.polimi.ingsw.network.client.clientStates.ClientState;
 import it.polimi.ingsw.network.client.clientStates.NicknameSelection;
+import it.polimi.ingsw.network.client.localModel.LocalModel;
 import it.polimi.ingsw.view.cli.CLI;
 
 import java.io.IOException;
@@ -15,6 +16,7 @@ public class Client {
     private String nickname;
     private PrintWriter out;
     private Socket socket;
+    private LocalModel localModel;
 
     public Client(String hostname, int port) {
         this.hostname = hostname;
@@ -51,6 +53,10 @@ public class Client {
 
     public void setState(ClientState clientState) {
         this.clientState = clientState;
+    }
+
+    public void setModel(LocalModel localModel) {
+        this.localModel = localModel;
     }
 
     public void write(String message) {

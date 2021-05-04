@@ -12,16 +12,16 @@ import java.io.FileReader;
 
 public class DevCardsParser {
     private static DevCardsParser instance;
-    private final JsonArray developmentCards;
+    private JsonArray developmentCards;
     private int currentCard;
     private final Gson gson;
     private final Parser parser;
 
     private DevCardsParser() throws FileNotFoundException {
         gson = new Gson();
-        this.parser = Parser.getInstance();
+        parser = Parser.getInstance();
 
-        developmentCards = (JsonArray) Parser.getInstance().getConfig().get("developmentCards");
+        developmentCards = parser.getConfig().getAsJsonArray("developmentCards");
         currentCard = 0;
     }
 
@@ -36,7 +36,15 @@ public class DevCardsParser {
         return instance;
     }
 
-    public DevCard getNextCard() {
+    public void setConfig(JsonObject config) {
+        developmentCards = (JsonArray) config.get("developmentCards");
+    }
+
+    public DevCard getNextCard() throws NoConfigFileException {
+       if(developmentCards == null) {
+           throw new NoConfigFileException();
+       }
+
         if(currentCard >= developmentCards.size()) {
             return null;
         }

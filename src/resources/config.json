@@ -58,6 +58,23 @@
     ],
     "developmentCardsSlots": 3
   },
+  "vaticanReportSections": [
+    {
+      "firstSpace": 5,
+      "popeSpace": 8,
+      "points": 2
+    },
+    {
+      "firstSpace": 12,
+      "popeSpace": 16,
+      "points": 3
+    },
+    {
+      "firstSpace": 19,
+      "popeSpace": 24,
+      "points": 4
+    }
+  ],
   "developmentCards": [
     {
       "colour": "GREEN",

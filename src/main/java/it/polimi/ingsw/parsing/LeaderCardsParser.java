@@ -13,16 +13,16 @@ import java.io.FileReader;
 
 public class LeaderCardsParser {
     private static LeaderCardsParser instance;
-    private final JsonArray leaderCards;
+    private JsonArray leaderCards;
     private int currentCard;
     private final Gson gson;
     private final Parser parser;
 
     private LeaderCardsParser() throws FileNotFoundException {
         gson = new Gson();
-        this.parser = Parser.getInstance();
+        parser = Parser.getInstance();
 
-        leaderCards = (JsonArray) Parser.getInstance().getConfig().get("leaderCards");
+        leaderCards = parser.getConfig().getAsJsonArray("leaderCards");
         currentCard = 0;
     }
 
@@ -37,12 +37,20 @@ public class LeaderCardsParser {
         return instance;
     }
 
-    public LeaderCard nextCard() {
-        if(currentCard >= leaderCards.size()) {
+    public void setConfig(JsonObject config) {
+        leaderCards = (JsonArray) config.get("leaderCards");
+    }
+
+    public LeaderCard getCard(int index) throws NoConfigFileException {
+        if(leaderCards == null) {
+            throw new NoConfigFileException();
+        }
+
+        if(index < 0 || index >= leaderCards.size()) {
             return null;
         }
 
-        JsonObject jsonLeaderCard = (JsonObject) leaderCards.get(currentCard);
+        JsonObject jsonLeaderCard = (JsonObject) leaderCards.get(index);
 
         int points = jsonLeaderCard.get("points").getAsInt();
         String requirementsType = jsonLeaderCard.get("requirementsType").getAsString();
@@ -83,5 +91,9 @@ public class LeaderCardsParser {
                 return new ProductionLeaderCard(points, requirements, productionDetails, currentCard++);
             }
         }
+    }
+
+    public LeaderCard nextCard() throws NoConfigFileException {
+        return getCard(currentCard++);
     }
 }

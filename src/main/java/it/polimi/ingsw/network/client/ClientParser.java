@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.client;
 
 import com.google.gson.*;
+import it.polimi.ingsw.network.client.localModel.LocalModel;
 
 import java.util.ArrayList;
 
@@ -48,5 +49,9 @@ public class ClientParser {
 
     public JsonObject getConfig(JsonObject json) {
         return json.getAsJsonObject("config");
+    }
+
+    public LocalModel getLocalModel(JsonObject json) {
+        return gson.fromJson(json, LocalModel.class);
     }
 }

@@ -1,8 +1,10 @@
 package it.polimi.ingsw.network.client.clientStates;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.ClientParser;
+import it.polimi.ingsw.network.client.localModel.LocalModel;
 import it.polimi.ingsw.view.cli.CLI;
 
 public class LoadMultiPlayer extends ClientState {
@@ -24,7 +26,11 @@ public class LoadMultiPlayer extends ClientState {
                     case "update": {
                         JsonObject message = ClientParser.getInstance().getMessage(json);
 
-                        // TODO
+                        client.setModel(ClientParser.getInstance().getLocalModel(message));
+
+                        CLI.getInstance().showLeaderCards();
+
+                        client.setState(new InitDiscard());
                     }
                     default: {
                         CLI.getInstance().unexpected();

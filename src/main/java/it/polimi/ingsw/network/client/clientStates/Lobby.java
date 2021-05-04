@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.ClientParser;
 import it.polimi.ingsw.network.client.LocalConfig;
+import it.polimi.ingsw.parsing.Parser;
 import it.polimi.ingsw.view.cli.CLI;
 
 import java.util.ArrayList;
@@ -66,6 +67,7 @@ public class Lobby extends ClientState {
                         LocalConfig.getInstance().setTurnOrder(turnOrder);
 
                         JsonObject config = ClientParser.getInstance().getConfig(message);
+                        Parser.getInstance().setConfig(config);
                         LocalConfig.getInstance().setConfig(config);
 
                         client.setState(new LoadMultiPlayer());

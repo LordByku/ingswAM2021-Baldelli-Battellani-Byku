@@ -14,7 +14,7 @@ import java.io.FileReader;
 public class Parser {
     private static Parser instance;
     private final Gson gson;
-    private final JsonObject config;
+    private JsonObject config;
     private static final String path = "src/resources/config.json";
 
     private Parser() throws FileNotFoundException {
@@ -38,6 +38,14 @@ public class Parser {
 
     public JsonObject getConfig() {
         return config;
+    }
+
+    public void setConfig(JsonObject config) {
+        this.config = config;
+        BoardParser.getInstance().setConfig(config);
+        DevCardsParser.getInstance().setConfig(config);
+        LeaderCardsParser.getInstance().setConfig(config);
+        VRSParser.getInstance().setConfig(config);
     }
 
     public ConcreteResourceSet parseConcreteResourceSet(JsonArray jsonArray)

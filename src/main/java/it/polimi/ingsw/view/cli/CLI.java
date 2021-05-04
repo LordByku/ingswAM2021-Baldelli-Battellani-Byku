@@ -63,4 +63,8 @@ public class CLI {
     public void loadMultiPlayer() {
         System.out.println("Game is loading...");
     }
+
+    public void showLeaderCards() {
+
+    }
 }
