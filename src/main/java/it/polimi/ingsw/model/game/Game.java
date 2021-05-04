@@ -8,9 +8,9 @@ import java.util.Collections;
 public class Game {
     private static Game instance;
     private int numberOfPlayers;
-    private ArrayList<Player> players;
-    private boolean gameStarted;
-    private boolean gameEnded;
+    private final ArrayList<Player> players;
+    private volatile boolean gameStarted;
+    private volatile boolean gameEnded;
     private boolean isLastTurn;
     private GameZone gameZone;
     private int currentPlayer;
@@ -31,23 +31,24 @@ public class Game {
         return instance;
     }
 
-    public synchronized void addPlayer(String nickname)
+    public void addPlayer(String nickname)
             throws FullLobbyException, ExistingNicknameException, InvalidNicknameException {
-        if(players.size() == 4) {
-            throw new FullLobbyException();
-        }
-        for(Player player: players) {
-            if(((Person) player).getNickname().equals(nickname)) {
-                throw new ExistingNicknameException();
+        synchronized (players) {
+            if(players.size() == 4) {
+                throw new FullLobbyException();
+            }
+            for(Player player: players) {
+                if(((Person) player).getNickname().equals(nickname)) {
+                    throw new ExistingNicknameException();
+                }
+            }
+
+            Person player = new Person(nickname);
+            players.add(player);
+            if(++numberOfPlayers == 1) {
+                setNewHost();
             }
         }
-
-        Person player = new Person(nickname);
-        if(++numberOfPlayers == 1) {
-            player.setHost();
-        }
-
-        players.add(player);
     }
 
     public void start() throws NoPlayersException, GameAlreadyStartedException {
@@ -61,14 +62,16 @@ public class Game {
 
         Collections.shuffle(players);
 
+        for(Player player: players) {
+            Person person = (Person) player;
+
+            gameZone.getLeaderCardsDeck().assignCards(person.getBoard().getLeaderCardArea());
+        }
+
         if(players.size() == 1) {
             players.add(new Computer());
-
-            // TODO: handle leader cards distribution to single player
         } else {
             // TODO: handle initial resources distribution
-
-            // TODO: handle leader cards distribution to all players
         }
 
         gameStarted = true;
@@ -105,8 +108,42 @@ public class Game {
         return numberOfPlayers;
     }
 
+    public ArrayList<Player> getPlayers() {
+        synchronized (players) {
+            return (ArrayList<Player>) players.clone();
+        }
+    }
+
     public void endGame() {
         gameEnded = true;
         // TODO
+    }
+
+    public void removePlayer(String nickname) throws GameAlreadyStartedException {
+        if(gameStarted) {
+            throw new GameAlreadyStartedException();
+        }
+        synchronized (players) {
+            for(Player player: players) {
+                Person person = (Person) player;
+                if(person.getNickname().equals(nickname)) {
+                    --numberOfPlayers;
+                    players.remove(person);
+                    if(person.isHost()) {
+                        setNewHost();
+                    }
+                }
+            }
+        }
+    }
+
+    private void setNewHost() {
+        synchronized (players) {
+            if(players.size() == 0) {
+                return;
+            }
+            Person person = (Person) players.get(0);
+            person.setHost();
+        }
     }
 }

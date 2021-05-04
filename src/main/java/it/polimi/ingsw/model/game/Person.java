@@ -81,4 +81,8 @@ public class Person extends Player {
     protected void setHost() {
         isHost = true;
     }
+
+    public boolean isHost() {
+        return isHost;
+    }
 }
