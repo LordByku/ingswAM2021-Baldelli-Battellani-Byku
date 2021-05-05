@@ -67,14 +67,19 @@ public class CLI {
         System.out.println("Game is loading...");
     }
 
-    public void showRowLeaderCards(ArrayList<LeaderCard> leaderCards, int firstIndex) {
+    public void showLeaderCards(ArrayList<Integer> leaderCardIDs) {
+        ArrayList<LeaderCard> leaderCards = new ArrayList<>();
 
-    }
+        for (Integer leaderCardID : leaderCardIDs) {
+            LeaderCard leaderCard = LeaderCardsParser.getInstance().getCard(leaderCardID);
+            leaderCard.addCLISupport();
+            leaderCards.add(leaderCard);
+        }
 
-    public void showLeaderCards(ArrayList<Integer> leaderCards) {
         for(int i = 0; i < leaderCards.size(); i++) {
             System.out.println("[" + i + "]");
-            System.out.println(LeaderCardsParser.getInstance().getCard(leaderCards.get(i)));
+            System.out.println(leaderCards.get(i));
+            System.out.println();
         }
     }
 }

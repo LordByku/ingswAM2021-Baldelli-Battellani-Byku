@@ -17,11 +17,20 @@ public class ClientHandler implements Runnable {
     private final PrintWriter out;
     private final Server server;
     private Person person;
+    private static volatile boolean gameStarted = false;
 
     public ClientHandler(Socket socket, Server server) throws IOException {
         in = new Scanner(socket.getInputStream());
         out = new PrintWriter(socket.getOutputStream(), true);
         this.server = server;
+    }
+
+    public void fatalError(String message) {
+        JsonObject jsonMessage = new JsonObject();
+        jsonMessage.addProperty("status", "fatalError");
+        jsonMessage.addProperty("message", message);
+
+        out.println(jsonMessage.toString());
     }
 
     public void error(String message) {
@@ -102,13 +111,13 @@ public class ClientHandler implements Runnable {
                 person = (Person) Game.getInstance().addPlayer(nickname);
                 validNickname = true;
             } catch (FullLobbyException e) {
-                error("Lobby is already full");
+                fatalError("Lobby is already full");
                 e.printStackTrace();
             } catch (ExistingNicknameException e) {
-                error("The nickname " + nickname + " has already been taken");
+                fatalError("The nickname " + nickname + " has already been taken");
                 e.printStackTrace();
             } catch (InvalidNicknameException e) {
-                error("The nickname is not valid");
+                fatalError("The nickname is not valid");
                 e.printStackTrace();
             }
         } while(!validNickname);
@@ -117,34 +126,39 @@ public class ClientHandler implements Runnable {
 
         broadcast("playerList", getJsonPlayerList());
 
-        try {
-            line = in.nextLine();
-            if(person.isHost()){
-                if (Game.getInstance().getNumberOfPlayers() >= 2 && line.equals("start")) {
-                    JsonObject jsonMessage = new JsonObject();
-                    JsonArray playerOrder = new JsonArray();
-                    for (Player player: Game.getInstance().getPlayers()) {
-                        playerOrder.add(((Person) player).getNickname());
+        do {
+            try {
+                line = in.nextLine();
+                JsonObject clientMessage = ServerParser.getInstance().parseLine(line);
+
+                if(person.isHost()){
+                    if (Game.getInstance().getNumberOfPlayers() >= 2 && ServerParser.getInstance().getCommand(clientMessage).equals("startGame")) {
+                        JsonObject jsonMessage = new JsonObject();
+                        JsonArray playerOrder = new JsonArray();
+                        for (Player player: Game.getInstance().getPlayers()) {
+                            playerOrder.add(((Person) player).getNickname());
+                        }
+                        JsonObject config = Parser.getInstance().getConfig();
+                        jsonMessage.add("config", config);
+                        jsonMessage.add("turnOrder", playerOrder);
+                        broadcast("config", jsonMessage);
+
+                        Game.getInstance().start();
+                        gameStarted = true;
+
+                        server.initialGameState();
                     }
-                    JsonObject config = Parser.getInstance().getConfig();
-                    jsonMessage.add("config", config);
-                    jsonMessage.add("turnOrder:", playerOrder);
-                    broadcast("config", jsonMessage);
-
-                    Game.getInstance().start();
-
-                    server.initialGameState();
+                } else {
+                    error("Not the host");
                 }
+            } catch (NoSuchElementException e) {
+                connectionClosed();
+                return;
+            } catch (GameAlreadyStartedException e) {
+                e.printStackTrace();
             }
-            else{
-                error("Not the host");
-            }
-        } catch (NoSuchElementException e) {
-            connectionClosed();
-            return;
-        } catch (GameAlreadyStartedException e) {
-            e.printStackTrace();
-        }
+        } while(!gameStarted);
+
         while(true) {
             try {
                 line = in.nextLine();

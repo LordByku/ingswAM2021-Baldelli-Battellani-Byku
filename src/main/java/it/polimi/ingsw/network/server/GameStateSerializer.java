@@ -100,7 +100,8 @@ public class GameStateSerializer {
         JsonArray warehouse = new JsonArray();
         int size = ((Person) (Game.getInstance().getPlayers().get(playerIndex))).getBoard().getWarehouse().numberOfDepots();
         for(int i =0; i < size; i++){
-            warehouse.add(gson.toJson(((Person) (Game.getInstance().getPlayers().get(playerIndex))).getBoard().getWarehouse().getDepotResources(i)));
+            String jsonString = gson.toJson(((Person) (Game.getInstance().getPlayers().get(playerIndex))).getBoard().getWarehouse().getDepotResources(i));
+            warehouse.add(ServerParser.getInstance().parseLine(jsonString));
         }
 
         return warehouse;
@@ -144,15 +145,14 @@ public class GameStateSerializer {
 
     public JsonArray handLeaderCards(int playerIndex){
         JsonArray handLeaderCards = new JsonArray();
-        String nick =  ((Person) (Game.getInstance().getPlayers().get(playerIndex))).getNickname();
+        String nick = ((Person) (Game.getInstance().getPlayers().get(playerIndex))).getNickname();
         for(LeaderCard card: ((Person) (Game.getInstance().getPlayers().get(playerIndex))).getBoard().getLeaderCardArea().getLeaderCards()){
             if(nickname.equals(nick)) {
                 if (!card.isActive()) {
                     handLeaderCards.add(card.getId());
                 }
-            }
-            else{
-                handLeaderCards.add("null");
+            } else {
+                handLeaderCards.add(JsonNull.INSTANCE);
             }
         }
         return handLeaderCards;
@@ -162,8 +162,8 @@ public class GameStateSerializer {
         JsonObject board = new JsonObject();
         board.add("faithTrack", faithTrack(playerIndex));
         board.add("warehouse", warehouse(playerIndex));
-        String strongbox = gson.toJson(((Person) (Game.getInstance().getPlayers().get(playerIndex))).getBoard().getStrongBox());
-        board.addProperty("strongbox", strongbox);
+        String strongboxJson = gson.toJson(((Person) (Game.getInstance().getPlayers().get(playerIndex))).getBoard().getStrongBox().getResources());
+        board.add("strongbox", ServerParser.getInstance().parseLine(strongboxJson));
         board.add("devCards", devCards(playerIndex));
         board.add("playedLeaderCards", playedLeaderCards(playerIndex));
         board.add("handLeaderCards", handLeaderCards(playerIndex));
@@ -181,6 +181,8 @@ public class GameStateSerializer {
             object.addProperty("inkwell", inkwell);
             object.add("board", board(i));
             i++;
+
+            players.add(object);
         }
         return players;
     }

@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.devCards.InvalidIdException;
 import it.polimi.ingsw.model.playerBoard.resourceLocations.InvalidDepotSizeException;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.InvalidResourceException;
+import it.polimi.ingsw.view.cli.Strings;
 import it.polimi.ingsw.view.cli.TextColour;
 
 /**
@@ -57,22 +58,15 @@ public class DepotLeaderCard extends LeaderCard{
     }
 
     @Override
-    public String toString() {
-        StringBuilder result = new StringBuilder(super.toString());
+    public String getEffectString() {
         StringBuilder effect = new StringBuilder(type.getColour().escape());
         for(int i = 0; i < depotSize; ++i) {
-            effect.append("\u25ef ");
+            if(i > 0) {
+                effect.append(" ");
+            }
+            effect.append("\u25ef");
         }
         effect.append(TextColour.RESET);
-        result.append("|");
-        for(int i = 0; i < (width - effect.length()) / 2; ++i) {
-            result.append(" ");
-        }
-        result.append(effect);
-        for(int i = (width - effect.length()) / 2 + effect.length(); i < width; ++i) {
-            result.append(" ");
-        }
-        result.append("|");
-        return result.toString();
+        return effect.toString();
     }
 }

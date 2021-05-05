@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.playerBoard.Board;
 import it.polimi.ingsw.model.playerBoard.InvalidBoardException;
 import it.polimi.ingsw.model.playerBoard.Scoring;
 import it.polimi.ingsw.model.resources.InvalidResourceException;
+import it.polimi.ingsw.view.cli.Strings;
 
 import java.util.HashSet;
 
@@ -66,7 +67,6 @@ public abstract class LeaderCard implements Scoring {
         this.requirements = (LeaderCardRequirements) requirements.clone();
         this.id = id;
         usedIds.add(id);
-        width = Math.max(width, requirements.toString().length());
     }
 
     /**
@@ -138,24 +138,23 @@ public abstract class LeaderCard implements Scoring {
         return points;
     }
 
+    public abstract String getEffectString();
+
+    public void addCLISupport() {
+        width = Math.max(width, Strings.getGraphemesCount(requirements.toString()));
+        width = Math.max(width, Strings.getGraphemesCount(getEffectString()));
+    }
+
     @Override
     public String toString() {
         String requirements = this.requirements.toString();
-        StringBuilder result = new StringBuilder("|" + requirements);
-        for(int i = requirements.length(); i < width; ++i) {
-            result.append(" ");
-        }
-        result.append("|\n|");
+        int requirementsLength = Strings.getGraphemesCount(requirements);
+        StringBuilder result = new StringBuilder(" ");
         for(int i = 0; i < width; ++i) {
-            result.append(" ");
+            result.append("_");
         }
-        result.append("|\n|");
-        String points = "(" + this.points + ")";
-        for(int i = 0; i < (width - points.length()) / 2; ++i) {
-            result.append(" ");
-        }
-        result.append(points);
-        for(int i = (width - points.length()) / 2 + points.length(); i < width; ++i) {
+        result.append(" \n|").append(requirements);
+        for(int i = requirementsLength; i < width; ++i) {
             result.append(" ");
         }
         result.append("|\n|");
@@ -163,10 +162,41 @@ public abstract class LeaderCard implements Scoring {
             result.append(" ");
         }
         result.append("|\n");
+
+        String points = "(" + this.points + ")";
+        int pointsLength = Strings.getGraphemesCount(points);
+        buildCenteredRow(result, points, pointsLength);
+
+        result.append("|");
+        for(int i = 0; i < width; ++i) {
+            result.append(" ");
+        }
+        result.append("|\n");
+
+        String effect = getEffectString();
+        int effectLength = Strings.getGraphemesCount(effect);
+        buildCenteredRow(result, effect, effectLength);
+        result.append("|");
+        for(int i = 0; i < width; ++i) {
+            result.append("_");
+        }
+        result.append("|");
         return result.toString();
     }
 
     public int getId() {
         return id;
+    }
+
+    private void buildCenteredRow(StringBuilder result, String str, int strLen) {
+        result.append("|");
+        for(int i = 0; i < (width - strLen) / 2; ++i) {
+            result.append(" ");
+        }
+        result.append(str);
+        for(int i = (width - strLen) / 2 + strLen; i < width; ++i) {
+            result.append(" ");
+        }
+        result.append("|\n");
     }
 }

@@ -42,4 +42,9 @@ public class ProductionLeaderCard extends LeaderCard {
             board.getProductionArea().addLeaderCardProduction(productionPower);
         }
     }
+
+    @Override
+    public String getEffectString() {
+        return productionPower.toString();
+    }
 }

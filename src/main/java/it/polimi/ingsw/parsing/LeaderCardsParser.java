@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.resources.ConcreteResource;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.HashMap;
 
 public class LeaderCardsParser {
     private static LeaderCardsParser instance;
@@ -17,6 +18,7 @@ public class LeaderCardsParser {
     private int currentCard;
     private final Gson gson;
     private final Parser parser;
+    private final LeaderCard[] map;
 
     private LeaderCardsParser() throws FileNotFoundException {
         gson = new Gson();
@@ -24,6 +26,7 @@ public class LeaderCardsParser {
 
         leaderCards = parser.getConfig().getAsJsonArray("leaderCards");
         currentCard = 0;
+        map = new LeaderCard[leaderCards.size()];
     }
 
     public static LeaderCardsParser getInstance() {
@@ -50,6 +53,10 @@ public class LeaderCardsParser {
             return null;
         }
 
+        if(map[index] != null) {
+            return map[index];
+        }
+
         JsonObject jsonLeaderCard = (JsonObject) leaderCards.get(index);
 
         int points = jsonLeaderCard.get("points").getAsInt();
@@ -67,30 +74,38 @@ public class LeaderCardsParser {
 
         String effectType = jsonEffect.get("effectType").getAsString();
 
+        LeaderCard leaderCard;
+
         switch (effectType) {
             case "discount": {
                 ConcreteResource resource = gson.fromJson(jsonEffect.get("resource").getAsString(), ConcreteResource.class);
                 int discount = jsonEffect.get("discount").getAsInt();
 
-                return new DiscountLeaderCard(points, requirements, resource, discount, currentCard++);
+                leaderCard = new DiscountLeaderCard(points, requirements, resource, discount, index);
+                break;
             }
             case "depot": {
                 ConcreteResource resource = gson.fromJson(jsonEffect.get("resource").getAsString(), ConcreteResource.class);
                 int slots = jsonEffect.get("slots").getAsInt();
 
-                return new DepotLeaderCard(points, requirements, resource, slots, currentCard++);
+                leaderCard = new DepotLeaderCard(points, requirements, resource, slots, index);
+                break;
             }
             case "conversion": {
                 ConcreteResource resource = gson.fromJson(jsonEffect.get("resource").getAsString(), ConcreteResource.class);
 
-                return new WhiteConversionLeaderCard(points, requirements, resource, currentCard++);
+                leaderCard = new WhiteConversionLeaderCard(points, requirements, resource, index);
+                break;
             }
             default: {
                 ProductionDetails productionDetails = parser.parseProductionDetails(jsonEffect.getAsJsonObject("productionDetails"));
 
-                return new ProductionLeaderCard(points, requirements, productionDetails, currentCard++);
+                leaderCard = new ProductionLeaderCard(points, requirements, productionDetails, index);
+                break;
             }
         }
+
+        return map[index] = leaderCard;
     }
 
     public LeaderCard nextCard() throws NoConfigFileException {

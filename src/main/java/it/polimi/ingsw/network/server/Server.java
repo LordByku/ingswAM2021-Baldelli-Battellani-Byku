@@ -1,11 +1,6 @@
 package it.polimi.ingsw.network.server;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import it.polimi.ingsw.model.devCards.CardColour;
-import it.polimi.ingsw.model.game.Game;
-import it.polimi.ingsw.model.game.Player;
-import it.polimi.ingsw.network.server.ClientHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;

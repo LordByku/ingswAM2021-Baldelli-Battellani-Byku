@@ -9,15 +9,20 @@ import java.util.ArrayList;
  */
 public class ChoiceResourceSet implements ResourceSet {
     /**
-     * resources is where Resources are stored
+     * choiceResources is where ChoiceResources are stored
      */
-    private ArrayList<Resource> resources;
+    private ArrayList<Resource> choiceResources;
+    /**
+     * concreteResources is where ConcreteResources are stored
+     */
+    private ConcreteResourceSet concreteResources;
 
     /**
      * The constructor initializes resources to an empty ArrayList
      */
     public ChoiceResourceSet() {
-        resources = new ArrayList<>();
+        choiceResources = new ArrayList<>();
+        concreteResources = new ConcreteResourceSet();
     }
 
     /**
@@ -25,7 +30,7 @@ public class ChoiceResourceSet implements ResourceSet {
      * @return True iff all resources are concrete
      */
     public boolean isConcrete() {
-        for(Resource resource : resources)
+        for(Resource resource : choiceResources)
             if(!resource.isConcrete())
                 return false;
         return true;
@@ -41,8 +46,8 @@ public class ChoiceResourceSet implements ResourceSet {
         if(!isConcrete()) {
             throw new NotConcreteException();
         }
-        ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
-        for(Resource resource: resources) {
+        ConcreteResourceSet concreteResourceSet = (ConcreteResourceSet) concreteResources.clone();
+        for(Resource resource: choiceResources) {
             concreteResourceSet.addResource(resource.getResource());
         }
         return concreteResourceSet;
@@ -57,15 +62,23 @@ public class ChoiceResourceSet implements ResourceSet {
         if(resource == null) {
             throw new InvalidResourceException();
         }
-        resources.add(resource);
+        if(resource.isConcrete()) {
+            concreteResources.addResource(resource.getResource());
+        } else {
+            choiceResources.add(resource);
+        }
     }
 
     /**
      * getResources returns a copy of the internal state of the object
      * @return An ArrayList of the Resources contained in this object
      */
-    public ArrayList<Resource> getResources() {
-        return new ArrayList<>(resources);
+    public ArrayList<Resource> getChoiceResources() {
+        return new ArrayList<>(choiceResources);
+    }
+
+    public ConcreteResourceSet getConcreteResources() {
+        return (ConcreteResourceSet) concreteResources.clone();
     }
 
     /**
@@ -79,10 +92,11 @@ public class ChoiceResourceSet implements ResourceSet {
             throw new InvalidResourceSetException();
         }
 
-        ArrayList<Resource> otherResources = other.getResources();
-        for(Resource resource: otherResources) {
-            addResource(resource);
-        }
+        ArrayList<Resource> otherChoiceResources = other.getChoiceResources();
+        ConcreteResourceSet otherConcreteResources = other.getConcreteResources();
+
+        choiceResources.addAll(otherChoiceResources);
+        concreteResources.union(otherConcreteResources);
     }
 
     /**
@@ -94,7 +108,8 @@ public class ChoiceResourceSet implements ResourceSet {
     public ResourceSet clone() {
         try {
             ChoiceResourceSet cloneResourceSet = (ChoiceResourceSet) super.clone();
-            cloneResourceSet.resources = getResources();
+            cloneResourceSet.choiceResources = getChoiceResources();
+            cloneResourceSet.concreteResources = getConcreteResources();
             return cloneResourceSet;
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
@@ -108,7 +123,7 @@ public class ChoiceResourceSet implements ResourceSet {
      */
     @Override
     public int size() {
-        return resources.size();
+        return choiceResources.size() + concreteResources.size();
     }
 
     /**
@@ -118,10 +133,10 @@ public class ChoiceResourceSet implements ResourceSet {
     public ChoiceResourceSet cleanClone() {
         ChoiceResourceSet cloneResourceSet = (ChoiceResourceSet) clone();
 
-        cloneResourceSet.resources = new ArrayList<>();
+        cloneResourceSet.choiceResources = new ArrayList<>();
 
-        for(Resource resource: resources) {
-            cloneResourceSet.resources.add(resource.cleanClone());
+        for(Resource resource: choiceResources) {
+            cloneResourceSet.choiceResources.add(resource.cleanClone());
         }
 
         return cloneResourceSet;
@@ -129,13 +144,11 @@ public class ChoiceResourceSet implements ResourceSet {
 
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder("( ");
+        StringBuilder result = new StringBuilder(concreteResources.toString());
 
-        for(Resource resource: resources) {
+        for(Resource resource: choiceResources) {
             result.append(resource.toString()).append(" ");
         }
-
-        result.append(")");
 
         return result.toString();
     }

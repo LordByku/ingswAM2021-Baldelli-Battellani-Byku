@@ -30,8 +30,8 @@ public class ClientParser {
         return json.get("status").getAsString();
     }
 
-    public JsonObject getMessage(JsonObject json) {
-        return json.getAsJsonObject("message");
+    public JsonElement getMessage(JsonObject json) {
+        return json.get("message");
     }
 
     public String getType(JsonObject json) {

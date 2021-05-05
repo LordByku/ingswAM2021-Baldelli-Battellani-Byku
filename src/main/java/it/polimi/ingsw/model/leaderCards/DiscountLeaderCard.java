@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.devCards.InvalidIdException;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.InvalidResourceException;
 import it.polimi.ingsw.model.resources.resourceSets.InvalidQuantityException;
+import it.polimi.ingsw.view.cli.Strings;
 
 /**
  * DiscountLeaderCard represents all LeaderCards with a discount power.
@@ -53,5 +54,10 @@ public class DiscountLeaderCard extends LeaderCard{
             active = true;
             board.getDiscountArea().addDiscountEffect(new DiscountEffect(this.type));
         }
+    }
+
+    @Override
+    public String getEffectString() {
+        return "???? -1" + type.toString();
     }
 }

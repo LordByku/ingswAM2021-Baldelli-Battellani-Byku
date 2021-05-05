@@ -1,15 +1,15 @@
 package it.polimi.ingsw.model.leaderCardsTest;
 
-import it.polimi.ingsw.model.leaderCards.DepotLeaderCard;
-import it.polimi.ingsw.model.leaderCards.InvalidPointsValueException;
-import it.polimi.ingsw.model.leaderCards.InvalidRequirementsException;
-import it.polimi.ingsw.model.leaderCards.WhiteConversionLeaderCard;
+import it.polimi.ingsw.model.leaderCards.*;
 import it.polimi.ingsw.model.playerBoard.Board;
 import it.polimi.ingsw.model.playerBoard.InvalidBoardException;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.InvalidResourceException;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
+import it.polimi.ingsw.parsing.LeaderCardsParser;
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.fail;
@@ -111,4 +111,18 @@ public class LeaderCardTest {
         }
     }
 
+    @Test
+    public void toStringTest() {
+        ArrayList<LeaderCard> leaderCards = new ArrayList<>();
+
+        for(int i = 0; i < 16; ++i) {
+            LeaderCard leaderCard = LeaderCardsParser.getInstance().getCard(i);
+            leaderCard.addCLISupport();
+            leaderCards.add(leaderCard);
+        }
+
+        for(LeaderCard leaderCard: leaderCards) {
+            System.out.println(leaderCard);
+        }
+    }
 }

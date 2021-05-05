@@ -14,7 +14,11 @@ import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import static org.junit.Assert.*;
 
 import it.polimi.ingsw.model.resources.resourceSets.InvalidResourceSetException;
+import it.polimi.ingsw.parsing.LeaderCardsParser;
 import org.junit.Test;
+
+import java.text.BreakIterator;
+import java.util.Locale;
 
 public class DepotLeaderCardTest {
     @Test
@@ -91,10 +95,5 @@ public class DepotLeaderCardTest {
         } catch (InvalidPointsValueException | InvalidRequirementsException | InvalidResourceException | InvalidBoardException | InvalidResourceSetException | InvalidDepotIndexException | InvalidResourceLocationOperationException e) {
             fail();
         }
-    }
-
-    @Test
-    public void toStringTest() {
-        // TODO
     }
 }

@@ -119,7 +119,6 @@ public class DevCardTest {
         assertSame(board1.getDevelopmentCardArea().getCards().get(0).getColour(), devCard1.getColour());
         assertSame(board1.getDevelopmentCardArea().getCards().get(0).getReqResources().getResourceType().getResource(), devCard1.getReqResources().getResourceType().getResource());
         assertSame(board1.getDevelopmentCardArea().getCards().get(0).getPoints(), devCard1.getPoints());
-        assertSame(board1.getDevelopmentCardArea().getCards().get(0).getProductionPower().getInput().getResourceSet().getResources().get(0).getResource(),devCard1.getProductionPower().getInput().getResourceSet().getResources().get(0).getResource());
 
         assertFalse((devCard2.canPlay(board1,0)));
         assertTrue(devCard2.canPlay(board1,1));

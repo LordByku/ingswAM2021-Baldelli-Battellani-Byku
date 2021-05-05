@@ -23,11 +23,16 @@ public class Lobby extends ClientState {
         String status = ClientParser.getInstance().getStatus(json);
 
         switch (status) {
-            case "error": {
-                String message = ClientParser.getInstance().getMessage(json).toString();
+            case "fatalError": {
+                String message = ClientParser.getInstance().getMessage(json).getAsString();
                 CLI.getInstance().serverError(message);
                 client.closeServerCommunication();
                 client.setState(new NicknameSelection());
+                break;
+            }
+            case "error": {
+                String message = ClientParser.getInstance().getMessage(json).getAsString();
+                CLI.getInstance().serverError(message);
                 break;
             }
             case "ok": {
@@ -35,7 +40,7 @@ public class Lobby extends ClientState {
 
                 switch (type) {
                     case "playerList": {
-                        JsonObject message = ClientParser.getInstance().getMessage(json);
+                        JsonObject message = ClientParser.getInstance().getMessage(json).getAsJsonObject();
 
                         JsonArray playerList = message.get("playerList").getAsJsonArray();
                         ArrayList<String> nicknames = new ArrayList<>();
@@ -61,7 +66,7 @@ public class Lobby extends ClientState {
                         break;
                     }
                     case "config": {
-                        JsonObject message = ClientParser.getInstance().getMessage(json);
+                        JsonObject message = ClientParser.getInstance().getMessage(json).getAsJsonObject();
 
                         ArrayList<String> turnOrder = ClientParser.getInstance().getTurnOrder(message);
                         LocalConfig.getInstance().setTurnOrder(turnOrder);

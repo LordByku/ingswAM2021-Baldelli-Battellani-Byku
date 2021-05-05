@@ -12,7 +12,7 @@ public class Game {
     private volatile boolean gameStarted;
     private volatile boolean gameEnded;
     private boolean isLastTurn;
-    private GameZone gameZone;
+    private final GameZone gameZone;
     private int currentPlayer;
 
     private Game() {
@@ -24,7 +24,7 @@ public class Game {
         gameZone = new GameZone();
     }
 
-    public static Game getInstance() {
+    public synchronized static Game getInstance() {
         if(instance == null) {
             instance = new Game();
         }

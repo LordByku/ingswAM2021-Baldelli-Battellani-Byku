@@ -7,7 +7,7 @@ import it.polimi.ingsw.view.cli.TextColour;
  */
 public enum ConcreteResource implements Resource {
     COIN(TextColour.YELLOW),
-    STONE(TextColour.WHITE),
+    STONE(TextColour.GREY),
     SHIELD(TextColour.BLUE),
     SERVANT(TextColour.PURPLE);
 
@@ -50,6 +50,6 @@ public enum ConcreteResource implements Resource {
 
     @Override
     public String toString() {
-        return colour.escape() + "\u2b24" + TextColour.RESET;
+        return colour.escape() + "\u25cf" + TextColour.RESET;
     }
 }

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.cli;
 
 public enum TextColour {
+    GREY("\u001B[30;1m"),
     RED("\u001B[31m"),
     GREEN("\u001B[32m"),
     YELLOW("\u001B[33m"),
