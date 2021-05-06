@@ -20,6 +20,6 @@ public class Strings {
     }
 
     public static String getFaithPointsSymbol() {
-        return TextColour.RED.escape() + "+" + TextColour.RESET;
+        return TextColour.RED.escape() + "\u271d" + TextColour.RESET;
     }
 }

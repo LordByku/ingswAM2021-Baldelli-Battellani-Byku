@@ -59,7 +59,7 @@ public class Server {
         synchronized (clientHandlers){
             for(ClientHandler clientHandler: clientHandlers) {
                 GameStateSerializer serializer = new GameStateSerializer(clientHandler.getPerson().getNickname());
-                clientHandler.sendOkMessage(serializer.gameState());
+                clientHandler.ok("update", serializer.gameState());
             }
         }
     }

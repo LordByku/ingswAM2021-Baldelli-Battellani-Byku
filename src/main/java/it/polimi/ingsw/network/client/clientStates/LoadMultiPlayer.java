@@ -6,6 +6,9 @@ import it.polimi.ingsw.network.client.ClientParser;
 import it.polimi.ingsw.network.client.localModel.LocalModel;
 import it.polimi.ingsw.view.cli.CLI;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
 public class LoadMultiPlayer extends ClientState {
     public LoadMultiPlayer() {
         CLI.getInstance().loadMultiPlayer();
@@ -29,9 +32,11 @@ public class LoadMultiPlayer extends ClientState {
 
                         client.setModel(model);
 
-                        CLI.getInstance().showLeaderCards(model.getPlayer(client.getNickname()).getBoard().getHandLeaderCards());
+                        ArrayList<Integer> leaderCardsIDs = model.getPlayer(client.getNickname()).getBoard().getHandLeaderCards();
 
-                        client.setState(new InitDiscard());
+                        CLI.getInstance().showLeaderCards(leaderCardsIDs, new HashSet<>());
+
+                        client.setState(new InitDiscard(leaderCardsIDs.size()));
 
                         break;
                     }

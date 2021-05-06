@@ -25,4 +25,16 @@ public class LocalConfig {
     public void setTurnOrder(ArrayList<String> turnOrder) {
         this.turnOrder = turnOrder;
     }
+
+    public int getInitialResources(String nickname) {
+        switch(turnOrder.indexOf(nickname)) {
+            case 1:
+            case 2:
+                return 1;
+            case 3:
+                return 2;
+            default:
+                return 0;
+        }
+    }
 }

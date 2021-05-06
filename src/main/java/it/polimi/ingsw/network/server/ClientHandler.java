@@ -54,10 +54,6 @@ public class ClientHandler implements Runnable {
         server.broadcast(type, message);
     }
 
-    public void sendOkMessage(JsonObject message){
-        ok("update", message);
-    }
-
     private JsonObject getJsonPlayerList() {
         ArrayList<Player> players = Game.getInstance().getPlayers();
         JsonObject jsonObject = new JsonObject();
