@@ -4,33 +4,29 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import it.polimi.ingsw.model.devCards.CardTypeSet;
 import it.polimi.ingsw.model.devCards.ProductionDetails;
 import it.polimi.ingsw.model.leaderCards.*;
 import it.polimi.ingsw.model.resources.ConcreteResource;
-import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.HashMap;
 
 public class LeaderCardsParser {
     private static LeaderCardsParser instance;
-    private static final String path = "src/resources/leaderCards.json";
-    private final JsonArray leaderCards;
+    private JsonArray leaderCards;
     private int currentCard;
     private final Gson gson;
     private final Parser parser;
+    private final LeaderCard[] map;
 
     private LeaderCardsParser() throws FileNotFoundException {
-        JsonParser parser = new JsonParser();
-        FileReader reader = new FileReader(path);
-        JsonObject obj = (JsonObject) parser.parse(reader);
-
         gson = new Gson();
-        this.parser = Parser.getInstance();
+        parser = Parser.getInstance();
 
-        leaderCards = (JsonArray) obj.get("leaderCards");
+        leaderCards = parser.getConfig().getAsJsonArray("leaderCards");
         currentCard = 0;
+        map = new LeaderCard[leaderCards.size()];
     }
 
     public static LeaderCardsParser getInstance() {
@@ -44,12 +40,24 @@ public class LeaderCardsParser {
         return instance;
     }
 
-    public LeaderCard nextCard() {
-        if(currentCard >= leaderCards.size()) {
+    public void setConfig(JsonObject config) {
+        leaderCards = (JsonArray) config.get("leaderCards");
+    }
+
+    public LeaderCard getCard(int index) throws NoConfigFileException {
+        if(leaderCards == null) {
+            throw new NoConfigFileException();
+        }
+
+        if(index < 0 || index >= leaderCards.size()) {
             return null;
         }
 
-        JsonObject jsonLeaderCard = (JsonObject) leaderCards.get(currentCard++);
+        if(map[index] != null) {
+            return map[index];
+        }
+
+        JsonObject jsonLeaderCard = (JsonObject) leaderCards.get(index);
 
         int points = jsonLeaderCard.get("points").getAsInt();
         String requirementsType = jsonLeaderCard.get("requirementsType").getAsString();
@@ -66,28 +74,41 @@ public class LeaderCardsParser {
 
         String effectType = jsonEffect.get("effectType").getAsString();
 
+        LeaderCard leaderCard;
+
         switch (effectType) {
             case "discount": {
                 ConcreteResource resource = gson.fromJson(jsonEffect.get("resource").getAsString(), ConcreteResource.class);
                 int discount = jsonEffect.get("discount").getAsInt();
 
-                return new DiscountLeaderCard(points, requirements, resource, discount);
+                leaderCard = new DiscountLeaderCard(points, requirements, resource, discount, index);
+                break;
             }
             case "depot": {
                 ConcreteResource resource = gson.fromJson(jsonEffect.get("resource").getAsString(), ConcreteResource.class);
                 int slots = jsonEffect.get("slots").getAsInt();
 
-                return new DepotLeaderCard(points, requirements, resource, slots);
+                leaderCard = new DepotLeaderCard(points, requirements, resource, slots, index);
+                break;
             }
             case "conversion": {
                 ConcreteResource resource = gson.fromJson(jsonEffect.get("resource").getAsString(), ConcreteResource.class);
 
-                return new WhiteConversionLeaderCard(points, requirements, resource);
+                leaderCard = new WhiteConversionLeaderCard(points, requirements, resource, index);
+                break;
             }
-            default:
+            default: {
                 ProductionDetails productionDetails = parser.parseProductionDetails(jsonEffect.getAsJsonObject("productionDetails"));
 
-                return new ProductionLeaderCard(points, requirements, productionDetails);
+                leaderCard = new ProductionLeaderCard(points, requirements, productionDetails, index);
+                break;
+            }
         }
+
+        return map[index] = leaderCard;
+    }
+
+    public LeaderCard nextCard() throws NoConfigFileException {
+        return getCard(currentCard++);
     }
 }

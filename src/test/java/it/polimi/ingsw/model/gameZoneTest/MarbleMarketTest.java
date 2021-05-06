@@ -218,16 +218,21 @@ public class MarbleMarketTest {
 
                 ChoiceResourceSet choiceResourceSet = obtainableResourceSet.getResourceSet();
 
-                ArrayList<Resource> resources = choiceResourceSet.getResources();
+                ArrayList<Resource> choiceResources = choiceResourceSet.getChoiceResources();
+                ConcreteResourceSet concreteResources = choiceResourceSet.getConcreteResources();
                 ArrayList<ChoiceResource> choices = new ArrayList<>();
 
                 assertTrue(obtainableResourceSet.getFaithPoints() <= 1);
                 red -= obtainableResourceSet.getFaithPoints();
+                yellow -= concreteResources.getCount(ConcreteResource.COIN);
+                grey -= concreteResources.getCount(ConcreteResource.STONE);
+                blue -= concreteResources.getCount(ConcreteResource.SHIELD);
+                purple -= concreteResources.getCount(ConcreteResource.SERVANT);
 
-                assertEquals(4, resources.size() + obtainableResourceSet.getFaithPoints());
-                for(int k = 0; k < resources.size(); ++k) {
-                    if(resources.get(k).isConcrete()) {
-                        switch(resources.get(k).getResource()) {
+                assertEquals(4, choiceResourceSet.size() + obtainableResourceSet.getFaithPoints());
+                for (Resource choiceResource : choiceResources) {
+                    if (choiceResource.isConcrete()) {
+                        switch (choiceResource.getResource()) {
                             case COIN:
                                 --yellow;
                                 break;
@@ -243,7 +248,7 @@ public class MarbleMarketTest {
                         }
                     } else {
                         --white;
-                        choices.add((ChoiceResource) resources.get(k));
+                        choices.add((ChoiceResource) choiceResource);
                     }
                 }
 

@@ -5,32 +5,23 @@ import it.polimi.ingsw.model.devCards.CardColour;
 import it.polimi.ingsw.model.devCards.CardLevel;
 import it.polimi.ingsw.model.devCards.DevCard;
 import it.polimi.ingsw.model.devCards.ProductionDetails;
-import it.polimi.ingsw.model.resources.ConcreteResource;
-import it.polimi.ingsw.model.resources.resourceSets.ChoiceResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
-import it.polimi.ingsw.model.resources.resourceSets.ObtainableResourceSet;
-import it.polimi.ingsw.model.resources.resourceSets.SpendableResourceSet;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
 public class DevCardsParser {
     private static DevCardsParser instance;
-    private static final String path = "src/resources/devCards.json";
-    private final JsonArray developmentCards;
+    private JsonArray developmentCards;
     private int currentCard;
     private final Gson gson;
     private final Parser parser;
 
     private DevCardsParser() throws FileNotFoundException {
-        JsonParser parser = new JsonParser();
-        FileReader reader = new FileReader(path);
-        JsonObject obj = (JsonObject) parser.parse(reader);
-
         gson = new Gson();
-        this.parser = Parser.getInstance();
+        parser = Parser.getInstance();
 
-        developmentCards = (JsonArray) obj.get("developmentCards");
+        developmentCards = parser.getConfig().getAsJsonArray("developmentCards");
         currentCard = 0;
     }
 
@@ -45,12 +36,20 @@ public class DevCardsParser {
         return instance;
     }
 
-    public DevCard getNextCard() {
+    public void setConfig(JsonObject config) {
+        developmentCards = (JsonArray) config.get("developmentCards");
+    }
+
+    public DevCard getNextCard() throws NoConfigFileException {
+       if(developmentCards == null) {
+           throw new NoConfigFileException();
+       }
+
         if(currentCard >= developmentCards.size()) {
             return null;
         }
 
-        JsonObject jsonDevCard = (JsonObject) developmentCards.get(currentCard++);
+        JsonObject jsonDevCard = (JsonObject) developmentCards.get(currentCard);
 
         String levelString = jsonDevCard.get("level").getAsString();
         String colourString = jsonDevCard.get("colour").getAsString();
@@ -61,6 +60,6 @@ public class DevCardsParser {
         ConcreteResourceSet reqResources = parser.parseConcreteResourceSet(jsonDevCard.get("requirements").getAsJsonArray());
         ProductionDetails productionDetails = parser.parseProductionDetails(jsonDevCard.get("productionPower").getAsJsonObject());
 
-        return new DevCard(reqResources, colour, level, productionDetails, points);
+        return new DevCard(reqResources, colour, level, productionDetails, points, currentCard++);
     }
 }

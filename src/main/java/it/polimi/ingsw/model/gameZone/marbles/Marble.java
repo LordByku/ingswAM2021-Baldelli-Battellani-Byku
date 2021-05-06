@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.gameZone.marbles;
 import it.polimi.ingsw.model.resources.ChoiceSet;
 import it.polimi.ingsw.model.resources.InvalidChoiceSetException;
 import it.polimi.ingsw.model.resources.resourceSets.ObtainableResourceSet;
+import it.polimi.ingsw.view.cli.TextColour;
 
 /**
  * Marble is the class for marbles in the resources market
@@ -39,5 +40,10 @@ public abstract class Marble {
      */
     public MarbleColour getColour() {
         return colour;
+    }
+
+    @Override
+    public String toString() {
+        return getColour().getTextColour().escape() + "\u25c9" + TextColour.RESET;
     }
 }

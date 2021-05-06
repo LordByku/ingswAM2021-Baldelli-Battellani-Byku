@@ -28,8 +28,8 @@ public class VRSObserverTest {
             assertTrue(VRSObserver.getInstance().getTracks().contains(faithTrack3));
         }
 
-        VaticanReportSection vaticanReportSection = new VaticanReportSection(5,8,7);
-        VaticanReportSection vaticanReportSection2 = new VaticanReportSection(16,20,2);
+        VaticanReportSection vaticanReportSection = new VaticanReportSection(5,8,7, 1000);
+        VaticanReportSection vaticanReportSection2 = new VaticanReportSection(16,20,2, 1001);
         VRSObserver.getInstance().addVaticanReportSection(vaticanReportSection2);
         VRSObserver.getInstance().addVaticanReportSection(vaticanReportSection);
         try{

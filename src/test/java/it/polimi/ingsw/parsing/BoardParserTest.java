@@ -24,7 +24,7 @@ public class BoardParserTest {
         faithTrack.addFaithPoints(7);
         assertEquals(4, faithTrack.getPoints());
 
-        faithTrack.addPopeFavor(new PopeFavor(2));
+        faithTrack.addPopeFavor(new PopeFavor(2, 0));
         assertEquals(6, faithTrack.getPoints());
     }
 }

@@ -1,15 +1,15 @@
 package it.polimi.ingsw.model.leaderCardsTest;
 
-import it.polimi.ingsw.model.leaderCards.DepotLeaderCard;
-import it.polimi.ingsw.model.leaderCards.InvalidPointsValueException;
-import it.polimi.ingsw.model.leaderCards.InvalidRequirementsException;
-import it.polimi.ingsw.model.leaderCards.WhiteConversionLeaderCard;
+import it.polimi.ingsw.model.leaderCards.*;
 import it.polimi.ingsw.model.playerBoard.Board;
 import it.polimi.ingsw.model.playerBoard.InvalidBoardException;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.InvalidResourceException;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
+import it.polimi.ingsw.parsing.LeaderCardsParser;
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.fail;
@@ -24,7 +24,7 @@ public class LeaderCardTest {
 
 
         try {
-            WhiteConversionLeaderCard whiteConversionLeaderCard = new WhiteConversionLeaderCard(2,concreteResourceSet,ConcreteResource.SERVANT);
+            WhiteConversionLeaderCard whiteConversionLeaderCard = new WhiteConversionLeaderCard(2,concreteResourceSet,ConcreteResource.SERVANT, 1000);
             whiteConversionLeaderCard.assignToBoard(null);
         } catch (InvalidPointsValueException | InvalidResourceException | InvalidRequirementsException e) {
             fail();
@@ -33,7 +33,7 @@ public class LeaderCardTest {
         }
 
         try {
-            WhiteConversionLeaderCard whiteConversionLeaderCard = new WhiteConversionLeaderCard(2,concreteResourceSet,ConcreteResource.SERVANT);
+            WhiteConversionLeaderCard whiteConversionLeaderCard = new WhiteConversionLeaderCard(2,concreteResourceSet,ConcreteResource.SERVANT, 1001);
             whiteConversionLeaderCard.assignToBoard(board);
             assertTrue(true);
         } catch (InvalidPointsValueException | InvalidResourceException | InvalidRequirementsException | InvalidBoardException e) {
@@ -64,7 +64,7 @@ public class LeaderCardTest {
 
 
         try {
-            DepotLeaderCard depotLeaderCard = new DepotLeaderCard(2, requirements, ConcreteResource.COIN, 2);
+            DepotLeaderCard depotLeaderCard = new DepotLeaderCard(2, requirements, ConcreteResource.COIN, 2, 1002);
             depotLeaderCard.assignToBoard(board);
             assertTrue(depotLeaderCard.isPlayable());
         } catch (InvalidPointsValueException | InvalidRequirementsException | InvalidResourceException | InvalidBoardException e) {
@@ -72,7 +72,7 @@ public class LeaderCardTest {
         }
 
         try {
-            DepotLeaderCard depotLeaderCard = new DepotLeaderCard(2, requirements, ConcreteResource.COIN, 2);
+            DepotLeaderCard depotLeaderCard = new DepotLeaderCard(2, requirements, ConcreteResource.COIN, 2, 1003);
             depotLeaderCard.assignToBoard(board);
             depotLeaderCard.initDiscard();
             assertFalse(depotLeaderCard.isPlayable());
@@ -81,7 +81,7 @@ public class LeaderCardTest {
         }
 
         try {
-            DepotLeaderCard depotLeaderCard = new DepotLeaderCard(2, requirements, ConcreteResource.COIN, 2);
+            DepotLeaderCard depotLeaderCard = new DepotLeaderCard(2, requirements, ConcreteResource.COIN, 2, 1004);
             depotLeaderCard.assignToBoard(board);
             depotLeaderCard.discard();
             assertFalse(depotLeaderCard.isPlayable());
@@ -90,7 +90,7 @@ public class LeaderCardTest {
         }
 
         try {
-            DepotLeaderCard depotLeaderCard = new DepotLeaderCard(2, requirements, ConcreteResource.COIN, 2);
+            DepotLeaderCard depotLeaderCard = new DepotLeaderCard(2, requirements, ConcreteResource.COIN, 2, 1005);
             depotLeaderCard.assignToBoard(board);
             depotLeaderCard.play();
             assertFalse(depotLeaderCard.isPlayable());
@@ -103,7 +103,7 @@ public class LeaderCardTest {
         board.getWarehouse().removeResources(2,concreteResourceSet3);
 
         try {
-            DepotLeaderCard depotLeaderCard = new DepotLeaderCard(2, requirements, ConcreteResource.COIN, 2);
+            DepotLeaderCard depotLeaderCard = new DepotLeaderCard(2, requirements, ConcreteResource.COIN, 2, 1006);
             depotLeaderCard.assignToBoard(board);
             assertFalse(depotLeaderCard.isPlayable());
         } catch (InvalidPointsValueException | InvalidRequirementsException | InvalidResourceException | InvalidBoardException e) {
@@ -111,4 +111,18 @@ public class LeaderCardTest {
         }
     }
 
+    @Test
+    public void toStringTest() {
+        ArrayList<LeaderCard> leaderCards = new ArrayList<>();
+
+        for(int i = 0; i < 16; ++i) {
+            LeaderCard leaderCard = LeaderCardsParser.getInstance().getCard(i);
+            leaderCard.addCLISupport();
+            leaderCards.add(leaderCard);
+        }
+
+        for(LeaderCard leaderCard: leaderCards) {
+            System.out.println(leaderCard);
+        }
+    }
 }

@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.resources.NotEnoughResourcesException;
 import it.polimi.ingsw.model.resources.Resource;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * ConcreteResourceSet is a container for ConcreteResources
@@ -241,15 +242,13 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
 
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder("( ");
+        StringBuilder result = new StringBuilder();
 
-        for(ConcreteResource resource: ConcreteResource.values()) {
-            for(int i = 0; i < getCount(resource); ++i) {
-                result.append(resource.toString()).append(" ");
-            }
+        for(Map.Entry entry: resources.entrySet()) {
+            ConcreteResource resource = (ConcreteResource) entry.getKey();
+            int count = (int) entry.getValue();
+            result.append(count).append(resource.toString()).append(" ");
         }
-
-        result.append(")");
 
         return result.toString();
     }

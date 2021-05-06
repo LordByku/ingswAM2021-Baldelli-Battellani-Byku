@@ -1,9 +1,6 @@
 package it.polimi.ingsw.parsing;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 import it.polimi.ingsw.model.devCards.*;
 import it.polimi.ingsw.model.resources.ChoiceResource;
 import it.polimi.ingsw.model.resources.ConcreteResource;
@@ -11,19 +8,44 @@ import it.polimi.ingsw.model.resources.FullChoiceSet;
 import it.polimi.ingsw.model.resources.InvalidResourceException;
 import it.polimi.ingsw.model.resources.resourceSets.*;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+
 public class Parser {
     private static Parser instance;
     private final Gson gson;
+    private JsonObject config;
+    private static final String path = "src/resources/config.json";
 
-    private Parser() {
+    private Parser() throws FileNotFoundException {
+        JsonParser parser = new JsonParser();
+        FileReader reader = new FileReader(Parser.path);
+        config = (JsonObject) parser.parse(reader);
+
         gson = new Gson();
     }
 
     public static Parser getInstance() {
         if(instance == null) {
-            instance = new Parser();
+            try {
+                instance = new Parser();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
         return instance;
+    }
+
+    public JsonObject getConfig() {
+        return config;
+    }
+
+    public void setConfig(JsonObject config) {
+        this.config = config;
+        BoardParser.getInstance().setConfig(config);
+        DevCardsParser.getInstance().setConfig(config);
+        LeaderCardsParser.getInstance().setConfig(config);
+        VRSParser.getInstance().setConfig(config);
     }
 
     public ConcreteResourceSet parseConcreteResourceSet(JsonArray jsonArray)
@@ -70,19 +92,23 @@ public class Parser {
             String resourceString = jsonResource.get("resource").getAsString();
             int quantity = jsonResource.get("quantity").getAsInt();
 
-            if(resourceString.equals("CHOICE")) {
-                for(int i = 0; i < quantity; ++i) {
-                    choiceResourceSet.addResource(new ChoiceResource(new FullChoiceSet()));
-                }
-            } else {
-                ConcreteResource concreteResource = gson.fromJson(resourceString, ConcreteResource.class);
-                for(int i = 0; i < quantity; ++i) {
-                    choiceResourceSet.addResource(concreteResource);
-                }
-            }
+            addResources(choiceResourceSet, resourceString, quantity);
         }
 
         return new SpendableResourceSet(choiceResourceSet);
+    }
+
+    private void addResources(ChoiceResourceSet choiceResourceSet, String resourceString, int quantity) {
+        if(resourceString.equals("CHOICE")) {
+            for(int i = 0; i < quantity; ++i) {
+                choiceResourceSet.addResource(new ChoiceResource(new FullChoiceSet()));
+            }
+        } else {
+            ConcreteResource concreteResource = gson.fromJson(resourceString, ConcreteResource.class);
+            for(int i = 0; i < quantity; ++i) {
+                choiceResourceSet.addResource(concreteResource);
+            }
+        }
     }
 
     public ObtainableResourceSet parseObtainableResourceSet(JsonArray jsonArray) {
@@ -97,15 +123,8 @@ public class Parser {
 
             if(resourceString.equals("FAITH POINTS")) {
                 faithPoints += quantity;
-            } else if(resourceString.equals("CHOICE")) {
-                for(int i = 0; i < quantity; ++i) {
-                    choiceResourceSet.addResource(new ChoiceResource(new FullChoiceSet()));
-                }
             } else {
-                ConcreteResource concreteResource = gson.fromJson(resourceString, ConcreteResource.class);
-                for(int i = 0; i < quantity; ++i) {
-                    choiceResourceSet.addResource(concreteResource);
-                }
+                addResources(choiceResourceSet, resourceString, quantity);
             }
         }
 

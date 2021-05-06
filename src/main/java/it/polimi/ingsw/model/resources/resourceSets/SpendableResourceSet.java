@@ -70,12 +70,11 @@ public class SpendableResourceSet extends TransactionResourceSet {
             return false;
         }
 
-        ArrayList<Resource> resources = getResourceSet().getResources();
-
-        ConcreteResourceSet currentConcreteResourceSet = new ConcreteResourceSet();
+        ArrayList<Resource> choiceResources = getResourceSet().getChoiceResources();
+        ConcreteResourceSet currentConcreteResourceSet = getResourceSet().getConcreteResources();
 
         // ChoiceResources in SpendableResourceSet always have a FullChoiceSet
-        for(Resource resource: resources) {
+        for(Resource resource: choiceResources) {
             if(resource.isConcrete()) {
                 currentConcreteResourceSet.addResource(resource.getResource());
             }

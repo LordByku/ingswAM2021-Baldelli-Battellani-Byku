@@ -1,4 +1,6 @@
 package it.polimi.ingsw.model.playerBoard.faithTrack;
+import it.polimi.ingsw.parsing.VRSParser;
+
 import java.util.ArrayList;
 
 /**
@@ -23,6 +25,11 @@ public class VRSObserver {
      * The constructor initialises a singleton observer
      */
     private VRSObserver() {
+        VaticanReportSection vaticanReportSection;
+
+        while((vaticanReportSection = VRSParser.getInstance().getNextVRS()) != null) {
+            vaticanReportSections.add(vaticanReportSection);
+        }
     }
 
     /**
@@ -100,7 +107,7 @@ public class VRSObserver {
             if (!vaticanReportSection.isVisited()) {
                 if (someoneReachedPopeSpace(vaticanReportSection)) {
                     vaticanReportSection.setVisitedTrue();
-                    PopeFavor popeFavor = new PopeFavor(vaticanReportSection.getPoints());
+                    PopeFavor popeFavor = vaticanReportSection.getPopeFavor();
                     for (FaithTrack faithTrack : tracks) {
                         if (vaticanReportSection.isInsideSection(faithTrack.getMarkerPosition())) {
                             faithTrack.addPopeFavor(popeFavor);

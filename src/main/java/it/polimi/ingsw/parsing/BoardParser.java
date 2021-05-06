@@ -13,36 +13,38 @@ import java.util.ArrayList;
 
 public class BoardParser {
     private static BoardParser instance;
-    private static final String path = "src/resources/board.json";
-    private final JsonObject board;
+    private JsonObject board;
     private final Gson gson;
     private final Parser parser;
 
-    private BoardParser() throws FileNotFoundException {
-        JsonParser parser = new JsonParser();
-        FileReader reader = new FileReader(path);
-        board = (JsonObject) parser.parse(reader);
-
+    private BoardParser() {
         gson = new Gson();
-        this.parser = Parser.getInstance();
+        parser = Parser.getInstance();
+        board = parser.getConfig().getAsJsonObject("board");
     }
 
     public static BoardParser getInstance() {
         if(instance == null) {
-            try {
-                instance = new BoardParser();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            instance = new BoardParser();
         }
         return instance;
     }
 
-    public FaithTrack getFaithTrack() {
+    public void setConfig(JsonObject config) {
+        board = config.getAsJsonObject("board");
+    }
+
+    public FaithTrack getFaithTrack() throws NoConfigFileException {
+        if(board == null) {
+            throw new NoConfigFileException();
+        }
         return gson.fromJson(board.getAsJsonObject("faithTrack"), FaithTrack.class);
     }
 
-    public ArrayList<Integer> getDepotSizes() {
+    public ArrayList<Integer> getDepotSizes() throws NoConfigFileException {
+        if(board == null) {
+            throw new NoConfigFileException();
+        }
         ArrayList<Integer> depotSizes = new ArrayList<>();
         for(JsonElement element: board.getAsJsonArray("depotSizes")) {
             depotSizes.add(element.getAsInt());
@@ -50,11 +52,17 @@ public class BoardParser {
         return depotSizes;
     }
 
-    public ProductionDetails getDefaultProductionPower() {
+    public ProductionDetails getDefaultProductionPower() throws NoConfigFileException {
+        if(board == null) {
+            throw new NoConfigFileException();
+        }
         return parser.parseProductionDetails(board.getAsJsonObject("defaultProductionPower"));
     }
 
-    public int getDevelopmentCardsSlots() {
+    public int getDevelopmentCardsSlots() throws NoConfigFileException {
+        if(board == null) {
+            throw new NoConfigFileException();
+        }
         return board.get("developmentCardsSlots").getAsInt();
     }
 }

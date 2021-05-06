@@ -10,17 +10,23 @@ public class PopeFavor implements Scoring {
     /**
      * The pope favor card's points
      */
-    int points;
+    private final int points;
+    /**
+     * VRSId is the id of the VaticanReportSection that
+     * awarded this PopeFavor
+     */
+    private final int VRSId;
 
     /**
      * The constructor creates a new Pope Favor
      * @param points The pope favor card's points
      */
-    public PopeFavor(int points) throws InvalidQuantityException {
-        if(points<=0)
+    public PopeFavor(int points, int id) throws InvalidQuantityException {
+        if(points <= 0) {
             throw new InvalidQuantityException();
-        this.points=points;
-
+        }
+        this.points = points;
+        VRSId = id;
     }
 
     /**
@@ -30,5 +36,9 @@ public class PopeFavor implements Scoring {
     @Override
     public int getPoints() {
         return points;
+    }
+
+    public int getId() {
+        return VRSId;
     }
 }

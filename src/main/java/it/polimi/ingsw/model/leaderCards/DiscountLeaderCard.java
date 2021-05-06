@@ -1,8 +1,10 @@
 package it.polimi.ingsw.model.leaderCards;
 
+import it.polimi.ingsw.model.devCards.InvalidIdException;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.InvalidResourceException;
 import it.polimi.ingsw.model.resources.resourceSets.InvalidQuantityException;
+import it.polimi.ingsw.view.cli.Strings;
 
 /**
  * DiscountLeaderCard represents all LeaderCards with a discount power.
@@ -29,9 +31,9 @@ public class DiscountLeaderCard extends LeaderCard{
      * @throws InvalidResourceException type is null.
      * @throws InvalidDiscountException discount is not strictly positive
      */
-    public DiscountLeaderCard(int points, LeaderCardRequirements requirements, ConcreteResource type, int discount)
-            throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceException, InvalidDiscountException {
-        super(points, requirements);
+    public DiscountLeaderCard(int points, LeaderCardRequirements requirements, ConcreteResource type, int discount, int id)
+            throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceException, InvalidDiscountException, InvalidIdException {
+        super(points, requirements, id);
         if(type == null){
             throw new InvalidResourceException();
         }
@@ -52,5 +54,10 @@ public class DiscountLeaderCard extends LeaderCard{
             active = true;
             board.getDiscountArea().addDiscountEffect(new DiscountEffect(this.type));
         }
+    }
+
+    @Override
+    public String getEffectString() {
+        return "???? -1" + type.toString();
     }
 }

@@ -1,8 +1,11 @@
 package it.polimi.ingsw.model.leaderCards;
 
+import it.polimi.ingsw.model.devCards.InvalidIdException;
 import it.polimi.ingsw.model.playerBoard.resourceLocations.InvalidDepotSizeException;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.InvalidResourceException;
+import it.polimi.ingsw.view.cli.Strings;
+import it.polimi.ingsw.view.cli.TextColour;
 
 /**
  * DepotLeaderCard represents all LeaderCards with a depot power.
@@ -29,9 +32,9 @@ public class DepotLeaderCard extends LeaderCard{
      * @throws InvalidResourceException type is null.
      * @throws InvalidDepotSizeException depotSize is not strictly positive
      */
-    public DepotLeaderCard(int points, LeaderCardRequirements requirements, ConcreteResource type, int depotSize)
-            throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceException, InvalidDepotSizeException {
-        super(points, requirements);
+    public DepotLeaderCard(int points, LeaderCardRequirements requirements, ConcreteResource type, int depotSize, int id)
+            throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceException, InvalidDepotSizeException, InvalidIdException {
+        super(points, requirements, id);
         if(type == null) {
             throw new InvalidResourceException();
         }
@@ -54,4 +57,16 @@ public class DepotLeaderCard extends LeaderCard{
         }
     }
 
+    @Override
+    public String getEffectString() {
+        StringBuilder effect = new StringBuilder(type.getColour().escape());
+        for(int i = 0; i < depotSize; ++i) {
+            if(i > 0) {
+                effect.append(" ");
+            }
+            effect.append("\u25ef");
+        }
+        effect.append(TextColour.RESET);
+        return effect.toString();
+    }
 }

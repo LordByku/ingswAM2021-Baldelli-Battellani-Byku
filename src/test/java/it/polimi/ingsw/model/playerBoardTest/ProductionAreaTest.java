@@ -43,12 +43,15 @@ public class ProductionAreaTest {
         ChoiceResourceSet obtained = obtainableResourceSet.getResourceSet();
         assertFalse(obtained.isConcrete());
 
-        ArrayList<Resource> resources = obtained.getResources();
+        ArrayList<Resource> choiceResources = obtained.getChoiceResources();
+        ConcreteResourceSet concreteResources = obtained.getConcreteResources();
 
-        assertEquals(1, resources.size());
-        assertFalse(resources.get(0).isConcrete());
+        assertEquals(1, obtained.size());
+        assertEquals(1, choiceResources.size());
+        assertEquals(0, concreteResources.size());
+        assertFalse(choiceResources.get(0).isConcrete());
 
-        ChoiceResource choiceResource = (ChoiceResource) resources.get(0);
+        ChoiceResource choiceResource = (ChoiceResource) choiceResources.get(0);
         assertTrue(choiceResource.canChoose(ConcreteResource.COIN));
         assertTrue(choiceResource.canChoose(ConcreteResource.STONE));
         assertTrue(choiceResource.canChoose(ConcreteResource.SHIELD));
@@ -242,16 +245,11 @@ public class ProductionAreaTest {
         ChoiceResourceSet obtained = result.getResourceSet();
         assertFalse(obtained.isConcrete());
 
-        ArrayList<Resource> resources = obtained.getResources();
-        int choiceCount = 0;
-        for(Resource resource: resources) {
-            if(resource.isConcrete()) {
-                assertEquals(ConcreteResource.SHIELD, resource.getResource());
-            } else {
-                choiceCount++;
-            }
-        }
+        ArrayList<Resource> choiceResources = obtained.getChoiceResources();
+        ConcreteResourceSet concreteResources = obtained.getConcreteResources();
 
-        assertEquals(2, choiceCount);
+        assertEquals(2, choiceResources.size());
+        assertEquals(1, concreteResources.size());
+        assertEquals(1, concreteResources.getCount(ConcreteResource.SHIELD));
     }
 }

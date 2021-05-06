@@ -16,9 +16,14 @@ public class SpendableResourceSetTest {
     public void constructorTest() {
         SpendableResourceSet spendableResourceSet = new SpendableResourceSet();
 
-        ArrayList<Resource> resources = spendableResourceSet.getResourceSet().getResources();
+        ChoiceResourceSet internalResources = spendableResourceSet.getResourceSet();
 
-        assertTrue(resources.isEmpty());
+        internalResources.getChoiceResources();
+        ArrayList<Resource> choiceResources;
+        internalResources.getConcreteResources();
+        ConcreteResourceSet concreteResources;
+
+        assertEquals(0, internalResources.size());
 
         ChoiceResourceSet choiceResourceSet = new ChoiceResourceSet();
         choiceResourceSet.addResource(ConcreteResource.COIN);
@@ -26,19 +31,25 @@ public class SpendableResourceSetTest {
 
         spendableResourceSet = new SpendableResourceSet(choiceResourceSet);
 
-        resources = spendableResourceSet.getResourceSet().getResources();
+        internalResources = spendableResourceSet.getResourceSet();
+        choiceResources = internalResources.getChoiceResources();
+        concreteResources = internalResources.getConcreteResources();
 
-        assertEquals(2, resources.size());
-        assertEquals(ConcreteResource.COIN, resources.get(0).getResource());
-        assertEquals(ConcreteResource.COIN, resources.get(1).getResource());
+        assertEquals(2, internalResources.size());
+        assertEquals(0, choiceResources.size());
+        assertEquals(2, concreteResources.size());
+        assertEquals(2, concreteResources.getCount(ConcreteResource.COIN));
 
         choiceResourceSet.addResource(ConcreteResource.SHIELD);
 
-        resources = spendableResourceSet.getResourceSet().getResources();
+        internalResources = spendableResourceSet.getResourceSet();
+        choiceResources = internalResources.getChoiceResources();
+        concreteResources = internalResources.getConcreteResources();
 
-        assertEquals(2, resources.size());
-        assertEquals(ConcreteResource.COIN, resources.get(0).getResource());
-        assertEquals(ConcreteResource.COIN, resources.get(1).getResource());
+        assertEquals(2, internalResources.size());
+        assertEquals(0, choiceResources.size());
+        assertEquals(2, concreteResources.size());
+        assertEquals(2, concreteResources.getCount(ConcreteResource.COIN));
 
         try {
             spendableResourceSet = new SpendableResourceSet(null);
@@ -67,14 +78,16 @@ public class SpendableResourceSetTest {
         spendableResourceSet1 = spendableResourceSet1.union(spendableResourceSet2);
 
         ChoiceResourceSet resourceSet = spendableResourceSet1.getResourceSet();
-        ArrayList<Resource> resources = resourceSet.getResources();
+        ArrayList<Resource> choiceResources = resourceSet.getChoiceResources();
+        ConcreteResourceSet concreteResources = resourceSet.getConcreteResources();
 
-        assertEquals(5, resources.size());
-        assertEquals(ConcreteResource.COIN, resources.get(0).getResource());
-        assertEquals(ConcreteResource.SHIELD, resources.get(1).getResource());
-        assertFalse(resources.get(2).isConcrete());
-        assertFalse(resources.get(3).isConcrete());
-        assertEquals(ConcreteResource.COIN, resources.get(4).getResource());
+        assertEquals(5, resourceSet.size());
+        assertEquals(2, choiceResources.size());
+        assertEquals(3, concreteResources.size());
+        assertFalse(choiceResources.get(0).isConcrete());
+        assertFalse(choiceResources.get(1).isConcrete());
+        assertEquals(2, concreteResources.getCount(ConcreteResource.COIN));
+        assertEquals(1, concreteResources.getCount(ConcreteResource.SHIELD));
     }
 
     @Test
@@ -84,11 +97,11 @@ public class SpendableResourceSetTest {
 
         spendableResourceSet1 = spendableResourceSet1.union(spendableResourceSet2);
 
-        ArrayList<Resource> resources1 = spendableResourceSet1.getResourceSet().getResources();
-        ArrayList<Resource> resources2 = spendableResourceSet2.getResourceSet().getResources();
+        ChoiceResourceSet resources1 = spendableResourceSet1.getResourceSet();
+        ChoiceResourceSet resources2 = spendableResourceSet2.getResourceSet();
 
-        assertTrue(resources1.isEmpty());
-        assertTrue(resources2.isEmpty());
+        assertEquals(0, resources1.size());
+        assertEquals(0, resources2.size());
 
         ChoiceResourceSet choiceResourceSet = new ChoiceResourceSet();
         choiceResourceSet.addResource(ConcreteResource.COIN);
@@ -98,41 +111,71 @@ public class SpendableResourceSetTest {
 
         spendableResourceSet1 = spendableResourceSet1.union(spendableResourceSet2);
 
-        resources1 = spendableResourceSet1.getResourceSet().getResources();
-        resources2 = spendableResourceSet2.getResourceSet().getResources();
+        resources1 = spendableResourceSet1.getResourceSet();
+        resources2 = spendableResourceSet2.getResourceSet();
+
+        ArrayList<Resource> choiceResources1 = resources1.getChoiceResources();
+        ConcreteResourceSet concreteResources1 = resources1.getConcreteResources();
 
         assertEquals(2, resources1.size());
-        assertEquals(ConcreteResource.COIN, resources1.get(0).getResource());
-        assertFalse(resources1.get(1).isConcrete());
-        assertTrue(resources2.isEmpty());
+        assertEquals(1, choiceResources1.size());
+        assertEquals(1, concreteResources1.size());
+
+        assertFalse(choiceResources1.get(0).isConcrete());
+        assertEquals(1, concreteResources1.getCount(ConcreteResource.COIN));
+
+        assertEquals(0, resources2.size());
 
         spendableResourceSet2 = spendableResourceSet2.union(spendableResourceSet1);
 
-        resources1 = spendableResourceSet1.getResourceSet().getResources();
-        resources2 = spendableResourceSet2.getResourceSet().getResources();
+        resources1 = spendableResourceSet1.getResourceSet();
+        resources2 = spendableResourceSet2.getResourceSet();
+
+        choiceResources1 = resources1.getChoiceResources();
+        concreteResources1 = resources1.getConcreteResources();
+        ArrayList<Resource> choiceResources2 = resources2.getChoiceResources();
+        ConcreteResourceSet concreteResources2 = resources2.getConcreteResources();
 
         assertEquals(2, resources1.size());
-        assertEquals(ConcreteResource.COIN, resources1.get(0).getResource());
-        assertFalse(resources1.get(1).isConcrete());
+        assertEquals(1, choiceResources1.size());
+        assertEquals(1, concreteResources1.size());
+
+        assertFalse(choiceResources1.get(0).isConcrete());
+        assertEquals(1, concreteResources1.getCount(ConcreteResource.COIN));
+
         assertEquals(2, resources2.size());
-        assertEquals(ConcreteResource.COIN, resources2.get(0).getResource());
-        assertFalse(resources2.get(1).isConcrete());
+        assertEquals(1, choiceResources2.size());
+        assertEquals(1, concreteResources2.size());
 
-        ((ChoiceResource) resources1.get(1)).makeChoice(ConcreteResource.STONE);
+        assertFalse(choiceResources2.get(0).isConcrete());
+        assertEquals(1, concreteResources2.getCount(ConcreteResource.COIN));
 
-        resources1 = spendableResourceSet1.getResourceSet().getResources();
+        ((ChoiceResource) choiceResources1.get(0)).makeChoice(ConcreteResource.STONE);
+
+        resources1 = spendableResourceSet1.getResourceSet();
+        choiceResources1 = resources1.getChoiceResources();
+        concreteResources1 = resources1.getConcreteResources();
+
         assertEquals(2, resources1.size());
-        assertEquals(ConcreteResource.COIN, resources1.get(0).getResource());
-        assertFalse(resources1.get(1).isConcrete());
+        assertEquals(1, choiceResources1.size());
+        assertEquals(1, concreteResources1.size());
+
+        assertFalse(choiceResources1.get(0).isConcrete());
+        assertEquals(1, concreteResources1.getCount(ConcreteResource.COIN));
 
         spendableResourceSet1 = spendableResourceSet1.union(spendableResourceSet1);
 
-        resources1 = spendableResourceSet1.getResourceSet().getResources();
+        resources1 = spendableResourceSet1.getResourceSet();
+        choiceResources1 = resources1.getChoiceResources();
+        concreteResources1 = resources1.getConcreteResources();
+
         assertEquals(4, resources1.size());
-        assertEquals(ConcreteResource.COIN, resources1.get(0).getResource());
-        assertFalse(resources1.get(1).isConcrete());
-        assertEquals(ConcreteResource.COIN, resources1.get(2).getResource());
-        assertFalse(resources1.get(3).isConcrete());
+        assertEquals(2, choiceResources1.size());
+        assertEquals(2, concreteResources1.size());
+
+        assertFalse(choiceResources1.get(0).isConcrete());
+        assertFalse(choiceResources1.get(1).isConcrete());
+        assertEquals(2, concreteResources1.getCount(ConcreteResource.COIN));
     }
 
     @Test

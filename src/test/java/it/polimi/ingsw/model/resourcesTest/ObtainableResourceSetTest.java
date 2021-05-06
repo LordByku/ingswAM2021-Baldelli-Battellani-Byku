@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.FullChoiceSet;
 import it.polimi.ingsw.model.resources.Resource;
 import it.polimi.ingsw.model.resources.resourceSets.ChoiceResourceSet;
+import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.InvalidResourceSetException;
 import it.polimi.ingsw.model.resources.resourceSets.ObtainableResourceSet;
 import org.junit.Test;
@@ -18,9 +19,9 @@ public class ObtainableResourceSetTest {
     public void constructorTest() {
         ObtainableResourceSet obtainableResourceSet = new ObtainableResourceSet();
 
-        ArrayList<Resource> resources = obtainableResourceSet.getResourceSet().getResources();
+        ChoiceResourceSet resources = obtainableResourceSet.getResourceSet();
 
-        assertTrue(resources.isEmpty());
+        assertEquals(0, resources.size());
         assertEquals(0, obtainableResourceSet.getFaithPoints());
 
         ChoiceResourceSet choiceResourceSet = new ChoiceResourceSet();
@@ -29,35 +30,48 @@ public class ObtainableResourceSetTest {
 
         obtainableResourceSet = new ObtainableResourceSet(choiceResourceSet);
 
-        resources = obtainableResourceSet.getResourceSet().getResources();
+        resources = obtainableResourceSet.getResourceSet();
+        ArrayList<Resource> choiceResources = resources.getChoiceResources();
+        ConcreteResourceSet concreteResourcs = resources.getConcreteResources();
 
         assertEquals(2, resources.size());
-        assertEquals(ConcreteResource.COIN, resources.get(0).getResource());
-        assertEquals(ConcreteResource.SHIELD, resources.get(1).getResource());
+        assertEquals(0, choiceResources.size());
+        assertEquals(2, concreteResourcs.size());
+        assertEquals(1, concreteResourcs.getCount(ConcreteResource.COIN));
+        assertEquals(1, concreteResourcs.getCount(ConcreteResource.SHIELD));
         assertEquals(0, obtainableResourceSet.getFaithPoints());
 
         choiceResourceSet.addResource(new ChoiceResource(new FullChoiceSet()));
 
         obtainableResourceSet = new ObtainableResourceSet(choiceResourceSet, 2);
 
-        resources = obtainableResourceSet.getResourceSet().getResources();
+        resources = obtainableResourceSet.getResourceSet();
+        choiceResources = resources.getChoiceResources();
+        concreteResourcs = resources.getConcreteResources();
 
         assertEquals(3, resources.size());
-        assertEquals(ConcreteResource.COIN, resources.get(0).getResource());
-        assertEquals(ConcreteResource.SHIELD, resources.get(1).getResource());
-        assertFalse(resources.get(2).isConcrete());
+        assertEquals(1, choiceResources.size());
+        assertEquals(2, concreteResourcs.size());
+        assertFalse(choiceResources.get(0).isConcrete());
+        assertEquals(1, concreteResourcs.getCount(ConcreteResource.COIN));
+        assertEquals(1, concreteResourcs.getCount(ConcreteResource.SHIELD));
         assertEquals(2, obtainableResourceSet.getFaithPoints());
 
         try {
             obtainableResourceSet = new ObtainableResourceSet(null);
             fail();
         } catch (InvalidResourceSetException e) {
-            resources = obtainableResourceSet.getResourceSet().getResources();
+            resources = obtainableResourceSet.getResourceSet();
+
+            choiceResources = resources.getChoiceResources();
+            concreteResourcs = resources.getConcreteResources();
 
             assertEquals(3, resources.size());
-            assertEquals(ConcreteResource.COIN, resources.get(0).getResource());
-            assertEquals(ConcreteResource.SHIELD, resources.get(1).getResource());
-            assertFalse(resources.get(2).isConcrete());
+            assertEquals(1, choiceResources.size());
+            assertEquals(2, concreteResourcs.size());
+            assertFalse(choiceResources.get(0).isConcrete());
+            assertEquals(1, concreteResourcs.getCount(ConcreteResource.COIN));
+            assertEquals(1, concreteResourcs.getCount(ConcreteResource.SHIELD));
             assertEquals(2, obtainableResourceSet.getFaithPoints());
         }
 
@@ -65,12 +79,17 @@ public class ObtainableResourceSetTest {
             obtainableResourceSet = new ObtainableResourceSet(null, 2);
             fail();
         } catch (InvalidResourceSetException e) {
-            resources = obtainableResourceSet.getResourceSet().getResources();
+            resources = obtainableResourceSet.getResourceSet();
+
+            choiceResources = resources.getChoiceResources();
+            concreteResourcs = resources.getConcreteResources();
 
             assertEquals(3, resources.size());
-            assertEquals(ConcreteResource.COIN, resources.get(0).getResource());
-            assertEquals(ConcreteResource.SHIELD, resources.get(1).getResource());
-            assertFalse(resources.get(2).isConcrete());
+            assertEquals(1, choiceResources.size());
+            assertEquals(2, concreteResourcs.size());
+            assertFalse(choiceResources.get(0).isConcrete());
+            assertEquals(1, concreteResourcs.getCount(ConcreteResource.COIN));
+            assertEquals(1, concreteResourcs.getCount(ConcreteResource.SHIELD));
             assertEquals(2, obtainableResourceSet.getFaithPoints());
         }
     }
@@ -85,13 +104,18 @@ public class ObtainableResourceSetTest {
 
         obtainableResourceSet1 = obtainableResourceSet1.union(obtainableResourceSet2);
 
-        ArrayList<Resource> resources = obtainableResourceSet1.getResourceSet().getResources();
+        ChoiceResourceSet resources = obtainableResourceSet1.getResourceSet();
+        ArrayList<Resource> choiceResources = resources.getChoiceResources();
+        ConcreteResourceSet concreteResources = resources.getConcreteResources();
         assertEquals(1, resources.size());
-        assertFalse(resources.get(0).isConcrete());
+        assertEquals(1, choiceResources.size());
+        assertEquals(0, concreteResources.size());
+        assertFalse(choiceResources.get(0).isConcrete());
 
         assertEquals(1, obtainableResourceSet1.getFaithPoints());
 
-        resources = obtainableResourceSet1.getResourceSet().getResources();
-        ((ChoiceResource) resources.get(0)).makeChoice(ConcreteResource.COIN);
+        resources = obtainableResourceSet1.getResourceSet();
+        choiceResources = resources.getChoiceResources();
+        ((ChoiceResource) choiceResources.get(0)).makeChoice(ConcreteResource.COIN);
     }
 }

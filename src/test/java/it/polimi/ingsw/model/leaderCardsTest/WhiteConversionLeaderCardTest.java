@@ -18,7 +18,7 @@ public class WhiteConversionLeaderCardTest {
     public void constructorTest(){
 
         try {
-            WhiteConversionLeaderCard whiteConversionLeaderCard = new WhiteConversionLeaderCard(2,null, ConcreteResource.STONE);
+            WhiteConversionLeaderCard whiteConversionLeaderCard = new WhiteConversionLeaderCard(2,null, ConcreteResource.STONE, 1007);
         } catch (InvalidPointsValueException | InvalidResourceException e) {
             fail();
         } catch (InvalidRequirementsException e) {
@@ -31,7 +31,7 @@ public class WhiteConversionLeaderCardTest {
 
 
         try {
-            WhiteConversionLeaderCard whiteConversionLeaderCard = new WhiteConversionLeaderCard(2,concreteResourceSet,null);
+            WhiteConversionLeaderCard whiteConversionLeaderCard = new WhiteConversionLeaderCard(2,concreteResourceSet,null, 1008);
         } catch (InvalidPointsValueException | InvalidRequirementsException e) {
             fail();
         } catch (InvalidResourceException e) {
@@ -39,7 +39,7 @@ public class WhiteConversionLeaderCardTest {
         }
 
         try {
-            WhiteConversionLeaderCard whiteConversionLeaderCard = new WhiteConversionLeaderCard(-2,concreteResourceSet,ConcreteResource.STONE);
+            WhiteConversionLeaderCard whiteConversionLeaderCard = new WhiteConversionLeaderCard(-2,concreteResourceSet,ConcreteResource.STONE, 1009);
         } catch (InvalidPointsValueException e) {
             assertTrue(true);
         } catch (InvalidResourceException | InvalidRequirementsException e) {
@@ -47,7 +47,7 @@ public class WhiteConversionLeaderCardTest {
         }
 
         try {
-            WhiteConversionLeaderCard whiteConversionLeaderCard = new WhiteConversionLeaderCard(9,concreteResourceSet,ConcreteResource.STONE);
+            WhiteConversionLeaderCard whiteConversionLeaderCard = new WhiteConversionLeaderCard(9,concreteResourceSet,ConcreteResource.STONE, 1010);
             assertTrue(true);
         } catch (InvalidPointsValueException | InvalidResourceException | InvalidRequirementsException e) {
             fail();
@@ -64,7 +64,7 @@ public class WhiteConversionLeaderCardTest {
 
 
         try {
-            WhiteConversionLeaderCard whiteConversionLeaderCard = new WhiteConversionLeaderCard(2,concreteResourceSet,ConcreteResource.SERVANT);
+            WhiteConversionLeaderCard whiteConversionLeaderCard = new WhiteConversionLeaderCard(2,concreteResourceSet,ConcreteResource.SERVANT, 1011);
             whiteConversionLeaderCard.assignToBoard(board);
             assertFalse(whiteConversionLeaderCard.isActive());
             whiteConversionLeaderCard.play();

@@ -53,4 +53,9 @@ public abstract class TransactionResourceSet implements Cloneable {
             return null;
         }
     }
+
+    @Override
+    public String toString() {
+        return resources.toString();
+    }
 }

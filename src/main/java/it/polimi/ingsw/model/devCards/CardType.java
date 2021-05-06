@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.devCards;
 
+import it.polimi.ingsw.view.cli.BackGroundColor;
+
 import java.util.HashSet;
 
 public class CardType {
@@ -43,5 +45,24 @@ public class CardType {
      */
     public boolean isSatisfied(DevCard devCard) {
         return devCard.getColour() == colour && levelSet.contains(devCard.getLevel());
+    }
+
+    @Override
+    public String toString() {
+        if(levelSet.size() == 3) {
+            return "|" + colour.getColour().escape() + "  " + BackGroundColor.RESET + "|";
+        } else {
+            StringBuilder result = new StringBuilder("|" + colour.getColour().escape());
+            int space = 0;
+            for(CardLevel cardLevel: levelSet) {
+                result.append(cardLevel.toString());
+                space++;
+            }
+            if(space == 1) {
+                result.append(" ");
+            }
+            result.append(BackGroundColor.RESET + "|");
+            return result.toString();
+        }
     }
 }

@@ -19,15 +19,18 @@ public class ChoiceResourceSetTest {
         choiceResourceSet.addResource(new ChoiceResource(new FullChoiceSet()));
         choiceResourceSet.addResource(ConcreteResource.COIN);
 
-        ArrayList<Resource> resources = choiceResourceSet.getResources();
+        ArrayList<Resource> choiceResources = choiceResourceSet.getChoiceResources();
+        ConcreteResourceSet concreteResources = choiceResourceSet.getConcreteResources();
 
-        assertEquals(3, resources.size());
-        assertSame(resources.get(0).getResource(), ConcreteResource.COIN);
-        assertFalse(resources.get(1).isConcrete());
-        assertSame(resources.get(2).getResource(), ConcreteResource.COIN);
+        assertEquals(3, choiceResourceSet.size());
+        assertEquals(1, choiceResources.size());
+        assertEquals(2, concreteResources.size());
+
+        assertEquals(2, concreteResources.getCount(ConcreteResource.COIN));
+        assertFalse(choiceResources.get(0).isConcrete());
         assertFalse(choiceResourceSet.isConcrete());
 
-        ChoiceResource choiceResource = (ChoiceResource) resources.get(1);
+        ChoiceResource choiceResource = (ChoiceResource) choiceResources.get(0);
         choiceResource.makeChoice(ConcreteResource.SHIELD);
         assertTrue(choiceResourceSet.isConcrete());
 
@@ -35,9 +38,15 @@ public class ChoiceResourceSetTest {
             choiceResourceSet.addResource(null);
             fail();
         } catch (InvalidResourceException e) {
-            assertSame(resources.get(0).getResource(), ConcreteResource.COIN);
-            assertSame(resources.get(1).getResource(), ConcreteResource.SHIELD);
-            assertSame(resources.get(2).getResource(), ConcreteResource.COIN);
+            choiceResources = choiceResourceSet.getChoiceResources();
+            concreteResources = choiceResourceSet.getConcreteResources();
+
+            assertEquals(3, choiceResourceSet.size());
+            assertEquals(1, choiceResources.size());
+            assertEquals(2, concreteResources.size());
+
+            assertEquals(2, concreteResources.getCount(ConcreteResource.COIN));
+            assertEquals(ConcreteResource.SHIELD, choiceResources.get(0).getResource());
         }
     }
 
@@ -59,9 +68,9 @@ public class ChoiceResourceSetTest {
             assertTrue(true);
         }
 
-        ArrayList<Resource> resources = choiceResourceSet.getResources();
-        ChoiceResource choiceResource1 = (ChoiceResource) resources.get(1);
-        ChoiceResource choiceResource2 = (ChoiceResource) resources.get(2);
+        ArrayList<Resource> choiceResources = choiceResourceSet.getChoiceResources();
+        ChoiceResource choiceResource1 = (ChoiceResource) choiceResources.get(0);
+        ChoiceResource choiceResource2 = (ChoiceResource) choiceResources.get(1);
 
         choiceResource1.makeChoice(ConcreteResource.COIN);
         choiceResource2.makeChoice(ConcreteResource.STONE);
@@ -89,13 +98,16 @@ public class ChoiceResourceSetTest {
 
         choiceResourceSet1.union(choiceResourceSet2);
 
-        ArrayList<Resource> resources = choiceResourceSet1.getResources();
+        ArrayList<Resource> choiceResources = choiceResourceSet1.getChoiceResources();
+        ConcreteResourceSet concreteResources = choiceResourceSet1.getConcreteResources();
 
-        assertEquals(4, resources.size());
-        assertEquals(ConcreteResource.COIN, resources.get(0).getResource());
-        assertFalse(resources.get(1).isConcrete());
-        assertFalse(resources.get(2).isConcrete());
-        assertEquals(ConcreteResource.STONE, resources.get(3).getResource());
+        assertEquals(4, choiceResourceSet1.size());
+        assertEquals(2, choiceResources.size());
+        assertEquals(2, concreteResources.size());
+        assertEquals(1, concreteResources.getCount(ConcreteResource.COIN));
+        assertEquals(1, concreteResources.getCount(ConcreteResource.STONE));
+        assertFalse(choiceResources.get(0).isConcrete());
+        assertFalse(choiceResources.get(1).isConcrete());
     }
 
     @Test
@@ -110,21 +122,28 @@ public class ChoiceResourceSetTest {
 
         choiceResourceSet1.union(choiceResourceSet2);
 
-        ArrayList<Resource> resources = choiceResourceSet1.getResources();
+        ArrayList<Resource> choiceResources = choiceResourceSet1.getChoiceResources();
+        ConcreteResourceSet concreteResources = choiceResourceSet1.getConcreteResources();
 
-        assertEquals(2, resources.size());
-        assertEquals(ConcreteResource.STONE, resources.get(0));
-        assertEquals(ConcreteResource.SHIELD, resources.get(1));
+        assertEquals(2, choiceResourceSet1.size());
+        assertEquals(0, choiceResources.size());
+        assertEquals(2, concreteResources.size());
+        assertEquals(1, concreteResources.getCount(ConcreteResource.STONE));
+        assertEquals(1, concreteResources.getCount(ConcreteResource.SHIELD));
 
         try {
             choiceResourceSet1.union(null);
             fail();
         } catch (InvalidResourceSetException e) {
-            resources = choiceResourceSet1.getResources();
+            choiceResources = choiceResourceSet1.getChoiceResources();
+            concreteResources = choiceResourceSet1.getConcreteResources();
 
-            assertEquals(2, resources.size());
-            assertEquals(ConcreteResource.STONE, resources.get(0));
-            assertEquals(ConcreteResource.SHIELD, resources.get(1));
+            assertEquals(2, choiceResourceSet1.size());
+            assertEquals(0, choiceResources.size());
+            assertEquals(2, concreteResources.size());
+            assertEquals(1, concreteResources.getCount(ConcreteResource.STONE));
+            assertEquals(1, concreteResources.getCount(ConcreteResource.SHIELD));
+
         }
     }
 
@@ -137,19 +156,19 @@ public class ChoiceResourceSetTest {
         choiceResourceSet1.addResource(new ChoiceResource(choiceSet));
 
         ChoiceResourceSet choiceResourceSet2 = (ChoiceResourceSet) choiceResourceSet1.clone();
-        ArrayList<Resource> resources1 = choiceResourceSet1.getResources();
-        ArrayList<Resource> resources2 = choiceResourceSet2.getResources();
+        ArrayList<Resource> choiceResources1 = choiceResourceSet1.getChoiceResources();
+        ArrayList<Resource> choiceResources2 = choiceResourceSet2.getChoiceResources();
 
         choiceResourceSet1.addResource(ConcreteResource.SHIELD);
-        ((ChoiceResource) resources2.get(1)).makeChoice(ConcreteResource.SERVANT);
-        ((ChoiceResource) resources1.get(1)).makeChoice(ConcreteResource.STONE);
+        ((ChoiceResource) choiceResources1.get(0)).makeChoice(ConcreteResource.SERVANT);
+        ((ChoiceResource) choiceResources2.get(0)).makeChoice(ConcreteResource.STONE);
 
-        resources1 = choiceResourceSet1.getResources();
-        resources2 = choiceResourceSet2.getResources();
-        assertEquals(3, resources1.size());
-        assertEquals(2, resources2.size());
-        assertEquals(ConcreteResource.STONE, resources1.get(1).getResource());
-        assertEquals(ConcreteResource.STONE, resources2.get(1).getResource());
+        choiceResources1 = choiceResourceSet1.getChoiceResources();
+        choiceResources2 = choiceResourceSet2.getChoiceResources();
+        assertEquals(1, choiceResources1.size());
+        assertEquals(1, choiceResources2.size());
+        assertEquals(ConcreteResource.STONE, choiceResources1.get(0).getResource());
+        assertEquals(ConcreteResource.STONE, choiceResources2.get(0).getResource());
     }
 
     @Test

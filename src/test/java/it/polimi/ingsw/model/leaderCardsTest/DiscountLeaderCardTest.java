@@ -18,7 +18,7 @@ public class DiscountLeaderCardTest {
     public void constructorTest(){
 
         try {
-            DiscountLeaderCard discountLeaderCard = new DiscountLeaderCard(2,null, ConcreteResource.STONE, 1);
+            DiscountLeaderCard discountLeaderCard = new DiscountLeaderCard(2,null, ConcreteResource.STONE, 1, 1018);
         } catch (InvalidPointsValueException | InvalidResourceException e) {
             fail();
         } catch (InvalidRequirementsException e) {
@@ -31,7 +31,7 @@ public class DiscountLeaderCardTest {
 
 
         try {
-            DiscountLeaderCard discountLeaderCard = new DiscountLeaderCard(2,concreteResourceSet,null, 1);
+            DiscountLeaderCard discountLeaderCard = new DiscountLeaderCard(2,concreteResourceSet,null, 1, 1019);
         } catch (InvalidPointsValueException | InvalidRequirementsException e) {
             fail();
         } catch (InvalidResourceException e) {
@@ -39,7 +39,7 @@ public class DiscountLeaderCardTest {
         }
 
         try {
-            DiscountLeaderCard discountLeaderCard = new DiscountLeaderCard(-2,concreteResourceSet,ConcreteResource.STONE, 1);
+            DiscountLeaderCard discountLeaderCard = new DiscountLeaderCard(-2,concreteResourceSet,ConcreteResource.STONE, 1, 1020);
         } catch (InvalidPointsValueException e) {
             assertTrue(true);
         } catch (InvalidResourceException | InvalidRequirementsException e) {
@@ -47,7 +47,7 @@ public class DiscountLeaderCardTest {
         }
 
         try {
-            DiscountLeaderCard discountLeaderCard = new DiscountLeaderCard(9,concreteResourceSet,ConcreteResource.STONE, 1);
+            DiscountLeaderCard discountLeaderCard = new DiscountLeaderCard(9,concreteResourceSet,ConcreteResource.STONE, 1, 1021);
             assertTrue(true);
         } catch (InvalidPointsValueException | InvalidResourceException | InvalidRequirementsException e) {
             fail();
@@ -63,7 +63,7 @@ public class DiscountLeaderCardTest {
         board.getWarehouse().addResources(2,concreteResourceSet);
 
         try {
-            DiscountLeaderCard discountLeaderCard = new DiscountLeaderCard(2,concreteResourceSet,ConcreteResource.SERVANT, 1);
+            DiscountLeaderCard discountLeaderCard = new DiscountLeaderCard(2,concreteResourceSet,ConcreteResource.SERVANT, 1, 1022);
             discountLeaderCard.assignToBoard(board);
             assertFalse(discountLeaderCard.isActive());
             discountLeaderCard.play();

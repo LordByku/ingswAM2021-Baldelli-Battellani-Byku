@@ -1,6 +1,9 @@
 package it.polimi.ingsw.model.playerBoard.faithTrack;
 
+import it.polimi.ingsw.model.devCards.InvalidIdException;
 import it.polimi.ingsw.model.resources.resourceSets.InvalidQuantityException;
+
+import java.util.HashSet;
 
 /**
  * VaticanReportSection represents the sections of the faith track where
@@ -24,28 +27,37 @@ public class VaticanReportSection {
      * isVisited is a flag for a section where occurred already a Vatican Report
      */
     private boolean isVisited = false;
-
+    /**
+     * id is the unique id for VaticanReportSections
+     */
+    private final int id;
+    /**
+     * usedIds is a container for the ids already used for VaticanReportSections
+     */
+    private static HashSet<Integer> usedIds = new HashSet<>();
 
     /**
      * @param firstSpace the position of the start of the Vatican Report section
      * @param popeSpace the position of the end of the Vatican Report section
      * @param points the points received by the section's pope card
      */
-    public VaticanReportSection (int firstSpace, int popeSpace, int points) throws InvalidQuantityException,InvalidVaticanReportSectionSquarePositions {
-       if(firstSpace<=0 || popeSpace<=0 || points<=0)
+    public VaticanReportSection (int firstSpace, int popeSpace, int points, int id)
+            throws InvalidQuantityException, InvalidVaticanReportSectionSquarePositions, InvalidIdException {
+        if(firstSpace <= 0 || popeSpace <= 0 || points <= 0) {
            throw new InvalidQuantityException();
-       else
-        {
-            if (firstSpace > popeSpace)
-                throw new InvalidVaticanReportSectionSquarePositions();
-            else {
-                this.firstSpace = firstSpace;
-                this.popeSpace = popeSpace;
-                this.points = points;
-            }
         }
+        if (firstSpace > popeSpace) {
+            throw new InvalidVaticanReportSectionSquarePositions();
+        }
+        if(id < 0 || usedIds.contains(id)) {
+            throw new InvalidIdException();
+        }
+        this.firstSpace = firstSpace;
+        this.popeSpace = popeSpace;
+        this.points = points;
+        this.id = id;
+        usedIds.add(id);
     }
-
 
     /**
      * getPopeSpace is a getter of the attribute popeSpace
@@ -99,5 +111,9 @@ public class VaticanReportSection {
      */
     public boolean reachedPopeSpace(int position){
         return position >= popeSpace;
+    }
+
+    public PopeFavor getPopeFavor() {
+        return new PopeFavor(points, id);
     }
 }

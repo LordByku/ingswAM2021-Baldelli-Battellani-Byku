@@ -6,6 +6,8 @@ import it.polimi.ingsw.model.playerBoard.Scoring;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.InvalidResourceSetException;
 
+import java.util.HashSet;
+
 /**
  * DevCard represents development cards
  */
@@ -18,11 +20,11 @@ public class DevCard implements Scoring, Cloneable {
     /**
      * colour represents the card's colour
      */
-    private CardColour colour;
+    private final CardColour colour;
     /**
      * level represents the card's level
      */
-    private CardLevel level;
+    private final CardLevel level;
     /**
      * productionPower represents the production details of the card
      */
@@ -30,7 +32,15 @@ public class DevCard implements Scoring, Cloneable {
     /**
      * points represents the card's points
      */
-    int points;
+    private final int points;
+    /**
+     * id is the unique id of this card
+     */
+    private final int id;
+    /**
+     * usedIds is a container for the ids already used for development cards
+     */
+    private final static HashSet<Integer> usedIds = new HashSet<>();
 
     /**
      * The constructor
@@ -44,8 +54,8 @@ public class DevCard implements Scoring, Cloneable {
      * @throws InvalidResourceSetException reqResources is null
      * @throws InvalidProductionDetailsException productionPower is null
      */
-    public DevCard(ConcreteResourceSet reqResources, CardColour colour, CardLevel level, ProductionDetails productionPower,int points)
-            throws InvalidCardColourException, InvalidCardLevelException, InvalidResourceSetException, InvalidProductionDetailsException {
+    public DevCard(ConcreteResourceSet reqResources, CardColour colour, CardLevel level, ProductionDetails productionPower, int points, int id)
+            throws InvalidCardColourException, InvalidCardLevelException, InvalidResourceSetException, InvalidProductionDetailsException, InvalidIdException {
         if(reqResources == null) {
             throw new InvalidResourceSetException();
         }
@@ -58,11 +68,16 @@ public class DevCard implements Scoring, Cloneable {
         if(productionPower == null) {
             throw new InvalidProductionDetailsException();
         }
+        if(id < 0 || usedIds.contains(id)) {
+            throw new InvalidIdException();
+        }
         this.reqResources = (ConcreteResourceSet) reqResources.clone();
         this.colour = colour;
         this.level = level;
         this.productionPower = productionPower.clone();
         this.points = points;
+        this.id = id;
+        usedIds.add(id);
     }
 
     /**
@@ -135,5 +150,9 @@ public class DevCard implements Scoring, Cloneable {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public int getId() {
+        return id;
     }
 }

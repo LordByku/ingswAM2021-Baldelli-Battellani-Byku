@@ -1,12 +1,13 @@
 package it.polimi.ingsw.view.cli;
 
 public enum TextColour {
-    ANSI_RED("\u001B[31m"),
-    ANSI_GREEN("\u001B[32m"),
-    ANSI_YELLOW("\u001B[33m"),
-    ANSI_BLUE("\u001B[34m"),
-    ANSI_PURPLE("\u001B[35m"),
-    ANSI_WHITE("\u001b[37m");
+    GREY("\u001B[30;1m"),
+    RED("\u001B[31m"),
+    GREEN("\u001B[32m"),
+    YELLOW("\u001B[33m"),
+    BLUE("\u001B[34m"),
+    PURPLE("\u001B[35m"),
+    WHITE("\u001b[37m");
 
     public static final String RESET = "\u001B[0m";
 

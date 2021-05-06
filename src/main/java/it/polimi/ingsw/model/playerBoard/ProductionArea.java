@@ -17,15 +17,19 @@ import java.util.ArrayList;
  */
 public class ProductionArea {
     /**
+     * developmentCardsSlots represents the number of slots of
+     * development card decks, which corresponds to the number of
+     * production powers that can be obtained through development cards
+     */
+    private final int developmentCardsSlots;
+    /**
      * productions contains all the ProductionDetails in this ProductionArea
      * The first position in the array is reserved to the default production power
-     * The following three positions represent the production powers of the
-     * development card on top of the corresponding decks
+     * The following developmentCardsSlots positions represent the production powers
+     * of the development card on top of the corresponding decks
      * Further positions are occupied by production powers provided by LeaderCards
      */
     private final ArrayList<ProductionDetails> productions;
-
-    private final int developmentCardsSlots;
 
     /**
      * The constructor initializes productions with the default production power

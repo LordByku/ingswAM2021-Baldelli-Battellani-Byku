@@ -1,4 +1,80 @@
 {
+  "board": {
+    "faithTrack": {
+      "finalPosition": 24,
+      "checkPoints": [
+        {
+          "position": 3,
+          "points": 1
+        },
+        {
+          "position": 6,
+          "points": 2
+        },
+        {
+          "position": 9,
+          "points": 4
+        },
+        {
+          "position": 12,
+          "points": 6
+        },
+        {
+          "position": 15,
+          "points": 9
+        },
+        {
+          "position": 18,
+          "points": 12
+        },
+        {
+          "position": 21,
+          "points": 16
+        },
+        {
+          "position": 24,
+          "points": 20
+        }
+      ]
+    },
+    "defaultProductionPower": {
+      "productionIn": [
+        {
+          "resource": "CHOICE",
+          "quantity": 2
+        }
+      ],
+      "productionOut": [
+        {
+          "resource": "CHOICE",
+          "quantity": 1
+        }
+      ]
+    },
+    "depotSizes": [
+      1,
+      2,
+      3
+    ],
+    "developmentCardsSlots": 3
+  },
+  "vaticanReportSections": [
+    {
+      "firstSpace": 5,
+      "popeSpace": 8,
+      "points": 2
+    },
+    {
+      "firstSpace": 12,
+      "popeSpace": 16,
+      "points": 3
+    },
+    {
+      "firstSpace": 19,
+      "popeSpace": 24,
+      "points": 4
+    }
+  ],
   "developmentCards": [
     {
       "colour": "GREEN",
@@ -1518,6 +1594,432 @@
             "quantity": 1
           }
         ]
+      }
+    }
+  ],
+  "leaderCards": [
+    {
+      "points": 2,
+      "requirementsType": "cardSet",
+      "requirements": [
+        {
+          "colour": "YELLOW",
+          "levelSet": [
+            "I",
+            "II",
+            "III"
+          ],
+          "quantity": 1
+        },
+        {
+          "colour": "GREEN",
+          "levelSet": [
+            "I",
+            "II",
+            "III"
+          ],
+          "quantity": 1
+        }
+      ],
+      "effect": {
+        "effectType": "discount",
+        "resource": "SERVANT",
+        "discount": 1
+      }
+    },
+    {
+      "points": 2,
+      "requirementsType": "cardSet",
+      "requirements": [
+        {
+          "colour": "BLUE",
+          "levelSet": [
+            "I",
+            "II",
+            "III"
+          ],
+          "quantity": 1
+        },
+        {
+          "colour": "PURPLE",
+          "levelSet": [
+            "I",
+            "II",
+            "III"
+          ],
+          "quantity": 1
+        }
+      ],
+      "effect": {
+        "effectType": "discount",
+        "resource": "SHIELD",
+        "discount": 1
+      }
+    },
+    {
+      "points": 2,
+      "requirementsType": "cardSet",
+      "requirements": [
+        {
+          "colour": "BLUE",
+          "levelSet": [
+            "I",
+            "II",
+            "III"
+          ],
+          "quantity": 1
+        },
+        {
+          "colour": "GREEN",
+          "levelSet": [
+            "I",
+            "II",
+            "III"
+          ],
+          "quantity": 1
+        }
+      ],
+      "effect": {
+        "effectType": "discount",
+        "resource": "STONE",
+        "discount": 1
+      }
+    },
+    {
+      "points": 2,
+      "requirementsType": "cardSet",
+      "requirements": [
+        {
+          "colour": "YELLOW",
+          "levelSet": [
+            "I",
+            "II",
+            "III"
+          ],
+          "quantity": 1
+        },
+        {
+          "colour": "PURPLE",
+          "levelSet": [
+            "I",
+            "II",
+            "III"
+          ],
+          "quantity": 1
+        }
+      ],
+      "effect": {
+        "effectType": "discount",
+        "resource": "COIN",
+        "discount": 1
+      }
+    },
+    {
+      "points": 3,
+      "requirementsType": "resources",
+      "requirements": [
+        {
+          "resource": "COIN",
+          "quantity": 5
+        }
+      ],
+      "effect": {
+        "effectType": "depot",
+        "resource": "STONE",
+        "slots": 2
+      }
+    },
+    {
+      "points": 3,
+      "requirementsType": "resources",
+      "requirements": [
+        {
+          "resource": "STONE",
+          "quantity": 5
+        }
+      ],
+      "effect": {
+        "effectType": "depot",
+        "resource": "SERVANT",
+        "slots": 2
+      }
+    },
+    {
+      "points": 3,
+      "requirementsType": "resources",
+      "requirements": [
+        {
+          "resource": "SERVANT",
+          "quantity": 5
+        }
+      ],
+      "effect": {
+        "effectType": "depot",
+        "resource": "SHIELD",
+        "slots": 2
+      }
+    },
+    {
+      "points": 3,
+      "requirementsType": "resources",
+      "requirements": [
+        {
+          "resource": "SHIELD",
+          "quantity": 5
+        }
+      ],
+      "effect": {
+        "effectType": "depot",
+        "resource": "COIN",
+        "slots": 2
+      }
+    },
+    {
+      "points": 5,
+      "requirementsType": "cardSet",
+      "requirements": [
+        {
+          "colour": "YELLOW",
+          "levelSet": [
+            "I",
+            "II",
+            "III"
+          ],
+          "quantity": 2
+        },
+        {
+          "colour": "BLUE",
+          "levelSet": [
+            "I",
+            "II",
+            "III"
+          ],
+          "quantity": 1
+        }
+      ],
+      "effect": {
+        "effectType": "conversion",
+        "resource": "SERVANT"
+      }
+    },
+    {
+      "points": 5,
+      "requirementsType": "cardSet",
+      "requirements": [
+        {
+          "colour": "GREEN",
+          "levelSet": [
+            "I",
+            "II",
+            "III"
+          ],
+          "quantity": 2
+        },
+        {
+          "colour": "PURPLE",
+          "levelSet": [
+            "I",
+            "II",
+            "III"
+          ],
+          "quantity": 1
+        }
+      ],
+      "effect": {
+        "effectType": "conversion",
+        "resource": "SHIELD"
+      }
+    },
+    {
+      "points": 5,
+      "requirementsType": "cardSet",
+      "requirements": [
+        {
+          "colour": "BLUE",
+          "levelSet": [
+            "I",
+            "II",
+            "III"
+          ],
+          "quantity": 2
+        },
+        {
+          "colour": "YELLOW",
+          "levelSet": [
+            "I",
+            "II",
+            "III"
+          ],
+          "quantity": 1
+        }
+      ],
+      "effect": {
+        "effectType": "conversion",
+        "resource": "STONE"
+      }
+    },
+    {
+      "points": 5,
+      "requirementsType": "cardSet",
+      "requirements": [
+        {
+          "colour": "PURPLE",
+          "levelSet": [
+            "I",
+            "II",
+            "III"
+          ],
+          "quantity": 2
+        },
+        {
+          "colour": "GREEN",
+          "levelSet": [
+            "I",
+            "II",
+            "III"
+          ],
+          "quantity": 1
+        }
+      ],
+      "effect": {
+        "effectType": "conversion",
+        "resource": "COIN"
+      }
+    },
+    {
+      "points": 4,
+      "requirementsType": "cardSet",
+      "requirements": [
+        {
+          "colour": "YELLOW",
+          "levelSet": [
+            "II"
+          ],
+          "quantity": 1
+        }
+      ],
+      "effect": {
+        "effectType": "production",
+        "productionDetails": {
+          "productionIn": [
+            {
+              "resource": "SHIELD",
+              "quantity": 1
+            }
+          ],
+          "productionOut": [
+            {
+              "resource": "CHOICE",
+              "quantity": 1
+            },
+            {
+              "resource": "FAITH POINTS",
+              "quantity": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "points": 4,
+      "requirementsType": "cardSet",
+      "requirements": [
+        {
+          "colour": "BLUE",
+          "levelSet": [
+            "II"
+          ],
+          "quantity": 1
+        }
+      ],
+      "effect": {
+        "effectType": "production",
+        "productionDetails": {
+          "productionIn": [
+            {
+              "resource": "SERVANT",
+              "quantity": 1
+            }
+          ],
+          "productionOut": [
+            {
+              "resource": "CHOICE",
+              "quantity": 1
+            },
+            {
+              "resource": "FAITH POINTS",
+              "quantity": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "points": 4,
+      "requirementsType": "cardSet",
+      "requirements": [
+        {
+          "colour": "PURPLE",
+          "levelSet": [
+            "II"
+          ],
+          "quantity": 1
+        }
+      ],
+      "effect": {
+        "effectType": "production",
+        "productionDetails": {
+          "productionIn": [
+            {
+              "resource": "STONE",
+              "quantity": 1
+            }
+          ],
+          "productionOut": [
+            {
+              "resource": "CHOICE",
+              "quantity": 1
+            },
+            {
+              "resource": "FAITH POINTS",
+              "quantity": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "points": 4,
+      "requirementsType": "cardSet",
+      "requirements": [
+        {
+          "colour": "GREEN",
+          "levelSet": [
+            "II"
+          ],
+          "quantity": 1
+        }
+      ],
+      "effect": {
+        "effectType": "production",
+        "productionDetails": {
+          "productionIn": [
+            {
+              "resource": "COIN",
+              "quantity": 1
+            }
+          ],
+          "productionOut": [
+            {
+              "resource": "CHOICE",
+              "quantity": 1
+            },
+            {
+              "resource": "FAITH POINTS",
+              "quantity": 1
+            }
+          ]
+        }
       }
     }
   ]

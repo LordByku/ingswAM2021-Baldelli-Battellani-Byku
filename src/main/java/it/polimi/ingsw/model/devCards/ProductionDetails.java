@@ -45,4 +45,9 @@ public class ProductionDetails implements Cloneable {
             return null;
         }
     }
+
+    @Override
+    public String toString() {
+        return input.toString() + "} " + output.toString();
+    }
 }

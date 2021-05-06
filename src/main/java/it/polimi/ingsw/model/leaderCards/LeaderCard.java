@@ -1,9 +1,13 @@
 package it.polimi.ingsw.model.leaderCards;
 
+import it.polimi.ingsw.model.devCards.InvalidIdException;
 import it.polimi.ingsw.model.playerBoard.Board;
 import it.polimi.ingsw.model.playerBoard.InvalidBoardException;
 import it.polimi.ingsw.model.playerBoard.Scoring;
 import it.polimi.ingsw.model.resources.InvalidResourceException;
+import it.polimi.ingsw.view.cli.Strings;
+
+import java.util.HashSet;
 
 /**
  * LeaderCard refers to all the leader cards.
@@ -36,16 +40,33 @@ public abstract class LeaderCard implements Scoring {
      */
     protected boolean discarded = false;
 
-    public LeaderCard(int points, LeaderCardRequirements requirements)
-            throws InvalidPointsValueException, InvalidRequirementsException {
+    /**
+     * id is the unique id of this card
+     */
+    private final int id;
+
+    /**
+     * usedIds is a container for the ids already used for leader cards
+     */
+    private final static HashSet<Integer> usedIds = new HashSet<>();
+
+    protected static int width = 0;
+
+    public LeaderCard(int points, LeaderCardRequirements requirements, int id)
+            throws InvalidPointsValueException, InvalidRequirementsException, InvalidIdException {
         if(points<=0){
             throw new InvalidPointsValueException();
         }
         if(requirements == null){
             throw new InvalidRequirementsException();
         }
+        if(id < 0 || usedIds.contains(id)) {
+            throw new InvalidIdException();
+        }
         this.points = points;
         this.requirements = (LeaderCardRequirements) requirements.clone();
+        this.id = id;
+        usedIds.add(id);
     }
 
     /**
@@ -115,5 +136,67 @@ public abstract class LeaderCard implements Scoring {
      */
     public int getPoints() {
         return points;
+    }
+
+    public abstract String getEffectString();
+
+    public void addCLISupport() {
+        width = Math.max(width, Strings.getGraphemesCount(requirements.toString()));
+        width = Math.max(width, Strings.getGraphemesCount(getEffectString()));
+    }
+
+    @Override
+    public String toString() {
+        String requirements = this.requirements.toString();
+        int requirementsLength = Strings.getGraphemesCount(requirements);
+        StringBuilder result = new StringBuilder(" ");
+        for(int i = 0; i < width; ++i) {
+            result.append("_");
+        }
+        result.append(" \n|").append(requirements);
+        for(int i = requirementsLength; i < width; ++i) {
+            result.append(" ");
+        }
+        result.append("|\n|");
+        for(int i = 0; i < width; ++i) {
+            result.append(" ");
+        }
+        result.append("|\n");
+
+        String points = "(" + this.points + ")";
+        int pointsLength = Strings.getGraphemesCount(points);
+        buildCenteredRow(result, points, pointsLength);
+
+        result.append("|");
+        for(int i = 0; i < width; ++i) {
+            result.append(" ");
+        }
+        result.append("|\n");
+
+        String effect = getEffectString();
+        int effectLength = Strings.getGraphemesCount(effect);
+        buildCenteredRow(result, effect, effectLength);
+        result.append("|");
+        for(int i = 0; i < width; ++i) {
+            result.append("_");
+        }
+        result.append("|");
+        return result.toString();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    private void buildCenteredRow(StringBuilder result, String str, int strLen) {
+        result.append("|");
+        for(int i = 0; i < (width - strLen) / 2; ++i) {
+            result.append(" ");
+        }
+        result.append(str);
+        for(int i = (width - strLen) / 2 + strLen; i < width; ++i) {
+            result.append(" ");
+        }
+        result.append("|\n");
     }
 }

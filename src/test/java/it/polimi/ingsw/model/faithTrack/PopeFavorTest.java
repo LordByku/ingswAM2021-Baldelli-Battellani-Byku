@@ -11,11 +11,11 @@ public class PopeFavorTest {
     @Test
     public void constructor(){
         PopeFavor popeFavor;
-        popeFavor = new PopeFavor(2);
+        popeFavor = new PopeFavor(2, 1005);
         assertEquals(2, popeFavor.getPoints());
 
         try {
-            popeFavor = new PopeFavor(0);
+            popeFavor = new PopeFavor(0, 1006);
             fail();
         } catch (InvalidQuantityException e) {
             assertEquals(2, popeFavor.getPoints());

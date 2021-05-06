@@ -14,7 +14,11 @@ import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import static org.junit.Assert.*;
 
 import it.polimi.ingsw.model.resources.resourceSets.InvalidResourceSetException;
+import it.polimi.ingsw.parsing.LeaderCardsParser;
 import org.junit.Test;
+
+import java.text.BreakIterator;
+import java.util.Locale;
 
 public class DepotLeaderCardTest {
     @Test
@@ -22,7 +26,7 @@ public class DepotLeaderCardTest {
     public void constructorTest(){
 
         try {
-            DepotLeaderCard depotLeaderCard = new DepotLeaderCard(2,null,ConcreteResource.SERVANT, 2);
+            DepotLeaderCard depotLeaderCard = new DepotLeaderCard(2,null,ConcreteResource.SERVANT, 2, 1023);
         } catch (InvalidPointsValueException | InvalidResourceException e) {
             fail();
         } catch (InvalidRequirementsException e) {
@@ -35,7 +39,7 @@ public class DepotLeaderCardTest {
 
 
         try {
-            DepotLeaderCard depotLeaderCard = new DepotLeaderCard(2,concreteResourceSet,null, 2);
+            DepotLeaderCard depotLeaderCard = new DepotLeaderCard(2,concreteResourceSet,null, 2, 1024);
         } catch (InvalidPointsValueException | InvalidRequirementsException e) {
             fail();
         } catch (InvalidResourceException e) {
@@ -43,7 +47,7 @@ public class DepotLeaderCardTest {
         }
 
         try {
-            DepotLeaderCard depotLeaderCard = new DepotLeaderCard(0,concreteResourceSet,ConcreteResource.SERVANT, 2);
+            DepotLeaderCard depotLeaderCard = new DepotLeaderCard(0,concreteResourceSet,ConcreteResource.SERVANT, 2, 1025);
         } catch (InvalidPointsValueException e) {
             assertTrue(true);
         } catch (InvalidResourceException | InvalidRequirementsException e) {
@@ -51,7 +55,7 @@ public class DepotLeaderCardTest {
         }
 
         try {
-            DepotLeaderCard depotLeaderCard = new DepotLeaderCard(4,concreteResourceSet,ConcreteResource.SERVANT, 2);
+            DepotLeaderCard depotLeaderCard = new DepotLeaderCard(4,concreteResourceSet,ConcreteResource.SERVANT, 2, 1026);
             assertTrue(true);
         } catch (InvalidPointsValueException | InvalidResourceException | InvalidRequirementsException e) {
             fail();
@@ -76,14 +80,14 @@ public class DepotLeaderCardTest {
         }
 
         try {
-            DepotLeaderCard depotLeaderCard = new DepotLeaderCard(2,concreteResourceSet,ConcreteResource.COIN, 2);
+            DepotLeaderCard depotLeaderCard = new DepotLeaderCard(2,concreteResourceSet,ConcreteResource.COIN, 2, 1027);
             depotLeaderCard.assignToBoard(board);
             assertFalse(depotLeaderCard.isActive());
             depotLeaderCard.play();
             assertTrue(depotLeaderCard.isActive());
             board.getWarehouse().addResources(3,concreteResourceSet2);
             assertTrue(true);
-            DepotLeaderCard depotLeaderCardServant = new DepotLeaderCard(2,concreteResourceSet,ConcreteResource.SERVANT, 2);
+            DepotLeaderCard depotLeaderCardServant = new DepotLeaderCard(2,concreteResourceSet,ConcreteResource.SERVANT, 2, 1028);
             depotLeaderCardServant.assignToBoard(board);
             depotLeaderCardServant.play();
             board.getWarehouse().addResources(4,concreteResourceSet3);
@@ -92,5 +96,4 @@ public class DepotLeaderCardTest {
             fail();
         }
     }
-
 }

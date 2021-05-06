@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.gameZoneTest;
 import it.polimi.ingsw.model.devCards.CardColour;
 import it.polimi.ingsw.model.devCards.CardLevel;
 import it.polimi.ingsw.model.devCards.DevCard;
+import it.polimi.ingsw.model.game.Game;
 import it.polimi.ingsw.model.gameZone.CardMarket;
 import org.junit.Test;
 
@@ -11,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 public class CardMarketTest {
     @Test
     public void constructorTest() {
-        CardMarket cardMarket = new CardMarket();
+        CardMarket cardMarket = Game.getInstance().getGameZone().getCardMarket();
 
         for(int i = 0; i < 3; ++i) {
             for(int j = 0; j < 4; ++j) {
