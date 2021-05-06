@@ -14,7 +14,7 @@ public class Client {
     private final int port;
     private ClientState clientState;
     private String nickname;
-    private PrintWriter out;
+    private PrintWriter serverOut;
     private Socket socket;
     private LocalModel localModel;
 
@@ -64,18 +64,18 @@ public class Client {
     }
 
     public void write(String message) {
-        out.println(message);
+        serverOut.println(message);
     }
 
     public void openServerCommunication() throws IOException {
         socket = new Socket(hostname, port);
-        out = new PrintWriter(socket.getOutputStream(), true);
+        serverOut = new PrintWriter(socket.getOutputStream(), true);
         (new Thread(new ClientServerCommunication(this, socket))).start();
     }
 
     public void closeServerCommunication() {
         try {
-            out = null;
+            serverOut = null;
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();

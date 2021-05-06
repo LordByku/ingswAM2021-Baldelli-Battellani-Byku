@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.leaderCards.LeaderCard;
 import it.polimi.ingsw.parsing.LeaderCardsParser;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class CLI {
     private static CLI instance;
@@ -44,7 +45,7 @@ public class CLI {
     }
 
     public void host() {
-        System.out.println("Press ENTER to start the game");
+        System.out.println("Press ENTER to start the game:");
     }
 
     public void unexpected() {
@@ -67,7 +68,7 @@ public class CLI {
         System.out.println("Game is loading...");
     }
 
-    public void showLeaderCards(ArrayList<Integer> leaderCardIDs) {
+    public void showLeaderCards(ArrayList<Integer> leaderCardIDs, HashSet<Integer> selections) {
         ArrayList<LeaderCard> leaderCards = new ArrayList<>();
 
         for (Integer leaderCardID : leaderCardIDs) {
@@ -77,9 +78,17 @@ public class CLI {
         }
 
         for(int i = 0; i < leaderCards.size(); i++) {
-            System.out.println("[" + i + "]");
+            if(selections.contains(i)) {
+                System.out.println(TextColour.RED.escape() + "[" + i + "]" + TextColour.RESET);
+            } else {
+                System.out.println("[" + i + "]");
+            }
             System.out.println(leaderCards.get(i));
             System.out.println();
         }
+    }
+
+    public void initDiscard() {
+        System.out.println("Insert the indices of the two Leader Cards you want to discard:");
     }
 }
