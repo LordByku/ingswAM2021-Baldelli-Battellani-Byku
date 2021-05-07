@@ -1,6 +1,8 @@
 package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.model.leaderCards.LeaderCard;
+import it.polimi.ingsw.model.resources.ConcreteResource;
+import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.parsing.LeaderCardsParser;
 
 import java.util.ArrayList;
@@ -83,12 +85,25 @@ public class CLI {
             } else {
                 System.out.println("[" + i + "]");
             }
-            System.out.println(leaderCards.get(i));
+            System.out.println(leaderCards.get(i).getCLIString());
             System.out.println();
         }
     }
 
     public void initDiscard() {
         System.out.println("Insert the indices of the two Leader Cards you want to discard:");
+    }
+
+    public void initResources(int selectionsLeft, int currentDepotIndex) {
+        switch(selectionsLeft) {
+            case 0:
+                break;
+            case 1:
+                System.out.println("Insert the resources you want to put in the depot [" + currentDepotIndex + "] or press ENTER to continue to the next depot (you have one resource left to assign):");
+                break;
+            default:
+                System.out.println("Insert the resources you want to put in the depot [" + currentDepotIndex + "] or press ENTER to continue to the next depot (you have " + selectionsLeft + " resources left to assign):");
+                break;
+        }
     }
 }

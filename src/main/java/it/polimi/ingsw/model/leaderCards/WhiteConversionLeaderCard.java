@@ -31,7 +31,7 @@ public class WhiteConversionLeaderCard extends LeaderCard{
             throw new InvalidResourceException();
         }
 
-        this.type=type;
+        this.type = type;
     }
 
     /**
@@ -48,6 +48,6 @@ public class WhiteConversionLeaderCard extends LeaderCard{
     @Override
     public String getEffectString() {
         WhiteMarble whiteMarble = new WhiteMarble();
-        return whiteMarble.toString() + " = " + type.toString();
+        return whiteMarble.getCLIString() + " = " + type.getCLIString();
     }
 }

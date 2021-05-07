@@ -42,8 +42,7 @@ public abstract class Marble {
         return colour;
     }
 
-    @Override
-    public String toString() {
+    public String getCLIString() {
         return getColour().getTextColour().escape() + "\u25c9" + TextColour.RESET;
     }
 }

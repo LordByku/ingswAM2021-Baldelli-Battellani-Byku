@@ -1,6 +1,8 @@
 package it.polimi.ingsw.network.server;
 
 import com.google.gson.JsonObject;
+import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.network.server.serverStates.InitDiscard;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -55,11 +57,12 @@ public class Server {
         }
     }
 
-    public void initialGameState(){
+    public void startGame(){
         synchronized (clientHandlers){
             for(ClientHandler clientHandler: clientHandlers) {
                 GameStateSerializer serializer = new GameStateSerializer(clientHandler.getPerson().getNickname());
                 clientHandler.ok("update", serializer.gameState());
+                clientHandler.setState(new InitDiscard());
             }
         }
     }

@@ -46,8 +46,7 @@ public class ProductionDetails implements Cloneable {
         }
     }
 
-    @Override
-    public String toString() {
-        return input.toString() + "} " + output.toString();
+    public String getCLIString() {
+        return input.getCLIString() + "} " + output.getCLIString();
     }
 }

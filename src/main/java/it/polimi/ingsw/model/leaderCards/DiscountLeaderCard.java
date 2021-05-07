@@ -58,6 +58,6 @@ public class DiscountLeaderCard extends LeaderCard{
 
     @Override
     public String getEffectString() {
-        return "???? -1" + type.toString();
+        return "???? -1" + type.getCLIString();
     }
 }

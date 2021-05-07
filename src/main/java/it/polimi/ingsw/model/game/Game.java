@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.game;
 
 import it.polimi.ingsw.model.gameZone.GameZone;
+import it.polimi.ingsw.model.playerBoard.Board;
+import it.polimi.ingsw.model.playerBoard.LeaderCardArea;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,7 +34,10 @@ public class Game {
     }
 
     public Player addPlayer(String nickname)
-            throws FullLobbyException, ExistingNicknameException, InvalidNicknameException {
+            throws FullLobbyException, ExistingNicknameException, InvalidNicknameException, GameAlreadyStartedException {
+        if(gameStarted) {
+            throw new GameAlreadyStartedException();
+        }
         synchronized (players) {
             if(players.size() == 4) {
                 throw new FullLobbyException();
@@ -52,13 +57,13 @@ public class Game {
         }
     }
 
-    public void start() throws NoPlayersException, GameAlreadyStartedException {
+    public void startMultiPlayer() throws NotEnoughPlayersException, GameAlreadyStartedException {
         if(gameStarted) {
             throw new GameAlreadyStartedException();
         }
 
-        if(players.size() == 0) {
-            throw new NoPlayersException();
+        if(players.size() < 2) {
+            throw new NotEnoughPlayersException();
         }
 
         Collections.shuffle(players);
@@ -66,13 +71,8 @@ public class Game {
         for(Player player: players) {
             Person person = (Person) player;
 
-            gameZone.getLeaderCardsDeck().assignCards(person.getBoard().getLeaderCardArea());
-        }
-
-        if(players.size() == 1) {
-            players.add(new Computer());
-        } else {
-            // TODO: handle initial resources distribution
+            Board board = person.getBoard();
+            gameZone.getLeaderCardsDeck().assignCards(board);
         }
 
         gameStarted = true;

@@ -20,12 +20,12 @@ public class ConcreteResourceTest {
     }
 
     @Test
-    public void toStringTest() {
+    public void getCLIStringTest() {
         ConcreteResource coin = ConcreteResource.COIN;
         ConcreteResource shield = ConcreteResource.SHIELD;
         ConcreteResource servant = ConcreteResource.SERVANT;
         ConcreteResource stone = ConcreteResource.STONE;
 
-        System.out.println(coin + " " + shield + " " + servant + " " + stone);
+        System.out.println(coin.getCLIString() + " " + shield.getCLIString() + " " + servant.getCLIString() + " " + stone.getCLIString());
     }
 }

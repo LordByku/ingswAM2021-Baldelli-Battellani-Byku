@@ -112,7 +112,7 @@ public class LeaderCardTest {
     }
 
     @Test
-    public void toStringTest() {
+    public void getCLIStringTest() {
         ArrayList<LeaderCard> leaderCards = new ArrayList<>();
 
         for(int i = 0; i < 16; ++i) {
@@ -122,7 +122,7 @@ public class LeaderCardTest {
         }
 
         for(LeaderCard leaderCard: leaderCards) {
-            System.out.println(leaderCard);
+            System.out.println(leaderCard.getCLIString());
         }
     }
 }

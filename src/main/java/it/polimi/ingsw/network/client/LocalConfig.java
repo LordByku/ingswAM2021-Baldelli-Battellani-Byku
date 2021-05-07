@@ -37,4 +37,8 @@ public class LocalConfig {
                 return 0;
         }
     }
+
+    public int getNumberOfDepots() {
+        return config.getAsJsonObject("board").getAsJsonArray("depotSizes").size();
+    }
 }

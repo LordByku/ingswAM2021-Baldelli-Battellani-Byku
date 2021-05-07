@@ -22,4 +22,11 @@ public class Strings {
     public static String getFaithPointsSymbol() {
         return TextColour.RED.escape() + "\u271d" + TextColour.RESET;
     }
+
+    public static String[] splitLine(String line) {
+        if(line.equals("")) {
+            return new String[0];
+        }
+        return line.split("\\s+", 0);
+    }
 }

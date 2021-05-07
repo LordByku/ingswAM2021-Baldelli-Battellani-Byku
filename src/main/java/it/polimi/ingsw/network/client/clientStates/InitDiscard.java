@@ -7,6 +7,7 @@ import it.polimi.ingsw.network.client.ClientParser;
 import it.polimi.ingsw.network.client.LocalConfig;
 import it.polimi.ingsw.network.client.localModel.LocalModel;
 import it.polimi.ingsw.view.cli.CLI;
+import it.polimi.ingsw.view.cli.Strings;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,7 +22,7 @@ public class InitDiscard extends ClientState {
 
     @Override
     public void handleServerMessage(Client client, String line) {
-        JsonObject json = ClientParser.getInstance().parse(line);
+        JsonObject json = ClientParser.getInstance().parse(line).getAsJsonObject();
 
         String status = ClientParser.getInstance().getStatus(json);
 
@@ -42,9 +43,7 @@ public class InitDiscard extends ClientState {
                     }
                     case "update": {
                         JsonObject message = ClientParser.getInstance().getMessage(json).getAsJsonObject();
-
                         client.getModel().updateModel(message);
-
                         break;
                     }
                     default: {
@@ -62,7 +61,7 @@ public class InitDiscard extends ClientState {
 
     @Override
     public void handleUserMessage(Client client, String line) {
-        String[] words = line.split("\\s+");
+        String[] words = Strings.splitLine(line);
         if(words.length != 2) {
             client.setState(new InitDiscard(maxSelection));
         } else {

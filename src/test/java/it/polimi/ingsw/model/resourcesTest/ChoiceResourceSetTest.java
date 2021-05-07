@@ -186,6 +186,6 @@ public class ChoiceResourceSetTest {
         choiceResourceSet.addResource(ConcreteResource.SERVANT);
         choiceResourceSet.addResource(ConcreteResource.COIN);
 
-        System.out.println(choiceResourceSet);
+        System.out.println(choiceResourceSet.getCLIString());
     }
 }

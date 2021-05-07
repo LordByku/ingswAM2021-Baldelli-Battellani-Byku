@@ -241,13 +241,13 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
     }
 
     @Override
-    public String toString() {
+    public String getCLIString() {
         StringBuilder result = new StringBuilder();
 
         for(Map.Entry entry: resources.entrySet()) {
             ConcreteResource resource = (ConcreteResource) entry.getKey();
             int count = (int) entry.getValue();
-            result.append(count).append(resource.toString()).append(" ");
+            result.append(count).append(resource.getCLIString()).append(" ");
         }
 
         return result.toString();

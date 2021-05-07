@@ -143,11 +143,11 @@ public class ChoiceResourceSet implements ResourceSet {
     }
 
     @Override
-    public String toString() {
-        StringBuilder result = new StringBuilder(concreteResources.toString());
+    public String getCLIString() {
+        StringBuilder result = new StringBuilder(concreteResources.getCLIString());
 
         for(Resource resource: choiceResources) {
-            result.append(resource.toString()).append(" ");
+            result.append(resource.getCLIString()).append(" ");
         }
 
         return result.toString();

@@ -45,6 +45,6 @@ public class ProductionLeaderCard extends LeaderCard {
 
     @Override
     public String getEffectString() {
-        return productionPower.toString();
+        return productionPower.getCLIString();
     }
 }

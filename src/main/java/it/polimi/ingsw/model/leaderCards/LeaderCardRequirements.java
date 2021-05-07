@@ -23,4 +23,6 @@ public interface LeaderCardRequirements extends Cloneable {
      * @return A copy of the object
      */
     Object clone();
+
+    String getCLIString();
 }

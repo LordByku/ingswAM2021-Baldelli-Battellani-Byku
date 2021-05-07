@@ -474,17 +474,17 @@ public class ConcreteResourceSetTest {
     }
 
     @Test
-    public void toStringTest() {
+    public void getCLIStringTest() {
         ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
 
         concreteResourceSet.addResource(ConcreteResource.COIN);
         concreteResourceSet.addResource(ConcreteResource.STONE, 3);
 
-        System.out.println(concreteResourceSet);
+        System.out.println(concreteResourceSet.getCLIString());
 
         concreteResourceSet.addResource(ConcreteResource.COIN, 4);
         concreteResourceSet.addResource(ConcreteResource.SERVANT, 2);
 
-        System.out.println(concreteResourceSet);
+        System.out.println(concreteResourceSet.getCLIString());
     }
 }

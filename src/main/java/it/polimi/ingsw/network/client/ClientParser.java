@@ -1,6 +1,9 @@
 package it.polimi.ingsw.network.client;
 
 import com.google.gson.*;
+import it.polimi.ingsw.model.resources.ConcreteResource;
+import it.polimi.ingsw.model.resources.InvalidResourceException;
+import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.network.client.localModel.LocalModel;
 
 import java.util.ArrayList;
@@ -22,8 +25,8 @@ public class ClientParser {
         return instance;
     }
 
-    public JsonObject parse(String line) {
-        return (JsonObject) parser.parse(line);
+    public JsonElement parse(String line) {
+        return parser.parse(line);
     }
 
     public String getStatus(JsonObject json) {
@@ -53,5 +56,19 @@ public class ClientParser {
 
     public LocalModel getLocalModel(JsonObject json) {
         return gson.fromJson(json, LocalModel.class);
+    }
+
+    public ConcreteResourceSet readUserResources(String[] words) throws JsonSyntaxException, InvalidResourceException {
+        ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
+
+        for(String word: words) {
+            concreteResourceSet.addResource(gson.fromJson(word.toUpperCase(), ConcreteResource.class));
+        }
+
+        return concreteResourceSet;
+    }
+
+    public JsonElement serialize(Object object) {
+        return parse(gson.toJson(object));
     }
 }

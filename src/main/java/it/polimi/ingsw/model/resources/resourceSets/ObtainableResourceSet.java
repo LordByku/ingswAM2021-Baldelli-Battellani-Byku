@@ -84,8 +84,7 @@ public class ObtainableResourceSet extends TransactionResourceSet {
         return cloneORS;
     }
 
-    @Override
-    public String toString() {
-        return super.toString() + faithPoints + Strings.getFaithPointsSymbol() + " ";
+    public String getCLIString() {
+        return super.getCLIString() + faithPoints + Strings.getFaithPointsSymbol() + " ";
     }
 }

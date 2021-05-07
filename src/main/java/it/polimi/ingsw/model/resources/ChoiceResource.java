@@ -89,11 +89,11 @@ public class ChoiceResource implements Resource {
     }
 
     @Override
-    public String toString() {
+    public String getCLIString() {
         if(finalChoice == null) {
             return "?";
         } else {
-            return finalChoice.toString();
+            return finalChoice.getCLIString();
         }
     }
 }

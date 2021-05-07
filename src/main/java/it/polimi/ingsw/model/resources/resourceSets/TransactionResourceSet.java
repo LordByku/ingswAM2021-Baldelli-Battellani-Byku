@@ -54,8 +54,7 @@ public abstract class TransactionResourceSet implements Cloneable {
         }
     }
 
-    @Override
-    public String toString() {
-        return resources.toString();
+    public String getCLIString() {
+        return resources.getCLIString();
     }
 }

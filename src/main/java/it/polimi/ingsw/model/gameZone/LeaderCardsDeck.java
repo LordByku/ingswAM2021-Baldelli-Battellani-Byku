@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.gameZone;
 
 import it.polimi.ingsw.model.leaderCards.LeaderCard;
+import it.polimi.ingsw.model.playerBoard.Board;
 import it.polimi.ingsw.model.playerBoard.LeaderCardArea;
 import it.polimi.ingsw.parsing.LeaderCardsParser;
 
@@ -60,9 +61,9 @@ public class LeaderCardsDeck {
         return leaderCard;
     }
 
-    public void assignCards(LeaderCardArea leaderCardArea) {
+    public void assignCards(Board board) {
         for(int i = assigned; i < assigned + 4; ++i) {
-            leaderCardArea.addLeaderCard(deck.get(i));
+            deck.get(i).assignToBoard(board);
         }
 
         assigned += 4;

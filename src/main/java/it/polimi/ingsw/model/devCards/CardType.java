@@ -47,15 +47,14 @@ public class CardType {
         return devCard.getColour() == colour && levelSet.contains(devCard.getLevel());
     }
 
-    @Override
-    public String toString() {
+    public String getCLIString() {
         if(levelSet.size() == 3) {
             return "|" + colour.getColour().escape() + "  " + BackGroundColor.RESET + "|";
         } else {
             StringBuilder result = new StringBuilder("|" + colour.getColour().escape());
             int space = 0;
             for(CardLevel cardLevel: levelSet) {
-                result.append(cardLevel.toString());
+                result.append(cardLevel.getCLIString());
                 space++;
             }
             if(space == 1) {

@@ -49,7 +49,7 @@ public enum ConcreteResource implements Resource {
     }
 
     @Override
-    public String toString() {
+    public String getCLIString() {
         return colour.escape() + "\u25cf" + TextColour.RESET;
     }
 }

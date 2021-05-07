@@ -15,4 +15,6 @@ public interface ResourceSet extends Cloneable {
      * @return The number of Resources in this ResourceSet
      */
     int size();
+
+    String getCLIString();
 }

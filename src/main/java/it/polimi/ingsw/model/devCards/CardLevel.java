@@ -8,10 +8,10 @@ public enum CardLevel {
     II("2"),
     III("3");
 
-    private final String toString;
+    private final String CLIString;
 
-    CardLevel(String toString) {
-        this.toString = toString;
+    CardLevel(String CLIString) {
+        this.CLIString = CLIString;
     }
 
     public CardLevel next(){
@@ -29,9 +29,7 @@ public enum CardLevel {
             return II;
         return null;
     }
-
-    @Override
-    public String toString() {
-        return toString;
+    public String getCLIString() {
+        return CLIString;
     }
 }

@@ -18,7 +18,7 @@ public class Lobby extends ClientState {
 
     @Override
     public void handleServerMessage(Client client, String line) {
-        JsonObject json = ClientParser.getInstance().parse(line);
+        JsonObject json = ClientParser.getInstance().parse(line).getAsJsonObject();
 
         String status = ClientParser.getInstance().getStatus(json);
 

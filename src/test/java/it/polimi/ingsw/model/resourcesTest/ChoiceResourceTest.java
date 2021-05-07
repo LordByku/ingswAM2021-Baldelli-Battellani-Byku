@@ -109,7 +109,7 @@ public class ChoiceResourceTest {
     }
 
     @Test
-    public void toStringTest() {
+    public void getCLIStringTest() {
         ChoiceResource choiceResource = new ChoiceResource(new FullChoiceSet());
         ChoiceResource coin = new ChoiceResource(new FullChoiceSet());
         ChoiceResource stone = new ChoiceResource(new FullChoiceSet());
@@ -121,6 +121,6 @@ public class ChoiceResourceTest {
         servant.makeChoice(ConcreteResource.SERVANT);
         shield.makeChoice(ConcreteResource.SHIELD);
 
-        System.out.println(choiceResource + " " + coin + " " + shield + " " + servant + " " + stone);
+        System.out.println(choiceResource.getCLIString() + " " + coin.getCLIString() + " " + shield.getCLIString() + " " + servant.getCLIString() + " " + stone.getCLIString());
     }
 }

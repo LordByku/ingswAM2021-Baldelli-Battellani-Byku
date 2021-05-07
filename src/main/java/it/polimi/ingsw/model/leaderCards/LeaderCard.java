@@ -18,12 +18,12 @@ public abstract class LeaderCard implements Scoring {
     /**
      * points are the victory points of the card.
      */
-    private int points;
+    private final int points;
 
     /**
      * requirements needed to play the card.
      */
-    private LeaderCardRequirements requirements;
+    private final LeaderCardRequirements requirements;
 
     /**
      * board is the reference to the board.
@@ -127,7 +127,7 @@ public abstract class LeaderCard implements Scoring {
             throw new InvalidBoardException();
         }
         this.board = board.clone();
-        board.getLeaderCardArea().addLeaderCard(this);
+        this.board.getLeaderCardArea().addLeaderCard(this);
     }
 
     /**
@@ -141,13 +141,12 @@ public abstract class LeaderCard implements Scoring {
     public abstract String getEffectString();
 
     public void addCLISupport() {
-        width = Math.max(width, Strings.getGraphemesCount(requirements.toString()));
+        width = Math.max(width, Strings.getGraphemesCount(requirements.getCLIString()));
         width = Math.max(width, Strings.getGraphemesCount(getEffectString()));
     }
 
-    @Override
-    public String toString() {
-        String requirements = this.requirements.toString();
+    public String getCLIString() {
+        String requirements = this.requirements.getCLIString();
         int requirementsLength = Strings.getGraphemesCount(requirements);
         StringBuilder result = new StringBuilder(" ");
         for(int i = 0; i < width; ++i) {

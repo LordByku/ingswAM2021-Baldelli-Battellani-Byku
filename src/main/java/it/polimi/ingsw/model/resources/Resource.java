@@ -22,4 +22,6 @@ public interface Resource {
      * @return A copy of this Resource
      */
     Resource cleanClone();
+
+    String getCLIString();
 }

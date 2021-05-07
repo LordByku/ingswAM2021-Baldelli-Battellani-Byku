@@ -94,14 +94,13 @@ public class CardTypeSet implements LeaderCardRequirements {
         }
     }
 
-    @Override
-    public String toString() {
+    public String getCLIString() {
         StringBuilder result = new StringBuilder("( ");
         for(Map.Entry entry: cardTypes.entrySet()) {
             CardType cardType = (CardType) entry.getKey();
             Integer count = (Integer) entry.getValue();
 
-            result.append(count).append(cardType.toString()).append(" ");
+            result.append(count).append(cardType.getCLIString()).append(" ");
         }
         result.append(")");
         return result.toString();

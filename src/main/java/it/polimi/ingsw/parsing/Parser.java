@@ -15,7 +15,7 @@ public class Parser {
     private static Parser instance;
     private final Gson gson;
     private JsonObject config;
-    private static final String path = "src/resources/config.json";
+    private static final String path = "src/main/resources/config.json";
 
     private Parser() throws FileNotFoundException {
         JsonParser parser = new JsonParser();

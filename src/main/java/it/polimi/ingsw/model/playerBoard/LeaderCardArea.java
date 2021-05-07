@@ -11,7 +11,7 @@ public class LeaderCardArea implements Scoring {
     /**
      * leaderCards is an ArrayList containing the leaderCards currently active.
      */
-    private ArrayList<LeaderCard> leaderCards;
+    private final ArrayList<LeaderCard> leaderCards;
 
     /**
      * Create an empty ArrayList of leaderCards
