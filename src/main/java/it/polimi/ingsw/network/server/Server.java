@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 
 public class Server {
     private final int port;
@@ -57,7 +58,7 @@ public class Server {
     }
 
     public void startGame(){
-        synchronized (clientHandlers){
+        synchronized (clientHandlers) {
             for(ClientHandler clientHandler: clientHandlers) {
                 GameStateSerializer serializer = new GameStateSerializer(clientHandler.getPerson().getNickname());
                 clientHandler.ok("update", serializer.gameState());
@@ -69,6 +70,16 @@ public class Server {
     public void removeClientHandler(ClientHandler clientHandler) {
         synchronized (clientHandlers) {
             clientHandlers.remove(clientHandler);
+        }
+    }
+
+    public void updateState(Consumer<GameStateSerializer> lambda) {
+        synchronized (clientHandlers) {
+            for(ClientHandler clientHandler: clientHandlers) {
+                GameStateSerializer serializer = new GameStateSerializer(clientHandler.getPerson().getNickname());
+                lambda.accept(serializer);
+                clientHandler.ok("update", serializer.getMessage());
+            }
         }
     }
 }

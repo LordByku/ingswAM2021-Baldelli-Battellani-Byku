@@ -3,8 +3,10 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.devCards.DevCard;
 import it.polimi.ingsw.model.game.Game;
 import it.polimi.ingsw.model.game.Person;
+import it.polimi.ingsw.model.game.Player;
 import it.polimi.ingsw.model.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.playerBoard.Board;
+import it.polimi.ingsw.model.playerBoard.faithTrack.VRSObserver;
 import it.polimi.ingsw.model.playerBoard.resourceLocations.Depot;
 import it.polimi.ingsw.model.playerBoard.resourceLocations.Warehouse;
 import it.polimi.ingsw.model.resources.ChoiceResource;
@@ -17,6 +19,7 @@ import it.polimi.ingsw.model.resources.resourceSets.ObtainableResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.SpendableResourceSet;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Controller {
     private static Controller instance;
@@ -158,5 +161,51 @@ public class Controller {
         secondDiscardedLeaderCard.initDiscard();
 
         return true;
+    }
+
+    public boolean initResources(Person person, ConcreteResourceSet[] resources) {
+        Warehouse warehouse = person.getBoard().getWarehouse();
+
+        if(resources.length != warehouse.numberOfDepots()) {
+            return false;
+        }
+        HashSet<ConcreteResource> resourceTypes = new HashSet<>();
+        int totalSize = 0;
+        for(int i = 0; i < resources.length; ++i) {
+            if(!resources[i].isSingleType()) {
+                return false;
+            }
+            if(!warehouse.canAdd(i, resources[i])) {
+                return false;
+            }
+            ConcreteResource resourceType = resources[i].getResourceType();
+            if(resourceType != null) {
+                if(resourceTypes.contains(resourceType)) {
+                    return false;
+                }
+                resourceTypes.add(resources[i].getResourceType());
+            }
+            totalSize += resources[i].size();
+        }
+
+        if(totalSize != Game.getInstance().getInitialResources(person)) {
+            return false;
+        }
+
+        for(int i = 0; i < resources.length; ++i) {
+            warehouse.addResources(i, resources[i]);
+        }
+
+        return true;
+    }
+
+    public void addInitialFaithPoints() {
+        ArrayList<Player> players = Game.getInstance().getPlayers();
+
+        for(int i = 2; i < players.size(); ++i) {
+            ((Person) players.get(i)).getBoard().getFaithTrack().addFaithPoints(1);
+        }
+
+        VRSObserver.getInstance().updateVRS();
     }
 }

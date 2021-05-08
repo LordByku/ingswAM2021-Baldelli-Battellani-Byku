@@ -109,7 +109,6 @@ public class InitResources extends ClientState {
                     jsonObject.addProperty("command", "initResources");
                     jsonObject.add("value", ClientParser.getInstance().serialize(assignment));
 
-                    System.out.println(jsonObject.toString());
                     client.write(jsonObject.toString());
                 }
             } catch (JsonSyntaxException | InvalidResourceException e) {

@@ -150,4 +150,24 @@ public class Game {
             person.setHost();
         }
     }
+
+    public int getInitialResources(Person person) {
+        synchronized (players) {
+            for(int i = 0; i < players.size(); ++i) {
+                Person current = (Person) players.get(i);
+                if(current.equals(person)) {
+                    switch (i) {
+                        case 1:
+                        case 2:
+                            return 1;
+                        case 3:
+                            return 2;
+                        default:
+                            return 0;
+                    }
+                }
+            }
+            return 0;
+        }
+    }
 }

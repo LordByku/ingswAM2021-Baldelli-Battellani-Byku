@@ -31,6 +31,7 @@ public class GameStateSerializer {
             JsonObject board = new JsonObject();
             board.add(property,element);
             player.addProperty("nickname", person.getNickname());
+            player.addProperty("inkwell", person.isActivePlayer());
             player.add("board", board);
             players.add(player);
             message.add("players", players);
@@ -57,6 +58,7 @@ public class GameStateSerializer {
                 JsonObject board = new JsonObject();
                 board.add(property,element);
                 player.addProperty("nickname", person.getNickname());
+                player.addProperty("inkwell", person.isActivePlayer());
                 player.add("board", board);
                 players.add(player);
             }
@@ -110,6 +112,7 @@ public class GameStateSerializer {
             JsonArray players = new JsonArray();
             JsonObject player = new JsonObject();
             player.addProperty("nickname", person.getNickname());
+            player.addProperty("inkwell", person.isActivePlayer());
             player.add("board", board(person));
             players.add(player);
             message.add("players", players);
@@ -126,6 +129,7 @@ public class GameStateSerializer {
             if(!done){
                 JsonObject player = new JsonObject();
                 player.addProperty("nickname", person.getNickname());
+                player.addProperty("inkwell", person.isActivePlayer());
                 player.add("board", board(person));
                 players.add(player);
             }
@@ -296,6 +300,7 @@ public class GameStateSerializer {
         int i=0;
         JsonArray players = new JsonArray();
         for(Player player: Game.getInstance().getPlayers()){
+            Person person = (Person) player;
             JsonObject object = new JsonObject();
             object.addProperty("nickname", ((Person) player).getNickname());
             boolean inkwell = (i==0);

@@ -3,10 +3,14 @@ package it.polimi.ingsw.network.server.serverStates;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.game.Game;
+import it.polimi.ingsw.model.game.Person;
+import it.polimi.ingsw.model.game.Player;
 import it.polimi.ingsw.network.server.ClientHandler;
+import it.polimi.ingsw.network.server.GameStateSerializer;
 import it.polimi.ingsw.network.server.ServerParser;
 
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 public class InitDiscard extends ServerState {
     private static final ArrayList<ClientHandler> completed = new ArrayList<>();
@@ -21,16 +25,28 @@ public class InitDiscard extends ServerState {
             int[] indices = ServerParser.getInstance().parseIntArray(json.getAsJsonArray("value"));
 
             if(Controller.getInstance().initDiscard(clientHandler.getPerson(), indices)) {
+                Consumer<GameStateSerializer> lambda;
                 synchronized (completed) {
                     completed.add(clientHandler);
                     if(completed.size() == Game.getInstance().getNumberOfPlayers()) {
                         for(ClientHandler completedClientHandler: completed) {
                             completedClientHandler.setState(new InitResources());
                         }
+                        Controller.getInstance().addInitialFaithPoints();
+                        lambda = (serializer) -> {
+                            serializer.addHandLeaderCards(clientHandler.getPerson());
+                            for(Player player: Game.getInstance().getPlayers()) {
+                                serializer.addFaithTrack((Person) player);
+                            }
+                        };
+                    } else {
+                        lambda = (serializer) -> {
+                            serializer.addHandLeaderCards(clientHandler.getPerson());
+                        };
                     }
                 }
 
-                // TODO: broadcast updated gameState
+                clientHandler.updateState(lambda);
             } else {
                 clientHandler.error("Invalid choice");
             }

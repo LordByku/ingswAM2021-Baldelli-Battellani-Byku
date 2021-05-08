@@ -85,4 +85,8 @@ public class Person extends Player {
     public boolean isHost() {
         return isHost;
     }
+
+    public boolean isActivePlayer() {
+        return isActivePlayer;
+    }
 }

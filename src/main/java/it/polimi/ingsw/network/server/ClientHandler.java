@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.function.Consumer;
 
 public class ClientHandler implements Runnable {
     private final Scanner in;
@@ -97,6 +98,10 @@ public class ClientHandler implements Runnable {
 
     public void startGame() {
         server.startGame();
+    }
+
+    public void updateState(Consumer<GameStateSerializer> lambda) {
+        server.updateState(lambda);
     }
 }
 
