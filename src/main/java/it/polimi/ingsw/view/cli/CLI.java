@@ -1,8 +1,6 @@
 package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.model.leaderCards.LeaderCard;
-import it.polimi.ingsw.model.resources.ConcreteResource;
-import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.parsing.LeaderCardsParser;
 
 import java.util.ArrayList;
@@ -48,6 +46,11 @@ public class CLI {
 
     public void host() {
         System.out.println("Press ENTER to start the game:");
+    }
+
+
+    public void waitStart() {
+        System.out.println("Waiting for host to start the game...");
     }
 
     public void unexpected() {
@@ -105,5 +108,23 @@ public class CLI {
                 System.out.println("Insert the resources you want to put in the depot [" + currentDepotIndex + "] or press ENTER to continue to the next depot (you have " + selectionsLeft + " resources left to assign):");
                 break;
         }
+    }
+
+    public void waitTurn() {
+        System.out.println("Waiting for other players to complete their turn...");
+    }
+
+    public void otherPlayersTurn() {
+        System.out.println("Not your turn");
+    }
+
+    public void startTurn() {
+        System.out.println("[1] Collect resources from market");
+        System.out.println("[2] Purchase development card");
+        System.out.println("[3] Activate production effects");
+        System.out.println("[4] Play leader card");
+        System.out.println("[5] Discard leader card");
+        System.out.println("[0] View board state");
+        System.out.println("Insert your choice:");
     }
 }

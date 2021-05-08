@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.game;
 
 import it.polimi.ingsw.model.gameZone.GameZone;
 import it.polimi.ingsw.model.playerBoard.Board;
-import it.polimi.ingsw.model.playerBoard.LeaderCardArea;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -121,7 +120,7 @@ public class Game {
 
     public void endGame() {
         gameEnded = true;
-        // TODO
+        // TODO: compute points
     }
 
     public void removePlayer(String nickname) throws GameAlreadyStartedException {

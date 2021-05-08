@@ -54,7 +54,7 @@ public class CardMarket {
         return decks[levelRow][colourColumn].top();
     }
 
-    public DevCard removeTop(int levelRow, int colourColumn){
+    public DevCard removeTop(int levelRow, int colourColumn) throws EmptyDeckException {
         if(levelRow < 0 || levelRow >= CardLevel.values().length ||
            colourColumn < 0 || colourColumn >= CardColour.values().length) {
             throw new InvalidCardMarketIndexException();
@@ -72,5 +72,16 @@ public class CardMarket {
             throw new InvalidCardMarketIndexException();
         }
         return decks[levelRow][colourColumn].size();
+    }
+
+    public void discardColourCard(CardColour colour) {
+        List<CardColour> cardColourList = Arrays.asList(CardColour.values());
+        int j = cardColourList.indexOf(colour);
+        for(int i = 0; i < CardLevel.values().length; ++i) {
+            if(!decks[i][j].isEmpty()) {
+                removeTop(i, j);
+                return;
+            }
+        }
     }
 }

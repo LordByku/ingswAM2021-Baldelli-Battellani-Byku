@@ -61,6 +61,8 @@ public class Lobby extends ClientState {
                         CLI.getInstance().playerList(nicknames, hostNickname);
                         if (client.getNickname().equals(hostNickname)) {
                             CLI.getInstance().host();
+                        } else {
+                            CLI.getInstance().waitStart();
                         }
 
                         break;

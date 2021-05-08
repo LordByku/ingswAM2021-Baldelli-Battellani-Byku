@@ -22,4 +22,8 @@ public class Player implements LocalModelElement {
             board.updateModel(playerJson.getAsJsonObject("board"));
         }
     }
+
+    public boolean hasInkwell() {
+        return inkwell;
+    }
 }

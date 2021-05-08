@@ -68,14 +68,20 @@ public class CardMarketDeck {
      * Removes the card at the top of the Deck.
      * @return The devCard removed.
      */
-    public DevCard removeTop(){
+    public DevCard removeTop() throws EmptyDeckException {
+        if(isEmpty()) {
+            throw new EmptyDeckException();
+        }
         return devCardStack.pop();
     }
 
     /**
      * @return The devCard at the top of the deck
      */
-    public DevCard top(){
+    public DevCard top() throws EmptyDeckException {
+        if(isEmpty()) {
+            throw new EmptyDeckException();
+        }
         return devCardStack.peek();
     }
 

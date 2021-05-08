@@ -19,6 +19,10 @@ public class Board implements LocalModelElement {
         return handLeaderCards;
     }
 
+    public ArrayList<ConcreteResourceSet> getWarehouse() {
+        return warehouse;
+    }
+
     @Override
     public void updateModel(JsonObject boardJson) {
         if(boardJson.has("faithTrack")) {

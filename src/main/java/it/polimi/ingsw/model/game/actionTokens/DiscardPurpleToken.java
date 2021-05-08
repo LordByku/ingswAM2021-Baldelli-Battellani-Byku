@@ -1,5 +1,9 @@
 package it.polimi.ingsw.model.game.actionTokens;
 
+import it.polimi.ingsw.model.devCards.CardColour;
+import it.polimi.ingsw.model.game.Game;
+import it.polimi.ingsw.model.gameZone.CardMarket;
+
 /**
  * DiscardPurpleToken is the action token that discards two
  * purple development cards from the CardMarket
@@ -13,7 +17,9 @@ public class DiscardPurpleToken extends ActionToken {
      */
     @Override
     public ActionTokenDeck flip(ActionTokenDeck deck) {
-        // TODO: discard two purple dev cards
+        CardMarket cardMarket = Game.getInstance().getGameZone().getCardMarket();
+        cardMarket.discardColourCard(CardColour.PURPLE);
+        cardMarket.discardColourCard(CardColour.PURPLE);
         deck.removeTopToken();
         return deck;
     }

@@ -1,18 +1,13 @@
 package it.polimi.ingsw.network.server;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.game.*;
 import it.polimi.ingsw.network.server.serverStates.AcceptNickname;
 import it.polimi.ingsw.network.server.serverStates.ServerState;
-import it.polimi.ingsw.parsing.Parser;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class ClientHandler implements Runnable {
@@ -57,17 +52,19 @@ public class ClientHandler implements Runnable {
         server.broadcast(type, message);
     }
 
-    public synchronized void connectionClosed() {
+    public synchronized void disconnection() {
         System.out.println("Connection with client has been interrupted");
         try {
+            // person may be null if an exception is thrown trying to add the person to the game
             if(person != null) {
                 Game.getInstance().removePlayer(person.getNickname());
             }
+            server.removeClientHandler(this);
+            broadcast("playerList", ServerParser.getInstance().getJsonPlayerList());
         } catch (GameAlreadyStartedException e) {
+            // TODO: handle disconnection
             e.printStackTrace();
         }
-        server.removeClientHandler(this);
-        broadcast("playerList", ServerParser.getInstance().getJsonPlayerList());
     }
 
     public Person getPerson(){

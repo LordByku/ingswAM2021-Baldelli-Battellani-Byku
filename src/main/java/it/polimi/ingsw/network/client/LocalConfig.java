@@ -23,7 +23,7 @@ public class LocalConfig {
     }
 
     public void setTurnOrder(ArrayList<String> turnOrder) {
-        this.turnOrder = turnOrder;
+        this.turnOrder = (ArrayList<String>) turnOrder.clone();
     }
 
     public int getInitialResources(String nickname) {
@@ -40,5 +40,9 @@ public class LocalConfig {
 
     public int getNumberOfDepots() {
         return config.getAsJsonObject("board").getAsJsonArray("depotSizes").size();
+    }
+
+    public ArrayList<String> getTurnOrder() {
+        return (ArrayList<String>) turnOrder.clone();
     }
 }

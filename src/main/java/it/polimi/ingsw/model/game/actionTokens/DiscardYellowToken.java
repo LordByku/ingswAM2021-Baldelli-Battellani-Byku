@@ -1,5 +1,9 @@
 package it.polimi.ingsw.model.game.actionTokens;
 
+import it.polimi.ingsw.model.devCards.CardColour;
+import it.polimi.ingsw.model.game.Game;
+import it.polimi.ingsw.model.gameZone.CardMarket;
+
 /**
  * YellowGreenToken is the action token that discards two
  * yellow development cards from the CardMarket
@@ -13,7 +17,9 @@ public class DiscardYellowToken extends ActionToken {
      */
     @Override
     public ActionTokenDeck flip(ActionTokenDeck deck) {
-        // TODO: discard two yellow dev cards
+        CardMarket cardMarket = Game.getInstance().getGameZone().getCardMarket();
+        cardMarket.discardColourCard(CardColour.YELLOW);
+        cardMarket.discardColourCard(CardColour.YELLOW);
         deck.removeTopToken();
         return deck;
     }

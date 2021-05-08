@@ -37,13 +37,19 @@ public class InitDiscard extends ClientState {
                 String type = ClientParser.getInstance().getType(json);
 
                 switch (type) {
-                    case "confirm": {
-                        client.setState(new InitResources(LocalConfig.getInstance().getInitialResources(client.getNickname())));
-                        break;
-                    }
                     case "update": {
                         JsonObject message = ClientParser.getInstance().getMessage(json).getAsJsonObject();
                         client.getModel().updateModel(message);
+
+                        boolean advanceState = true;
+                        for(String nickname: LocalConfig.getInstance().getTurnOrder()) {
+                            if(client.getModel().getPlayer(nickname).getBoard().getHandLeaderCards().size() != 2) {
+                                advanceState = false;
+                            }
+                        }
+                        if(advanceState) {
+                            client.setState(new InitResources(LocalConfig.getInstance().getInitialResources(client.getNickname())));
+                        }
                         break;
                     }
                     default: {

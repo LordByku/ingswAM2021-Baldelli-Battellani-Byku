@@ -20,7 +20,7 @@ public class ServerClientCommunication implements Runnable {
                 clientHandler.handleClientMessage(line);
             }
         } catch (NoSuchElementException e) {
-            clientHandler.connectionClosed();
+            clientHandler.disconnection();
         }
     }
 }
