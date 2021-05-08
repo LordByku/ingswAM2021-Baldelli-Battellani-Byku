@@ -12,10 +12,48 @@ import it.polimi.ingsw.model.playerBoard.faithTrack.PopeFavor;
 public class GameStateSerializer {
     private final Gson gson;
     private final String nickname;
+    private final JsonObject message;
 
     public GameStateSerializer(String nickname) {
         this.gson = new Gson();
+        message=new JsonObject();
         this.nickname = nickname;
+    }
+
+    public JsonObject getMessage(){
+        return new Gson().fromJson(gson.toJson(message, JsonObject.class), JsonObject.class);
+    }
+
+    public void addMarbleMarket(){
+        message.add("marbleMarket",marbleMarket());
+    }
+    public void addCardMarket(){
+        message.add("cardMarket",cardMarket());
+    }
+    public void addGameZone(){
+        message.add("gameZone", gameZone());
+    }
+    public void addFaithTrack(Player player){
+        message.add("faithTrack",faithTrack(player));
+    }
+
+    public void addWarehouse(Player player){
+        message.add("warehouse",warehouse(player));
+    }
+    public void addDevCards(Player player){
+        message.add("devCards",devCards(player));
+    }
+    public void addPlayedLeaderCards(Player player){
+        message.add("playedLeaderCards",playedLeaderCards(player));
+    }
+    public void addHandLeaderCards(Player player){
+        message.add("handLeaderCards",handLeaderCards(player));
+    }
+    public void addBoard(Player player){
+        message.add("board",board(player));
+    }
+    public void addPlayers(){
+        message.add("players",players());
     }
 
     public JsonObject marbleMarket(){
@@ -83,11 +121,11 @@ public class GameStateSerializer {
         return gameZone;
     }
 
-    public JsonObject faithTrack(int playerIndex){
+    public JsonObject faithTrack(Player player){
         JsonObject faithTrack = new JsonObject();
-        int position = Integer.parseInt(gson.toJson(((Person) Game.getInstance().getPlayers().get(playerIndex)).getBoard().getFaithTrack().getMarkerPosition()));
+        int position = Integer.parseInt(gson.toJson(((Person) player).getBoard().getFaithTrack().getMarkerPosition()));
         JsonArray favors = new JsonArray();
-        for(PopeFavor favor: ((Person) Game.getInstance().getPlayers().get(playerIndex)).getBoard().getFaithTrack().getReceivedPopeFavors()){
+        for(PopeFavor favor: ((Person) player).getBoard().getFaithTrack().getReceivedPopeFavors()){
             favors.add(favor.getId());
         }
         faithTrack.addProperty("position", position);
@@ -96,26 +134,26 @@ public class GameStateSerializer {
         return  faithTrack;
     }
 
-    public JsonArray warehouse(int playerIndex){
+    public JsonArray warehouse(Player player){
         JsonArray warehouse = new JsonArray();
-        int size = ((Person) (Game.getInstance().getPlayers().get(playerIndex))).getBoard().getWarehouse().numberOfDepots();
+        int size = ((Person) player).getBoard().getWarehouse().numberOfDepots();
         for(int i =0; i < size; i++){
-            String jsonString = gson.toJson(((Person) (Game.getInstance().getPlayers().get(playerIndex))).getBoard().getWarehouse().getDepotResources(i));
+            String jsonString = gson.toJson(((Person) player).getBoard().getWarehouse().getDepotResources(i));
             warehouse.add(ServerParser.getInstance().parseLine(jsonString));
         }
 
         return warehouse;
     }
 
-    public JsonArray devCards(int playerIndex){
+    public JsonArray devCards(Player player){
         JsonArray devCards = new JsonArray();
         JsonArray devCardDeck1 = new JsonArray();
         JsonArray devCardDeck2 = new JsonArray();
         JsonArray devCardDeck3 = new JsonArray();
 
-        DevCardDeck deck1 = ((Person) (Game.getInstance().getPlayers().get(playerIndex))).getBoard().getDevelopmentCardArea().getDecks().get(0);
-        DevCardDeck deck2 = ((Person) (Game.getInstance().getPlayers().get(playerIndex))).getBoard().getDevelopmentCardArea().getDecks().get(1);
-        DevCardDeck deck3 = ((Person) (Game.getInstance().getPlayers().get(playerIndex))).getBoard().getDevelopmentCardArea().getDecks().get(2);
+        DevCardDeck deck1 = ((Person) player).getBoard().getDevelopmentCardArea().getDecks().get(0);
+        DevCardDeck deck2 = ((Person) player).getBoard().getDevelopmentCardArea().getDecks().get(1);
+        DevCardDeck deck3 = ((Person) player).getBoard().getDevelopmentCardArea().getDecks().get(2);
 
         for (DevCard card: deck1.getCards()){
             devCardDeck1.add(card.getId());
@@ -134,19 +172,19 @@ public class GameStateSerializer {
         return devCards;
     }
 
-    public JsonArray playedLeaderCards(int playerIndex){
+    public JsonArray playedLeaderCards(Player player){
         JsonArray playedLeaderCards = new JsonArray();
-        for(LeaderCard card: ((Person) (Game.getInstance().getPlayers().get(playerIndex))).getBoard().getLeaderCardArea().getLeaderCards()){
+        for(LeaderCard card: ((Person) player).getBoard().getLeaderCardArea().getLeaderCards()){
             if(card.isActive())
                 playedLeaderCards.add(card.getId());
         }
         return playedLeaderCards;
     }
 
-    public JsonArray handLeaderCards(int playerIndex){
+    public JsonArray handLeaderCards(Player player){
         JsonArray handLeaderCards = new JsonArray();
-        String nick = ((Person) (Game.getInstance().getPlayers().get(playerIndex))).getNickname();
-        for(LeaderCard card: ((Person) (Game.getInstance().getPlayers().get(playerIndex))).getBoard().getLeaderCardArea().getLeaderCards()){
+        String nick = ((Person) player).getNickname();
+        for(LeaderCard card: ((Person) player).getBoard().getLeaderCardArea().getLeaderCards()){
             if(nickname.equals(nick)) {
                 if (!card.isActive()) {
                     handLeaderCards.add(card.getId());
@@ -158,15 +196,15 @@ public class GameStateSerializer {
         return handLeaderCards;
     }
 
-    public JsonObject board(int playerIndex){
+    public JsonObject board(Player player){
         JsonObject board = new JsonObject();
-        board.add("faithTrack", faithTrack(playerIndex));
-        board.add("warehouse", warehouse(playerIndex));
-        String strongboxJson = gson.toJson(((Person) (Game.getInstance().getPlayers().get(playerIndex))).getBoard().getStrongBox().getResources());
+        board.add("faithTrack", faithTrack(player));
+        board.add("warehouse", warehouse(player));
+        String strongboxJson = gson.toJson(((Person) player).getBoard().getStrongBox().getResources());
         board.add("strongbox", ServerParser.getInstance().parseLine(strongboxJson));
-        board.add("devCards", devCards(playerIndex));
-        board.add("playedLeaderCards", playedLeaderCards(playerIndex));
-        board.add("handLeaderCards", handLeaderCards(playerIndex));
+        board.add("devCards", devCards(player));
+        board.add("playedLeaderCards", playedLeaderCards(player));
+        board.add("handLeaderCards", handLeaderCards(player));
         return board;
     }
 
@@ -174,12 +212,11 @@ public class GameStateSerializer {
         int i=0;
         JsonArray players = new JsonArray();
         for(Player player: Game.getInstance().getPlayers()){
-            Person person = (Person) player;
             JsonObject object = new JsonObject();
             object.addProperty("nickname", ((Person) player).getNickname());
             boolean inkwell = (i==0);
             object.addProperty("inkwell", inkwell);
-            object.add("board", board(i));
+            object.add("board", board(player));
             i++;
 
             players.add(object);
