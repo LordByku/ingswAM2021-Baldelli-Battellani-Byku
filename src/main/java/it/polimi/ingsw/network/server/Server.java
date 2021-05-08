@@ -1,7 +1,6 @@
 package it.polimi.ingsw.network.server;
 
 import com.google.gson.JsonObject;
-import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.network.server.serverStates.InitDiscard;
 
 import java.io.IOException;

@@ -1,5 +1,9 @@
 package it.polimi.ingsw.model.game.actionTokens;
 
+import it.polimi.ingsw.model.devCards.CardColour;
+import it.polimi.ingsw.model.game.Game;
+import it.polimi.ingsw.model.gameZone.CardMarket;
+
 /**
  * DiscardBlueToken is the action token that discards two
  * blue development cards from the CardMarket
@@ -13,7 +17,9 @@ public class DiscardBlueToken extends ActionToken {
      */
     @Override
     public ActionTokenDeck flip(ActionTokenDeck deck) {
-        // TODO: discard two blue dev cards
+        CardMarket cardMarket = Game.getInstance().getGameZone().getCardMarket();
+        cardMarket.discardColourCard(CardColour.BLUE);
+        cardMarket.discardColourCard(CardColour.BLUE);
         deck.removeTopToken();
         return deck;
     }
