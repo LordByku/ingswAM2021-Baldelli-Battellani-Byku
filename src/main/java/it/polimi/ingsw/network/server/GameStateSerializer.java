@@ -297,7 +297,7 @@ public class GameStateSerializer {
         JsonArray players = new JsonArray();
         for(Player player: Game.getInstance().getPlayers()){
             JsonObject object = new JsonObject();
-            object.addProperty("nickname", person.getNickname());
+            object.addProperty("nickname", ((Person) player).getNickname());
             boolean inkwell = (i==0);
             object.addProperty("inkwell", inkwell);
             object.add("board", board((Person)player));
