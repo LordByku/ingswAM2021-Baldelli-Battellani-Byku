@@ -24,7 +24,7 @@ import java.util.HashSet;
 public class Controller {
     private static Controller instance;
 
-    private ArrayList<Person> onceActionPlayer=null;
+    private ArrayList<Person> onceActionPlayer=new ArrayList<>();
 
     private Controller() {}
 
@@ -213,7 +213,7 @@ public class Controller {
         }
 
         onceActionPlayer.remove(person);
-        
+
         return true;
     }
 
