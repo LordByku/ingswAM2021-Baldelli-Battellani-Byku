@@ -24,6 +24,8 @@ import java.util.HashSet;
 public class Controller {
     private static Controller instance;
 
+    private ArrayList<Person> onceActionPlayer=null;
+
     private Controller() {}
 
     public static Controller getInstance() {
@@ -142,29 +144,43 @@ public class Controller {
         return concreteResourceSet;
     }
 
-    public void discardLeaderCard(Person person, int leaderCardIndex) {
+    public boolean discardLeaderCard(Person person, int leaderCardIndex) {
+
+        if(person.getBoard().getLeaderCardArea().getLeaderCards().size()==2 && (leaderCardIndex<0 || leaderCardIndex >1) || person.getBoard().getLeaderCardArea().getLeaderCards().size()==1 && (leaderCardIndex!=0) )
+            return false;
         person.getBoard().getLeaderCardArea().getLeaderCards().get(leaderCardIndex).discard();
+        return true;
+
     }
 
     public boolean initDiscard(Person person, int [] discardedLeaderCardsIndexes) {
+
+        if(person.getBoard().getLeaderCardArea().getLeaderCards().size()<=2)
+            //Already discarded
+            return false;
+
         if (discardedLeaderCardsIndexes.length != 2)
             return false;
         if(discardedLeaderCardsIndexes[0] < 0 || discardedLeaderCardsIndexes[0] > 3 || discardedLeaderCardsIndexes[1] < 0 || discardedLeaderCardsIndexes[1] > 3)
             return false;
         if (discardedLeaderCardsIndexes[0] == discardedLeaderCardsIndexes[1])
             return false;
-
         LeaderCard firstDiscardedLeaderCard = person.getBoard().getLeaderCardArea().getLeaderCards().get(discardedLeaderCardsIndexes[0]);
         LeaderCard secondDiscardedLeaderCard = person.getBoard().getLeaderCardArea().getLeaderCards().get(discardedLeaderCardsIndexes[1]);
 
         firstDiscardedLeaderCard.initDiscard();
         secondDiscardedLeaderCard.initDiscard();
 
+        onceActionPlayer.add(person);
+
         return true;
     }
 
     public boolean initResources(Person person, ConcreteResourceSet[] resources) {
         Warehouse warehouse = person.getBoard().getWarehouse();
+
+        if(!onceActionPlayer.contains(person))
+            return false;
 
         if(resources.length != warehouse.numberOfDepots()) {
             return false;
@@ -196,6 +212,8 @@ public class Controller {
             warehouse.addResources(i, resources[i]);
         }
 
+        onceActionPlayer.remove(person);
+        
         return true;
     }
 
@@ -208,4 +226,5 @@ public class Controller {
 
         VRSObserver.getInstance().updateVRS();
     }
+
 }
