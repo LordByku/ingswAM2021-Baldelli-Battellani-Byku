@@ -3,6 +3,8 @@ package it.polimi.ingsw.network.client.clientStates;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.view.cli.CLI;
 
+import java.util.function.Supplier;
+
 public class StartTurn extends ClientState {
     public StartTurn() {
         CLI.getInstance().startTurn();
@@ -32,15 +34,15 @@ public class StartTurn extends ClientState {
                     break;
                 }
                 case 4: {
-                    client.setState(new PrePlayLeaderCard());
+                    client.setState(new PlayLeaderCard(StartTurn::new));
                     break;
                 }
                 case 5: {
-                    client.setState(new PreDiscardLeaderCard());
+                    client.setState(new DiscardLeaderCard(StartTurn::new));
                     break;
                 }
                 case 0: {
-                    client.setState(new ViewState());
+                    client.setState(new ViewState(StartTurn::new));
                     break;
                 }
                 default: {

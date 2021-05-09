@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.game.Player;
 import it.polimi.ingsw.model.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.playerBoard.Board;
 import it.polimi.ingsw.model.playerBoard.faithTrack.VRSObserver;
-import it.polimi.ingsw.model.playerBoard.resourceLocations.Depot;
 import it.polimi.ingsw.model.playerBoard.resourceLocations.Warehouse;
 import it.polimi.ingsw.model.resources.ChoiceResource;
 import it.polimi.ingsw.model.resources.ChoiceSet;
@@ -19,16 +18,18 @@ import it.polimi.ingsw.model.resources.resourceSets.ObtainableResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.SpendableResourceSet;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class Controller {
     private static Controller instance;
 
-    private ArrayList<Person> onceActionPlayer=new ArrayList<>();
+    private ArrayList<Person> onceActionPlayer = new ArrayList<>();
+    private HashMap<Person,Integer> initialResources;
 
     private Controller() {}
 
-    public static Controller getInstance() {
+    public synchronized static Controller getInstance() {
         if(instance == null) {
             instance = new Controller();
         }
@@ -204,7 +205,7 @@ public class Controller {
             totalSize += resources[i].size();
         }
 
-        if(totalSize != Game.getInstance().getInitialResources(person)) {
+        if(totalSize != initialResources.get(person)) {
             return false;
         }
 
@@ -217,11 +218,26 @@ public class Controller {
         return true;
     }
 
-    public void addInitialFaithPoints() {
+    public void handleInitialResources() {
         ArrayList<Player> players = Game.getInstance().getPlayers();
+        initialResources = new HashMap<>();
 
-        for(int i = 2; i < players.size(); ++i) {
-            ((Person) players.get(i)).getBoard().getFaithTrack().addFaithPoints(1);
+        for(int i = 0; i < players.size(); ++i) {
+            Person person = (Person) players.get(i);
+            switch (i) {
+                case 1:
+                    initialResources.put(person, 1);
+                    break;
+                case 2:
+                    initialResources.put(person, 1);
+                    person.getBoard().getFaithTrack().addFaithPoints(1);
+                    break;
+                case 3:
+                    initialResources.put(person, 2);
+                    person.getBoard().getFaithTrack().addFaithPoints(1);
+                    break;
+                default:
+            }
         }
 
         VRSObserver.getInstance().updateVRS();

@@ -41,8 +41,4 @@ public abstract class Marble {
     public MarbleColour getColour() {
         return colour;
     }
-
-    public String getCLIString() {
-        return getColour().getTextColour().escape() + "\u25c9" + TextColour.RESET;
-    }
 }

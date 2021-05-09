@@ -33,4 +33,8 @@ public class LocalModel implements LocalModelElement {
             }
         }
     }
+
+    public GameZone getGameZone() {
+        return gameZone;
+    }
 }

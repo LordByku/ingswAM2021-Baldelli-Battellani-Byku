@@ -73,7 +73,7 @@ public class Server {
         }
     }
 
-    public void updateState(Consumer<GameStateSerializer> lambda) {
+    public void updateGameState(Consumer<GameStateSerializer> lambda) {
         synchronized (clientHandlers) {
             for(ClientHandler clientHandler: clientHandlers) {
                 GameStateSerializer serializer = new GameStateSerializer(clientHandler.getPerson().getNickname());

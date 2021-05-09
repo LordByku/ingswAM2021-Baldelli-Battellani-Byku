@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.gameTest;
 
+import it.polimi.ingsw.model.game.Game;
 import it.polimi.ingsw.model.game.actionTokens.ActionTokenDeck;
 import it.polimi.ingsw.model.playerBoard.Board;
 import org.junit.Test;
@@ -34,6 +35,8 @@ public class ActionTokenDeckTest {
                 break;
             }
         }
+
+        Game.reset();
     }
 
     @Test

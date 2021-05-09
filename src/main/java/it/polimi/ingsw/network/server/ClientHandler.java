@@ -100,8 +100,8 @@ public class ClientHandler implements Runnable {
         server.startGame();
     }
 
-    public void updateState(Consumer<GameStateSerializer> lambda) {
-        server.updateState(lambda);
+    public void updateGameState(Consumer<GameStateSerializer> lambda) {
+        server.updateGameState(lambda);
     }
 }
 

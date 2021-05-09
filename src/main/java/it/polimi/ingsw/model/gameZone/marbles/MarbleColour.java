@@ -22,4 +22,8 @@ public enum MarbleColour {
     public TextColour getTextColour() {
         return colour;
     }
+
+    public String getCLIString() {
+        return colour.escape() + "\u25c9" + TextColour.RESET;
+    }
 }

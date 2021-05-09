@@ -74,41 +74,37 @@ public class LeaderCardsParser {
 
         String effectType = jsonEffect.get("effectType").getAsString();
 
-        LeaderCard leaderCard;
-
         switch (effectType) {
             case "discount": {
                 ConcreteResource resource = gson.fromJson(jsonEffect.get("resource").getAsString(), ConcreteResource.class);
                 int discount = jsonEffect.get("discount").getAsInt();
 
-                leaderCard = new DiscountLeaderCard(points, requirements, resource, discount, index);
-                break;
+                return map[index] = new DiscountLeaderCard(points, requirements, resource, discount, index);
             }
             case "depot": {
                 ConcreteResource resource = gson.fromJson(jsonEffect.get("resource").getAsString(), ConcreteResource.class);
                 int slots = jsonEffect.get("slots").getAsInt();
 
-                leaderCard = new DepotLeaderCard(points, requirements, resource, slots, index);
-                break;
+                return map[index] = new DepotLeaderCard(points, requirements, resource, slots, index);
             }
             case "conversion": {
                 ConcreteResource resource = gson.fromJson(jsonEffect.get("resource").getAsString(), ConcreteResource.class);
 
-                leaderCard = new WhiteConversionLeaderCard(points, requirements, resource, index);
-                break;
+                return map[index] = new WhiteConversionLeaderCard(points, requirements, resource, index);
             }
             default: {
                 ProductionDetails productionDetails = parser.parseProductionDetails(jsonEffect.getAsJsonObject("productionDetails"));
 
-                leaderCard = new ProductionLeaderCard(points, requirements, productionDetails, index);
-                break;
+                return map[index] = new ProductionLeaderCard(points, requirements, productionDetails, index);
             }
         }
-
-        return map[index] = leaderCard;
     }
 
     public LeaderCard nextCard() throws NoConfigFileException {
-        return getCard(currentCard++);
+        LeaderCard leaderCard = getCard(currentCard++);
+        if(leaderCard == null) {
+            currentCard = 0;
+        }
+        return leaderCard;
     }
 }

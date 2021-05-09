@@ -141,6 +141,9 @@ public class MarbleMarket {
      * @throws InvalidMarbleMarketIndexException row is outside the range of marbles
      */
     public void pushRow(int row) throws InvalidMarbleMarketIndexException {
+        if(row < 0 || row >= rows) {
+            throw new InvalidMarbleMarketIndexException();
+        }
         Marble newFreeMarble = marbles[row][0];
         for(int j = 1; j < columns; ++j) {
             marbles[row][j - 1] = marbles[row][j];
@@ -155,11 +158,22 @@ public class MarbleMarket {
      * @throws InvalidMarbleMarketIndexException column is outside the range of marbles
      */
     public void pushColumn(int column) throws InvalidMarbleMarketIndexException {
+        if(column < 0 || column >= columns) {
+            throw new InvalidMarbleMarketIndexException();
+        }
         Marble newFreeMarble = marbles[0][column];
         for(int i = 1; i < rows; ++i) {
             marbles[i - 1][column] = marbles[i][column];
         }
         marbles[rows - 1][column] = freeMarble;
         freeMarble = newFreeMarble;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public int getColumns() {
+        return columns;
     }
 }

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.model.leaderCards.LeaderCard;
+import it.polimi.ingsw.network.client.localModel.MarbleMarket;
 import it.polimi.ingsw.parsing.LeaderCardsParser;
 
 import java.util.ArrayList;
@@ -97,9 +98,14 @@ public class CLI {
         System.out.println("Insert the indices of the two Leader Cards you want to discard:");
     }
 
+    public void waitInitDiscard() {
+        System.out.println("Waiting for other players to discard their Leader Cards...");
+    }
+
     public void initResources(int selectionsLeft, int currentDepotIndex) {
         switch(selectionsLeft) {
             case 0:
+                waitInitResources();
                 break;
             case 1:
                 System.out.println("Insert the resources you want to put in the depot [" + currentDepotIndex + "] or press ENTER to continue to the next depot (you have one resource left to assign):");
@@ -108,6 +114,10 @@ public class CLI {
                 System.out.println("Insert the resources you want to put in the depot [" + currentDepotIndex + "] or press ENTER to continue to the next depot (you have " + selectionsLeft + " resources left to assign):");
                 break;
         }
+    }
+
+    public void waitInitResources() {
+        System.out.println("Waiting for other players to select their resources...");
     }
 
     public void waitTurn() {
@@ -124,7 +134,18 @@ public class CLI {
         System.out.println("[3] Activate production effects");
         System.out.println("[4] Play leader card");
         System.out.println("[5] Discard leader card");
-        System.out.println("[0] View board state");
+        System.out.println("[0] Check board state");
         System.out.println("Insert your choice:");
+    }
+
+    public void viewState() {
+        System.out.println("[1] Check Marble Market");
+        System.out.println("[2] Check Card Market");
+        System.out.println("[3] Check player's board");
+        System.out.println("[x] Back");
+    }
+
+    public void marbleMarket(MarbleMarket marbleMarket) {
+        System.out.println(marbleMarket.getCLIString());
     }
 }

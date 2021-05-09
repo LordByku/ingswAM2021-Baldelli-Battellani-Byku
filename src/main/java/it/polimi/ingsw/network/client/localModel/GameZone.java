@@ -15,4 +15,8 @@ public class GameZone implements LocalModelElement {
             cardMarket = gson.fromJson(gameZoneJson.getAsJsonObject("cardMarket"), CardMarket.class);
         }
     }
+
+    public MarbleMarket getMarbleMarket() {
+        return marbleMarket;
+    }
 }

@@ -32,6 +32,11 @@ public class Game {
         return instance;
     }
 
+    // for tests only
+    public static void reset() {
+        instance = new Game();
+    }
+
     public Player addPlayer(String nickname)
             throws FullLobbyException, ExistingNicknameException, InvalidNicknameException, GameAlreadyStartedException {
         if(gameStarted) {
@@ -61,22 +66,24 @@ public class Game {
             throw new GameAlreadyStartedException();
         }
 
-        if(players.size() < 2) {
-            throw new NotEnoughPlayersException();
+        synchronized (players) {
+            if(players.size() < 2) {
+                throw new NotEnoughPlayersException();
+            }
+
+            Collections.shuffle(players);
+
+            for(Player player: players) {
+                Person person = (Person) player;
+
+                Board board = person.getBoard();
+                gameZone.getLeaderCardsDeck().assignCards(board);
+            }
+
+            gameStarted = true;
+            currentPlayer = 0;
+            players.get(currentPlayer).startTurn();
         }
-
-        Collections.shuffle(players);
-
-        for(Player player: players) {
-            Person person = (Person) player;
-
-            Board board = person.getBoard();
-            gameZone.getLeaderCardsDeck().assignCards(board);
-        }
-
-        gameStarted = true;
-        currentPlayer = 0;
-        players.get(currentPlayer).startTurn();
     }
 
     protected void setLastTurn() throws GameNotStartedException, GameEndedException {
@@ -96,11 +103,13 @@ public class Game {
         if(gameEnded) {
             throw new GameEndedException();
         }
-        currentPlayer = (currentPlayer + 1) % players.size();
-        if(isLastTurn && currentPlayer == 0) {
-            endGame();
-        } else {
-            players.get(currentPlayer).startTurn();
+        synchronized (players) {
+            currentPlayer = (currentPlayer + 1) % players.size();
+            if(isLastTurn && currentPlayer == 0) {
+                endGame();
+            } else {
+                players.get(currentPlayer).startTurn();
+            }
         }
     }
 
@@ -148,26 +157,6 @@ public class Game {
             }
             Person person = (Person) players.get(0);
             person.setHost();
-        }
-    }
-
-    public int getInitialResources(Person person) {
-        synchronized (players) {
-            for(int i = 0; i < players.size(); ++i) {
-                Person current = (Person) players.get(i);
-                if(current.equals(person)) {
-                    switch (i) {
-                        case 1:
-                        case 2:
-                            return 1;
-                        case 3:
-                            return 2;
-                        default:
-                            return 0;
-                    }
-                }
-            }
-            return 0;
         }
     }
 }

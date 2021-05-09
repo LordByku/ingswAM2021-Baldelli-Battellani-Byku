@@ -70,6 +70,15 @@ public class InitResources extends ClientState {
                             } else {
                                 client.setState(new WaitTurn());
                             }
+                        } else {
+                            ArrayList<ConcreteResourceSet> warehouse = client.getModel().getPlayer(client.getNickname()).getBoard().getWarehouse();
+                            ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
+                            for(ConcreteResourceSet depot: warehouse) {
+                                concreteResourceSet.union(depot);
+                            }
+                            if(concreteResourceSet.size() == LocalConfig.getInstance().getInitialResources(client.getNickname())) {
+                                CLI.getInstance().waitInitResources();
+                            }
                         }
 
                         break;

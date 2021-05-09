@@ -8,7 +8,6 @@ import it.polimi.ingsw.model.devCards.ProductionDetails;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 
 public class DevCardsParser {
     private static DevCardsParser instance;
@@ -16,6 +15,7 @@ public class DevCardsParser {
     private int currentCard;
     private final Gson gson;
     private final Parser parser;
+    private final DevCard[] map;
 
     private DevCardsParser() throws FileNotFoundException {
         gson = new Gson();
@@ -23,6 +23,7 @@ public class DevCardsParser {
 
         developmentCards = parser.getConfig().getAsJsonArray("developmentCards");
         currentCard = 0;
+        map = new DevCard[developmentCards.size()];
     }
 
     public static DevCardsParser getInstance() {
@@ -40,16 +41,20 @@ public class DevCardsParser {
         developmentCards = (JsonArray) config.get("developmentCards");
     }
 
-    public DevCard getNextCard() throws NoConfigFileException {
-       if(developmentCards == null) {
-           throw new NoConfigFileException();
-       }
+    public DevCard getCard(int index) throws NoConfigFileException {
+        if(developmentCards == null) {
+            throw new NoConfigFileException();
+        }
 
-        if(currentCard >= developmentCards.size()) {
+        if(index >= developmentCards.size()) {
             return null;
         }
 
-        JsonObject jsonDevCard = (JsonObject) developmentCards.get(currentCard);
+        if(map[index] != null) {
+            return map[index];
+        }
+
+        JsonObject jsonDevCard = (JsonObject) developmentCards.get(index);
 
         String levelString = jsonDevCard.get("level").getAsString();
         String colourString = jsonDevCard.get("colour").getAsString();
@@ -60,6 +65,14 @@ public class DevCardsParser {
         ConcreteResourceSet reqResources = parser.parseConcreteResourceSet(jsonDevCard.get("requirements").getAsJsonArray());
         ProductionDetails productionDetails = parser.parseProductionDetails(jsonDevCard.get("productionPower").getAsJsonObject());
 
-        return new DevCard(reqResources, colour, level, productionDetails, points, currentCard++);
+        return map[index] = new DevCard(reqResources, colour, level, productionDetails, points, index);
+    }
+
+    public DevCard getNextCard() throws NoConfigFileException {
+        DevCard devCard = getCard(currentCard++);
+        if(devCard == null) {
+            currentCard = 0;
+        }
+        return devCard;
     }
 }

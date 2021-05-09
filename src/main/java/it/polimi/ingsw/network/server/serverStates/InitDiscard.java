@@ -29,10 +29,10 @@ public class InitDiscard extends ServerState {
                 synchronized (completed) {
                     completed.add(clientHandler);
                     if(completed.size() == Game.getInstance().getNumberOfPlayers()) {
+                        Controller.getInstance().handleInitialResources();
                         for(ClientHandler completedClientHandler: completed) {
                             completedClientHandler.setState(new InitResources());
                         }
-                        Controller.getInstance().addInitialFaithPoints();
                         lambda = (serializer) -> {
                             serializer.addHandLeaderCards(clientHandler.getPerson());
                             for(Player player: Game.getInstance().getPlayers()) {
@@ -46,7 +46,7 @@ public class InitDiscard extends ServerState {
                     }
                 }
 
-                clientHandler.updateState(lambda);
+                clientHandler.updateGameState(lambda);
             } else {
                 clientHandler.error("Invalid choice");
             }

@@ -49,6 +49,10 @@ public class InitDiscard extends ClientState {
                         }
                         if(advanceState) {
                             client.setState(new InitResources(LocalConfig.getInstance().getInitialResources(client.getNickname())));
+                        } else {
+                            if(client.getModel().getPlayer(client.getNickname()).getBoard().getHandLeaderCards().size() == 2) {
+                                CLI.getInstance().waitInitDiscard();
+                            }
                         }
                         break;
                     }

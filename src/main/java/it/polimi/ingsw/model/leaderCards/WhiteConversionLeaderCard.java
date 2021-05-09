@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.leaderCards;
 
 import it.polimi.ingsw.model.devCards.InvalidIdException;
+import it.polimi.ingsw.model.gameZone.marbles.MarbleColour;
 import it.polimi.ingsw.model.gameZone.marbles.WhiteMarble;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.InvalidResourceException;
@@ -47,7 +48,6 @@ public class WhiteConversionLeaderCard extends LeaderCard{
 
     @Override
     public String getEffectString() {
-        WhiteMarble whiteMarble = new WhiteMarble();
-        return whiteMarble.getCLIString() + " = " + type.getCLIString();
+        return MarbleColour.WHITE.getCLIString() + " = " + type.getCLIString();
     }
 }

@@ -37,7 +37,7 @@ public class InitResources extends ServerState {
                     serializer.addWarehouse(clientHandler.getPerson());
                 };
 
-                clientHandler.updateState(lambda);
+                clientHandler.updateGameState(lambda);
             } else {
                 clientHandler.error("Invalid choice");
             }

@@ -6,18 +6,22 @@ import it.polimi.ingsw.model.game.Game;
 import it.polimi.ingsw.model.game.Person;
 import it.polimi.ingsw.model.game.Player;
 import com.google.gson.*;
+import it.polimi.ingsw.model.gameZone.MarbleMarket;
 import it.polimi.ingsw.model.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.playerBoard.faithTrack.PopeFavor;
+import it.polimi.ingsw.parsing.Parser;
 
 public class GameStateSerializer {
     private final Gson gson;
     private final String nickname;
     private final JsonObject message;
+    private final JsonParser parser;
 
     public GameStateSerializer(String nickname) {
         this.gson = new Gson();
         this.message = new JsonObject();
         this.nickname = nickname;
+        parser = new JsonParser();
     }
 
     public JsonObject getMessage(){
@@ -147,25 +151,21 @@ public class GameStateSerializer {
     public JsonObject marbleMarket(){
         JsonObject marbleMarket = new JsonObject();
         JsonArray table = new JsonArray();
-        JsonArray colorRows1 = new JsonArray();
-        JsonArray colorRows2 = new JsonArray();
-        JsonArray colorRows3 = new JsonArray();
-        for(int i=0; i<4; i++){
-            colorRows1.add(gson.toJson(Game.getInstance().getGameZone().getMarbleMarket().getMarketColour(0, i)));
+
+        MarbleMarket marbleMarketObject = Game.getInstance().getGameZone().getMarbleMarket();
+
+        for(int i = 0; i < marbleMarketObject.getRows(); ++i) {
+            JsonArray row = new JsonArray();
+            for(int j = 0; j < marbleMarketObject.getColumns(); ++j) {
+                JsonElement jsonMarbleColour = parser.parse(gson.toJson(marbleMarketObject.getMarketColour(i, j)));
+                row.add(jsonMarbleColour);
+            }
+            table.add(row);
         }
-        for(int i=0; i<4; i++){
-            colorRows2.add(gson.toJson(Game.getInstance().getGameZone().getMarbleMarket().getMarketColour(1, i)));
-        }
-        for(int i=0; i<4; i++){
-            colorRows3.add(gson.toJson(Game.getInstance().getGameZone().getMarbleMarket().getMarketColour(2, i)));
-        }
-        table.add(colorRows1);
-        table.add(colorRows2);
-        table.add(colorRows3);
 
         marbleMarket.add("market", table);
-        String freeMarble = gson.toJson(Game.getInstance().getGameZone().getMarbleMarket().getFreeMarbleColour());
-        marbleMarket.addProperty("freeMarble", freeMarble);
+        JsonElement jsonMarbleColour = parser.parse(gson.toJson(marbleMarketObject.getFreeMarbleColour()));
+        marbleMarket.add("freeMarble", jsonMarbleColour);
 
         return marbleMarket;
     }

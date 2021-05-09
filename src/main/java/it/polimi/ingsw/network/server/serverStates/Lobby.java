@@ -19,12 +19,13 @@ public class Lobby extends ServerState {
             if(clientHandler.getPerson().isHost()){
                 if (ServerParser.getInstance().getCommand(clientMessage).equals("startGame")) {
                     if (Game.getInstance().getNumberOfPlayers() >= 2) {
+                        Game.getInstance().startMultiPlayer();
+
                         JsonObject jsonMessage = new JsonObject();
                         JsonArray playerOrder = new JsonArray();
                         for (Player player : Game.getInstance().getPlayers()) {
                             playerOrder.add(((Person) player).getNickname());
                         }
-                        Game.getInstance().startMultiPlayer();
 
                         JsonObject config = Parser.getInstance().getConfig();
                         jsonMessage.add("config", config);
