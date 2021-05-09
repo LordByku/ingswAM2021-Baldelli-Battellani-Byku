@@ -1,6 +1,9 @@
 package it.polimi.ingsw.model.resources.resourceSets;
 
+import it.polimi.ingsw.model.resources.Resource;
 import it.polimi.ingsw.view.cli.Strings;
+
+import java.util.ArrayList;
 
 /**
  * ObtainableResourceSet is a TransactionResourceSet where the resource set
@@ -84,6 +87,27 @@ public class ObtainableResourceSet extends TransactionResourceSet {
         return cloneORS;
     }
 
+    public boolean match(ConcreteResourceSet concreteResourceSet) throws InvalidResourceSetException {
+        if(concreteResourceSet == null) {
+            throw new InvalidResourceSetException();
+        }
+
+        if(getResourceSet().size() != concreteResourceSet.size()) {
+            return false;
+        }
+
+        ArrayList<Resource> choiceResources = getResourceSet().getChoiceResources();
+        ConcreteResourceSet currentConcreteResourceSet = getResourceSet().getConcreteResources();
+
+        // ChoiceResources in SpendableResourceSet always have a FullChoiceSet
+        for(Resource resource: choiceResources) {
+            if(resource.isConcrete()) {
+                currentConcreteResourceSet.addResource(resource.getResource());
+            }
+        }
+
+        return concreteResourceSet.contains(currentConcreteResourceSet);
+    }
     public String getCLIString() {
         return super.getCLIString() + faithPoints + Strings.getFaithPointsSymbol() + " ";
     }
