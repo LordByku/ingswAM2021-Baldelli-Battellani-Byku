@@ -16,7 +16,7 @@ public class InitResources extends ServerState {
 
     @Override
     public void handleClientMessage(ClientHandler clientHandler, String line) {
-        JsonObject json = ServerParser.getInstance().parseLine(line);
+        JsonObject json = ServerParser.getInstance().parseLine(line).getAsJsonObject();
 
         String command = ServerParser.getInstance().getCommand(json);
 

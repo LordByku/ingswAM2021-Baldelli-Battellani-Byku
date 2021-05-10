@@ -9,19 +9,16 @@ import com.google.gson.*;
 import it.polimi.ingsw.model.gameZone.MarbleMarket;
 import it.polimi.ingsw.model.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.playerBoard.faithTrack.PopeFavor;
-import it.polimi.ingsw.parsing.Parser;
 
 public class GameStateSerializer {
     private final Gson gson;
     private final String nickname;
     private final JsonObject message;
-    private final JsonParser parser;
 
     public GameStateSerializer(String nickname) {
         this.gson = new Gson();
         this.message = new JsonObject();
         this.nickname = nickname;
-        parser = new JsonParser();
     }
 
     public JsonObject getMessage(){
@@ -157,14 +154,14 @@ public class GameStateSerializer {
         for(int i = 0; i < marbleMarketObject.getRows(); ++i) {
             JsonArray row = new JsonArray();
             for(int j = 0; j < marbleMarketObject.getColumns(); ++j) {
-                JsonElement jsonMarbleColour = parser.parse(gson.toJson(marbleMarketObject.getMarketColour(i, j)));
+                JsonElement jsonMarbleColour = ServerParser.getInstance().parseLine(gson.toJson(marbleMarketObject.getMarketColour(i, j)));
                 row.add(jsonMarbleColour);
             }
             table.add(row);
         }
 
         marbleMarket.add("market", table);
-        JsonElement jsonMarbleColour = parser.parse(gson.toJson(marbleMarketObject.getFreeMarbleColour()));
+        JsonElement jsonMarbleColour = ServerParser.getInstance().parseLine(gson.toJson(marbleMarketObject.getFreeMarbleColour()));
         marbleMarket.add("freeMarble", jsonMarbleColour);
 
         return marbleMarket;

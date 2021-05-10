@@ -21,5 +21,9 @@ public enum CardColour {
     public BackGroundColor getColour() {
         return colour;
     }
+
+    public String getCLIString() {
+        return colour.escape() + "     " + BackGroundColor.RESET;
+    }
 }
 

@@ -14,7 +14,7 @@ public class Lobby extends ServerState {
     @Override
     public void handleClientMessage(ClientHandler clientHandler, String line) {
         try {
-            JsonObject clientMessage = ServerParser.getInstance().parseLine(line);
+            JsonObject clientMessage = ServerParser.getInstance().parseLine(line).getAsJsonObject();
 
             if(clientHandler.getPerson().isHost()){
                 if (ServerParser.getInstance().getCommand(clientMessage).equals("startGame")) {

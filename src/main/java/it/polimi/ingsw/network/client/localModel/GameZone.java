@@ -19,4 +19,8 @@ public class GameZone implements LocalModelElement {
     public MarbleMarket getMarbleMarket() {
         return marbleMarket;
     }
+
+    public CardMarket getCardMarket() {
+        return cardMarket;
+    }
 }

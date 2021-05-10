@@ -1,7 +1,10 @@
 package it.polimi.ingsw.view.cli;
 
+import it.polimi.ingsw.model.devCards.DevCard;
 import it.polimi.ingsw.model.leaderCards.LeaderCard;
+import it.polimi.ingsw.network.client.localModel.CardMarket;
 import it.polimi.ingsw.network.client.localModel.MarbleMarket;
+import it.polimi.ingsw.parsing.DevCardsParser;
 import it.polimi.ingsw.parsing.LeaderCardsParser;
 
 import java.util.ArrayList;
@@ -147,5 +150,26 @@ public class CLI {
 
     public void marbleMarket(MarbleMarket marbleMarket) {
         System.out.println(marbleMarket.getCLIString());
+    }
+
+    public void cardMarket(CardMarket cardMarket) {
+        System.out.println(cardMarket.getCLIString());
+        System.out.println("Insert row and column of the deck you want to check or press [x] to go back:");
+    }
+
+    public void showDevCard(Integer devCardID) {
+        if(devCardID == null) {
+            System.out.println("This deck is empty");
+        } else {
+            DevCard devCard = DevCardsParser.getInstance().getCard(devCardID);
+            System.out.println(devCard.getCLIString());
+        }
+    }
+
+    public void selectPlayer(ArrayList<String> nicknames) {
+        for(int i = 0; i < nicknames.size(); ++i) {
+            System.out.println("[" + i + "] " + nicknames.get(i));
+        }
+        System.out.println("Select the player board to check or press [x] to go back:");
     }
 }

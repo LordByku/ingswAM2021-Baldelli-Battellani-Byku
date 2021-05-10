@@ -1,7 +1,7 @@
 package it.polimi.ingsw.network.client.clientStates;
 
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.network.client.localModel.LocalModel;
+import it.polimi.ingsw.network.client.LocalConfig;
 import it.polimi.ingsw.view.cli.CLI;
 
 import java.util.function.Supplier;
@@ -34,10 +34,14 @@ public class ViewState extends ClientState {
                         break;
                     }
                     case 2: {
-
+                        CLI.getInstance().cardMarket(client.getModel().getGameZone().getCardMarket());
+                        client.setState(new CardMarketDeckSelection(returnStateSupplier));
+                        break;
                     }
                     case 3: {
-
+                        CLI.getInstance().selectPlayer(LocalConfig.getInstance().getTurnOrder());
+                        client.setState(new PlayerBoardSelection(returnStateSupplier));
+                        break;
                     }
                     default: {
                         CLI.getInstance().viewState();
