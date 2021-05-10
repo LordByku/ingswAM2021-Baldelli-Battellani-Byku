@@ -3,6 +3,7 @@ package it.polimi.ingsw.network.client.clientStates;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.ClientParser;
+import it.polimi.ingsw.network.client.LoadCards;
 import it.polimi.ingsw.network.client.localModel.LocalModel;
 import it.polimi.ingsw.view.cli.CLI;
 
@@ -12,6 +13,7 @@ import java.util.HashSet;
 public class LoadMultiPlayer extends ClientState {
     public LoadMultiPlayer() {
         CLI.getInstance().loadMultiPlayer();
+        LoadCards.getInstance().leaderCardWidth();
     }
 
     @Override

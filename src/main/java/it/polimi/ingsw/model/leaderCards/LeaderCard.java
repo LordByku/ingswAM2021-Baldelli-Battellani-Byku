@@ -156,25 +156,20 @@ public abstract class LeaderCard implements Scoring {
         for(int i = requirementsLength; i < width; ++i) {
             result.append(" ");
         }
-        result.append("|\n|");
-        for(int i = 0; i < width; ++i) {
-            result.append(" ");
-        }
         result.append("|\n");
+
+        Strings.newEmptyLine(result,width);
 
         String points = "(" + this.points + ")";
         int pointsLength = Strings.getGraphemesCount(points);
-        buildCenteredRow(result, points, pointsLength);
+        Strings.buildCenteredRow(result,"","", points, pointsLength, width);
 
-        result.append("|");
-        for(int i = 0; i < width; ++i) {
-            result.append(" ");
-        }
-        result.append("|\n");
+        Strings.newEmptyLine(result,width);
 
         String effect = getEffectString();
         int effectLength = Strings.getGraphemesCount(effect);
-        buildCenteredRow(result, effect, effectLength);
+        Strings.buildCenteredRow(result,"","", effect, effectLength, width);
+
         result.append("|");
         for(int i = 0; i < width; ++i) {
             result.append("_");
@@ -187,15 +182,6 @@ public abstract class LeaderCard implements Scoring {
         return id;
     }
 
-    private void buildCenteredRow(StringBuilder result, String str, int strLen) {
-        result.append("|");
-        for(int i = 0; i < (width - strLen) / 2; ++i) {
-            result.append(" ");
-        }
-        result.append(str);
-        for(int i = (width - strLen) / 2 + strLen; i < width; ++i) {
-            result.append(" ");
-        }
-        result.append("|\n");
-    }
+
+
 }

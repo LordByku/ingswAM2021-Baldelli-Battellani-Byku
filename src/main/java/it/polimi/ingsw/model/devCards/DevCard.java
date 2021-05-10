@@ -5,6 +5,8 @@ import it.polimi.ingsw.model.playerBoard.InvalidBoardException;
 import it.polimi.ingsw.model.playerBoard.Scoring;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.InvalidResourceSetException;
+import it.polimi.ingsw.view.cli.BackGroundColor;
+import it.polimi.ingsw.view.cli.Strings;
 
 import java.util.HashSet;
 
@@ -41,6 +43,8 @@ public class DevCard implements Scoring, Cloneable {
      * usedIds is a container for the ids already used for development cards
      */
     private final static HashSet<Integer> usedIds = new HashSet<>();
+
+    protected static int width = 0;
 
     /**
      * The constructor
@@ -156,7 +160,53 @@ public class DevCard implements Scoring, Cloneable {
         return id;
     }
 
-    public String getCLIString() {
-        return null;
+    public void addCLISupport() {
+        width = Math.max(width, Strings.getGraphemesCount(reqResources.getCLIString()) + 2); //
+        width = Math.max(width, Strings.getGraphemesCount(productionPower.getCLIString()));
+    }
+
+    public String getCLIString(){
+        String reqResources = this.reqResources.getCLIString();
+        String first;
+        String second;
+        if(this.level==CardLevel.I){
+            first = "" ;
+            second = ".";
+        }
+        else if(this.level==CardLevel.II){
+            first = "" ;
+            second = ":";
+        }
+        else{
+            first = ".";
+            second = ":";
+        }
+        String colourFirst = this.colour.getColour().escape() + first + BackGroundColor.RESET;
+        String colourSecond = this.colour.getColour().escape() + second + BackGroundColor.RESET;
+        int reqResourcesLength = Strings.getGraphemesCount(reqResources);
+        StringBuilder result = new StringBuilder(" ");
+        for(int i = 0; i < width; ++i) {
+            result.append("_");
+        }
+        Strings.buildCenteredRow(result,colourFirst,colourSecond, reqResources,reqResourcesLength,width);
+        Strings.buildCenteredRow(result,colourSecond,colourSecond, "",0,width);
+        Strings.newEmptyLine(result,width);
+
+        String productionPower = this.productionPower.getCLIString();
+        int productionPowerLength = Strings.getGraphemesCount(productionPower);
+
+        Strings.buildCenteredRow(result,"","", productionPower,productionPowerLength,width);
+        Strings.newEmptyLine(result,width);
+
+        String points = "(" + this.points + ")";
+        int pointsLength = Strings.getGraphemesCount(points);
+        Strings.buildCenteredRow(result,"","", points, pointsLength, width);
+
+        result.append("|");
+        for(int i = 0; i < width; ++i) {
+            result.append("_");
+        }
+        result.append("|");
+        return result.toString();
     }
 }
