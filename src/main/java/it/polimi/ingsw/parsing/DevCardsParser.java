@@ -46,7 +46,7 @@ public class DevCardsParser {
             throw new NoConfigFileException();
         }
 
-        if(index >= developmentCards.size()) {
+        if(index < 0 || index >= developmentCards.size()) {
             return null;
         }
 

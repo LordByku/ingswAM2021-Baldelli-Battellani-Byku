@@ -1,6 +1,10 @@
 package it.polimi.ingsw.network.client;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import it.polimi.ingsw.model.playerBoard.faithTrack.CheckPoint;
+import it.polimi.ingsw.model.playerBoard.faithTrack.VaticanReportSection;
 
 import java.util.ArrayList;
 
@@ -42,7 +46,28 @@ public class LocalConfig {
         return config.getAsJsonObject("board").getAsJsonArray("depotSizes").size();
     }
 
+    public ArrayList<Integer> getDepotSizes() {
+        JsonArray depotSizesJson = config.getAsJsonObject("board").getAsJsonArray("depotSizes");
+        ArrayList<Integer> depotSizes = new ArrayList<>();
+        for(JsonElement depotSize: depotSizesJson) {
+            depotSizes.add(depotSize.getAsInt());
+        }
+        return depotSizes;
+    }
+
     public ArrayList<String> getTurnOrder() {
         return (ArrayList<String>) turnOrder.clone();
+    }
+
+    public int getFaithTrackFinalPosition() {
+        return config.getAsJsonObject("board").getAsJsonObject("faithTrack").get("finalPosition").getAsInt();
+    }
+
+    public ArrayList<CheckPoint> getFaithTrackCheckPoints() {
+        ArrayList<CheckPoint> checkPoints = new ArrayList<>();
+        for(JsonElement checkPointJson: config.getAsJsonObject("board").getAsJsonObject("faithTrack").getAsJsonArray("checkPoints")) {
+            checkPoints.add(ClientParser.getInstance().getCheckPoint((JsonObject) checkPointJson));
+        }
+        return checkPoints;
     }
 }

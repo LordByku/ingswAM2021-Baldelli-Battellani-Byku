@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.client;
 
 import com.google.gson.*;
+import it.polimi.ingsw.model.playerBoard.faithTrack.CheckPoint;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.InvalidResourceException;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
@@ -56,6 +57,10 @@ public class ClientParser {
 
     public LocalModel getLocalModel(JsonObject json) {
         return gson.fromJson(json, LocalModel.class);
+    }
+
+    public CheckPoint getCheckPoint(JsonObject json) {
+        return gson.fromJson(json, CheckPoint.class);
     }
 
     public ConcreteResourceSet readUserResources(String[] words) throws JsonSyntaxException, InvalidResourceException {

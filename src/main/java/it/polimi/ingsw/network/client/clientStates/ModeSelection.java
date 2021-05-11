@@ -26,7 +26,7 @@ public class ModeSelection extends ClientState {
                         client.setState(new Lobby());
                     } catch (IOException e) {
                         CLI.getInstance().connectionError();
-                        client.setState(new ModeSelection());
+                        CLI.getInstance().selectMode();
                     }
                     break;
                 }
@@ -35,11 +35,11 @@ public class ModeSelection extends ClientState {
                     break;
                 }
                 default: {
-                    client.setState(new ModeSelection());
+                    CLI.getInstance().selectMode();
                 }
             }
         } catch (NumberFormatException e) {
-            client.setState(new ModeSelection());
+            CLI.getInstance().selectMode();
         }
     }
 }

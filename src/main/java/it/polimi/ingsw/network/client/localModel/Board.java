@@ -3,6 +3,7 @@ package it.polimi.ingsw.network.client.localModel;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 
 import java.util.ArrayList;
@@ -65,5 +66,17 @@ public class Board implements LocalModelElement {
                 handLeaderCards.add(gson.fromJson(cardJson, Integer.class));
             }
         }
+    }
+
+    public FaithTrack getFaithTrack() {
+        return faithTrack;
+    }
+
+    public ArrayList<Integer> getPlayedLeaderCards() {
+        return playedLeaderCards;
+    }
+
+    public ConcreteResourceSet getStrongBox() {
+        return strongbox;
     }
 }

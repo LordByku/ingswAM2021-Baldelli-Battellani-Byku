@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.cli;
 
 public enum BackGroundColor {
+    RED("\u001b[41m"),
     GREEN("\u001b[42m"),
     YELLOW("\u001B[43m"),
     BLUE("\u001B[44m"),

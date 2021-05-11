@@ -24,7 +24,7 @@ public class ProductionLeaderCard extends LeaderCard {
      */
     public ProductionLeaderCard(int points, LeaderCardRequirements requirements, ProductionDetails productionDetails, int id)
             throws InvalidPointsValueException, InvalidRequirementsException, InvalidProductionDetailsException, InvalidIdException {
-        super(points, requirements, id);
+        super(points, requirements, id, LeaderCardType.PRODUCTION);
         if(productionDetails == null) {
             throw new InvalidProductionDetailsException();
         }

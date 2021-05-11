@@ -39,7 +39,6 @@ public class ViewState extends ClientState {
                         break;
                     }
                     case 3: {
-                        CLI.getInstance().selectPlayer(LocalConfig.getInstance().getTurnOrder());
                         client.setState(new PlayerBoardSelection(returnStateSupplier));
                         break;
                     }

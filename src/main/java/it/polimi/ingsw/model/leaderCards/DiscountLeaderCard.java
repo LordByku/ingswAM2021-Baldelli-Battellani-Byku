@@ -33,7 +33,7 @@ public class DiscountLeaderCard extends LeaderCard{
      */
     public DiscountLeaderCard(int points, LeaderCardRequirements requirements, ConcreteResource type, int discount, int id)
             throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceException, InvalidDiscountException, InvalidIdException {
-        super(points, requirements, id);
+        super(points, requirements, id, LeaderCardType.DISCOUNT);
         if(type == null){
             throw new InvalidResourceException();
         }

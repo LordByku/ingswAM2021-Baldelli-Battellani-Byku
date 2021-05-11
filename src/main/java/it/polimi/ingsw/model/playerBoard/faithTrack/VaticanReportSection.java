@@ -116,4 +116,8 @@ public class VaticanReportSection {
     public PopeFavor getPopeFavor() {
         return new PopeFavor(points, id);
     }
+
+    public int getId() {
+        return id;
+    }
 }

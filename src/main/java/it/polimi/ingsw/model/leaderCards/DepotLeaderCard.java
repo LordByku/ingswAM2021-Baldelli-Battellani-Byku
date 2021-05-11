@@ -11,7 +11,7 @@ import it.polimi.ingsw.view.cli.TextColour;
  * DepotLeaderCard represents all LeaderCards with a depot power.
  */
 
-public class DepotLeaderCard extends LeaderCard{
+public class DepotLeaderCard extends LeaderCard {
     /**
      * the type of ConcreteResource that can be stored in the depot.
      */
@@ -34,7 +34,7 @@ public class DepotLeaderCard extends LeaderCard{
      */
     public DepotLeaderCard(int points, LeaderCardRequirements requirements, ConcreteResource type, int depotSize, int id)
             throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceException, InvalidDepotSizeException, InvalidIdException {
-        super(points, requirements, id);
+        super(points, requirements, id, LeaderCardType.DEPOT);
         if(type == null) {
             throw new InvalidResourceException();
         }
@@ -68,5 +68,9 @@ public class DepotLeaderCard extends LeaderCard{
         }
         effect.append(TextColour.RESET);
         return effect.toString();
+    }
+
+    public ConcreteResource getType() {
+        return type;
     }
 }

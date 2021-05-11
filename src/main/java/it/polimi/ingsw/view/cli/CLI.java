@@ -1,8 +1,14 @@
 package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.model.devCards.DevCard;
+import it.polimi.ingsw.model.leaderCards.DepotLeaderCard;
 import it.polimi.ingsw.model.leaderCards.LeaderCard;
+import it.polimi.ingsw.model.leaderCards.LeaderCardType;
+import it.polimi.ingsw.model.resources.ConcreteResource;
+import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
+import it.polimi.ingsw.network.client.LocalConfig;
 import it.polimi.ingsw.network.client.localModel.CardMarket;
+import it.polimi.ingsw.network.client.localModel.FaithTrack;
 import it.polimi.ingsw.network.client.localModel.MarbleMarket;
 import it.polimi.ingsw.parsing.DevCardsParser;
 import it.polimi.ingsw.parsing.LeaderCardsParser;
@@ -77,23 +83,14 @@ public class CLI {
         System.out.println("Game is loading...");
     }
 
-    public void showLeaderCards(ArrayList<Integer> leaderCardIDs, HashSet<Integer> selections) {
-        ArrayList<LeaderCard> leaderCards = new ArrayList<>();
-
-        for (Integer leaderCardID : leaderCardIDs) {
-            LeaderCard leaderCard = LeaderCardsParser.getInstance().getCard(leaderCardID);
-            leaderCard.addCLISupport();
-            leaderCards.add(leaderCard);
-        }
-
-        for(int i = 0; i < leaderCards.size(); i++) {
-            if(selections.contains(i)) {
-                System.out.println(TextColour.RED.escape() + "[" + i + "]" + TextColour.RESET);
+    public void showLeaderCards(ArrayList<Integer> leaderCardIDs) {
+        for(int i = 0; i < leaderCardIDs.size(); i++) {
+            System.out.println("[" + i + "]");
+            if(leaderCardIDs.get(i) == null) {
+                System.out.println("[ -- HIDDEN -- ]");
             } else {
-                System.out.println("[" + i + "]");
+                System.out.println(LeaderCardsParser.getInstance().getCard(leaderCardIDs.get(i)).getCLIString());
             }
-            System.out.println(leaderCards.get(i).getCLIString());
-            System.out.println();
         }
     }
 
@@ -171,5 +168,66 @@ public class CLI {
             System.out.println("[" + i + "] " + nicknames.get(i));
         }
         System.out.println("Select the player board to check or press [x] to go back:");
+    }
+
+    public void boardComponentSelection() {
+        System.out.println("[1] Check Faith Track");
+        System.out.println("[2] Check Warehouse");
+        System.out.println("[3] Check Strongbox");
+        System.out.println("[4] Check Development Cards");
+        System.out.println("[5] Check Played Leader Cards");
+        System.out.println("[6] Check Hand Leader Cards");
+        System.out.println("[x] Back");
+    }
+
+    public void showFaithTrack(FaithTrack faithTrack) {
+        System.out.println(faithTrack.getCLIString());
+    }
+
+    public void showWarehouse(ArrayList<ConcreteResourceSet> warehouse, ArrayList<Integer> playedLeaderCards) {
+        ArrayList<Integer> depotSizes = LocalConfig.getInstance().getDepotSizes();
+        int maxDepotSize = 2;
+        for(int depotSize: depotSizes) {
+            maxDepotSize = Math.max(2, depotSize);
+        }
+        StringBuilder result = new StringBuilder();
+        for(int i = 0, leaderCardIndex = 0; i < warehouse.size(); ++i) {
+            ConcreteResource resourceType = null;
+            if(i == depotSizes.size()) {
+                depotSizes.add(2);
+                while(leaderCardIndex < playedLeaderCards.size()) {
+                    LeaderCard leaderCard = LeaderCardsParser.getInstance().getCard(playedLeaderCards.get(leaderCardIndex++));
+                    if(leaderCard.isType(LeaderCardType.DEPOT)) {
+                        resourceType = ((DepotLeaderCard) leaderCard).getType();
+                        break;
+                    }
+                }
+            }
+            int delta = maxDepotSize - depotSizes.get(i);
+            for(int j = 0; j < delta; ++j) {
+                result.append(" ");
+            }
+            ConcreteResourceSet depot = warehouse.get(i);
+
+            for(int j = 0; j < depot.size(); ++j) {
+                result.append(depot.getResourceType().getCLIString()).append(" ");
+            }
+            for(int j = depot.size(); j < depotSizes.get(i); ++j) {
+                if(resourceType == null) {
+                    result.append(TextColour.WHITE.escape() + "\u25ef" + TextColour.RESET + " ");
+                } else {
+                    result.append(resourceType.getColour().escape()).append("\u25ef").append(TextColour.RESET).append(" ");
+                }
+            }
+
+            if(i < warehouse.size() - 1) {
+                result.append("\n");
+            }
+        }
+        System.out.println(result);
+    }
+
+    public void showStrongbox(ConcreteResourceSet strongBox) {
+        System.out.println(strongBox.getCLIString());
     }
 }

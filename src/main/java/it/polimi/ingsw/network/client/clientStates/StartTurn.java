@@ -3,8 +3,6 @@ package it.polimi.ingsw.network.client.clientStates;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.view.cli.CLI;
 
-import java.util.function.Supplier;
-
 public class StartTurn extends ClientState {
     public StartTurn() {
         CLI.getInstance().startTurn();

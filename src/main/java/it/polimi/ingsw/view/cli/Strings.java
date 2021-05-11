@@ -51,4 +51,21 @@ public class Strings {
         }
         result.append("|\n");
     }
+
+    public static String format(int n, int spaces) {
+        int base = 10;
+        StringBuilder result = new StringBuilder("");
+        for(int i = 1; i < spaces; ++i) {
+            if(n < base) {
+                result.append(" ");
+                base *= 10;
+            } else {
+                break;
+            }
+        }
+
+        result.append(n);
+
+        return result.toString();
+    }
 }

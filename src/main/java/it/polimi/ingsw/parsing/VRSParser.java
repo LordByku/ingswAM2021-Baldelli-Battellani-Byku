@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import it.polimi.ingsw.model.playerBoard.faithTrack.VaticanReportSection;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class VRSParser {
     private static VRSParser instance;
@@ -13,6 +14,7 @@ public class VRSParser {
     private final Parser parser;
     private JsonArray vaticanReportSections;
     private int currentVRS;
+    private final VaticanReportSection[] map;
 
     private VRSParser() {
         gson = new Gson();
@@ -20,6 +22,7 @@ public class VRSParser {
 
         vaticanReportSections = parser.getConfig().getAsJsonArray("vaticanReportSections");
         currentVRS = 0;
+        map = new VaticanReportSection[vaticanReportSections.size()];
     }
 
     public static VRSParser getInstance() {
@@ -33,21 +36,33 @@ public class VRSParser {
         vaticanReportSections = (JsonArray) config.get("vaticanReportSections");
     }
 
-    public VaticanReportSection getNextVRS() throws NoConfigFileException {
+    public VaticanReportSection getVRS(int index) throws NoConfigFileException {
         if(vaticanReportSections == null) {
             throw new NoConfigFileException();
         }
 
-        if(currentVRS >= vaticanReportSections.size()) {
+        if(index < 0 || index >= vaticanReportSections.size()) {
             return null;
         }
 
-        JsonObject jsonVRS = (JsonObject) vaticanReportSections.get(currentVRS);
+        if(map[index] != null) {
+            return map[index];
+        }
+
+        JsonObject jsonVRS = (JsonObject) vaticanReportSections.get(index);
 
         int firstSpace = jsonVRS.get("firstSpace").getAsInt();
         int popeSpace = jsonVRS.get("popeSpace").getAsInt();
         int points = jsonVRS.get("points").getAsInt();
 
-        return new VaticanReportSection(firstSpace, popeSpace, points, currentVRS++);
+        return map[index] = new VaticanReportSection(firstSpace, popeSpace, points, index);
+    }
+
+    public VaticanReportSection getNextVRS() throws NoConfigFileException {
+        VaticanReportSection vaticanReportSection = getVRS(currentVRS++);
+        if(vaticanReportSection == null) {
+            currentVRS = 0;
+        }
+        return vaticanReportSection;
     }
 }

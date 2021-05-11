@@ -14,6 +14,7 @@ public class LoadMultiPlayer extends ClientState {
     public LoadMultiPlayer() {
         CLI.getInstance().loadMultiPlayer();
         LoadCards.getInstance().leaderCardWidth();
+        LoadCards.getInstance().devCardsWidth();
     }
 
     @Override
@@ -36,7 +37,7 @@ public class LoadMultiPlayer extends ClientState {
 
                         ArrayList<Integer> leaderCardsIDs = model.getPlayer(client.getNickname()).getBoard().getHandLeaderCards();
 
-                        CLI.getInstance().showLeaderCards(leaderCardsIDs, new HashSet<>());
+                        CLI.getInstance().showLeaderCards(leaderCardsIDs);
 
                         client.setState(new InitDiscard(leaderCardsIDs.size()));
 

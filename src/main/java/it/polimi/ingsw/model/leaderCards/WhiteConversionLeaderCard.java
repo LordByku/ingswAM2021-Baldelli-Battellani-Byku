@@ -9,7 +9,7 @@ import it.polimi.ingsw.model.resources.InvalidResourceException;
 /**
  * WhiteConversionLeaderCard represents all LeaderCards with a conversion power.
  */
-public class WhiteConversionLeaderCard extends LeaderCard{
+public class WhiteConversionLeaderCard extends LeaderCard {
 
     /**
      * The type of ConcreteResource to convert the white marble into.
@@ -27,7 +27,7 @@ public class WhiteConversionLeaderCard extends LeaderCard{
      */
     public WhiteConversionLeaderCard(int points, LeaderCardRequirements requirements, ConcreteResource type, int id)
             throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceException, InvalidIdException {
-        super(points, requirements, id);
+        super(points, requirements, id, LeaderCardType.CONVERSION);
         if(type == null){
             throw new InvalidResourceException();
         }

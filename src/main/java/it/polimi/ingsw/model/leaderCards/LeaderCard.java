@@ -14,7 +14,7 @@ import java.util.HashSet;
  */
 
 public abstract class LeaderCard implements Scoring {
-
+    private final LeaderCardType leaderCardType;
     /**
      * points are the victory points of the card.
      */
@@ -52,8 +52,8 @@ public abstract class LeaderCard implements Scoring {
 
     protected static int width = 0;
 
-    public LeaderCard(int points, LeaderCardRequirements requirements, int id)
-            throws InvalidPointsValueException, InvalidRequirementsException, InvalidIdException {
+    public LeaderCard(int points, LeaderCardRequirements requirements, int id, LeaderCardType leaderCardType)
+            throws InvalidPointsValueException, InvalidRequirementsException, InvalidIdException, InvalidLeaderCardTypeException {
         if(points<=0){
             throw new InvalidPointsValueException();
         }
@@ -66,6 +66,7 @@ public abstract class LeaderCard implements Scoring {
         this.points = points;
         this.requirements = (LeaderCardRequirements) requirements.clone();
         this.id = id;
+        this.leaderCardType = leaderCardType;
         usedIds.add(id);
     }
 
@@ -174,7 +175,7 @@ public abstract class LeaderCard implements Scoring {
         for(int i = 0; i < width; ++i) {
             result.append("_");
         }
-        result.append("|");
+        result.append("|\n");
         return result.toString();
     }
 
@@ -182,6 +183,8 @@ public abstract class LeaderCard implements Scoring {
         return id;
     }
 
-
+    public boolean isType(LeaderCardType leaderCardType) {
+        return this.leaderCardType == leaderCardType;
+    }
 
 }

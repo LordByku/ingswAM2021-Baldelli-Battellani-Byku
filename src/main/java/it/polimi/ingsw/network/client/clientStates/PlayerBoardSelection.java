@@ -11,6 +11,7 @@ public class PlayerBoardSelection extends ClientState {
     private final Supplier<ClientState> returnStateSupplier;
 
     public PlayerBoardSelection(Supplier<ClientState> returnStateSupplier) {
+        CLI.getInstance().selectPlayer(LocalConfig.getInstance().getTurnOrder());
         this.returnStateSupplier = returnStateSupplier;
     }
 
@@ -34,7 +35,7 @@ public class PlayerBoardSelection extends ClientState {
                 } else {
                     String nickname = nicknames.get(playerIndex);
 
-                    client.setState(new BoardComponentSelection(nickname));
+                    client.setState(new BoardComponentSelection(returnStateSupplier, nickname));
                 }
             } catch (NumberFormatException e) {
                 CLI.getInstance().selectPlayer(LocalConfig.getInstance().getTurnOrder());
