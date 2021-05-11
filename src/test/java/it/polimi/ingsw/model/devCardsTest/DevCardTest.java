@@ -1,10 +1,16 @@
 package it.polimi.ingsw.model.devCardsTest;
 
 import it.polimi.ingsw.model.devCards.*;
+import it.polimi.ingsw.model.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.playerBoard.Board;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.*;
+import it.polimi.ingsw.parsing.DevCardsParser;
+import it.polimi.ingsw.parsing.LeaderCardsParser;
 import org.junit.Test;
+
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 public class DevCardTest {
@@ -129,6 +135,20 @@ public class DevCardTest {
         assertSame(board1.getDevelopmentCardArea().getCards().get(1).getPoints(), devCard2.getPoints());
 
 
+    }
+    @Test
+    public void getCLIStringTest() {
+        ArrayList<DevCard> devCards = new ArrayList<>();
+
+        for(int i = 0; i < 48; ++i) {
+            DevCard devCard = DevCardsParser.getInstance().getCard(i);
+            devCard.addCLISupport();
+            devCards.add(devCard);
+        }
+
+        for(DevCard devCard: devCards) {
+            System.out.println(devCard.getCLIString());
+        }
     }
 
 }

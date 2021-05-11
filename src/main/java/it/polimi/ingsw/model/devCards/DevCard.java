@@ -161,7 +161,7 @@ public class DevCard implements Scoring, Cloneable {
     }
 
     public void addCLISupport() {
-        width = Math.max(width, Strings.getGraphemesCount(reqResources.getCLIString()) + 2); //
+        width = Math.max(width, Strings.getGraphemesCount(reqResources.getCLIString()) + 2);
         width = Math.max(width, Strings.getGraphemesCount(productionPower.getCLIString()));
     }
 
@@ -170,11 +170,11 @@ public class DevCard implements Scoring, Cloneable {
         String first;
         String second;
         if(this.level==CardLevel.I){
-            first = "" ;
+            first = " " ;
             second = ".";
         }
         else if(this.level==CardLevel.II){
-            first = "" ;
+            first = " " ;
             second = ":";
         }
         else{
@@ -182,25 +182,28 @@ public class DevCard implements Scoring, Cloneable {
             second = ":";
         }
         String colourFirst = this.colour.getColour().escape() + first + BackGroundColor.RESET;
+        int colourFirstLength = Strings.getGraphemesCount(colourFirst);
         String colourSecond = this.colour.getColour().escape() + second + BackGroundColor.RESET;
+        int colourSecondLength = Strings.getGraphemesCount(colourFirst);
         int reqResourcesLength = Strings.getGraphemesCount(reqResources);
         StringBuilder result = new StringBuilder(" ");
         for(int i = 0; i < width; ++i) {
             result.append("_");
         }
-        Strings.buildCenteredRow(result,colourFirst,colourSecond, reqResources,reqResourcesLength,width);
-        Strings.buildCenteredRow(result,colourSecond,colourSecond, "",0,width);
+        result.append("\n");
+
+        Strings.buildCenteredRow(result,colourFirst,colourFirstLength,colourFirst,colourFirstLength, reqResources,reqResourcesLength,width);
+        Strings.buildCenteredRow(result,colourSecond,colourSecondLength,colourSecond,colourSecondLength, "",0,width);
         Strings.newEmptyLine(result,width);
 
         String productionPower = this.productionPower.getCLIString();
-        int productionPowerLength = Strings.getGraphemesCount(productionPower);
-
-        Strings.buildCenteredRow(result,"","", productionPower,productionPowerLength,width);
+        int productionPowerLength = Strings.getGraphemesCount(productionPower) ;
+        Strings.buildCenteredRow(result,"",0,"",0, productionPower,productionPowerLength,width);
         Strings.newEmptyLine(result,width);
 
         String points = "(" + this.points + ")";
         int pointsLength = Strings.getGraphemesCount(points);
-        Strings.buildCenteredRow(result,"","", points, pointsLength, width);
+        Strings.buildCenteredRow(result,"",0,"",0, points, pointsLength, width);
 
         result.append("|");
         for(int i = 0; i < width; ++i) {

@@ -30,16 +30,15 @@ public class Strings {
         return line.split("\\s+", 0);
     }
 
-    public static void buildCenteredRow(StringBuilder result,String start, String end, String str, int strLen, int width) {
+    public static void buildCenteredRow(StringBuilder result,String start, int startLen, String end, int endLen, String str, int strLen, int width) {
         result.append("|").append(start);
 
-        int len = width-strLen-start.length()-end.length();
-
-        for(int i = 0; i < len / 2; ++i) {
+        int len = width - strLen - startLen - endLen;
+        for(int i = 0; i < (len + 1) / 2; ++i) {
             result.append(" ");
         }
         result.append(str);
-        for(int i = len / 2 + strLen; i < width; ++i) {
+        for(int i =startLen + (len+1) / 2 + strLen; i < width - endLen; ++i) {
             result.append(" ");
         }
         result.append(end).append("|\n");

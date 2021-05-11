@@ -162,13 +162,13 @@ public abstract class LeaderCard implements Scoring {
 
         String points = "(" + this.points + ")";
         int pointsLength = Strings.getGraphemesCount(points);
-        Strings.buildCenteredRow(result,"","", points, pointsLength, width);
+        Strings.buildCenteredRow(result,"",0,"",0, points, pointsLength, width);
 
         Strings.newEmptyLine(result,width);
 
         String effect = getEffectString();
         int effectLength = Strings.getGraphemesCount(effect);
-        Strings.buildCenteredRow(result,"","", effect, effectLength, width);
+        Strings.buildCenteredRow(result,"",0,"",0, effect, effectLength, width);
 
         result.append("|");
         for(int i = 0; i < width; ++i) {
