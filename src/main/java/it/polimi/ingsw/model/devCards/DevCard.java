@@ -201,7 +201,7 @@ public class DevCard implements Scoring, Cloneable {
         Strings.buildCenteredRow(result,"",0,"",0, productionPower,productionPowerLength,width);
         Strings.newEmptyLine(result,width);
 
-        String points = "(" + this.points + ")";
+        String points = this.colour.getColour().escape() +" "+ BackGroundColor.RESET + "(" + this.points + ")" + this.colour.getColour().escape() +" "+ BackGroundColor.RESET;
         int pointsLength = Strings.getGraphemesCount(points);
         Strings.buildCenteredRow(result,"",0,"",0, points, pointsLength, width);
 
