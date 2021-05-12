@@ -36,6 +36,7 @@ public class StartTurn extends ClientState {
                     break;
                 }
                 case 5: {
+                    CLI.getInstance().showLeaderCards(client.getModel().getPlayer(client.getNickname()).getBoard().getHandLeaderCards());
                     client.setState(new DiscardLeaderCard(StartTurn::new));
                     break;
                 }
