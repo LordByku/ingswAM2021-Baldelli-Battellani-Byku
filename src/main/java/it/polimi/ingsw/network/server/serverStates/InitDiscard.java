@@ -31,7 +31,7 @@ public class InitDiscard extends ServerState {
                     if(completed.size() == Game.getInstance().getNumberOfPlayers()) {
                         Controller.getInstance().handleInitialResources();
                         for(ClientHandler completedClientHandler: completed) {
-                            completedClientHandler.setState(new InitResources());
+                            completedClientHandler.setState(new InitResources(completedClientHandler));
                         }
                         lambda = (serializer) -> {
                             serializer.addHandLeaderCards(clientHandler.getPerson());

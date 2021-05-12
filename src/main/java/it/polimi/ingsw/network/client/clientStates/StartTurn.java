@@ -46,11 +46,11 @@ public class StartTurn extends ClientState {
                     break;
                 }
                 default: {
-                    client.setState(new StartTurn());
+                    CLI.getInstance().startTurn();
                 }
             }
         } catch (NumberFormatException e) {
-            client.setState(new StartTurn());
+            CLI.getInstance().startTurn();
         }
     }
 }

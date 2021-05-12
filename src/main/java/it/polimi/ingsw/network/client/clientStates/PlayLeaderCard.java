@@ -49,26 +49,27 @@ public class PlayLeaderCard extends ClientState {
 
     @Override
     public void handleUserMessage(Client client, String line) {
-        int numOfCards = client.getModel().getPlayer(client.getNickname()).getBoard().getHandLeaderCards().size();
         if(line.equals("x")){
             client.setState(returnStateSupplier.get());
-        }
-        else if(line.equals("0")||line.equals("1")){
-            if(numOfCards==2 ||(line.equals("0") && numOfCards==1)) {
-                JsonObject jsonObject = new JsonObject();
-                JsonObject message = new JsonObject();
-                int cardId = client.getModel().getPlayer(client.getNickname()).getBoard().getHandLeaderCards().get(Integer.parseInt(line));
-                message.addProperty("action", "play");
-                message.addProperty("leaderCard", cardId);
-                jsonObject.addProperty("command", "leaderCard");
-                jsonObject.add("message", message);
-                client.write(jsonObject.toString());
+        } else {
+            try {
+                int selection = Integer.parseInt(line);
+                int numOfCards = client.getModel().getPlayer(client.getNickname()).getBoard().getHandLeaderCards().size();
+
+                if(selection >= 0 && selection < numOfCards) {
+                    JsonObject jsonObject = new JsonObject();
+                    JsonObject message = new JsonObject();
+                    message.addProperty("action", "play");
+                    message.addProperty("leaderCard", selection);
+                    jsonObject.addProperty("command", "leaderCard");
+                    jsonObject.add("message", message);
+                    client.write(jsonObject.toString());
+                } else {
+                    CLI.getInstance().discardLeaderCard();
+                }
+            } catch (NumberFormatException e) {
+                CLI.getInstance().discardLeaderCard();
             }
-            else
-                client.setState(new PlayLeaderCard(returnStateSupplier));
-        }
-        else{
-            client.setState(new PlayLeaderCard(returnStateSupplier));
         }
     }
 }

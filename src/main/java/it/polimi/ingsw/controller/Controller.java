@@ -56,10 +56,6 @@ public class Controller {
         person.getBoard().getWarehouse().swapResources(depotIndexA,depotIndexB);
     }
 
-    public void playLeaderCard(Person person, int leaderCardIndex){
-        person.getBoard().getLeaderCardArea().getLeaderCards().get(leaderCardIndex).play();
-    }
-
     public DevCard purchase(Person person, int row, int column, int deckIndex){
         Board playerBoard = person.getBoard();
         boolean canBuy = Game.getInstance().getGameZone().getCardMarket().top(row, column).canPlay(playerBoard,deckIndex);
@@ -145,13 +141,31 @@ public class Controller {
         return concreteResourceSet;
     }
 
-    public boolean discardLeaderCard(Person person, int leaderCardIndex) {
 
-        if(person.getBoard().getLeaderCardArea().getLeaderCards().size()==2 && (leaderCardIndex<0 || leaderCardIndex >1) || person.getBoard().getLeaderCardArea().getLeaderCards().size()==1 && (leaderCardIndex!=0) )
+    public boolean playLeaderCard(Person person, int leaderCardIndex){
+        ArrayList<LeaderCard> leaderCards = person.getBoard().getLeaderCardArea().getLeaderCards();
+
+        if(leaderCardIndex < 0 || leaderCardIndex >= leaderCards.size()) {
             return false;
-        person.getBoard().getLeaderCardArea().getLeaderCards().get(leaderCardIndex).discard();
-        return true;
+        }
 
+        if(leaderCards.get(leaderCardIndex).isPlayable()) {
+            leaderCards.get(leaderCardIndex).play();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean discardLeaderCard(Person person, int leaderCardIndex) {
+        ArrayList<LeaderCard> leaderCards = person.getBoard().getLeaderCardArea().getLeaderCards();
+
+        if(leaderCardIndex < 0 || leaderCardIndex >= leaderCards.size()) {
+            return false;
+        }
+
+        leaderCards.get(leaderCardIndex).discard();
+        return true;
     }
 
     public boolean initDiscard(Person person, int [] discardedLeaderCardsIndexes) {
@@ -205,7 +219,7 @@ public class Controller {
             totalSize += resources[i].size();
         }
 
-        if(totalSize != initialResources.get(person)) {
+        if(totalSize != getInitResources(person)) {
             return false;
         }
 
@@ -218,25 +232,42 @@ public class Controller {
         return true;
     }
 
+    public int getInitResources(Person person) {
+        ArrayList<Player> players = Game.getInstance().getPlayers();
+
+        switch (players.indexOf(person)) {
+            case 1:
+            case 2:
+                return 1;
+            case 3:
+                return 2;
+            default:
+                return 0;
+        }
+    }
+
+    public int getInitFaithPoints(Person person) {
+        ArrayList<Player> players = Game.getInstance().getPlayers();
+
+        switch (players.indexOf(person)) {
+            case 2:
+            case 3:
+                return 1;
+            default:
+                return 0;
+        }
+    }
+
     public void handleInitialResources() {
         ArrayList<Player> players = Game.getInstance().getPlayers();
         initialResources = new HashMap<>();
 
-        for(int i = 0; i < players.size(); ++i) {
-            Person person = (Person) players.get(i);
-            switch (i) {
-                case 1:
-                    initialResources.put(person, 1);
-                    break;
-                case 2:
-                    initialResources.put(person, 1);
-                    person.getBoard().getFaithTrack().addFaithPoints(1);
-                    break;
-                case 3:
-                    initialResources.put(person, 2);
-                    person.getBoard().getFaithTrack().addFaithPoints(1);
-                    break;
-                default:
+        for (Player player : players) {
+            Person person = (Person) player;
+
+            int initFaithPoints = getInitFaithPoints(person);
+            if (initFaithPoints > 0) {
+                person.getBoard().getFaithTrack().addFaithPoints(initFaithPoints);
             }
         }
 

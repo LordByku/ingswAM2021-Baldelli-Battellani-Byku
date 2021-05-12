@@ -29,8 +29,12 @@ public class ServerParser {
         return parser.parse(line);
     }
 
-    public String getCommand(JsonObject clientMessage) {
-        return clientMessage.get("command").getAsString();
+    public String getCommand(JsonObject json) {
+        return json.get("command").getAsString();
+    }
+
+    public JsonElement getMessage(JsonObject json) {
+        return json.get("message");
     }
 
     public JsonObject getJsonPlayerList() {
