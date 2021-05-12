@@ -54,10 +54,10 @@ public abstract class LeaderCard implements Scoring {
 
     public LeaderCard(int points, LeaderCardRequirements requirements, int id, LeaderCardType leaderCardType)
             throws InvalidPointsValueException, InvalidRequirementsException, InvalidIdException, InvalidLeaderCardTypeException {
-        if(points<=0){
+        if(points<=0) {
             throw new InvalidPointsValueException();
         }
-        if(requirements == null){
+        if(requirements == null) {
             throw new InvalidRequirementsException();
         }
         if(id < 0 || usedIds.contains(id)) {
@@ -74,20 +74,17 @@ public abstract class LeaderCard implements Scoring {
      * isPlayable calls the Board to check if we match the requirements
      * @return false if we don't match the requirements or the card's been already played or discarded, true otherwise.
      */
-    public boolean isPlayable(){
-        if(active || discarded)
-            return false;
-        try {
-            return requirements.isSatisfied(this.board);
-        } catch (InvalidBoardException e) {
+    public boolean isPlayable() {
+        if(active || discarded) {
             return false;
         }
+        return requirements.isSatisfied(this.board);
     }
 
     /**
      * @return if the card's been played.
      */
-    public boolean isActive(){
+    public boolean isActive() {
         return active;
     }
 
@@ -99,7 +96,7 @@ public abstract class LeaderCard implements Scoring {
     /**
      * Discard the leader card to get 1 faith point.
      */
-    public void discard(){
+    public void discard() {
         if(!active && !discarded) {
             discarded = true;
             board.getFaithTrack().addFaithPoints();
@@ -111,7 +108,7 @@ public abstract class LeaderCard implements Scoring {
      * initDiscard allows to discard the leaderCard without getting faithPoints.
      * Used when the game starts and the leaderCards are hand out.
      */
-    public void initDiscard(){
+    public void initDiscard() {
         if(!active && !discarded) {
             discarded = true;
             board.getLeaderCardArea().removeLeaderCard(this);

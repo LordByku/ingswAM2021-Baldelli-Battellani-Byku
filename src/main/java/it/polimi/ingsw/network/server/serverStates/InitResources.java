@@ -14,6 +14,12 @@ import java.util.function.Consumer;
 public class InitResources extends ServerState {
     private static final ArrayList<ClientHandler> completed = new ArrayList<>();
 
+    public InitResources(ClientHandler clientHandler) {
+        if(Controller.getInstance().getInitResources(clientHandler.getPerson()) == 0) {
+            completed.add(clientHandler);
+        }
+    }
+
     @Override
     public void handleClientMessage(ClientHandler clientHandler, String line) {
         JsonObject json = ServerParser.getInstance().parseLine(line).getAsJsonObject();
