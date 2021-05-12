@@ -102,6 +102,10 @@ public class CLI {
         System.out.println("Insert the index of the leader card you want to discard or press [x] to go back:");
     }
 
+    public void playLeaderCard(){
+        System.out.println("Insert the index of the leader card you want to play or press [x] to go back:");
+    }
+
     public void waitInitDiscard() {
         System.out.println("Waiting for other players to discard their Leader Cards...");
     }

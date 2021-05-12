@@ -52,18 +52,23 @@ public class DiscardLeaderCard extends ClientState {
 
     @Override
     public void handleUserMessage(Client client, String line) {
+        int numOfCards = client.getModel().getPlayer(client.getNickname()).getBoard().getHandLeaderCards().size();
         if(line.equals("x")){
             client.setState(returnStateSupplier.get());
         }
         else if(line.equals("0")||line.equals("1")){
-            JsonObject jsonObject = new JsonObject();
-            JsonObject message = new JsonObject();
-            int cardId = client.getModel().getPlayer(client.getNickname()).getBoard().getHandLeaderCards().get(Integer.parseInt(line));
-            message.addProperty("action","discard");
-            message.addProperty("leaderCard",cardId);
-            jsonObject.addProperty("command", "leaderCard");
-            jsonObject.add("message", message);
-            client.write(jsonObject.toString());
+            if(numOfCards==2 ||(line.equals("0") && numOfCards==1)) {
+                JsonObject jsonObject = new JsonObject();
+                JsonObject message = new JsonObject();
+                int cardId = client.getModel().getPlayer(client.getNickname()).getBoard().getHandLeaderCards().get(Integer.parseInt(line));
+                message.addProperty("action", "discard");
+                message.addProperty("leaderCard", cardId);
+                jsonObject.addProperty("command", "leaderCard");
+                jsonObject.add("message", message);
+                client.write(jsonObject.toString());
+            }
+            else
+                client.setState(new DiscardLeaderCard(returnStateSupplier));
         }
         else{
             client.setState(new DiscardLeaderCard(returnStateSupplier));
