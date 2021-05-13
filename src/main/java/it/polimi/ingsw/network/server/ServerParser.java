@@ -70,6 +70,10 @@ public class ServerParser {
         return json.getAsJsonArray("resources");
     }
 
+    public JsonObject getSpentResources(JsonObject json) {
+        return json.getAsJsonObject("spentResources");
+    }
+
     public ConcreteResource[] parseConcreteResourceArray(JsonArray jsonArray) {
         return gson.fromJson(jsonArray, ConcreteResource[].class);
     }

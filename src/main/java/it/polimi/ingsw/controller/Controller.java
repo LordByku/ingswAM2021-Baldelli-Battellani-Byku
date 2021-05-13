@@ -25,6 +25,8 @@ public class Controller {
     private ResourceSet resourcesToObtain;
     private int faithPointToObtain;
 
+    private DevCard cardToBuy;
+
     private Controller() {}
 
     public synchronized static Controller getInstance() {
@@ -78,16 +80,17 @@ public class Controller {
         person.getBoard().getStrongBox().removeResources(resources);
     }
 
-    public DevCard purchase(Person person, int row, int column, int deckIndex){
+    public boolean purchase(Person person, int row, int column, int deckIndex){
         Board playerBoard = person.getBoard();
         boolean canBuy = Game.getInstance().getGameZone().getCardMarket().top(row, column).canPlay(playerBoard,deckIndex);
         if(!canBuy)
-            return null;
+            return false;
 
-        return Game.getInstance().getGameZone().getCardMarket().removeTop(row,column);
+        cardToBuy = Game.getInstance().getGameZone().getCardMarket().removeTop(row,column);
+        return true;
     }
 
-    public boolean spendResources(Person person, DevCard card, int deckIndex, ConcreteResourceSet[] warehouseSet, ConcreteResourceSet strongboxSet){
+    public boolean spendResources(Person person, int deckIndex, ConcreteResourceSet[] warehouseSet, ConcreteResourceSet strongboxSet){
         Board playerBoard = person.getBoard();
 
         //Checks if we have selected the right resources
@@ -96,19 +99,24 @@ public class Controller {
             set.union(crs);
         }
         set.union(strongboxSet);
-        if(!set.equals(card.getReqResources()))
+        if(!set.equals(cardToBuy.getReqResources()))
             return false;
 
-        //remove resources from warehouse
-        for(int i=0; i<warehouseSet.length; i++){
-            playerBoard.getWarehouse().removeResources(i,warehouseSet[i]);
+        try {
+            //remove resources from warehouse
+            for (int i = 0; i < warehouseSet.length; i++) {
+                playerBoard.getWarehouse().removeResources(i, warehouseSet[i]);
+            }
+
+            //remove resources from strongbox
+            playerBoard.getStrongBox().removeResources(strongboxSet);
+            cardToBuy.play(playerBoard, deckIndex);
+            return true;
+        }
+        catch ( InvalidDepotIndexException | InvalidResourceSetException | InvalidResourceLocationOperationException e){
+            return false;
         }
 
-        //remove resources from strongbox
-        playerBoard.getStrongBox().removeResources(strongboxSet);
-
-        card.play(playerBoard, deckIndex);
-        return true;
     }
 
     public boolean market(Person person, boolean rowColSelection, int index){

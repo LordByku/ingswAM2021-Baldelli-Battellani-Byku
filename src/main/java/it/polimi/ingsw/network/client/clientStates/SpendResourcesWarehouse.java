@@ -1,15 +1,17 @@
 package it.polimi.ingsw.network.client.clientStates;
 
+import com.google.gson.JsonObject;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.network.client.Client;
+import it.polimi.ingsw.network.client.ClientParser;
 import it.polimi.ingsw.parsing.BoardParser;
 import it.polimi.ingsw.view.cli.CLI;
 
 import java.util.ArrayList;
 
 
-public class SpendResourcesWarehouse extends ClientState{
+public class SpendResourcesWarehouse extends SpendResources{
     ConcreteResourceSet[] warehouse;
     ConcreteResourceSet strongbox;
     ConcreteResourceSet toSpend;
@@ -18,11 +20,6 @@ public class SpendResourcesWarehouse extends ClientState{
         warehouse = new ConcreteResourceSet[numOfDepots];
         strongbox = new ConcreteResourceSet();
         this.toSpend = toSpend;
-    }
-
-    @Override
-    public void handleServerMessage(Client client, String line) {
-
     }
 
     @Override
@@ -50,6 +47,7 @@ public class SpendResourcesWarehouse extends ClientState{
                     if (toSpend.contains(set)) {
                         warehouse[depotIndex].addResource(resource, numOfResources);
                         toSpend.removeResource(resource, numOfResources);
+                        write(client, toSpend,warehouse,strongbox);
                     }
                 }
             }

@@ -17,6 +17,19 @@ public class StartTurn extends ServerState {
 
             switch(command) {
                 case "purchase": {
+                    JsonObject message = ServerParser.getInstance().getMessage(json).getAsJsonObject();
+
+                    int row = message.get("row").getAsInt();
+                    int column = message.get("column").getAsInt();
+                    int deckIndex = message.get("deckIndex").getAsInt();
+
+                    if(Controller.getInstance().purchase(clientHandler.getPerson(), row,column,deckIndex)){
+                        clientHandler.setState(new SpendResources(deckIndex));
+                    }
+                    else{
+                        clientHandler.error("Can't buy this card, not enough resources or not invalid top deck level");
+                    }
+
                     break;
                 }
                 case "production": {
