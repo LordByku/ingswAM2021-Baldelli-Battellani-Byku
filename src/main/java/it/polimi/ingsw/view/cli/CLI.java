@@ -222,7 +222,7 @@ public class CLI {
             }
             for(int j = depot.size(); j < depotSizes.get(i); ++j) {
                 if(resourceType == null) {
-                    result.append(TextColour.WHITE.escape() + "\u25ef" + TextColour.RESET + " ");
+                    result.append(TextColour.WHITE.escape()).append("\u25ef").append(TextColour.RESET).append(" ");
                 } else {
                     result.append(resourceType.getColour().escape()).append("\u25ef").append(TextColour.RESET).append(" ");
                 }
@@ -237,5 +237,13 @@ public class CLI {
 
     public void showStrongbox(ConcreteResourceSet strongBox) {
         System.out.println(strongBox.getCLIString());
+    }
+
+    public void discardLeaderCardSuccess() {
+        System.out.println("Leader Card successfully discarded");
+    }
+
+    public void playLeaderCardSuccess() {
+        System.out.println("Leader Card successfully activated");
     }
 }

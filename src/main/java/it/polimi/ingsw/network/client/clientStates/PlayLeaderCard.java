@@ -25,7 +25,7 @@ public class PlayLeaderCard extends ClientState {
             case "error": {
                 String message = ClientParser.getInstance().getMessage(json).getAsString();
                 CLI.getInstance().serverError(message);
-                client.setState(new PlayLeaderCard(returnStateSupplier));
+                CLI.getInstance().playLeaderCard();
                 break;
             }
             case "ok": {
@@ -34,6 +34,11 @@ public class PlayLeaderCard extends ClientState {
                     case "update": {
                         JsonObject message = ClientParser.getInstance().getMessage(json).getAsJsonObject();
                         client.getModel().updateModel(message);
+
+                        CLI.getInstance().playLeaderCardSuccess();
+                        CLI.getInstance().showLeaderCards(client.getModel().getPlayer(client.getNickname()).getBoard().getHandLeaderCards());
+                        CLI.getInstance().playLeaderCard();
+                        break;
                     }
                     default:{
                         CLI.getInstance().unexpected();

@@ -1,11 +1,8 @@
 package it.polimi.ingsw.network.client.clientStates;
 
 import com.google.gson.JsonObject;
-import it.polimi.ingsw.model.leaderCards.LeaderCard;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.ClientParser;
-import it.polimi.ingsw.network.client.LocalConfig;
-import it.polimi.ingsw.parsing.Parser;
 import it.polimi.ingsw.view.cli.CLI;
 
 import java.util.function.Supplier;
@@ -37,6 +34,11 @@ public class DiscardLeaderCard extends ClientState {
                     case "update": {
                         JsonObject message = ClientParser.getInstance().getMessage(json).getAsJsonObject();
                         client.getModel().updateModel(message);
+
+                        CLI.getInstance().discardLeaderCardSuccess();
+                        CLI.getInstance().showLeaderCards(client.getModel().getPlayer(client.getNickname()).getBoard().getHandLeaderCards());
+                        CLI.getInstance().discardLeaderCard();
+                        break;
                     }
                     default:{
                         CLI.getInstance().unexpected();
