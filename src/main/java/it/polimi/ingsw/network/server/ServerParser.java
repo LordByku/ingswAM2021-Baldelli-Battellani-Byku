@@ -4,6 +4,7 @@ import com.google.gson.*;
 import it.polimi.ingsw.model.game.Game;
 import it.polimi.ingsw.model.game.Person;
 import it.polimi.ingsw.model.game.Player;
+import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 
 import java.util.ArrayList;
@@ -63,5 +64,21 @@ public class ServerParser {
 
     public ConcreteResourceSet[] parseConcreteResourceSetArray(JsonArray jsonArray) {
         return gson.fromJson(jsonArray, ConcreteResourceSet[].class);
+    }
+
+    public JsonArray getResources(JsonObject json) {
+        return json.getAsJsonArray("resources");
+    }
+
+    public ConcreteResource[] parseConcreteResourceArray(JsonArray jsonArray) {
+        return gson.fromJson(jsonArray, ConcreteResource[].class);
+    }
+
+    public JsonElement serialize(Object object) {
+        return parser.parse(gson.toJson(object));
+    }
+
+    public ConcreteResourceSet getConcreteResourceSet(JsonObject json) {
+        return gson.fromJson(json, ConcreteResourceSet.class);
     }
 }

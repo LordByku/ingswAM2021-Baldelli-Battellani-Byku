@@ -20,6 +20,7 @@ public class StartTurn extends ClientState {
 
             switch(selection) {
                 case 1: {
+                    CLI.getInstance().marbleMarket(client.getModel().getGameZone().getMarbleMarket());
                     client.setState(new CollectResources());
                     break;
                 }

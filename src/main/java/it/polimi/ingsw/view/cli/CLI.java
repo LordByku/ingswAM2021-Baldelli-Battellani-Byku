@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.devCards.DevCard;
 import it.polimi.ingsw.model.leaderCards.DepotLeaderCard;
 import it.polimi.ingsw.model.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.leaderCards.LeaderCardType;
+import it.polimi.ingsw.model.resources.ChoiceSet;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.network.client.LocalConfig;
@@ -215,6 +216,8 @@ public class CLI {
         }
         StringBuilder result = new StringBuilder();
         for(int i = 0, leaderCardIndex = 0; i < warehouse.size(); ++i) {
+            result.append("[").append(i).append("] ");
+
             ConcreteResource resourceType = null;
             if(i == depotSizes.size()) {
                 depotSizes.add(2);
@@ -267,5 +270,46 @@ public class CLI {
     }
     public void spendResourcesSuccess(){
         System.out.println("Resources spent successfully");
+    }
+
+    public void marbleMarketSelection() {
+        System.out.println("Insert row or col followed by the index of your choice or press [x] to go back:");
+    }
+
+    public void whiteMarbleSelection(ChoiceSet choiceSet, int choices) {
+        if(choices == 1) {
+            System.out.println("Select " + choices + " resource to obtain from white marbles (you can choose from " + choiceSet.getCLIString() + "):");
+        } else {
+            System.out.println("Select " + choices + " resources to obtain from white marbles (you can choose from " + choiceSet.getCLIString() + "):");
+        }
+    }
+
+    public void manageWarehouse(ConcreteResourceSet obtained) {
+        System.out.println("You have to assign: " + obtained.getCLIString());
+        System.out.println("[1] Add to depot");
+        System.out.println("[2] Remove from depot");
+        System.out.println("[3] Swap from depots");
+        System.out.println("[0] Confirm warehouse");
+        System.out.println("Insert your choice:");
+    }
+
+    public void addToDepot() {
+        System.out.println("Insert the index of the depot followed by the resources you want to add:");
+    }
+
+    public void removeFromDepot() {
+        System.out.println("Insert the index of the depot followed by the resources you want to remove:");
+    }
+
+    public void swapFromDepots() {
+        System.out.println("Insert the indices of the two depots you want to swap:");
+    }
+
+    public void endTurn() {
+        System.out.println("[1] End Turn");
+        System.out.println("[2] Play Leader Card");
+        System.out.println("[3] Discard Leader Card");
+        System.out.println("[0] Check board state");
+        System.out.println("Insert your choice:");
     }
 }

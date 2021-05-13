@@ -63,11 +63,19 @@ public class ClientParser {
         return gson.fromJson(json, CheckPoint.class);
     }
 
+    public ConcreteResourceSet getConcreteResourceSet(JsonObject json) {
+        return gson.fromJson(json, ConcreteResourceSet.class);
+    }
+
+    public ConcreteResource readUserResource(String word) throws JsonSyntaxException {
+        return gson.fromJson(word.toUpperCase(), ConcreteResource.class);
+    }
+
     public ConcreteResourceSet readUserResources(String[] words) throws JsonSyntaxException, InvalidResourceException {
         ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
 
         for(String word: words) {
-            concreteResourceSet.addResource(gson.fromJson(word.toUpperCase(), ConcreteResource.class));
+            concreteResourceSet.addResource(readUserResource(word));
         }
 
         return concreteResourceSet;

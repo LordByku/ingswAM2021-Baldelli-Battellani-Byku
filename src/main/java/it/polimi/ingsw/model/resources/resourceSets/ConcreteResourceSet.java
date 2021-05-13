@@ -241,6 +241,16 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
     }
 
     @Override
+    public boolean isConcrete() {
+        return true;
+    }
+
+    @Override
+    public ConcreteResourceSet toConcrete() {
+        return this;
+    }
+
+    @Override
     public String getCLIString() {
         StringBuilder result = new StringBuilder();
 

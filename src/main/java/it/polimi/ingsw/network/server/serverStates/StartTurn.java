@@ -2,13 +2,10 @@ package it.polimi.ingsw.network.server.serverStates;
 
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.controller.Controller;
-import it.polimi.ingsw.model.game.Game;
-import it.polimi.ingsw.model.leaderCards.LeaderCard;
 import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.network.server.GameStateSerializer;
 import it.polimi.ingsw.network.server.ServerParser;
 
-import java.util.ArrayList;
 import java.util.function.Consumer;
 
 public class StartTurn extends ServerState {
@@ -26,6 +23,27 @@ public class StartTurn extends ServerState {
                     break;
                 }
                 case "market": {
+                    JsonObject message = ServerParser.getInstance().getMessage(json).getAsJsonObject();
+
+                    boolean rowColSel = message.get("rowColSel").getAsBoolean();
+                    int index = message.get("index").getAsInt();
+
+                    if(Controller.getInstance().market(clientHandler.getPerson(), rowColSel, index)) {
+                        if(Controller.getInstance().toObtainIsConcrete()) {
+                            JsonObject outMessage = new JsonObject();
+                            outMessage.add("obtained", ServerParser.getInstance().serialize(Controller.getInstance().concreteToObtain()));
+                            clientHandler.ok("confirm", outMessage);
+                            clientHandler.setState(new ManageWarehouse());
+                        } else {
+                            JsonObject outMessage = new JsonObject();
+                            outMessage.addProperty("choices", Controller.getInstance().toObtainChoices());
+                            clientHandler.ok("confirm", outMessage);
+                            clientHandler.setState(new WhiteMarbleSelection());
+                        }
+                    } else {
+                        clientHandler.error("Invalid choice");
+                    }
+
                     break;
                 }
                 case "leaderCard": {

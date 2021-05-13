@@ -4,18 +4,15 @@ import it.polimi.ingsw.model.devCards.DevCard;
 import it.polimi.ingsw.model.game.Game;
 import it.polimi.ingsw.model.game.Person;
 import it.polimi.ingsw.model.game.Player;
+import it.polimi.ingsw.model.gameZone.MarbleMarket;
 import it.polimi.ingsw.model.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.playerBoard.Board;
 import it.polimi.ingsw.model.playerBoard.faithTrack.VRSObserver;
+import it.polimi.ingsw.model.playerBoard.resourceLocations.InvalidDepotIndexException;
+import it.polimi.ingsw.model.playerBoard.resourceLocations.InvalidResourceLocationOperationException;
 import it.polimi.ingsw.model.playerBoard.resourceLocations.Warehouse;
-import it.polimi.ingsw.model.resources.ChoiceResource;
-import it.polimi.ingsw.model.resources.ChoiceSet;
-import it.polimi.ingsw.model.resources.ConcreteResource;
-import it.polimi.ingsw.model.resources.Resource;
-import it.polimi.ingsw.model.resources.resourceSets.ChoiceResourceSet;
-import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
-import it.polimi.ingsw.model.resources.resourceSets.ObtainableResourceSet;
-import it.polimi.ingsw.model.resources.resourceSets.SpendableResourceSet;
+import it.polimi.ingsw.model.resources.*;
+import it.polimi.ingsw.model.resources.resourceSets.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +24,9 @@ public class Controller {
     private ArrayList<Person> onceActionPlayer = new ArrayList<>();
     private HashMap<Person,Integer> initialResources;
 
+    private ResourceSet resourcesToObtain;
+    private int faithPointToObtain;
+
     private Controller() {}
 
     public synchronized static Controller getInstance() {
@@ -36,24 +36,48 @@ public class Controller {
         return instance;
     }
 
-    public void addResourcesToDepot(Person person, ConcreteResourceSet resources, int depotIndex) {
-        person.getBoard().getWarehouse().addResources(depotIndex, resources);
+    public boolean addResourcesToDepot(Person person, ConcreteResourceSet resources, int depotIndex) {
+        ConcreteResourceSet concreteToObtain = concreteToObtain();
+        if(!concreteToObtain.contains(resources)) {
+            return false;
+        }
+        try {
+            person.getBoard().getWarehouse().addResources(depotIndex, resources);
+            concreteToObtain.difference(resources);
+            resourcesToObtain = concreteToObtain;
+            return true;
+        } catch (InvalidResourceException | InvalidDepotIndexException | InvalidResourceLocationOperationException e) {
+            return false;
+        }
+    }
+
+    public boolean removeResourcesFromDepot(Person person, ConcreteResourceSet resources, int depotIndex){
+        ConcreteResourceSet concreteToObtain = concreteToObtain();
+        try {
+            person.getBoard().getWarehouse().removeResources(depotIndex, resources);
+            concreteToObtain.union(resources);
+            resourcesToObtain = concreteToObtain;
+            return true;
+        } catch (InvalidResourceException | InvalidDepotIndexException | InvalidResourceLocationOperationException e) {
+            return false;
+        }
+    }
+
+    public boolean swapResourcesFromDepots(Person person, int depotIndexA, int depotIndexB) {
+        try {
+            person.getBoard().getWarehouse().swapResources(depotIndexA, depotIndexB);
+            return true;
+        } catch (InvalidDepotIndexException | InvalidResourceLocationOperationException e) {
+            return false;
+        }
     }
 
     public void addResourcesToStrongbox(Person person, ConcreteResourceSet resources){
         person.getBoard().getStrongBox().addResources(resources);
     }
 
-    public void removeResourcesFromDepot(Person person, ConcreteResourceSet resources, int depotIndex){
-        person.getBoard().getWarehouse().removeResources(depotIndex,resources);
-    }
-
     public void removeResourcesFromStrongbox(Person person, ConcreteResourceSet resources){
         person.getBoard().getStrongBox().removeResources(resources);
-    }
-
-    public void swap(Person person, int depotIndexA, int depotIndexB){
-        person.getBoard().getWarehouse().swapResources(depotIndexA,depotIndexB);
     }
 
     public DevCard purchase(Person person, int row, int column, int deckIndex){
@@ -89,13 +113,27 @@ public class Controller {
         return true;
     }
 
-    public ObtainableResourceSet market(Person person, boolean rowColSelection, int index){
+    public boolean market(Person person, boolean rowColSelection, int index){
         Board playerBoard = person.getBoard();
         ChoiceSet choiceSet = playerBoard.getConversionEffectArea().getConversionEffects();
-        if(rowColSelection)
-            return Game.getInstance().getGameZone().getMarbleMarket().selectRow(index,choiceSet);
-        else
-            return Game.getInstance().getGameZone().getMarbleMarket().selectColumn(index,choiceSet);
+        MarbleMarket market = Game.getInstance().getGameZone().getMarbleMarket();
+        ObtainableResourceSet obtainableResourceSet;
+        if(rowColSelection) {
+            if(index < 0 || index >= market.getRows()) {
+                return false;
+            }
+            obtainableResourceSet = Game.getInstance().getGameZone().getMarbleMarket().selectRow(index, choiceSet);
+        } else {
+            if(index < 0 || index >= market.getColumns()) {
+                return false;
+            }
+            obtainableResourceSet = Game.getInstance().getGameZone().getMarbleMarket().selectColumn(index, choiceSet);
+        }
+
+        resourcesToObtain = obtainableResourceSet.getResourceSet();
+        faithPointToObtain = obtainableResourceSet.getFaithPoints();
+
+        return true;
     }
 
     public ConcreteResourceSet choiceResource(Person person, ConcreteResource[] resources, ChoiceResourceSet set){
@@ -110,13 +148,76 @@ public class Controller {
         return set.toConcrete();
     }
 
-    public ConcreteResourceSet productionIn(Person person,int[] activeSet, ConcreteResource[] resources){
+    public boolean toObtainIsConcrete() {
+        return resourcesToObtain.isConcrete();
+    }
+
+    public int toObtainChoices() {
+        if(toObtainIsConcrete()) {
+            return 0;
+        } else {
+            return ((ChoiceResourceSet) resourcesToObtain).getChoiceResources().size();
+        }
+    }
+
+    public ConcreteResourceSet concreteToObtain() {
+        if(toObtainIsConcrete()) {
+            return resourcesToObtain.toConcrete();
+        } else {
+            return null;
+        }
+    }
+
+    public boolean whiteMarble(ConcreteResource[] resources) {
+        ArrayList<Resource> choiceResources = ((ChoiceResourceSet) resourcesToObtain).getChoiceResources();
+
+        if(choiceResources.size() != resources.length) {
+            return false;
+        }
+
+        for(int i = 0; i < resources.length; ++i) {
+            ChoiceResource choiceResource = (ChoiceResource) choiceResources.get(i);
+            if(!choiceResource.canChoose(resources[i])) {
+                return false;
+            }
+        }
+
+        for(int i = 0; i < resources.length; ++i) {
+            ChoiceResource choiceResource = (ChoiceResource) choiceResources.get(i);
+            choiceResource.makeChoice(resources[i]);
+        }
+
+        return true;
+    }
+
+    public void confirmWarehouse(Person person) {
+        ArrayList<Player> players = Game.getInstance().getPlayers();
+
+        if(faithPointToObtain > 0) {
+            person.getBoard().getFaithTrack().addFaithPoints(faithPointToObtain);
+        }
+        faithPointToObtain = 0;
+
+        if(resourcesToObtain.size() > 0) {
+            for(Player player: players) {
+                if(!player.equals(person)) {
+                    ((Person) player).getBoard().getFaithTrack().addFaithPoints(resourcesToObtain.size());
+                }
+            }
+        }
+        resourcesToObtain = null;
+
+        VRSObserver.getInstance().updateVRS();
+    }
+
+    public ConcreteResourceSet productionIn(Person person, int[] activeSet, ConcreteResource[] resources){
         SpendableResourceSet set = new SpendableResourceSet();
         Board playerBoard = person.getBoard();
         for(int index: activeSet){
             set.union(playerBoard.getProductionArea().getProductionDetails().get(index).getInput());
         }
         if(resources.length != set.getResourceSet().getChoiceResources().size()) return null;
+
         for(int i=0; i< resources.length; i++){
             ((ChoiceResource) set.getResourceSet().getChoiceResources().get(i)).makeChoice(resources[i]);
         }
@@ -273,5 +374,4 @@ public class Controller {
 
         VRSObserver.getInstance().updateVRS();
     }
-
 }

@@ -6,15 +6,17 @@ import it.polimi.ingsw.view.cli.TextColour;
  * ConcreteResource represents all possible in-game resources
  */
 public enum ConcreteResource implements Resource {
-    COIN(TextColour.YELLOW),
-    STONE(TextColour.GREY),
-    SHIELD(TextColour.BLUE),
-    SERVANT(TextColour.PURPLE);
+    COIN(TextColour.YELLOW, "COIN"),
+    STONE(TextColour.GREY, "STONE"),
+    SHIELD(TextColour.BLUE, "SHIELD"),
+    SERVANT(TextColour.PURPLE, "SERVANT");
 
     private final TextColour colour;
+    private final String extendedCLIString;
 
-    ConcreteResource(TextColour colour) {
+    ConcreteResource(TextColour colour, String extendedCLIString) {
         this.colour = colour;
+        this.extendedCLIString = extendedCLIString;
     }
 
     /**
@@ -51,5 +53,9 @@ public enum ConcreteResource implements Resource {
     @Override
     public String getCLIString() {
         return colour.escape() + "\u25cf" + TextColour.RESET;
+    }
+
+    public String getExtendedCLIString() {
+        return extendedCLIString;
     }
 }

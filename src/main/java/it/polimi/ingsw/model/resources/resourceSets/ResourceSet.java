@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.resources.resourceSets;
 
+import it.polimi.ingsw.model.resources.NotConcreteException;
+
 /**
  * ResourceSet is the interface for containers of resources
  */
@@ -17,4 +19,8 @@ public interface ResourceSet extends Cloneable {
     int size();
 
     String getCLIString();
+
+    boolean isConcrete();
+
+    ConcreteResourceSet toConcrete() throws NotConcreteException;
 }
