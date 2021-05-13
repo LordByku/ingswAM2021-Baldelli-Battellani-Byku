@@ -2,10 +2,14 @@ package it.polimi.ingsw.network.server.serverStates;
 
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.model.game.Game;
+import it.polimi.ingsw.model.game.Person;
+import it.polimi.ingsw.model.game.Player;
 import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.network.server.GameStateSerializer;
 import it.polimi.ingsw.network.server.ServerParser;
 
+import java.util.ArrayList;
 import java.util.function.Consumer;
 
 public class EndTurn extends ServerState {
@@ -16,6 +20,17 @@ public class EndTurn extends ServerState {
 
         switch(command) {
             case "endTurn": {
+                Controller.getInstance().endTurn(clientHandler.getPerson());
+
+                Consumer<GameStateSerializer> lambda = (serializer) -> {
+                    for(Player player: Game.getInstance().getPlayers()) {
+                        serializer.addPlayerDetails((Person) player);
+                    }
+                };
+
+                clientHandler.updateGameState(lambda);
+
+                clientHandler.setState(new StartTurn());
                 break;
             }
             case "leaderCard": {

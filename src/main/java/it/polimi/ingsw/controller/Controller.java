@@ -1,9 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.devCards.DevCard;
-import it.polimi.ingsw.model.game.Game;
-import it.polimi.ingsw.model.game.Person;
-import it.polimi.ingsw.model.game.Player;
+import it.polimi.ingsw.model.game.*;
 import it.polimi.ingsw.model.gameZone.MarbleMarket;
 import it.polimi.ingsw.model.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.playerBoard.Board;
@@ -122,12 +120,14 @@ public class Controller {
             if(index < 0 || index >= market.getRows()) {
                 return false;
             }
-            obtainableResourceSet = Game.getInstance().getGameZone().getMarbleMarket().selectRow(index, choiceSet);
+            obtainableResourceSet = market.selectRow(index, choiceSet);
+            market.pushRow(index);
         } else {
             if(index < 0 || index >= market.getColumns()) {
                 return false;
             }
-            obtainableResourceSet = Game.getInstance().getGameZone().getMarbleMarket().selectColumn(index, choiceSet);
+            obtainableResourceSet = market.selectColumn(index, choiceSet);
+            market.pushColumn(index);
         }
 
         resourcesToObtain = obtainableResourceSet.getResourceSet();
@@ -373,5 +373,13 @@ public class Controller {
         }
 
         VRSObserver.getInstance().updateVRS();
+    }
+
+    public void endTurn(Person person) {
+        try {
+            person.endTurn();
+        } catch (GameEndedException | GameNotStartedException e) {
+            e.printStackTrace();
+        }
     }
 }

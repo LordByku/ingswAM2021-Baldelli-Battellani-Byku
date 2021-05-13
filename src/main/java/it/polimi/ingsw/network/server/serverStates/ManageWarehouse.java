@@ -81,6 +81,7 @@ public class ManageWarehouse extends ServerState {
             case "confirmWarehouse": {
                 Controller.getInstance().confirmWarehouse(clientHandler.getPerson());
                 Consumer<GameStateSerializer> lambda = (serializer) -> {
+                    serializer.addMarbleMarket();
                     for(Player player: Game.getInstance().getPlayers()) {
                         serializer.addFaithTrack((Person) player);
                     }

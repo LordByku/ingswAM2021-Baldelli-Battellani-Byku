@@ -40,9 +40,7 @@ public class ManageWarehouse extends ClientState {
                 switch (type) {
                     case "update": {
                         JsonObject message = ClientParser.getInstance().getMessage(json).getAsJsonObject();
-                        System.out.println(message);
                         client.getModel().updateModel(message);
-                        System.out.println(ClientParser.getInstance().serialize(client.getModel()));
 
                         client.setState(new EndTurn());
                         break;

@@ -79,42 +79,46 @@ public class CollectResources extends ClientState {
 
     @Override
     public void handleUserMessage(Client client, String line) {
-        String[] words = Strings.splitLine(line);
-
-        if(words.length != 2) {
-            CLI.getInstance().marbleMarketSelection();
+        if(line.equals("x")) {
+            client.setState(new StartTurn());
         } else {
-            String sel = words[0];
-            if(!sel.equals("row") && !sel.equals("col")) {
+            String[] words = Strings.splitLine(line);
+
+            if(words.length != 2) {
                 CLI.getInstance().marbleMarketSelection();
             } else {
-                try {
-                    index = Integer.parseInt(words[1]);
-                    MarbleMarket market = client.getModel().getGameZone().getMarbleMarket();
-                    if(sel.equals("row")) {
-                        rowColSel = true;
-                        if(index < 0 || index >= market.getRows()) {
-                            CLI.getInstance().marbleMarketSelection();
-                            return;
-                        }
-                    } else {
-                        rowColSel = false;
-                        if(index < 0 || index >= market.getColumns()) {
-                            CLI.getInstance().marbleMarketSelection();
-                            return;
-                        }
-                    }
-                    JsonObject message = new JsonObject();
-                    message.addProperty("rowColSel", rowColSel);
-                    message.addProperty("index", index);
-
-                    JsonObject json = new JsonObject();
-                    json.addProperty("command", "market");
-                    json.add("message", message);
-
-                    client.write(json.toString());
-                } catch (NumberFormatException e) {
+                String sel = words[0];
+                if(!sel.equals("row") && !sel.equals("col")) {
                     CLI.getInstance().marbleMarketSelection();
+                } else {
+                    try {
+                        index = Integer.parseInt(words[1]);
+                        MarbleMarket market = client.getModel().getGameZone().getMarbleMarket();
+                        if(sel.equals("row")) {
+                            rowColSel = true;
+                            if(index < 0 || index >= market.getRows()) {
+                                CLI.getInstance().marbleMarketSelection();
+                                return;
+                            }
+                        } else {
+                            rowColSel = false;
+                            if(index < 0 || index >= market.getColumns()) {
+                                CLI.getInstance().marbleMarketSelection();
+                                return;
+                            }
+                        }
+                        JsonObject message = new JsonObject();
+                        message.addProperty("rowColSel", rowColSel);
+                        message.addProperty("index", index);
+
+                        JsonObject json = new JsonObject();
+                        json.addProperty("command", "market");
+                        json.add("message", message);
+
+                        client.write(json.toString());
+                    } catch (NumberFormatException e) {
+                        CLI.getInstance().marbleMarketSelection();
+                    }
                 }
             }
         }
