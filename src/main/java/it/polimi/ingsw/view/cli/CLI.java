@@ -106,6 +106,21 @@ public class CLI {
         System.out.println("Insert the index of the leader card you want to play or press [x] to go back:");
     }
 
+    public void purchaseDevCard(){
+        System.out.println("Insert the rowIndex and the columnIndex of the card you want to buy and the index of the deck you want to place the card in; or press [x] to go back:");
+        System.out.println("[x]back\nrowIndex - columnIndex - deckIndex");
+    }
+
+    public void spendResourcesWarehouse(ArrayList<ConcreteResourceSet> warehouse, ArrayList<Integer> playedLeaderCards, ConcreteResourceSet strongBox){
+        System.out.println("WAREHOUSE");
+        showWarehouse(warehouse,playedLeaderCards);
+        System.out.println("STRONGBOX");
+        showStrongbox(strongBox);
+
+        System.out.println("Select resources you want to spend from each depot of warehouse: [depotIndex] [num of resources to select] [depotIndex] [num of resources to select]...");
+        System.out.println("Select resources you want to spend from strongbox: [num of resources to select] [type of resource] [num of resources to select] [type of resource]...");
+    }
+
     public void waitInitDiscard() {
         System.out.println("Waiting for other players to discard their Leader Cards...");
     }
@@ -245,5 +260,12 @@ public class CLI {
 
     public void playLeaderCardSuccess() {
         System.out.println("Leader Card successfully activated");
+    }
+
+    public void purchaseDevCardSuccess(){
+        System.out.println("Development Card successfully purchased");
+    }
+    public void spendResourcesSuccess(){
+        System.out.println("Resources spent successfully");
     }
 }
