@@ -104,10 +104,9 @@ public class DevCard implements Scoring, Cloneable {
      * @throws InvalidBoardException if the board is null
      */
     public void play(Board board, int deckIndex) throws InvalidBoardException {
-        if(!canPlay(board, deckIndex)) {
+        if(board == null){
             throw new InvalidBoardException();
         }
-
         board.getDevelopmentCardArea().addDevCard(this, deckIndex);
         board.getProductionArea().addDevCardProduction(productionPower, deckIndex);
     }

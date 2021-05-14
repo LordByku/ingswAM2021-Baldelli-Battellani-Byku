@@ -8,7 +8,8 @@ import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.network.server.GameStateSerializer;
 import it.polimi.ingsw.network.server.ServerParser;
-import it.polimi.ingsw.parsing.BoardParser;
+
+import java.util.function.Consumer;
 
 public class SpendResources extends ServerState{
     int deckIndex;
@@ -39,13 +40,13 @@ public class SpendResources extends ServerState{
                     jsonObject.addProperty("status","ok");
                     jsonObject.addProperty("type","confirm");
                     clientHandler.confirm();
-                    GameStateSerializer gameStateSerializer = new GameStateSerializer(clientHandler.getPerson().getNickname());
-                    gameStateSerializer.addDevCards(clientHandler.getPerson());
-                    gameStateSerializer.addWarehouse(clientHandler.getPerson());
-                    gameStateSerializer.addStrongbox(clientHandler.getPerson());
-                    gameStateSerializer.addCardMarket();
-                    clientHandler.ok("update",gameStateSerializer.getMessage());
-
+                    Consumer<GameStateSerializer> lambda = (serializer) -> {
+                        serializer.addDevCards(clientHandler.getPerson());
+                        serializer.addWarehouse(clientHandler.getPerson());
+                        serializer.addStrongbox(clientHandler.getPerson());
+                        serializer.addCardMarket();
+                    };
+                    clientHandler.updateGameState(lambda);
                     clientHandler.setState(new EndTurn());
                 }
                 else{

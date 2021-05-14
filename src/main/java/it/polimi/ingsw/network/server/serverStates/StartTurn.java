@@ -24,6 +24,7 @@ public class StartTurn extends ServerState {
                     int deckIndex = message.get("deckIndex").getAsInt();
 
                     if(Controller.getInstance().purchase(clientHandler.getPerson(), row,column,deckIndex)){
+                        clientHandler.confirm();
                         clientHandler.setState(new SpendResources(deckIndex));
                     }
                     else{

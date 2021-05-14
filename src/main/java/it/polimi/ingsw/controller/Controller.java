@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.game.*;
 import it.polimi.ingsw.model.gameZone.MarbleMarket;
 import it.polimi.ingsw.model.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.playerBoard.Board;
+import it.polimi.ingsw.model.playerBoard.InvalidBoardException;
 import it.polimi.ingsw.model.playerBoard.faithTrack.VRSObserver;
 import it.polimi.ingsw.model.playerBoard.resourceLocations.InvalidDepotIndexException;
 import it.polimi.ingsw.model.playerBoard.resourceLocations.InvalidResourceLocationOperationException;
@@ -72,12 +73,23 @@ public class Controller {
         }
     }
 
-    public void addResourcesToStrongbox(Person person, ConcreteResourceSet resources){
-        person.getBoard().getStrongBox().addResources(resources);
+    public boolean addResourcesToStrongbox(Person person, ConcreteResourceSet resources){
+        try{
+            person.getBoard().getStrongBox().addResources(resources);
+            return true;
+        }catch (InvalidResourceSetException e){
+            return false;
+        }
     }
 
-    public void removeResourcesFromStrongbox(Person person, ConcreteResourceSet resources){
-        person.getBoard().getStrongBox().removeResources(resources);
+    public boolean removeResourcesFromStrongbox(Person person, ConcreteResourceSet resources){
+        try{
+            person.getBoard().getStrongBox().removeResources(resources);
+            return true;
+        }
+        catch (InvalidResourceSetException | InvalidResourceLocationOperationException e){
+            return false;
+        }
     }
 
     public boolean purchase(Person person, int row, int column, int deckIndex){
@@ -99,8 +111,13 @@ public class Controller {
             set.union(crs);
         }
         set.union(strongboxSet);
-        if(!set.equals(cardToBuy.getReqResources()))
+
+        if(!(set.contains(cardToBuy.getReqResources())) && (cardToBuy.getReqResources().contains(set))){
+            System.out.println("set: "+ set.getCLIString());
+            System.out.println("reqResources: " + cardToBuy.getReqResources().getCLIString());
+            System.out.println("set != reqResources");
             return false;
+        }
 
         try {
             //remove resources from warehouse
@@ -109,11 +126,16 @@ public class Controller {
             }
 
             //remove resources from strongbox
-            playerBoard.getStrongBox().removeResources(strongboxSet);
-            cardToBuy.play(playerBoard, deckIndex);
-            return true;
+            boolean boo = removeResourcesFromStrongbox(person,strongboxSet);
+            try{
+                cardToBuy.play(playerBoard, deckIndex);
+                return true;
+            }catch (InvalidBoardException e){
+                return false;
+            }
         }
         catch ( InvalidDepotIndexException | InvalidResourceSetException | InvalidResourceLocationOperationException e){
+            System.out.println("Exception");
             return false;
         }
 

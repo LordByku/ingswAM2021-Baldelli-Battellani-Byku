@@ -108,18 +108,25 @@ public class CLI {
     }
 
     public void purchaseDevCard(){
+
         System.out.println("Insert the rowIndex and the columnIndex of the card you want to buy and the index of the deck you want to place the card in; or press [x] to go back:");
         System.out.println("[x]back\nrowIndex - columnIndex - deckIndex");
     }
 
-    public void spendResourcesWarehouse(ArrayList<ConcreteResourceSet> warehouse, ArrayList<Integer> playedLeaderCards, ConcreteResourceSet strongBox){
+    public void showWarehouseAndStrongbox(ArrayList<ConcreteResourceSet> warehouse, ArrayList<Integer> playedLeaderCards, ConcreteResourceSet strongBox){
         System.out.println("WAREHOUSE");
         showWarehouse(warehouse,playedLeaderCards);
         System.out.println("STRONGBOX");
         showStrongbox(strongBox);
+    }
 
-        System.out.println("Select resources you want to spend from each depot of warehouse: [depotIndex] [num of resources to select] [depotIndex] [num of resources to select]...");
-        System.out.println("Select resources you want to spend from strongbox: [num of resources to select] [type of resource] [num of resources to select] [type of resource]...");
+    public void spendResourcesStrongbox(){
+
+        System.out.println("Select resources you want to spend from strongbox: [num of resources to select] [type of resource]. Or type \"warehouse\" to select resources from warehouse.");
+    }
+
+    public void spendResourcesWarehouse(){
+        System.out.println("Select resources you want to spend from each depot of warehouse: [depotIndex] [num of resources to select]. Or type \"strongbox\" to select resources from strongbox.");
     }
 
     public void waitInitDiscard() {

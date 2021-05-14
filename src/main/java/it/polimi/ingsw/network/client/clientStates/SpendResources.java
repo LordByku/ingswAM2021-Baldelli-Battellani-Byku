@@ -1,7 +1,6 @@
 package it.polimi.ingsw.network.client.clientStates;
 
 import com.google.gson.JsonObject;
-import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.ClientParser;
@@ -45,16 +44,15 @@ public abstract class SpendResources extends ClientState{
         }
     }
 
-    public void write(Client client, ConcreteResourceSet toSpend, ConcreteResourceSet[] warehouse, ConcreteResourceSet strongbox){
-        if(toSpend.size()==0) {
-            JsonObject jsonObject = new JsonObject();
-            JsonObject spentResources = new JsonObject();
-            spentResources.add("warehouse", ClientParser.getInstance().serialize(warehouse));
-            spentResources.add("strongbox", ClientParser.getInstance().serialize(strongbox));
-            jsonObject.addProperty("command", "spentResources");
-            jsonObject.add("spentResources", spentResources);
-            client.write(jsonObject.toString());
-        }
+    public void write(Client client, ConcreteResourceSet[] warehouse, ConcreteResourceSet strongbox){
+        JsonObject jsonObject = new JsonObject();
+        JsonObject spentResources = new JsonObject();
+        spentResources.add("warehouse", ClientParser.getInstance().serialize(warehouse));
+        spentResources.add("strongbox", ClientParser.getInstance().serialize(strongbox));
+        jsonObject.addProperty("command", "spentResources");
+        jsonObject.add("spentResources", spentResources);
+        client.write(jsonObject.toString());
+
     }
 
     @Override

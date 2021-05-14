@@ -14,6 +14,7 @@ public class SpendResourcesStrongbox extends SpendResources{
     ConcreteResourceSet toSpend;
 
     public SpendResourcesStrongbox(ConcreteResourceSet[] warehouse, ConcreteResourceSet strongbox, ConcreteResourceSet toSpend){
+        CLI.getInstance().spendResourcesStrongbox();
         this.warehouse = warehouse;
         this.strongbox = strongbox;
         this.toSpend = toSpend;
@@ -39,7 +40,9 @@ public class SpendResourcesStrongbox extends SpendResources{
                     if(toSpend.contains(set)){
                         strongbox.addResource(resource,numOfResources);
                         toSpend.removeResource(resource,numOfResources);
-                        write(client, toSpend,warehouse,strongbox);
+                        if(toSpend.size()==0) {
+                            write(client, warehouse, strongbox);
+                        }
                     }
                 }
             }
