@@ -1,6 +1,5 @@
 package it.polimi.ingsw.network.client.clientStates;
 
-import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
@@ -14,7 +13,6 @@ public class SpendResourcesStrongbox extends SpendResources{
     ConcreteResourceSet toSpend;
 
     public SpendResourcesStrongbox(ConcreteResourceSet[] warehouse, ConcreteResourceSet strongbox, ConcreteResourceSet toSpend){
-        CLI.getInstance().spendResourcesStrongbox();
         this.warehouse = warehouse;
         this.strongbox = strongbox;
         this.toSpend = toSpend;
@@ -22,7 +20,8 @@ public class SpendResourcesStrongbox extends SpendResources{
 
     @Override
     public void handleUserMessage(Client client, String line) {
-
+        CLI.getInstance().toSpend(toSpend);
+        CLI.getInstance().spendResourcesStrongbox();
         String[] arr = line.split(" ");
         if(arr.length==1){
             if(line.equals("warehouse")){

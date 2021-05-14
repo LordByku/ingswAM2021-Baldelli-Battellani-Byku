@@ -19,7 +19,6 @@ public class PurchaseDevCard extends ClientState {
     public PurchaseDevCard(){
         CLI.getInstance().purchaseDevCard();
     }
-
     @Override
     public void handleServerMessage(Client client, String line) {
         JsonObject json = ClientParser.getInstance().parse(line).getAsJsonObject();
@@ -57,7 +56,7 @@ public class PurchaseDevCard extends ClientState {
     @Override
     public void handleUserMessage(Client client, String line) {
         if(line.equals("x")){
-            client.setState(new StartTurn());
+            client.setState(new PurchaseMenu());
         }
         else{
             try {

@@ -24,7 +24,7 @@ public class CardMarketDeckSelection extends ClientState {
     @Override
     public void handleUserMessage(Client client, String line) {
         if(line.equals("x")) {
-            client.setState(new ViewState(returnStateSupplier));
+            client.setState(returnStateSupplier.get());
         } else {
             CardMarket cardMarket = client.getModel().getGameZone().getCardMarket();
 
@@ -35,12 +35,10 @@ public class CardMarketDeckSelection extends ClientState {
                 try {
                     int row = Integer.parseInt(words[0]), column = Integer.parseInt(words[1]);
 
-                    if(row < 0 || row >= CardLevel.values().length || column < 0 || column >= CardColour.values().length) {
-                        CLI.getInstance().cardMarket(cardMarket);
-                    } else {
+                    if (row >= 0 && row < CardLevel.values().length && column >= 0 && column < CardColour.values().length) {
                         CLI.getInstance().showDevCard(cardMarket.getDevCard(row, column));
-                        CLI.getInstance().cardMarket(cardMarket);
                     }
+                    CLI.getInstance().cardMarket(cardMarket);
                 } catch (NumberFormatException e) {
                     CLI.getInstance().cardMarket(cardMarket);
                 }

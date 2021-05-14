@@ -35,7 +35,7 @@ public class ViewState extends ClientState {
                     }
                     case 2: {
                         CLI.getInstance().cardMarket(client.getModel().getGameZone().getCardMarket());
-                        client.setState(new CardMarketDeckSelection(returnStateSupplier));
+                        client.setState(new CardMarketDeckSelection(() -> new ViewState(this.returnStateSupplier)));
                         break;
                     }
                     case 3: {

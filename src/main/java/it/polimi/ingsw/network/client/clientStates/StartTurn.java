@@ -25,7 +25,7 @@ public class StartTurn extends ClientState {
                     break;
                 }
                 case 2: {
-                    client.setState(new PurchaseDevCard());
+                    client.setState(new PurchaseMenu());
                     break;
                 }
                 case 3: {

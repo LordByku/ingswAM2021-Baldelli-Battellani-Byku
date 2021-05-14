@@ -121,14 +121,20 @@ public class CLI {
         showStrongbox(strongBox);
     }
 
+    public void toSpend(ConcreteResourceSet toSpend){
+        System.out.println("Resources to spend: " + toSpend.getCLIString());
+    }
+
+    public void spendResourcesWarehouse(){
+        System.out.println("Select resources you want to spend from warehouse: [depotIndex] [num of resources to select]. Or type \"strongbox\" to select resources from strongbox.");
+    }
+
     public void spendResourcesStrongbox(){
 
         System.out.println("Select resources you want to spend from strongbox: [num of resources to select] [type of resource]. Or type \"warehouse\" to select resources from warehouse.");
     }
 
-    public void spendResourcesWarehouse(){
-        System.out.println("Select resources you want to spend from each depot of warehouse: [depotIndex] [num of resources to select]. Or type \"strongbox\" to select resources from strongbox.");
-    }
+
 
     public void waitInitDiscard() {
         System.out.println("Waiting for other players to discard their Leader Cards...");
@@ -360,5 +366,11 @@ public class CLI {
 
     public void activateProductionSelection () {
         System.out.println("Select the productions: ");
+    }
+
+    public void purchaseMenu() {
+        System.out.println("[0] Show Card Market");
+        System.out.println("[1] Select Card to Purchase");
+        System.out.println("[x] Back");
     }
 }
