@@ -405,6 +405,11 @@ public class Controller {
         VRSObserver.getInstance().updateVRS();
     }
 
+    public void Production ()
+    {
+        //TODO
+    }
+
     public void endTurn(Person person) {
         try {
             person.endTurn();

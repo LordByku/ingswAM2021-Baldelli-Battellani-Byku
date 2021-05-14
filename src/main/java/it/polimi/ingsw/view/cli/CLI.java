@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.model.devCards.DevCard;
+import it.polimi.ingsw.model.devCards.DevCardDeck;
 import it.polimi.ingsw.model.leaderCards.DepotLeaderCard;
 import it.polimi.ingsw.model.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.leaderCards.LeaderCardType;
@@ -318,5 +319,46 @@ public class CLI {
         System.out.println("[3] Discard Leader Card");
         System.out.println("[0] Check board state");
         System.out.println("Insert your choice:");
+    }
+
+    public void selectDevCardDeck() {
+        System.out.println("Select the area to check or press [x] to go back:" );
+    }
+
+    public void showDevCardDeck(ArrayList<Integer> devCardIDs){
+        //Maybe to be adjusted
+
+        DevCardDeck deck = new DevCardDeck();
+
+        for(int i : devCardIDs)
+            deck.add(DevCardsParser.getInstance().getCard(i));
+        System.out.println(deck.getCLIString());
+    }
+
+    public void productionSelection(ArrayList<ArrayList<Integer>> devCardDecks, ArrayList<Integer> playedLeaderCards) {
+
+        System.out.println("[0] " + LocalConfig.getInstance().getDefaultProductionPower().getCLIString());
+        if(!devCardDecks.get(0).isEmpty()) {
+            System.out.println("[1] " + DevCardsParser.getInstance().getCard(devCardDecks.get(0).get(devCardDecks.get(0).size()-1)).getProductionPower().getCLIString());
+        }
+        if(!devCardDecks.get(1).isEmpty())
+            System.out.println("[2] " + DevCardsParser.getInstance().getCard(devCardDecks.get(1).get(devCardDecks.get(1).size()-1)).getProductionPower().getCLIString());
+        if(!devCardDecks.get(2).isEmpty())
+            System.out.println("[3] " + DevCardsParser.getInstance().getCard(devCardDecks.get(2).get(devCardDecks.get(2).size()-1)).getProductionPower().getCLIString());
+
+
+        for (int i =0, index = 4; i<playedLeaderCards.size();i++){
+            LeaderCard leaderCard = LeaderCardsParser.getInstance().getCard(playedLeaderCards.get(i));
+            if(leaderCard.isType(LeaderCardType.PRODUCTION))
+                System.out.println("["+(index++)+"] " + leaderCard.getEffectString());
+
+        }
+
+
+        System.out.println("[x] Back");
+    }
+
+    public void activateProductionSelection () {
+        System.out.println("Select the productions: ");
     }
 }
