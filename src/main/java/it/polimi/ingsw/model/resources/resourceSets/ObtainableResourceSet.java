@@ -108,7 +108,12 @@ public class ObtainableResourceSet extends TransactionResourceSet {
 
         return concreteResourceSet.contains(currentConcreteResourceSet);
     }
+
     public String getCLIString() {
-        return super.getCLIString() + faithPoints + Strings.getFaithPointsSymbol() + " ";
+        if(faithPoints > 0) {
+            return super.getCLIString() + faithPoints + Strings.getFaithPointsSymbol() + " ";
+        } else {
+            return super.getCLIString();
+        }
     }
 }

@@ -49,6 +49,13 @@ public class ClientHandler implements Runnable {
         out.println(jsonMessage.toString());
     }
 
+    public void confirm(){
+        JsonObject jsonMessage = new JsonObject();
+        jsonMessage.addProperty("status", "ok");
+        jsonMessage.addProperty("type", "confirm");
+        out.println(jsonMessage.toString());
+    }
+
     public void broadcast(String type, JsonObject message) {
         server.broadcast(type, message);
     }

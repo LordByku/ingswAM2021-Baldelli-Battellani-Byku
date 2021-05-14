@@ -25,47 +25,37 @@ public class GameStateSerializer {
         return message.deepCopy();
     }
 
-    public void addToPlayers(Person person, String property, JsonElement element){
-        if(!message.has("players")){
+    public void addPlayerDetails(Person person) {
+        JsonObject player = new JsonObject();
+        player.addProperty("nickname", person.getNickname());
+        player.addProperty("inkwell", person.isActivePlayer());
+
+        if(!message.has("players")) {
             JsonArray players = new JsonArray();
-            JsonObject player = new JsonObject();
-            JsonObject board = new JsonObject();
-            board.add(property,element);
-            player.addProperty("nickname", person.getNickname());
-            player.addProperty("inkwell", person.isActivePlayer());
-            player.add("board", board);
-            players.add(player);
             message.add("players", players);
         }
-        else{
-            JsonArray players = message.getAsJsonArray("players");
-            boolean done = false;
-            for(int i=0; i<players.size() && !done; i++) {
-                if (players.get(i).getAsJsonObject().get("nickname").getAsString().equals(person.getNickname())) {
-                    done = true;
-                    JsonObject player = players.get(i).getAsJsonObject();
-                    if (player.has("board")) {
-                        player.get("board").getAsJsonObject().add(property,element);
-                    }
-                    else{
-                        JsonObject board = new JsonObject();
-                        board.add(property,element);
-                        player.add("board", board);
-                    }
+        message.getAsJsonArray("players").add(player);
+    }
+
+    public void addToPlayers(Person person, String property, JsonElement element){
+        addPlayerDetails(person);
+
+        JsonArray players = message.getAsJsonArray("players");
+        for(int i=0; i<players.size(); i++) {
+            if (players.get(i).getAsJsonObject().get("nickname").getAsString().equals(person.getNickname())) {
+                JsonObject player = players.get(i).getAsJsonObject();
+                if (player.has("board")) {
+                    player.get("board").getAsJsonObject().add(property,element);
+                } else {
+                    JsonObject board = new JsonObject();
+                    board.add(property,element);
+                    player.add("board", board);
                 }
-            }
-            if(!done){
-                JsonObject player = new JsonObject();
-                JsonObject board = new JsonObject();
-                board.add(property,element);
-                player.addProperty("nickname", person.getNickname());
-                player.addProperty("inkwell", person.isActivePlayer());
-                player.add("board", board);
-                players.add(player);
+
+                return;
             }
         }
     }
-
 
     public void addMarbleMarket(){
         if(!message.has("gameZone")){
@@ -77,6 +67,7 @@ public class GameStateSerializer {
             message.getAsJsonObject("gameZone").add("marbleMarket",marbleMarket());
         }
     }
+
     public void addCardMarket() {
         if (!message.has("gameZone")) {
             JsonObject gameZone = new JsonObject();
@@ -95,44 +86,31 @@ public class GameStateSerializer {
     public void addWarehouse(Person person){
         addToPlayers(person,"warehouse",warehouse(person));
     }
+
     public void addStrongbox(Person person){
         String strongboxJson = gson.toJson(person.getBoard().getStrongBox().getResources());
         addToPlayers(person,"strongbox", ServerParser.getInstance().parseLine(strongboxJson));
     }
+
     public void addDevCards(Person person){
         message.add("devCards",devCards(person));
     }
+
     public void addPlayedLeaderCards(Person person){
         addToPlayers(person,"playedLeaderCards",playedLeaderCards(person));
     }
+
     public void addHandLeaderCards(Person person){
         addToPlayers(person,"handLeaderCards",handLeaderCards(person));
     }
+
     public void addBoard(Person person){
-        if(!message.has("players")){
-            JsonArray players = new JsonArray();
-            JsonObject player = new JsonObject();
-            player.addProperty("nickname", person.getNickname());
-            player.addProperty("inkwell", person.isActivePlayer());
-            player.add("board", board(person));
-            players.add(player);
-            message.add("players", players);
-        }
-        else{
-            JsonArray players = message.getAsJsonArray("players");
-            boolean done =false;
-            for(int i=0; i<players.size() && !done; i++){
-                if(players.get(i).getAsJsonObject().get("nickname").getAsString().equals(person.getNickname())){
-                    done =true;
-                    players.get(i).getAsJsonObject().add("board", board(person));
-                }
-            }
-            if(!done){
-                JsonObject player = new JsonObject();
-                player.addProperty("nickname", person.getNickname());
-                player.addProperty("inkwell", person.isActivePlayer());
-                player.add("board", board(person));
-                players.add(player);
+        addPlayerDetails(person);
+
+        JsonArray players = message.getAsJsonArray("players");
+        for(int i=0; i<players.size(); i++){
+            if(players.get(i).getAsJsonObject().get("nickname").getAsString().equals(person.getNickname())){
+                players.get(i).getAsJsonObject().add("board", board(person));
             }
         }
     }

@@ -5,14 +5,9 @@ import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.ClientParser;
 import it.polimi.ingsw.view.cli.CLI;
 
-import java.util.function.Supplier;
-
-public class PlayLeaderCard extends ClientState {
-    private final Supplier<ClientState> returnStateSupplier;
-
-    public PlayLeaderCard(Supplier<ClientState> returnStateSupplier) {
-        CLI.getInstance().playLeaderCard();
-        this.returnStateSupplier = returnStateSupplier;
+public class EndTurn extends ClientState {
+    public EndTurn() {
+        CLI.getInstance().endTurn();
     }
 
     @Override
@@ -25,25 +20,27 @@ public class PlayLeaderCard extends ClientState {
             case "error": {
                 String message = ClientParser.getInstance().getMessage(json).getAsString();
                 CLI.getInstance().serverError(message);
-                CLI.getInstance().playLeaderCard();
+                CLI.getInstance().swapFromDepots();
                 break;
             }
             case "ok": {
                 String type = ClientParser.getInstance().getType(json);
+
                 switch (type) {
                     case "update": {
                         JsonObject message = ClientParser.getInstance().getMessage(json).getAsJsonObject();
                         client.getModel().updateModel(message);
 
-                        CLI.getInstance().playLeaderCardSuccess();
-                        CLI.getInstance().showLeaderCards(client.getModel().getPlayer(client.getNickname()).getBoard().getHandLeaderCards());
-                        CLI.getInstance().playLeaderCard();
+                        if(!client.getModel().getPlayer(client.getNickname()).hasInkwell()) {
+                            client.setState(new WaitTurn());
+                        }
                         break;
                     }
-                    default:{
+                    default: {
                         CLI.getInstance().unexpected();
                     }
                 }
+
                 break;
             }
             default: {
@@ -54,27 +51,34 @@ public class PlayLeaderCard extends ClientState {
 
     @Override
     public void handleUserMessage(Client client, String line) {
-        if(line.equals("x")){
-            client.setState(returnStateSupplier.get());
-        } else {
-            try {
-                int selection = Integer.parseInt(line);
-                int numOfCards = client.getModel().getPlayer(client.getNickname()).getBoard().getHandLeaderCards().size();
+        try {
+            int selection = Integer.parseInt(line);
 
-                if(selection >= 0 && selection < numOfCards) {
+            switch (selection) {
+                case 1: {
                     JsonObject jsonObject = new JsonObject();
-                    JsonObject message = new JsonObject();
-                    message.addProperty("action", "play");
-                    message.addProperty("leaderCard", selection);
-                    jsonObject.addProperty("command", "leaderCard");
-                    jsonObject.add("message", message);
+                    jsonObject.addProperty("command", "endTurn");
+
                     client.write(jsonObject.toString());
-                } else {
-                    CLI.getInstance().discardLeaderCard();
+                    break;
                 }
-            } catch (NumberFormatException e) {
-                CLI.getInstance().discardLeaderCard();
+                case 2: {
+                    CLI.getInstance().showLeaderCards(client.getModel().getPlayer(client.getNickname()).getBoard().getHandLeaderCards());
+                    client.setState(new PlayLeaderCard(EndTurn::new));
+                    break;
+                }
+                case 3: {
+                    CLI.getInstance().showLeaderCards(client.getModel().getPlayer(client.getNickname()).getBoard().getHandLeaderCards());
+                    client.setState(new DiscardLeaderCard(EndTurn::new));
+                    break;
+                }
+                case 0: {
+                    client.setState(new ViewState(EndTurn::new));
+                    break;
+                }
             }
+        } catch (NumberFormatException e) {
+            CLI.getInstance().endTurn();
         }
     }
 }

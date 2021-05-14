@@ -1,11 +1,13 @@
 package it.polimi.ingsw.model.resources;
 
+import it.polimi.ingsw.view.cli.CLIPrintable;
+
 import java.util.HashSet;
 
 /**
  * ChoiceSet represents a set of resources to choose from
  */
-public class ChoiceSet implements Cloneable {
+public class ChoiceSet implements Cloneable, CLIPrintable {
     /**
      * set contains the resources that can be chosen
      */
@@ -73,5 +75,25 @@ public class ChoiceSet implements Cloneable {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public String getCLIString() {
+        StringBuilder result = new StringBuilder("[");
+
+        int count = 0;
+
+        for(ConcreteResource concreteResource: ConcreteResource.values()) {
+            if(containsResource(concreteResource)) {
+                if(count++ > 0) {
+                    result.append(", ");
+                }
+                result.append(concreteResource.getExtendedCLIString()).append(" ").append(concreteResource.getCLIString());
+            }
+        }
+
+        result.append("]");
+
+        return result.toString();
     }
 }

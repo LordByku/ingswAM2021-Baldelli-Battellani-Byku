@@ -6,6 +6,8 @@ import it.polimi.ingsw.model.resources.FullChoiceSet;
 import it.polimi.ingsw.model.resources.InvalidResourceException;
 import org.junit.Test;
 
+import java.awt.*;
+
 import static org.junit.Assert.*;
 
 public class ChoiceSetTest {
@@ -76,5 +78,21 @@ public class ChoiceSetTest {
         assertFalse(choiceSet2.containsResource(ConcreteResource.STONE));
         assertFalse(choiceSet2.containsResource(ConcreteResource.SHIELD));
         assertFalse(choiceSet2.containsResource(ConcreteResource.SERVANT));
+    }
+
+    @Test
+    public void getCLIStringTest() {
+        ChoiceSet choiceSet = new ChoiceSet();
+
+        System.out.println(choiceSet.getCLIString());
+
+        choiceSet.addChoice(ConcreteResource.COIN);
+        choiceSet.addChoice(ConcreteResource.SHIELD);
+
+        System.out.println(choiceSet.getCLIString());
+
+        choiceSet = new FullChoiceSet();
+
+        System.out.println(choiceSet.getCLIString());
     }
 }

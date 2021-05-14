@@ -50,4 +50,8 @@ public class WhiteConversionLeaderCard extends LeaderCard {
     public String getEffectString() {
         return MarbleColour.WHITE.getCLIString() + " = " + type.getCLIString();
     }
+
+    public ConcreteResource getType() {
+        return type;
+    }
 }
