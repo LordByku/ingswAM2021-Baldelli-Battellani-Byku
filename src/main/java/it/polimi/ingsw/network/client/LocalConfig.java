@@ -3,8 +3,10 @@ package it.polimi.ingsw.network.client;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import it.polimi.ingsw.model.devCards.ProductionDetails;
 import it.polimi.ingsw.model.playerBoard.faithTrack.CheckPoint;
 import it.polimi.ingsw.model.playerBoard.faithTrack.VaticanReportSection;
+import it.polimi.ingsw.parsing.Parser;
 
 import java.util.ArrayList;
 
@@ -69,5 +71,9 @@ public class LocalConfig {
             checkPoints.add(ClientParser.getInstance().getCheckPoint((JsonObject) checkPointJson));
         }
         return checkPoints;
+    }
+
+    public ProductionDetails getDefaultProductionPower() {
+        return Parser.getInstance().parseProductionDetails(config.getAsJsonObject("board").getAsJsonObject("defaultProductionPower"));
     }
 }

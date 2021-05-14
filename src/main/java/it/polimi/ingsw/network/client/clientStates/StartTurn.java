@@ -29,7 +29,9 @@ public class StartTurn extends ClientState {
                     break;
                 }
                 case 3: {
-                    client.setState(new ActivateProductions());
+                    CLI.getInstance().productionSelection(client.getModel().getPlayer(client.getNickname()).getBoard().getDevCardDecks(), client.getModel().getPlayer(client.getNickname()).getBoard().getPlayedLeaderCards());
+                    CLI.getInstance().activateProductionSelection();
+                    client.setState(new ProductionSelection());
                     break;
                 }
                 case 4: {

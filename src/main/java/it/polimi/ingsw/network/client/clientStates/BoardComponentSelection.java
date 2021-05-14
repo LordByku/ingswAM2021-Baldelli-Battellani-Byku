@@ -45,7 +45,10 @@ public class BoardComponentSelection extends ClientState {
                         CLI.getInstance().boardComponentSelection();
                         break;
                     case 4:
-                        // TODO
+                        client.setState(new ShowDevCards(returnStateSupplier, nickname));
+                        //CLI.getInstance().selectDevCardDeck();
+//                        CLI.getInstance().boardComponentSelection();
+
                         break;
                     case 5:
                         CLI.getInstance().showLeaderCards(playerBoard.getPlayedLeaderCards());

@@ -12,6 +12,7 @@ public class Board implements LocalModelElement {
     private FaithTrack faithTrack;
     private ArrayList<ConcreteResourceSet> warehouse;
     private ConcreteResourceSet strongbox;
+
     private ArrayList<ArrayList<Integer>> devCards;
     private ArrayList<Integer> playedLeaderCards;
     private ArrayList<Integer> handLeaderCards;
@@ -79,4 +80,14 @@ public class Board implements LocalModelElement {
     public ConcreteResourceSet getStrongBox() {
         return strongbox;
     }
+
+    public ArrayList<Integer> getDevCardDeck(int deckIndex) {
+        return devCards.get(deckIndex);
+    }
+
+    public ArrayList<ArrayList<Integer>> getDevCardDecks() {
+        return devCards;
+    }
+
+
 }
