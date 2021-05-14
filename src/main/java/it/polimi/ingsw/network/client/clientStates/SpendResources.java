@@ -37,6 +37,7 @@ public abstract class SpendResources extends ClientState{
                         CLI.getInstance().unexpected();
                     }
                 }
+                break;
             }
             default: {
                 CLI.getInstance().unexpected();
