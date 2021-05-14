@@ -139,6 +139,8 @@ public class DevCardTest {
     @Test
     public void getCLIStringTest() {
         ArrayList<DevCard> devCards = new ArrayList<>();
+        DevCardDeck devCardDeck = new DevCardDeck();
+
 
         for(int i = 0; i < 48; ++i) {
             DevCard devCard = DevCardsParser.getInstance().getCard(i);
@@ -149,6 +151,52 @@ public class DevCardTest {
         for(DevCard devCard: devCards) {
             System.out.println(devCard.getCLIString());
         }
+
+
     }
 
+    @Test
+    public void getCLIStringsTest() {
+        ArrayList<DevCard> devCards = new ArrayList<>();
+        DevCardDeck devCardDeck = new DevCardDeck();
+
+        CardColour blue = CardColour.BLUE;
+        CardColour yellow = CardColour.YELLOW;
+
+        ConcreteResourceSet concreteResourceSet1 = new ConcreteResourceSet();
+        concreteResourceSet1.addResource(ConcreteResource.COIN, 2);
+        ConcreteResourceSet concreteResourceSet2 = new ConcreteResourceSet();
+        concreteResourceSet2.addResource(ConcreteResource.STONE, 2);
+        concreteResourceSet2.addResource(ConcreteResource.SHIELD);
+
+        ConcreteResourceSet concreteResourceSet3 = new ConcreteResourceSet();
+        concreteResourceSet3.addResource(ConcreteResource.SHIELD);
+        ConcreteResourceSet concreteResourceSet4 = new ConcreteResourceSet();
+        concreteResourceSet4.addResource(ConcreteResource.SERVANT);
+
+
+        ChoiceResourceSet choiceResourceSet1 = new ChoiceResourceSet();
+        choiceResourceSet1.addResource(ConcreteResource.SHIELD);
+        ChoiceResourceSet choiceResourceSet2 = new ChoiceResourceSet();
+        choiceResourceSet2.addResource(ConcreteResource.SERVANT);
+
+        SpendableResourceSet input1 = new SpendableResourceSet(choiceResourceSet1);
+        ObtainableResourceSet output1 = new ObtainableResourceSet(choiceResourceSet2);
+        ProductionDetails details1 = new ProductionDetails(input1,output1);
+
+        DevCard devCard2 = new DevCard(concreteResourceSet2,yellow,CardLevel.I,details1,6, 1015);
+        devCard2.addCLISupport();
+        DevCard devCard3 = new DevCard(concreteResourceSet1,blue,CardLevel.II,details1,3, 1016);
+        devCard3.addCLISupport();
+        DevCard devCard4 = new DevCard(concreteResourceSet2,yellow,CardLevel.III,details1,1, 1017);
+
+        devCardDeck.add(devCard2);
+        devCardDeck.add(devCard3);
+        devCardDeck.add(devCard4);
+
+
+        System.out.println(devCardDeck.getCLIString());
+
+
+    }
 }

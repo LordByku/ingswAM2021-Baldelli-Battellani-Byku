@@ -1,11 +1,17 @@
 package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.model.devCards.DevCard;
+import it.polimi.ingsw.model.devCards.DevCardDeck;
+import it.polimi.ingsw.model.game.Game;
+import it.polimi.ingsw.model.game.Person;
+import it.polimi.ingsw.model.game.Player;
 import it.polimi.ingsw.model.leaderCards.DepotLeaderCard;
 import it.polimi.ingsw.model.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.leaderCards.LeaderCardType;
+import it.polimi.ingsw.model.playerBoard.DevelopmentCardArea;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
+import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.LocalConfig;
 import it.polimi.ingsw.network.client.localModel.CardMarket;
 import it.polimi.ingsw.network.client.localModel.FaithTrack;
@@ -165,7 +171,8 @@ public class CLI {
     public void showDevCard(Integer devCardID) {
         if(devCardID == null) {
             System.out.println("This deck is empty");
-        } else {
+        }
+        else {
             DevCard devCard = DevCardsParser.getInstance().getCard(devCardID);
             System.out.println(devCard.getCLIString());
         }
@@ -237,5 +244,46 @@ public class CLI {
 
     public void showStrongbox(ConcreteResourceSet strongBox) {
         System.out.println(strongBox.getCLIString());
+    }
+
+    public void selectDevCardDeck() {
+        System.out.println("Select the area to check or press [x] to go back:" );
+    }
+
+    public void showDevCardDeck(ArrayList<Integer> devCardIDs){
+        //Maybe to be adjusted
+
+        DevCardDeck deck = new DevCardDeck();
+
+        for(int i : devCardIDs)
+            deck.add(DevCardsParser.getInstance().getCard(i));
+        System.out.println(deck.getCLIString());
+    }
+
+    public void productionSelection(ArrayList<ArrayList<Integer>> devCardDecks, ArrayList<Integer> playedLeaderCards) {
+
+        System.out.println("[0] " + LocalConfig.getInstance().getDefaultProductionPower().getCLIString());
+        if(!devCardDecks.get(0).isEmpty()) {
+            System.out.println("[1] " + DevCardsParser.getInstance().getCard(devCardDecks.get(0).get(devCardDecks.get(0).size()-1)).getProductionPower().getCLIString());
+        }
+        if(!devCardDecks.get(1).isEmpty())
+            System.out.println("[2] " + DevCardsParser.getInstance().getCard(devCardDecks.get(1).get(devCardDecks.get(1).size()-1)).getProductionPower().getCLIString());
+        if(!devCardDecks.get(2).isEmpty())
+        System.out.println("[3] " + DevCardsParser.getInstance().getCard(devCardDecks.get(2).get(devCardDecks.get(2).size()-1)).getProductionPower().getCLIString());
+
+
+        for (int i =0, index = 4; i<playedLeaderCards.size();i++){
+            LeaderCard leaderCard = LeaderCardsParser.getInstance().getCard(playedLeaderCards.get(i));
+            if(leaderCard.isType(LeaderCardType.PRODUCTION))
+                System.out.println("["+(index++)+"] " + leaderCard.getEffectString());
+
+        }
+
+
+        System.out.println("[x] Back");
+    }
+
+    public void activateProductionSelection () {
+        System.out.println("Select the productions: ");
     }
 }

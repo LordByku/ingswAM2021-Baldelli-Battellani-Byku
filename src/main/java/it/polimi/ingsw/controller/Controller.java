@@ -110,35 +110,36 @@ public class Controller {
         return set.toConcrete();
     }
 
-    public ConcreteResourceSet productionIn(Person person,int[] activeSet, ConcreteResource[] resources){
+    public boolean productionIn(Person person,int[] activeSet, ConcreteResource[] resources, ConcreteResourceSet concreteResourceSet){
         SpendableResourceSet set = new SpendableResourceSet();
         Board playerBoard = person.getBoard();
         for(int index: activeSet){
             set.union(playerBoard.getProductionArea().getProductionDetails().get(index).getInput());
         }
-        if(resources.length != set.getResourceSet().getChoiceResources().size()) return null;
+        if(resources.length != set.getResourceSet().getChoiceResources().size()) return false;
         for(int i=0; i< resources.length; i++){
             ((ChoiceResource) set.getResourceSet().getChoiceResources().get(i)).makeChoice(resources[i]);
         }
-        ConcreteResourceSet concreteResourceSet = set.getResourceSet().toConcrete();
-        if(!playerBoard.containsResources(concreteResourceSet)) return null;
-        return concreteResourceSet;
+        concreteResourceSet = set.getResourceSet().toConcrete();
+        if(!playerBoard.containsResources(concreteResourceSet)) return false;
+
+        return true;
     }
 
-    public ConcreteResourceSet productionOut(Person person,int[] activeSet, ConcreteResource[] resources){
+    public boolean productionOut(Person person,int[] activeSet, ConcreteResource[] resources, ConcreteResourceSet concreteResourceSet){
         ObtainableResourceSet set = new ObtainableResourceSet();
         Board playerBoard = person.getBoard();
         for(int index: activeSet){
             set.union(playerBoard.getProductionArea().getProductionDetails().get(index).getOutput());
         }
         playerBoard.getFaithTrack().addFaithPoints(set.getFaithPoints());
-        if(resources.length != set.getResourceSet().getChoiceResources().size()) return null;
+        if(resources.length != set.getResourceSet().getChoiceResources().size()) return false;
         for(int i=0; i< resources.length; i++){
             ((ChoiceResource) set.getResourceSet().getChoiceResources().get(i)).makeChoice(resources[i]);
         }
-        ConcreteResourceSet concreteResourceSet = set.getResourceSet().toConcrete();
-        if(!playerBoard.containsResources(concreteResourceSet)) return null;
-        return concreteResourceSet;
+        concreteResourceSet = set.getResourceSet().toConcrete();
+        if(!playerBoard.containsResources(concreteResourceSet)) return false;
+        return true;
     }
 
 
@@ -274,4 +275,16 @@ public class Controller {
         VRSObserver.getInstance().updateVRS();
     }
 
+
+    public boolean Production (Person person, int[] activeSet , ConcreteResource[] resources, ConcreteResourceSet concreteResourceSet) {
+        /*
+        ConcreteResourceSet input = productionIn(person,activeSet,resources,);
+        ConcreteResourceSet output = productionOut(person, activeSet, resources);
+
+        person.getBoard().getDiscountArea().applyDiscount(input);
+
+        person.getBoard().getProductionArea().
+        */
+        return true;
+    }
 }

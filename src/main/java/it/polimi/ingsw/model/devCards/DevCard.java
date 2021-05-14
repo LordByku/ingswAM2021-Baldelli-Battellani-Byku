@@ -48,31 +48,32 @@ public class DevCard implements Scoring, Cloneable {
 
     /**
      * The constructor
-     * @param reqResources set of resources required to buy the card
-     * @param colour the colour to be set
-     * @param level The level of the card
+     *
+     * @param reqResources    set of resources required to buy the card
+     * @param colour          the colour to be set
+     * @param level           The level of the card
      * @param productionPower The Production effect of the card
-     * @param points The points awarded by the card
-     * @throws InvalidCardColourException colour is null
-     * @throws InvalidCardLevelException level is null
-     * @throws InvalidResourceSetException reqResources is null
+     * @param points          The points awarded by the card
+     * @throws InvalidCardColourException        colour is null
+     * @throws InvalidCardLevelException         level is null
+     * @throws InvalidResourceSetException       reqResources is null
      * @throws InvalidProductionDetailsException productionPower is null
      */
     public DevCard(ConcreteResourceSet reqResources, CardColour colour, CardLevel level, ProductionDetails productionPower, int points, int id)
             throws InvalidCardColourException, InvalidCardLevelException, InvalidResourceSetException, InvalidProductionDetailsException, InvalidIdException {
-        if(reqResources == null) {
+        if (reqResources == null) {
             throw new InvalidResourceSetException();
         }
-        if(colour == null) {
+        if (colour == null) {
             throw new InvalidCardColourException();
         }
-        if(level == null) {
+        if (level == null) {
             throw new InvalidCardLevelException();
         }
-        if(productionPower == null) {
+        if (productionPower == null) {
             throw new InvalidProductionDetailsException();
         }
-        if(id < 0 || usedIds.contains(id)) {
+        if (id < 0 || usedIds.contains(id)) {
             throw new InvalidIdException();
         }
         this.reqResources = (ConcreteResourceSet) reqResources.clone();
@@ -85,13 +86,13 @@ public class DevCard implements Scoring, Cloneable {
     }
 
     /**
-     * @param board the board where the card can be played
+     * @param board     the board where the card can be played
      * @param deckIndex the position of the deck where the card ca be played
      * @return true iff the card is playable on the deck card
      * @throws InvalidBoardException if the board is null
      */
     public boolean canPlay(Board board, int deckIndex) throws InvalidBoardException {
-        if(board == null) {
+        if (board == null) {
             throw new InvalidBoardException();
         }
         return board.containsResources(reqResources) && board.getDevelopmentCardArea().getTopLevel(deckIndex) == level.prev();
@@ -99,12 +100,13 @@ public class DevCard implements Scoring, Cloneable {
 
     /**
      * play represents the act of playing the card on a card deck
-     * @param board the board where the card is played
+     *
+     * @param board     the board where the card is played
      * @param deckIndex the position of the deck where the card ca be played
      * @throws InvalidBoardException if the board is null
      */
     public void play(Board board, int deckIndex) throws InvalidBoardException {
-        if(!canPlay(board, deckIndex)) {
+        if (!canPlay(board, deckIndex)) {
             throw new InvalidBoardException();
         }
 
@@ -118,6 +120,7 @@ public class DevCard implements Scoring, Cloneable {
 
     /**
      * getLevel() is a getter of the class
+     *
      * @return the level of the development card
      */
     public CardLevel getLevel() {
@@ -137,6 +140,7 @@ public class DevCard implements Scoring, Cloneable {
 
     /**
      * getPoints is a getter of card's points
+     *
      * @return points of the card
      */
     public int getPoints() {
@@ -165,19 +169,17 @@ public class DevCard implements Scoring, Cloneable {
         width = Math.max(width, Strings.getGraphemesCount(productionPower.getCLIString()));
     }
 
-    public String getCLIString(){
+    public String getCLIString() {
         String reqResources = this.reqResources.getCLIString();
         String first;
         String second;
-        if(this.level==CardLevel.I){
-            first = " " ;
+        if (this.level == CardLevel.I) {
+            first = " ";
             second = ".";
-        }
-        else if(this.level==CardLevel.II){
-            first = " " ;
+        } else if (this.level == CardLevel.II) {
+            first = " ";
             second = ":";
-        }
-        else{
+        } else {
             first = ".";
             second = ":";
         }
@@ -187,29 +189,42 @@ public class DevCard implements Scoring, Cloneable {
         int colourSecondLength = Strings.getGraphemesCount(colourFirst);
         int reqResourcesLength = Strings.getGraphemesCount(reqResources);
         StringBuilder result = new StringBuilder(" ");
-        for(int i = 0; i < width; ++i) {
+        for (int i = 0; i < width; ++i) {
             result.append("_");
         }
         result.append("\n");
 
-        Strings.buildCenteredRow(result,colourFirst,colourFirstLength,colourFirst,colourFirstLength, reqResources,reqResourcesLength,width);
-        Strings.buildCenteredRow(result,colourSecond,colourSecondLength,colourSecond,colourSecondLength, "",0,width);
-        Strings.newEmptyLine(result,width);
+        Strings.buildCenteredRow(result, colourFirst, colourFirstLength, colourFirst, colourFirstLength, reqResources, reqResourcesLength, width);
+        Strings.buildCenteredRow(result, colourSecond, colourSecondLength, colourSecond, colourSecondLength, "", 0, width);
+        Strings.newEmptyLine(result, width);
 
         String productionPower = this.productionPower.getCLIString();
-        int productionPowerLength = Strings.getGraphemesCount(productionPower) ;
-        Strings.buildCenteredRow(result,"",0,"",0, productionPower,productionPowerLength,width);
-        Strings.newEmptyLine(result,width);
+        int productionPowerLength = Strings.getGraphemesCount(productionPower);
+        Strings.buildCenteredRow(result, "", 0, "", 0, productionPower, productionPowerLength, width);
+        Strings.newEmptyLine(result, width);
 
-        String points = this.colour.getColour().escape() +" "+ BackGroundColor.RESET + "(" + this.points + ")" + this.colour.getColour().escape() +" "+ BackGroundColor.RESET;
+        result.append(buildLastTwoRows(0));
+
+        return result.toString();
+    }
+
+    public StringBuilder buildLastTwoRows(int offset) {
+        StringBuilder result = new StringBuilder("");
+        for (int i = 0; i < offset; ++i) {
+            result.append(" ");
+        }
+        String points = this.colour.getColour().escape() + " " + BackGroundColor.RESET + "(" + this.points + ")" + this.colour.getColour().escape() + " " + BackGroundColor.RESET;
         int pointsLength = Strings.getGraphemesCount(points);
-        Strings.buildCenteredRow(result,"",0,"",0, points, pointsLength, width);
+        Strings.buildCenteredRow(result, "", 0, "", 0, points, pointsLength, width);
 
+        for (int i = 0; i < offset; ++i) {
+            result.append(" ");
+        }
         result.append("|");
-        for(int i = 0; i < width; ++i) {
+        for (int i = 0; i < width; ++i) {
             result.append("_");
         }
         result.append("|");
-        return result.toString();
+        return result;
     }
 }

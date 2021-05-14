@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.devCards;
 
+import it.polimi.ingsw.view.cli.Strings;
+
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -78,5 +80,48 @@ public class DevCardDeck {
             return null;
         }
         return top().getLevel();
+    }
+
+    public String getCLIString(){
+
+        char c;
+        int nl=0;
+        StringBuilder result= new StringBuilder("");
+
+        ArrayList<DevCard> devCards = this.getCards();
+
+        if (devCards.size()==0) {
+            return "So empty right here";
+        }
+
+        if(devCards.size()== 1) {
+            result.append(devCards.get(0).getCLIString());
+        }
+
+        else if(devCards.size()== 2) {
+            result.append(devCards.get(1).getCLIString()).append("\n");
+            result.append(devCards.get(0).buildLastTwoRows(1));
+        }
+
+        else if (devCards.size()==3){
+            result.append(devCards.get(2).getCLIString()).append("\n");
+            result.append(devCards.get(1).buildLastTwoRows(1)).append("\n");
+            result.append(devCards.get(0).buildLastTwoRows(2));
+    /*
+            for (int i=0;i<result.toString().length();i++)
+                c=result.toString().charAt(i);
+
+                if(c == '\n')
+                    nl++;
+
+                if(nl>=5 && nl<=7)
+                    result.toString();
+
+
+
+    */
+        }
+
+        return result.toString();
     }
 }
