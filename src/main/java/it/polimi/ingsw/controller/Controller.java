@@ -126,7 +126,7 @@ public class Controller {
             }
 
             //remove resources from strongbox
-            boolean boo = removeResourcesFromStrongbox(person,strongboxSet);
+            removeResourcesFromStrongbox(person,strongboxSet);
             try{
                 cardToBuy.play(playerBoard, deckIndex);
                 return true;
