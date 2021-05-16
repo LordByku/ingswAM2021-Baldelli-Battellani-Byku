@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.client.clientStates;
 
 import it.polimi.ingsw.network.client.Client;
+import it.polimi.ingsw.network.client.LocalConfig;
 import it.polimi.ingsw.network.client.localModel.Board;
 import it.polimi.ingsw.view.cli.CLI;
 
@@ -24,7 +25,11 @@ public class BoardComponentSelection extends ClientState {
     @Override
     public void handleUserMessage(Client client, String line) {
         if(line.equals("x")) {
-            client.setState(new PlayerBoardSelection(returnStateSupplier));
+            if(LocalConfig.getInstance().getTurnOrder().size() == 1) {
+                client.setState(new ViewState(returnStateSupplier));
+            } else {
+                client.setState(new PlayerBoardSelection(returnStateSupplier));
+            }
         } else {
             try {
                 int selection = Integer.parseInt(line);

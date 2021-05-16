@@ -2,13 +2,13 @@ package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.model.devCards.DevCard;
 import it.polimi.ingsw.model.devCards.DevCardDeck;
-import it.polimi.ingsw.model.game.Game;
-import it.polimi.ingsw.model.game.Person;
-import it.polimi.ingsw.model.game.Player;
+import it.polimi.ingsw.model.game.*;
 import com.google.gson.*;
 import it.polimi.ingsw.model.gameZone.MarbleMarket;
 import it.polimi.ingsw.model.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.playerBoard.faithTrack.PopeFavor;
+
+import java.util.ArrayList;
 
 public class GameStateSerializer {
     private final Gson gson;
@@ -184,7 +184,7 @@ public class GameStateSerializer {
         return gameZone;
     }
 
-    public JsonObject faithTrack(Person person){
+    public JsonObject faithTrack(Person person) {
         JsonObject faithTrack = new JsonObject();
         int position = Integer.parseInt(gson.toJson(person.getBoard().getFaithTrack().getMarkerPosition()));
         JsonArray favors = new JsonArray();
@@ -194,7 +194,11 @@ public class GameStateSerializer {
         faithTrack.addProperty("position", position);
         faithTrack.add("receivedFavors", favors);
 
-        return  faithTrack;
+        if(Game.getInstance().getNumberOfPlayers() == 1) {
+            faithTrack.addProperty("computerPosition", Game.getInstance().getComputer().getFaithTrack().getMarkerPosition());
+        }
+
+        return faithTrack;
     }
 
     public JsonArray warehouse(Person person){
@@ -271,24 +275,26 @@ public class GameStateSerializer {
         return board;
     }
 
-    public JsonArray players(){
-        int i=0;
+    public JsonArray players() {
+        int i = 0;
         JsonArray players = new JsonArray();
-        for(Player player: Game.getInstance().getPlayers()){
-            Person person = (Person) player;
-            JsonObject object = new JsonObject();
-            object.addProperty("nickname", ((Person) player).getNickname());
-            boolean inkwell = (i==0);
-            object.addProperty("inkwell", inkwell);
-            object.add("board", board((Person)player));
-            i++;
+        for(Player player: Game.getInstance().getPlayers()) {
+            if(player.getPlayerType() == PlayerType.PERSON) {
+                Person person = (Person) player;
+                JsonObject object = new JsonObject();
+                object.addProperty("nickname", person.getNickname());
+                boolean inkwell = (i == 0);
+                object.addProperty("inkwell", inkwell);
+                object.add("board", board(person));
+                i++;
 
-            players.add(object);
+                players.add(object);
+            }
         }
         return players;
     }
 
-    public JsonObject gameState(){
+    public JsonObject gameState() {
         JsonObject gameState = new JsonObject();
         gameState.add("gameZone", gameZone());
         gameState.add("players", players());

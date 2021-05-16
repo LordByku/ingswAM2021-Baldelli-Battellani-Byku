@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class FaithTrack implements CLIPrintable {
     private int position;
     private ArrayList<Integer> receivedFavors;
+    private Integer computerPosition;
 
     @Override
     public String getCLIString() {
@@ -53,8 +54,17 @@ public class FaithTrack implements CLIPrintable {
                 }
             }
 
-            if(position == i) {
-                result.append(TextColour.WHITE.escape()).append(" \u25cf").append(TextColour.RESET);
+            if((computerPosition != null && computerPosition == i) || position == i) {
+                if(computerPosition != null && computerPosition == i) {
+                    result.append(TextColour.GREY.escape()).append("\u25cf").append(TextColour.RESET);
+                } else {
+                    result.append(" ");
+                }
+                if(position == i) {
+                    result.append(TextColour.WHITE.escape()).append("\u25cf").append(TextColour.RESET);
+                } else {
+                    result.append(" ");
+                }
             } else {
                 result.append(Strings.format(i, 2));
             }

@@ -4,6 +4,12 @@ package it.polimi.ingsw.model.game;
  * Player represents a player of the game
  */
 public abstract class Player {
+    private final PlayerType playerType;
+
+    protected Player(PlayerType playerType) {
+        this.playerType = playerType;
+    }
+
     /**
      * startTurn informs this Player that his/her turn started
      */
@@ -15,4 +21,8 @@ public abstract class Player {
      * @throws GameNotStartedException The game did not start yet
      */
     public abstract void endTurn() throws GameEndedException, GameNotStartedException;
+
+    public PlayerType getPlayerType() {
+        return playerType;
+    }
 }

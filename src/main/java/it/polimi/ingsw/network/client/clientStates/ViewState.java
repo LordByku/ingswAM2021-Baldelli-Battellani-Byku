@@ -4,6 +4,7 @@ import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.LocalConfig;
 import it.polimi.ingsw.view.cli.CLI;
 
+import java.util.ArrayList;
 import java.util.function.Supplier;
 
 public class ViewState extends ClientState {
@@ -39,7 +40,11 @@ public class ViewState extends ClientState {
                         break;
                     }
                     case 3: {
-                        client.setState(new PlayerBoardSelection(returnStateSupplier));
+                        if(LocalConfig.getInstance().getTurnOrder().size() == 1) {
+                            client.setState(new BoardComponentSelection(returnStateSupplier, client.getNickname()));
+                        } else {
+                            client.setState(new PlayerBoardSelection(returnStateSupplier));
+                        }
                         break;
                     }
                     default: {

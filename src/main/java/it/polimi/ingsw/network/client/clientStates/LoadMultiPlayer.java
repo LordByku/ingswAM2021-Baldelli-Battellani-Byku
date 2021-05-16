@@ -8,11 +8,10 @@ import it.polimi.ingsw.network.client.localModel.LocalModel;
 import it.polimi.ingsw.view.cli.CLI;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class LoadMultiPlayer extends ClientState {
     public LoadMultiPlayer() {
-        CLI.getInstance().loadMultiPlayer();
+        CLI.getInstance().loadGame();
         LoadCards.getInstance().leaderCardWidth();
         LoadCards.getInstance().devCardsWidth();
     }

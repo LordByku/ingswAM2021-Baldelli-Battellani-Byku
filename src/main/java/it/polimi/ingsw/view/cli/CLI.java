@@ -81,7 +81,7 @@ public class CLI {
         System.out.println("Server error: " + message);
     }
 
-    public void loadMultiPlayer() {
+    public void loadGame() {
         System.out.println("Game is loading...");
     }
 

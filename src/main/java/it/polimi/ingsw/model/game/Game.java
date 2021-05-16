@@ -86,6 +86,39 @@ public class Game {
         }
     }
 
+    public Person getSinglePlayer() {
+        synchronized (players) {
+            return (Person) players.get(0);
+        }
+    }
+
+    public Computer getComputer() {
+        synchronized (players) {
+            return (Computer) players.get(1);
+        }
+    }
+
+    public void startSinglePlayer() throws NotEnoughPlayersException, GameAlreadyStartedException {
+        if(gameStarted) {
+            throw new GameAlreadyStartedException();
+        }
+
+        synchronized (players) {
+            if(players.size() != 1) {
+                throw new NotEnoughPlayersException();
+            }
+
+            Board board = getSinglePlayer().getBoard();
+            gameZone.getLeaderCardsDeck().assignCards(board);
+
+            players.add(new Computer());
+
+            gameStarted = true;
+            currentPlayer = 0;
+            players.get(currentPlayer).startTurn();
+        }
+    }
+
     protected void setLastTurn() throws GameNotStartedException, GameEndedException {
         if(!gameStarted) {
             throw new GameNotStartedException();

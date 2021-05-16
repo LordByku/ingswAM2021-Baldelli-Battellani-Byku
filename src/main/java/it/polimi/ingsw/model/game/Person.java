@@ -30,6 +30,7 @@ public class Person extends Player {
      * @throws InvalidNicknameException nickname is null
      */
     public Person(String nickname) throws InvalidNicknameException {
+        super(PlayerType.PERSON);
         if(nickname == null) {
             throw new InvalidNicknameException();
         }

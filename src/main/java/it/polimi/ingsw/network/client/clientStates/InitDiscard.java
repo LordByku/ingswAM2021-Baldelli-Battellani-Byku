@@ -30,7 +30,7 @@ public class InitDiscard extends ClientState {
             case "error": {
                 String message = ClientParser.getInstance().getMessage(json).getAsString();
                 CLI.getInstance().serverError(message);
-                client.setState(new InitDiscard(maxSelection));
+                CLI.getInstance().initDiscard();
                 break;
             }
             case "ok": {
@@ -69,31 +69,35 @@ public class InitDiscard extends ClientState {
         }
     }
 
+    protected void handleSelection(Client client, int indexA, int indexB) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("command", "initDiscard");
+
+        JsonArray jsonArray = new JsonArray();
+        jsonArray.add(indexA);
+        jsonArray.add(indexB);
+
+        jsonObject.add("value", jsonArray);
+
+        client.write(jsonObject.toString());
+    }
+
     @Override
     public void handleUserMessage(Client client, String line) {
         String[] words = Strings.splitLine(line);
         if(words.length != 2) {
-            client.setState(new InitDiscard(maxSelection));
+            CLI.getInstance().initDiscard();
         } else {
             try {
                 int indexA = Integer.parseInt(words[0]), indexB = Integer.parseInt(words[1]);
 
                 if(indexA < 0 || indexA >= maxSelection || indexB < 0 || indexB >= maxSelection || indexA == indexB) {
-                    client.setState(new InitDiscard(maxSelection));
+                    CLI.getInstance().initDiscard();
                 } else {
-                    JsonObject jsonObject = new JsonObject();
-                    jsonObject.addProperty("command", "initDiscard");
-
-                    JsonArray jsonArray = new JsonArray();
-                    jsonArray.add(indexA);
-                    jsonArray.add(indexB);
-
-                    jsonObject.add("value", jsonArray);
-
-                    client.write(jsonObject.toString());
+                    handleSelection(client, indexA, indexB);
                 }
             } catch(NumberFormatException e) {
-                client.setState(new InitDiscard(maxSelection));
+                CLI.getInstance().initDiscard();
             }
         }
     }
