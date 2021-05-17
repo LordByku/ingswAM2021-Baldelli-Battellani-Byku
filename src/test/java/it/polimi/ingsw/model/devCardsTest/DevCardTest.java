@@ -1,12 +1,10 @@
 package it.polimi.ingsw.model.devCardsTest;
 
 import it.polimi.ingsw.model.devCards.*;
-import it.polimi.ingsw.model.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.playerBoard.Board;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.*;
 import it.polimi.ingsw.parsing.DevCardsParser;
-import it.polimi.ingsw.parsing.LeaderCardsParser;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -18,7 +16,7 @@ public class DevCardTest {
     public void devCardTest(){
         DevCard devCard1;
         DevCard devCard2;
-        DevCard devCard3;
+        // DevCard devCard3;
         CardColour blue = CardColour.BLUE;
         CardColour yellow = CardColour.YELLOW;
         ConcreteResourceSet concreteResourceSet1 = new ConcreteResourceSet();
@@ -57,7 +55,7 @@ public class DevCardTest {
     @Test
     public void playTest () {
         Board board1 = new Board();
-        Board board2 = new Board();
+        //Board board2 = new Board();
         CardType cardType1 = new CardType(CardColour.BLUE);
 
         cardType1.addLevel(CardLevel.I);
@@ -80,8 +78,8 @@ public class DevCardTest {
         DevCard devCard1;
         DevCard devCard2;
         DevCard devCard3;
-        DevCard devCard4;
-        DevCard devCard5;
+        //DevCard devCard4;
+        //DevCard devCard5;
 
         CardColour blue = CardColour.BLUE;
         CardColour yellow = CardColour.YELLOW;
@@ -110,8 +108,8 @@ public class DevCardTest {
         devCard1 = new DevCard(concreteResourceSet1,blue,CardLevel.I,details1,5, 1014);
         devCard2 = new DevCard(concreteResourceSet2,yellow,CardLevel.I,details1,6, 1015);
         devCard3 = new DevCard(concreteResourceSet1,blue,CardLevel.II,details1,3, 1016);
-        devCard4 = new DevCard(concreteResourceSet2,yellow,CardLevel.III,details1,1, 1017);
-        devCard5 = new DevCard(concreteResourceSet2,CardColour.PURPLE,CardLevel.II,details1,1, 1018);
+        //devCard4 = new DevCard(concreteResourceSet2,yellow,CardLevel.III,details1,1, 1017);
+        //devCard5 = new DevCard(concreteResourceSet2,CardColour.PURPLE,CardLevel.II,details1,1, 1018);
 
         board1.getStrongBox().addResources(concreteResourceSet2);
         board1.getStrongBox().addResources(concreteResourceSet1);
@@ -139,8 +137,7 @@ public class DevCardTest {
     @Test
     public void getCLIStringTest() {
         ArrayList<DevCard> devCards = new ArrayList<>();
-        DevCardDeck devCardDeck = new DevCardDeck();
-
+        //DevCardDeck devCardDeck = new DevCardDeck();
 
         for(int i = 0; i < 48; ++i) {
             DevCard devCard = DevCardsParser.getInstance().getCard(i);
@@ -157,7 +154,7 @@ public class DevCardTest {
 
     @Test
     public void getCLIStringsDeckTest() {
-        ArrayList<DevCard> devCards = new ArrayList<>();
+        //ArrayList<DevCard> devCards = new ArrayList<>();
         DevCardDeck devCardDeck = new DevCardDeck();
 
         CardColour blue = CardColour.BLUE;
@@ -184,11 +181,11 @@ public class DevCardTest {
         ObtainableResourceSet output1 = new ObtainableResourceSet(choiceResourceSet2);
         ProductionDetails details1 = new ProductionDetails(input1,output1);
 
-        DevCard devCard2 = new DevCard(concreteResourceSet2,yellow,CardLevel.I,details1,6, 1015);
+        DevCard devCard2 = new DevCard(concreteResourceSet2,yellow,CardLevel.I,details1,6, 1023);
         devCard2.addCLISupport();
-        DevCard devCard3 = new DevCard(concreteResourceSet1,blue,CardLevel.II,details1,3, 1016);
+        DevCard devCard3 = new DevCard(concreteResourceSet1,blue,CardLevel.II,details1,3, 1024);
         devCard3.addCLISupport();
-        DevCard devCard4 = new DevCard(concreteResourceSet2,yellow,CardLevel.III,details1,1, 1017);
+        DevCard devCard4 = new DevCard(concreteResourceSet2,yellow,CardLevel.III,details1,1, 1025);
 
         devCardDeck.add(devCard2);
         devCardDeck.add(devCard3);

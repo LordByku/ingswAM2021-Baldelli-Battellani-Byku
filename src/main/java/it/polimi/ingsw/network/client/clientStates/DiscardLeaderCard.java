@@ -52,6 +52,16 @@ public class DiscardLeaderCard extends ClientState {
         }
     }
 
+    protected void handleSelection(Client client, int selection) {
+        JsonObject jsonObject = new JsonObject();
+        JsonObject message = new JsonObject();
+        message.addProperty("action", "discard");
+        message.addProperty("leaderCard", selection);
+        jsonObject.addProperty("command", "leaderCard");
+        jsonObject.add("message", message);
+        client.write(jsonObject.toString());
+    }
+
     @Override
     public void handleUserMessage(Client client, String line) {
         if(line.equals("x")){
@@ -62,13 +72,7 @@ public class DiscardLeaderCard extends ClientState {
                 int numOfCards = client.getModel().getPlayer(client.getNickname()).getBoard().getHandLeaderCards().size();
 
                 if(selection >= 0 && selection < numOfCards) {
-                    JsonObject jsonObject = new JsonObject();
-                    JsonObject message = new JsonObject();
-                    message.addProperty("action", "discard");
-                    message.addProperty("leaderCard", selection);
-                    jsonObject.addProperty("command", "leaderCard");
-                    jsonObject.add("message", message);
-                    client.write(jsonObject.toString());
+                    handleSelection(client, selection);
                 } else {
                     CLI.getInstance().discardLeaderCard();
                 }
