@@ -1,6 +1,8 @@
 package it.polimi.ingsw.network.client.clientStates;
 
 import it.polimi.ingsw.network.client.Client;
+import it.polimi.ingsw.network.client.LocalConfig;
+import it.polimi.ingsw.network.client.clientStates.singlePlayerStates.SinglePlayerPurchaseDevCard;
 import it.polimi.ingsw.view.cli.CLI;
 
 public class PurchaseMenu extends ClientState{
@@ -23,7 +25,12 @@ public class PurchaseMenu extends ClientState{
             client.setState(new CardMarketDeckSelection(PurchaseMenu::new));
         }
         else if(line.equals("1")){
-            client.setState(new PurchaseDevCard());
+            if(LocalConfig.getInstance().getTurnOrder().size() == 1) {
+                client.setState(new SinglePlayerPurchaseDevCard());
+            } else {
+                client.setState(new PurchaseDevCard());
+            }
+
         }
     }
 }

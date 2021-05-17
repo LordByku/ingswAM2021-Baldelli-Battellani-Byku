@@ -53,6 +53,17 @@ public class PurchaseDevCard extends ClientState {
         }
     }
 
+    protected void handleSelection(Client client, int rowIndex, int columnIndex, int deckIndex){
+        JsonObject jsonObject = new JsonObject();
+        JsonObject message = new JsonObject();
+        message.addProperty("row", rowIndex);
+        message.addProperty("column", columnIndex);
+        message.addProperty("deckIndex", deckIndex);
+        jsonObject.addProperty("command", "purchase");
+        jsonObject.add("message", message);
+        client.write(jsonObject.toString());
+    }
+
     @Override
     public void handleUserMessage(Client client, String line) {
         if(line.equals("x")){
@@ -73,14 +84,7 @@ public class PurchaseDevCard extends ClientState {
                     if (rowIndex >= 0 && rowIndex < rowLength && columnIndex >= 0 && columnIndex < columnLength && deckIndex >= 0 && deckIndex < deckLength) {
                         this.row = rowIndex;
                         this.column = columnIndex;
-                        JsonObject jsonObject = new JsonObject();
-                        JsonObject message = new JsonObject();
-                        message.addProperty("row", rowIndex);
-                        message.addProperty("column", columnIndex);
-                        message.addProperty("deckIndex", deckIndex);
-                        jsonObject.addProperty("command", "purchase");
-                        jsonObject.add("message", message);
-                        client.write(jsonObject.toString());
+                        handleSelection(client,rowIndex,columnIndex,deckIndex);
                     } else {
                         CLI.getInstance().purchaseDevCard();
                     }

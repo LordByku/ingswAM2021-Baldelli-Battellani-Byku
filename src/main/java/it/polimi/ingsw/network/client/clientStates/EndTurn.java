@@ -3,6 +3,9 @@ package it.polimi.ingsw.network.client.clientStates;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.ClientParser;
+import it.polimi.ingsw.network.client.LocalConfig;
+import it.polimi.ingsw.network.client.clientStates.singlePlayerStates.SinglePlayerDiscardLeaderCard;
+import it.polimi.ingsw.network.client.clientStates.singlePlayerStates.SinglePlayerPlayLeaderCard;
 import it.polimi.ingsw.view.cli.CLI;
 
 public class EndTurn extends ClientState {
@@ -49,6 +52,13 @@ public class EndTurn extends ClientState {
         }
     }
 
+    protected void handleSelection(Client client){
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("command", "endTurn");
+
+        client.write(jsonObject.toString());
+    }
+
     @Override
     public void handleUserMessage(Client client, String line) {
         try {
@@ -56,20 +66,27 @@ public class EndTurn extends ClientState {
 
             switch (selection) {
                 case 1: {
-                    JsonObject jsonObject = new JsonObject();
-                    jsonObject.addProperty("command", "endTurn");
-
-                    client.write(jsonObject.toString());
+                    handleSelection(client);
                     break;
                 }
                 case 2: {
                     CLI.getInstance().showLeaderCards(client.getModel().getPlayer(client.getNickname()).getBoard().getHandLeaderCards());
-                    client.setState(new PlayLeaderCard(EndTurn::new));
+                    if(LocalConfig.getInstance().getTurnOrder().size() == 1) {
+                        client.setState(new SinglePlayerPlayLeaderCard(EndTurn::new));
+                    }
+                    else{
+                        client.setState(new PlayLeaderCard(EndTurn::new));
+                    }
                     break;
                 }
                 case 3: {
                     CLI.getInstance().showLeaderCards(client.getModel().getPlayer(client.getNickname()).getBoard().getHandLeaderCards());
-                    client.setState(new DiscardLeaderCard(EndTurn::new));
+                    if(LocalConfig.getInstance().getTurnOrder().size() == 1) {
+                        client.setState(new SinglePlayerDiscardLeaderCard(EndTurn::new));
+                    }
+                    else{
+                        client.setState(new DiscardLeaderCard(EndTurn::new));
+                    }
                     break;
                 }
                 case 0: {
