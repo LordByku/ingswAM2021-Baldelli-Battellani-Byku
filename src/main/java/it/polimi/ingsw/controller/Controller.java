@@ -113,9 +113,6 @@ public class Controller {
         set.union(strongboxSet);
 
         if(!(set.contains(cardToBuy.getReqResources())) && (cardToBuy.getReqResources().contains(set))){
-            System.out.println("set: "+ set.getCLIString());
-            System.out.println("reqResources: " + cardToBuy.getReqResources().getCLIString());
-            System.out.println("set != reqResources");
             return false;
         }
 

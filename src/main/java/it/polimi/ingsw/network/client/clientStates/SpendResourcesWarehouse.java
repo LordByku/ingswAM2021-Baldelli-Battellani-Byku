@@ -19,6 +19,8 @@ public class SpendResourcesWarehouse extends SpendResources{
     int deckIndex;
 
     public SpendResourcesWarehouse(int numOfDepots, ConcreteResourceSet toSpend, int deckIndex){
+        CLI.getInstance().toSpend(toSpend);
+        CLI.getInstance().spendResourcesWarehouse();
         warehouse = new ConcreteResourceSet[numOfDepots];
         for(int i=0; i<numOfDepots; ++i){
             warehouse[i]= new ConcreteResourceSet();
@@ -30,8 +32,6 @@ public class SpendResourcesWarehouse extends SpendResources{
 
     @Override
     public void handleUserMessage(Client client, String line) {
-        CLI.getInstance().toSpend(toSpend);
-        CLI.getInstance().spendResourcesWarehouse();
         int maxDepotSize = 0;
         ArrayList<Integer> depotSizes = BoardParser.getInstance().getDepotSizes();
         for(Integer size: depotSizes)
@@ -62,6 +62,10 @@ public class SpendResourcesWarehouse extends SpendResources{
                         toSpend.removeResource(resource, numOfResources);
                         if(toSpend.size()==0) {
                             handleSelection(client, warehouse, strongbox);
+                        }
+                        else {
+                            CLI.getInstance().toSpend(toSpend);
+                            CLI.getInstance().spendResourcesWarehouse();
                         }
                     }
                 }

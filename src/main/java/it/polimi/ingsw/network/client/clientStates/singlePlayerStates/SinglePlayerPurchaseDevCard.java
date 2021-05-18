@@ -23,5 +23,8 @@ public class SinglePlayerPurchaseDevCard extends PurchaseDevCard {
             ConcreteResourceSet set = DevCardsParser.getInstance().getCard(cardId).getReqResources();
             client.setState(new SinglePlayerSpendResourcesWarehouse(numOfDepots,set, deckIndex));
         }
+        else{
+            CLI.getInstance().purchaseDevCard();
+        }
     }
 }

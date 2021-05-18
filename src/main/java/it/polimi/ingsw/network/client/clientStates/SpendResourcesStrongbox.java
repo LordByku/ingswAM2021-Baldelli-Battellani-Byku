@@ -16,6 +16,8 @@ public class SpendResourcesStrongbox extends SpendResources{
     int deckIndex;
 
     public SpendResourcesStrongbox(ConcreteResourceSet[] warehouse, ConcreteResourceSet strongbox, ConcreteResourceSet toSpend, int deckIndex){
+        CLI.getInstance().toSpend(toSpend);
+        CLI.getInstance().spendResourcesStrongbox();
         this.warehouse = warehouse;
         this.strongbox = strongbox;
         this.toSpend = toSpend;
@@ -24,8 +26,6 @@ public class SpendResourcesStrongbox extends SpendResources{
 
     @Override
     public void handleUserMessage(Client client, String line) {
-        CLI.getInstance().toSpend(toSpend);
-        CLI.getInstance().spendResourcesStrongbox();
         String[] arr = line.split(" ");
         if(arr.length==1){
             if(line.equals("warehouse")){
@@ -50,6 +50,10 @@ public class SpendResourcesStrongbox extends SpendResources{
                         toSpend.removeResource(resource,numOfResources);
                         if(toSpend.size()==0) {
                             handleSelection(client, warehouse, strongbox);
+                        }
+                        else{
+                            CLI.getInstance().toSpend(toSpend);
+                            CLI.getInstance().spendResourcesStrongbox();
                         }
                     }
                 }
