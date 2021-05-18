@@ -34,6 +34,21 @@ public class StartTurn extends ServerState {
                     break;
                 }
                 case "production": {
+                    JsonObject message = ServerParser.getInstance().getMessage(json).getAsJsonObject();
+
+                    int[] activeSet = ServerParser.getInstance().parseIntArray(message.getAsJsonArray("activeSet"));
+
+
+                    if (Controller.getInstance().canProduce(clientHandler.getPerson(), activeSet)) {
+                        clientHandler.confirm();
+
+                        clientHandler.setState(new ProductionSelection());
+                    }
+                    else {
+                        clientHandler.error("Not enough resources for all chosen productions");
+                    }
+
+
                     break;
                 }
                 case "market": {

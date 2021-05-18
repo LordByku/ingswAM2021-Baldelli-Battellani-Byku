@@ -34,7 +34,11 @@ public class ProductionSelection extends ClientState {
                 switch (type) {
                     case "confirm": {
                         JsonObject message = ClientParser.getInstance().getMessage(json).getAsJsonObject();
-                        client.getModel().updateModel(message);
+ //                       client.setState(new SpendResourcesProduction());
+                        //spend resources
+                        //successivamente inserire le risorse da ottenere
+                        // poi alla fine fare update
+                        break;
                     }
                     default:{
                         CLI.getInstance().unexpected();
@@ -85,6 +89,7 @@ public class ProductionSelection extends ClientState {
 
             } catch (NumberFormatException e) {
                 client.setState(new ProductionSelection());
+                //TODO mettere cli al posto di newstate
             }
         }
     }

@@ -22,6 +22,9 @@ public class ProductionArea {
      * production powers that can be obtained through development cards
      */
     private final int developmentCardsSlots;
+
+
+
     /**
      * productions contains all the ProductionDetails in this ProductionArea
      * The first position in the array is reserved to the default production power
@@ -44,6 +47,14 @@ public class ProductionArea {
         }
     }
 
+    public ProductionDetails getProduction(int index) {
+        return productions.get(index);
+    }
+
+
+    public int size () {
+        return productions.size();
+    }
     /**
      * addDevCardProduction adds the production power corresponding to a development
      * card on top of a DevCardDeck

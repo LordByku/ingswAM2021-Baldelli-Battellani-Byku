@@ -1,0 +1,66 @@
+package it.polimi.ingsw.network.client.clientStates;
+
+import it.polimi.ingsw.model.resources.ConcreteResource;
+import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
+import it.polimi.ingsw.network.client.Client;
+import it.polimi.ingsw.parsing.BoardParser;
+import it.polimi.ingsw.view.cli.CLI;
+
+import java.util.ArrayList;
+
+public class SpendResourcesProductionWarehouse extends SpendResourcesProduction{
+
+    ConcreteResourceSet[] warehouse;
+    ConcreteResourceSet strongbox;
+    ConcreteResourceSet toSpend;
+
+    public SpendResourcesProductionWarehouse(int numOfDepots, ConcreteResourceSet toSpend){
+        warehouse = new ConcreteResourceSet[numOfDepots];
+        for(int i=0; i<numOfDepots; ++i){
+            warehouse[i]= new ConcreteResourceSet();
+        }
+        strongbox = new ConcreteResourceSet();
+        this.toSpend = toSpend;
+    }
+    @Override
+    public void handleUserMessage(Client client, String line) {
+        CLI.getInstance().toSpend(toSpend);
+        CLI.getInstance().spendResourcesWarehouse();
+        int maxDepotSize = 0;
+        ArrayList<Integer> depotSizes = BoardParser.getInstance().getDepotSizes();
+        for(Integer size: depotSizes)
+            if(size>maxDepotSize)
+                maxDepotSize=size;
+
+        String[] arr = line.split(" ");
+
+        if(arr.length==1){
+      //      if(line.toLowerCase().equals("strongbox"))
+            //    client.setState(new SpendResourcesStrongbox(warehouse, strongbox, toSpend));
+
+        }
+        else if(arr.length == 2){
+            try {
+                int depotIndex = Integer.parseInt(arr[0]);
+                int numOfResources = Integer.parseInt(arr[1]);
+                System.out.println(depotIndex +" "+ numOfResources);
+                System.out.println("maxDepotsize: "+maxDepotSize);
+                if (depotIndex >= 0 && depotIndex < maxDepotSize && numOfResources > 0 && numOfResources <= depotSizes.get(depotIndex)) {
+                    ConcreteResource resource = client.getModel().getPlayer(client.getNickname()).getBoard().getWarehouse().get(depotIndex).getResourceType();
+                    ConcreteResourceSet set = new ConcreteResourceSet();
+                    set.addResource(resource, numOfResources);
+                    if (toSpend.contains(set)) {
+                        warehouse[depotIndex].addResource(resource, numOfResources);
+                        toSpend.removeResource(resource, numOfResources);
+                        if(toSpend.size()==0) {
+                            write(client, warehouse, strongbox);
+                        }
+                    }
+                }
+            }
+            catch (NumberFormatException e) {
+                CLI.getInstance().purchaseDevCard();
+            }
+        }
+    }
+}
