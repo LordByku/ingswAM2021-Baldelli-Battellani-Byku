@@ -231,7 +231,11 @@ public class Controller {
         if(resourcesToObtain.size() > 0) {
             for(Player player: players) {
                 if(!player.equals(person)) {
-                    ((Person) player).getBoard().getFaithTrack().addFaithPoints(resourcesToObtain.size());
+                    if(player.getPlayerType() == PlayerType.PERSON) {
+                        ((Person) player).getBoard().getFaithTrack().addFaithPoints(resourcesToObtain.size());
+                    } else {
+                        ((Computer) player).getFaithTrack().addFaithPoints(resourcesToObtain.size());
+                    }
                 }
             }
         }

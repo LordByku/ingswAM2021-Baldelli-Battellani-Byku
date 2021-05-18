@@ -20,6 +20,7 @@ public class PurchaseDevCard extends ClientState {
     public PurchaseDevCard(){
         CLI.getInstance().purchaseDevCard();
     }
+
     @Override
     public void handleServerMessage(Client client, String line) {
         JsonObject json = ClientParser.getInstance().parse(line).getAsJsonObject();

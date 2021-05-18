@@ -11,11 +11,10 @@ import it.polimi.ingsw.parsing.DevCardsParser;
 import it.polimi.ingsw.view.cli.CLI;
 
 public class SinglePlayerPurchaseDevCard extends PurchaseDevCard {
-
     @Override
     protected void handleSelection(Client client, int rowIndex, int columnIndex, int deckIndex){
         Person person = Game.getInstance().getSinglePlayer();
-        if(Controller.getInstance().purchase(person, rowIndex, columnIndex, deckIndex)){
+        if(Controller.getInstance().purchase(person, rowIndex, columnIndex, deckIndex)) {
             CLI.getInstance().purchaseDevCardSuccess();
             Board playerBoard = client.getModel().getPlayer(client.getNickname()).getBoard();
             CLI.getInstance().showWarehouseAndStrongbox(playerBoard.getWarehouse(), playerBoard.getPlayedLeaderCards(), playerBoard.getStrongBox());

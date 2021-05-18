@@ -93,7 +93,7 @@ public class GameStateSerializer {
     }
 
     public void addDevCards(Person person){
-        message.add("devCards",devCards(person));
+        addToPlayers(person, "devCards", devCards(person));
     }
 
     public void addPlayedLeaderCards(Person person){

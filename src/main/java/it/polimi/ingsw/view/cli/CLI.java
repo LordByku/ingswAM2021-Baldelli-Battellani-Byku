@@ -132,8 +132,6 @@ public class CLI {
         System.out.println("Select resources you want to spend from strongbox: [num of resources to select] [type of resource]. Or type \"warehouse\" to select resources from warehouse.");
     }
 
-
-
     public void waitInitDiscard() {
         System.out.println("Waiting for other players to discard their Leader Cards...");
     }

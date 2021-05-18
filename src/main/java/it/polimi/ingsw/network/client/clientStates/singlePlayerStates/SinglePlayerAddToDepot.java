@@ -22,7 +22,6 @@ public class SinglePlayerAddToDepot extends AddToDepot {
         if(Controller.getInstance().addResourcesToDepot(person, toAdd, depotIndex)) {
             GameStateSerializer serializer = new GameStateSerializer(client.getNickname());
             serializer.addWarehouse(person);
-            System.out.println(serializer.getMessage());
             client.getModel().updateModel(serializer.getMessage());
             ConcreteResourceSet obtained = Controller.getInstance().concreteToObtain();
             Board playerBoard = client.getModel().getPlayer(client.getNickname()).getBoard();
