@@ -6,6 +6,8 @@ import it.polimi.ingsw.model.resources.InvalidResourceException;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.ClientParser;
+import it.polimi.ingsw.network.client.LocalConfig;
+import it.polimi.ingsw.network.client.clientStates.singlePlayerStates.SinglePlayerAddToDepot;
 import it.polimi.ingsw.network.client.localModel.Board;
 import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.view.cli.Strings;
@@ -16,9 +18,17 @@ import java.util.Arrays;
 public class AddToDepot extends ClientState {
     private final ConcreteResourceSet obtained;
 
-    public AddToDepot(ConcreteResourceSet obtained) {
+    protected AddToDepot(ConcreteResourceSet obtained) {
         this.obtained = obtained;
         CLI.getInstance().addToDepot();
+    }
+
+    public static ClientState builder(ConcreteResourceSet obtained) {
+        if(LocalConfig.getInstance().getTurnOrder().size() == 1) {
+            return new SinglePlayerAddToDepot(obtained);
+        } else {
+            return new AddToDepot(obtained);
+        }
     }
 
     @Override
@@ -49,7 +59,7 @@ public class AddToDepot extends ClientState {
                         ConcreteResourceSet concreteResourceSet = ClientParser.getInstance().getConcreteResourceSet(message.getAsJsonObject("obtained"));
 
                         Board playerBoard = client.getModel().getPlayer(client.getNickname()).getBoard();
-                        client.setState(new ManageWarehouse(concreteResourceSet, playerBoard.getWarehouse(), playerBoard.getPlayedLeaderCards()));
+                        client.setState(ManageWarehouse.builder(concreteResourceSet, playerBoard.getWarehouse(), playerBoard.getPlayedLeaderCards()));
 
                         break;
                     }
@@ -64,6 +74,16 @@ public class AddToDepot extends ClientState {
                 CLI.getInstance().unexpected();
             }
         }
+    }
+
+    protected void handleSelection(Client client, int depotIndex, ConcreteResourceSet toAdd) {
+        JsonObject jsonObject = new JsonObject();
+
+        jsonObject.addProperty("command", "addToDepot");
+        jsonObject.addProperty("depotIndex", depotIndex);
+        jsonObject.add("set", ClientParser.getInstance().serialize(toAdd));
+
+        client.write(jsonObject.toString());
     }
 
     @Override
@@ -85,13 +105,7 @@ public class AddToDepot extends ClientState {
                 ConcreteResourceSet toAdd = ClientParser.getInstance().readUserResources(Arrays.copyOfRange(words, 1, words.length));
 
                 if(obtained.contains(toAdd)) {
-                    JsonObject jsonObject = new JsonObject();
-
-                    jsonObject.addProperty("command", "addToDepot");
-                    jsonObject.addProperty("depotIndex", depotIndex);
-                    jsonObject.add("set", ClientParser.getInstance().serialize(toAdd));
-
-                    client.write(jsonObject.toString());
+                    handleSelection(client, depotIndex, toAdd);
                 } else {
                     CLI.getInstance().addToDepot();
                 }

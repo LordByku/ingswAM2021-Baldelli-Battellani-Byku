@@ -1,9 +1,6 @@
 package it.polimi.ingsw.network.client.clientStates;
 
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.network.client.LocalConfig;
-import it.polimi.ingsw.network.client.clientStates.singlePlayerStates.SinglePlayerDiscardLeaderCard;
-import it.polimi.ingsw.network.client.clientStates.singlePlayerStates.SinglePlayerPlayLeaderCard;
 import it.polimi.ingsw.view.cli.CLI;
 
 public class StartTurn extends ClientState {
@@ -24,7 +21,7 @@ public class StartTurn extends ClientState {
             switch(selection) {
                 case 1: {
                     CLI.getInstance().marbleMarket(client.getModel().getGameZone().getMarbleMarket());
-                    client.setState(new CollectResources());
+                    client.setState(CollectResources.builder());
                     break;
                 }
                 case 2: {
@@ -39,21 +36,12 @@ public class StartTurn extends ClientState {
                 }
                 case 4: {
                     CLI.getInstance().showLeaderCards(client.getModel().getPlayer(client.getNickname()).getBoard().getHandLeaderCards());
-
-                    if(LocalConfig.getInstance().getTurnOrder().size() == 1) {
-                        client.setState(new SinglePlayerPlayLeaderCard(StartTurn::new));
-                    } else {
-                        client.setState(new PlayLeaderCard(StartTurn::new));
-                    }
+                    client.setState(PlayLeaderCard.builder(StartTurn::new));
                     break;
                 }
                 case 5: {
                     CLI.getInstance().showLeaderCards(client.getModel().getPlayer(client.getNickname()).getBoard().getHandLeaderCards());
-                    if(LocalConfig.getInstance().getTurnOrder().size() == 1) {
-                        client.setState(new SinglePlayerDiscardLeaderCard(StartTurn::new));
-                    } else {
-                        client.setState(new DiscardLeaderCard(StartTurn::new));
-                    }
+                    client.setState(DiscardLeaderCard.builder(StartTurn::new));
                     break;
                 }
                 case 0: {

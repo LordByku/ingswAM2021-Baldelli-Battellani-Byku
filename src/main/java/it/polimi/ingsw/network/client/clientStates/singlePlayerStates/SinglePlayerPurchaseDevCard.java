@@ -28,7 +28,7 @@ public class SinglePlayerPurchaseDevCard extends PurchaseDevCard {
                 serializer.addStrongbox(person);
                 serializer.addCardMarket();
                 client.getModel().updateModel(serializer.getMessage());
-                client.setState(new SinglePlayerEndTurn());
+                client.setState(new EndTurn());
             }
         }
     }

@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.ClientParser;
+import it.polimi.ingsw.network.client.LocalConfig;
+import it.polimi.ingsw.network.client.clientStates.singlePlayerStates.SinglePlayerManageWarehouse;
 import it.polimi.ingsw.view.cli.CLI;
 
 import java.util.ArrayList;
@@ -13,12 +15,20 @@ public class ManageWarehouse extends ClientState {
     private final ArrayList<ConcreteResourceSet> warehouse;
     private final ArrayList<Integer> playedLeaderCards;
 
-    public ManageWarehouse(ConcreteResourceSet obtained, ArrayList<ConcreteResourceSet> warehouse, ArrayList<Integer> playedLeaderCards) {
+    protected ManageWarehouse(ConcreteResourceSet obtained, ArrayList<ConcreteResourceSet> warehouse, ArrayList<Integer> playedLeaderCards) {
         this.obtained = obtained;
         this.warehouse = warehouse;
         this.playedLeaderCards = playedLeaderCards;
         CLI.getInstance().showWarehouse(warehouse, playedLeaderCards);
         CLI.getInstance().manageWarehouse(obtained);
+    }
+
+    public static ClientState builder(ConcreteResourceSet obtained, ArrayList<ConcreteResourceSet> warehouse, ArrayList<Integer> playedLeaderCards) {
+        if(LocalConfig.getInstance().getTurnOrder().size() == 1) {
+            return new SinglePlayerManageWarehouse(obtained, warehouse, playedLeaderCards);
+        } else {
+            return new ManageWarehouse(obtained, warehouse, playedLeaderCards);
+        }
     }
 
     @Override
@@ -30,6 +40,7 @@ public class ManageWarehouse extends ClientState {
         switch (status) {
             case "error": {
                 String message = ClientParser.getInstance().getMessage(json).getAsString();
+                CLI.getInstance().serverError(message);
                 CLI.getInstance().showWarehouse(warehouse, playedLeaderCards);
                 CLI.getInstance().manageWarehouse(obtained);
                 break;
@@ -58,6 +69,13 @@ public class ManageWarehouse extends ClientState {
         }
     }
 
+    protected void handleConfirm(Client client) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("command", "confirmWarehouse");
+
+        client.write(jsonObject.toString());
+    }
+
     @Override
     public void handleUserMessage(Client client, String line) {
         try {
@@ -66,24 +84,21 @@ public class ManageWarehouse extends ClientState {
             switch (selection) {
                 case 1: {
                     CLI.getInstance().showWarehouse(warehouse, playedLeaderCards);
-                    client.setState(new AddToDepot(obtained));
+                    client.setState(AddToDepot.builder(obtained));
                     break;
                 }
                 case 2: {
                     CLI.getInstance().showWarehouse(warehouse, playedLeaderCards);
-                    client.setState(new RemoveFromDepot(obtained));
+                    client.setState(RemoveFromDepot.builder(obtained));
                     break;
                 }
                 case 3: {
                     CLI.getInstance().showWarehouse(warehouse, playedLeaderCards);
-                    client.setState(new SwapFromDepots(obtained));
+                    client.setState(SwapFromDepots.builder(obtained));
                     break;
                 }
                 case 0: {
-                    JsonObject jsonObject = new JsonObject();
-                    jsonObject.addProperty("command", "confirmWarehouse");
-
-                    client.write(jsonObject.toString());
+                    handleConfirm(client);
                     break;
                 }
                 default: {

@@ -1,11 +1,13 @@
 package it.polimi.ingsw.network.client.clientStates;
 
 import com.google.gson.JsonObject;
+import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.model.game.Game;
+import it.polimi.ingsw.model.game.Person;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.ClientParser;
 import it.polimi.ingsw.network.client.LocalConfig;
-import it.polimi.ingsw.network.client.clientStates.singlePlayerStates.SinglePlayerDiscardLeaderCard;
-import it.polimi.ingsw.network.client.clientStates.singlePlayerStates.SinglePlayerPlayLeaderCard;
+import it.polimi.ingsw.network.server.GameStateSerializer;
 import it.polimi.ingsw.view.cli.CLI;
 
 public class EndTurn extends ClientState {
@@ -52,13 +54,6 @@ public class EndTurn extends ClientState {
         }
     }
 
-    protected void handleSelection(Client client){
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("command", "endTurn");
-
-        client.write(jsonObject.toString());
-    }
-
     @Override
     public void handleUserMessage(Client client, String line) {
         try {
@@ -66,27 +61,30 @@ public class EndTurn extends ClientState {
 
             switch (selection) {
                 case 1: {
-                    handleSelection(client);
+                    if(LocalConfig.getInstance().getTurnOrder().size() == 1) {
+                        Person person = Game.getInstance().getSinglePlayer();
+                        Controller.getInstance().endTurn(person);
+                        GameStateSerializer serializer = new GameStateSerializer(person.getNickname());
+                        serializer.addFaithTrack(person);
+                        serializer.addCardMarket();
+                        client.getModel().updateModel(serializer.getMessage());
+                        client.setState(new StartTurn());
+                    } else {
+                        JsonObject jsonObject = new JsonObject();
+                        jsonObject.addProperty("command", "endTurn");
+
+                        client.write(jsonObject.toString());
+                    }
                     break;
                 }
                 case 2: {
                     CLI.getInstance().showLeaderCards(client.getModel().getPlayer(client.getNickname()).getBoard().getHandLeaderCards());
-                    if(LocalConfig.getInstance().getTurnOrder().size() == 1) {
-                        client.setState(new SinglePlayerPlayLeaderCard(EndTurn::new));
-                    }
-                    else{
-                        client.setState(new PlayLeaderCard(EndTurn::new));
-                    }
+                    client.setState(PlayLeaderCard.builder(EndTurn::new));
                     break;
                 }
                 case 3: {
                     CLI.getInstance().showLeaderCards(client.getModel().getPlayer(client.getNickname()).getBoard().getHandLeaderCards());
-                    if(LocalConfig.getInstance().getTurnOrder().size() == 1) {
-                        client.setState(new SinglePlayerDiscardLeaderCard(EndTurn::new));
-                    }
-                    else{
-                        client.setState(new DiscardLeaderCard(EndTurn::new));
-                    }
+                    client.setState(DiscardLeaderCard.builder(EndTurn::new));
                     break;
                 }
                 case 0: {

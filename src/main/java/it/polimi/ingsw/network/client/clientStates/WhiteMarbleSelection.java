@@ -6,6 +6,8 @@ import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.ClientParser;
+import it.polimi.ingsw.network.client.LocalConfig;
+import it.polimi.ingsw.network.client.clientStates.singlePlayerStates.SinglePlayerWhiteMarbleSelection;
 import it.polimi.ingsw.network.client.localModel.Board;
 import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.view.cli.Strings;
@@ -22,6 +24,18 @@ public class WhiteMarbleSelection extends ClientState {
         CLI.getInstance().whiteMarbleSelection(choiceSet, choices);
     }
 
+    public static ClientState builder(ChoiceSet choiceSet, int choices) {
+        if(LocalConfig.getInstance().getTurnOrder().size() == 1) {
+            return new SinglePlayerWhiteMarbleSelection(choiceSet, choices);
+        } else {
+            return new WhiteMarbleSelection(choiceSet, choices);
+        }
+    }
+
+    protected void selectionToCLI() {
+        CLI.getInstance().whiteMarbleSelection(choiceSet, choices);
+    }
+
     @Override
     public void handleServerMessage(Client client, String line) {
         JsonObject json = ClientParser.getInstance().parse(line).getAsJsonObject();
@@ -32,7 +46,7 @@ public class WhiteMarbleSelection extends ClientState {
             case "error": {
                 String message = ClientParser.getInstance().getMessage(json).getAsString();
                 CLI.getInstance().serverError(message);
-                CLI.getInstance().whiteMarbleSelection(choiceSet, choices);
+                selectionToCLI();
                 break;
             }
             case "ok": {
@@ -46,7 +60,7 @@ public class WhiteMarbleSelection extends ClientState {
 
                         Board playerBoard = client.getModel().getPlayer(client.getNickname()).getBoard();
                         CLI.getInstance().showWarehouse(playerBoard.getWarehouse(), playerBoard.getPlayedLeaderCards());
-                        client.setState(new ManageWarehouse(concreteResourceSet, playerBoard.getWarehouse(), playerBoard.getPlayedLeaderCards()));
+                        client.setState(ManageWarehouse.builder(concreteResourceSet, playerBoard.getWarehouse(), playerBoard.getPlayedLeaderCards()));
 
                         break;
                     }
@@ -63,29 +77,33 @@ public class WhiteMarbleSelection extends ClientState {
         }
     }
 
+    protected void handleSelection(Client client, ArrayList<ConcreteResource> resources) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("command", "whiteMarble");
+        jsonObject.add("resources", ClientParser.getInstance().serialize(resources));
+
+        client.write(jsonObject.toString());
+    }
+
     @Override
     public void handleUserMessage(Client client, String line) {
         String[] words = Strings.splitLine(line);
 
         if(words.length != choices) {
-            CLI.getInstance().whiteMarbleSelection(choiceSet, choices);
+            selectionToCLI();
         } else {
             ArrayList<ConcreteResource> resources = new ArrayList<>();
 
             for(String word: words) {
                 ConcreteResource resource = ClientParser.getInstance().readUserResource(word);
                 if(resource == null) {
-                    CLI.getInstance().whiteMarbleSelection(choiceSet, choices);
+                    selectionToCLI();
                     return;
                 }
                 resources.add(resource);
             }
 
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("command", "whiteMarble");
-            jsonObject.add("resources", ClientParser.getInstance().serialize(resources));
-
-            client.write(jsonObject.toString());
+            handleSelection(client, resources);
         }
     }
 }

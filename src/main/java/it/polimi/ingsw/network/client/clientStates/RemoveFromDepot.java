@@ -7,6 +7,8 @@ import it.polimi.ingsw.model.resources.InvalidResourceException;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.ClientParser;
+import it.polimi.ingsw.network.client.LocalConfig;
+import it.polimi.ingsw.network.client.clientStates.singlePlayerStates.SinglePlayerRemoveFromDepot;
 import it.polimi.ingsw.network.client.localModel.Board;
 import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.view.cli.Strings;
@@ -17,9 +19,17 @@ import java.util.Arrays;
 public class RemoveFromDepot extends ClientState {
     private final ConcreteResourceSet obtained;
 
-    public RemoveFromDepot(ConcreteResourceSet obtained) {
+    protected RemoveFromDepot(ConcreteResourceSet obtained) {
         this.obtained = obtained;
         CLI.getInstance().removeFromDepot();
+    }
+
+    public static ClientState builder(ConcreteResourceSet obtained) {
+        if(LocalConfig.getInstance().getTurnOrder().size() == 1) {
+            return new SinglePlayerRemoveFromDepot(obtained);
+        } else {
+            return new RemoveFromDepot(obtained);
+        }
     }
 
     @Override
@@ -67,6 +77,16 @@ public class RemoveFromDepot extends ClientState {
         }
     }
 
+    protected void handleSelection(Client client, int depotIndex, ConcreteResourceSet toRemove) {
+        JsonObject jsonObject = new JsonObject();
+
+        jsonObject.addProperty("command", "removeFromDepot");
+        jsonObject.addProperty("depotIndex", depotIndex);
+        jsonObject.add("set", ClientParser.getInstance().serialize(toRemove));
+
+        client.write(jsonObject.toString());
+    }
+
     @Override
     public void handleUserMessage(Client client, String line) {
         String[] words = Strings.splitLine(line);
@@ -86,13 +106,7 @@ public class RemoveFromDepot extends ClientState {
                 ConcreteResourceSet toRemove = ClientParser.getInstance().readUserResources(Arrays.copyOfRange(words, 1, words.length));
 
                 if(warehouse.get(depotIndex).contains(toRemove)) {
-                    JsonObject jsonObject = new JsonObject();
-
-                    jsonObject.addProperty("command", "removeFromDepot");
-                    jsonObject.addProperty("depotIndex", depotIndex);
-                    jsonObject.add("set", ClientParser.getInstance().serialize(toRemove));
-
-                    client.write(jsonObject.toString());
+                    handleSelection(client, depotIndex, toRemove);
                 } else {
                     CLI.getInstance().addToDepot();
                 }

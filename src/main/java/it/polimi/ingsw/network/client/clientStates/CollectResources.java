@@ -8,6 +8,8 @@ import it.polimi.ingsw.model.resources.ChoiceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.ClientParser;
+import it.polimi.ingsw.network.client.LocalConfig;
+import it.polimi.ingsw.network.client.clientStates.singlePlayerStates.SinglePlayerCollectResources;
 import it.polimi.ingsw.network.client.localModel.Board;
 import it.polimi.ingsw.network.client.localModel.MarbleMarket;
 import it.polimi.ingsw.parsing.LeaderCardsParser;
@@ -15,11 +17,16 @@ import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.view.cli.Strings;
 
 public class CollectResources extends ClientState {
-    private boolean rowColSel;
-    private int index;
-
-    public CollectResources() {
+    protected CollectResources() {
         CLI.getInstance().marbleMarketSelection();
+    }
+
+    public static ClientState builder() {
+        if(LocalConfig.getInstance().getTurnOrder().size() == 1) {
+            return new SinglePlayerCollectResources();
+        } else {
+            return new CollectResources();
+        }
     }
 
     @Override
@@ -54,11 +61,11 @@ public class CollectResources extends ClientState {
                                 }
                             }
 
-                            client.setState(new WhiteMarbleSelection(choiceSet, message.get("choices").getAsInt()));
+                            client.setState(WhiteMarbleSelection.builder(choiceSet, message.get("choices").getAsInt()));
                         } else if(message.has("obtained")) {
                             Board playerBoard = client.getModel().getPlayer(client.getNickname()).getBoard();
                             ConcreteResourceSet obtained = ClientParser.getInstance().getConcreteResourceSet(message.getAsJsonObject("obtained"));
-                            client.setState(new ManageWarehouse(obtained, playerBoard.getWarehouse(), playerBoard.getPlayedLeaderCards()));
+                            client.setState(ManageWarehouse.builder(obtained, playerBoard.getWarehouse(), playerBoard.getPlayedLeaderCards()));
                         } else {
                             CLI.getInstance().unexpected();
                         }
@@ -77,8 +84,22 @@ public class CollectResources extends ClientState {
         }
     }
 
+    protected void handleSelection(Client client, boolean rowColSel, int index) {
+        JsonObject message = new JsonObject();
+        message.addProperty("rowColSel", rowColSel);
+        message.addProperty("index", index);
+
+        JsonObject json = new JsonObject();
+        json.addProperty("command", "market");
+        json.add("message", message);
+
+        client.write(json.toString());
+    }
+
     @Override
     public void handleUserMessage(Client client, String line) {
+        boolean rowColSel;
+        int index;
         if(line.equals("x")) {
             client.setState(new StartTurn());
         } else {
@@ -107,15 +128,7 @@ public class CollectResources extends ClientState {
                                 return;
                             }
                         }
-                        JsonObject message = new JsonObject();
-                        message.addProperty("rowColSel", rowColSel);
-                        message.addProperty("index", index);
-
-                        JsonObject json = new JsonObject();
-                        json.addProperty("command", "market");
-                        json.add("message", message);
-
-                        client.write(json.toString());
+                        handleSelection(client, rowColSel, index);
                     } catch (NumberFormatException e) {
                         CLI.getInstance().marbleMarketSelection();
                     }

@@ -3,6 +3,8 @@ package it.polimi.ingsw.network.client.clientStates;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.ClientParser;
+import it.polimi.ingsw.network.client.LocalConfig;
+import it.polimi.ingsw.network.client.clientStates.singlePlayerStates.SinglePlayerPlayLeaderCard;
 import it.polimi.ingsw.view.cli.CLI;
 
 import java.util.function.Supplier;
@@ -10,9 +12,17 @@ import java.util.function.Supplier;
 public class PlayLeaderCard extends ClientState {
     private final Supplier<ClientState> returnStateSupplier;
 
-    public PlayLeaderCard(Supplier<ClientState> returnStateSupplier) {
+    protected PlayLeaderCard(Supplier<ClientState> returnStateSupplier) {
         CLI.getInstance().playLeaderCard();
         this.returnStateSupplier = returnStateSupplier;
+    }
+
+    public static ClientState builder(Supplier<ClientState> returnStateSupplier) {
+        if(LocalConfig.getInstance().getTurnOrder().size() == 1) {
+            return new SinglePlayerPlayLeaderCard(returnStateSupplier);
+        } else {
+            return new PlayLeaderCard(returnStateSupplier);
+        }
     }
 
     @Override

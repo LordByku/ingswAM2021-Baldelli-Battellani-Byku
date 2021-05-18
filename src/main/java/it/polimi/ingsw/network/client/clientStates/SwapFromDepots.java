@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.ClientParser;
+import it.polimi.ingsw.network.client.LocalConfig;
+import it.polimi.ingsw.network.client.clientStates.singlePlayerStates.SinglePlayerSwapFromDepots;
 import it.polimi.ingsw.network.client.localModel.Board;
 import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.view.cli.Strings;
@@ -13,6 +15,14 @@ import java.util.ArrayList;
 public class SwapFromDepots extends ClientState {
     public SwapFromDepots(ConcreteResourceSet obtained) {
         CLI.getInstance().swapFromDepots();
+    }
+
+    public static ClientState builder(ConcreteResourceSet obtained) {
+        if(LocalConfig.getInstance().getTurnOrder().size() == 1) {
+            return new SinglePlayerSwapFromDepots(obtained);
+        } else {
+            return new SwapFromDepots(obtained);
+        }
     }
 
     @Override
@@ -60,6 +70,16 @@ public class SwapFromDepots extends ClientState {
         }
     }
 
+    protected void handleSelection(Client client, int depotIndexA, int depotIndexB) {
+        JsonObject jsonObject = new JsonObject();
+
+        jsonObject.addProperty("command", "swapFromDepots");
+        jsonObject.addProperty("depotIndexA", depotIndexA);
+        jsonObject.addProperty("depotIndexB", depotIndexB);
+
+        client.write(jsonObject.toString());
+    }
+
     @Override
     public void handleUserMessage(Client client, String line) {
         String[] words = Strings.splitLine(line);
@@ -76,13 +96,7 @@ public class SwapFromDepots extends ClientState {
                     return;
                 }
 
-                JsonObject jsonObject = new JsonObject();
-
-                jsonObject.addProperty("command", "swapFromDepots");
-                jsonObject.addProperty("depotIndexA", depotIndexA);
-                jsonObject.addProperty("depotIndexB", depotIndexB);
-
-                client.write(jsonObject.toString());
+                handleSelection(client, depotIndexA, depotIndexB);
             } catch (NumberFormatException e) {
                 CLI.getInstance().swapFromDepots();
             }

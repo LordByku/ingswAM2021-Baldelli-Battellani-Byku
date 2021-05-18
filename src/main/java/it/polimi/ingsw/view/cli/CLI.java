@@ -16,7 +16,6 @@ import it.polimi.ingsw.parsing.DevCardsParser;
 import it.polimi.ingsw.parsing.LeaderCardsParser;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class CLI {
     private static CLI instance;
@@ -60,13 +59,12 @@ public class CLI {
         System.out.println("Press ENTER to start the game:");
     }
 
-
     public void waitStart() {
         System.out.println("Waiting for host to start the game...");
     }
 
     public void unexpected() {
-        System.out.println("Error: an unknown message has been received");
+        System.out.println(TextColour.RED.escape() + "Error: an unknown message has been received" + TextColour.RESET);
     }
 
     public void connectionError() {
@@ -78,7 +76,7 @@ public class CLI {
     }
 
     public void serverError(String message) {
-        System.out.println("Server error: " + message);
+        System.out.println(TextColour.RED.escape() + "Server error: " + message + TextColour.RESET);
     }
 
     public void loadGame() {
