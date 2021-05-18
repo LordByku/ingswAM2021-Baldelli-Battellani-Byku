@@ -45,7 +45,7 @@ public abstract class SpendResources extends ClientState{
         }
     }
 
-    public void write(Client client, ConcreteResourceSet[] warehouse, ConcreteResourceSet strongbox){
+    public void handleSelection(Client client, ConcreteResourceSet[] warehouse, ConcreteResourceSet strongbox){
         JsonObject jsonObject = new JsonObject();
         JsonObject spentResources = new JsonObject();
         spentResources.add("warehouse", ClientParser.getInstance().serialize(warehouse));

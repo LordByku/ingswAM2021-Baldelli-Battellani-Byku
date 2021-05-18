@@ -15,6 +15,7 @@ import it.polimi.ingsw.view.cli.CLI;
 public class PurchaseDevCard extends ClientState {
     int row;
     int column;
+    int deckIndex;
 
     public PurchaseDevCard(){
         CLI.getInstance().purchaseDevCard();
@@ -41,7 +42,7 @@ public class PurchaseDevCard extends ClientState {
                     int numOfDepots = client.getModel().getPlayer(client.getNickname()).getBoard().getWarehouse().size();
                     int cardId = client.getModel().getGameZone().getCardMarket().getDevCard(row,column);
                     ConcreteResourceSet set = DevCardsParser.getInstance().getCard(cardId).getReqResources();
-                    client.setState(new SpendResourcesWarehouse(numOfDepots,set));
+                    client.setState(new SpendResourcesWarehouse(numOfDepots,set, deckIndex));
                 } else {
                     CLI.getInstance().unexpected();
                 }
@@ -84,6 +85,7 @@ public class PurchaseDevCard extends ClientState {
                     if (rowIndex >= 0 && rowIndex < rowLength && columnIndex >= 0 && columnIndex < columnLength && deckIndex >= 0 && deckIndex < deckLength) {
                         this.row = rowIndex;
                         this.column = columnIndex;
+                        this.deckIndex=deckIndex;
                         handleSelection(client,rowIndex,columnIndex,deckIndex);
                     } else {
                         CLI.getInstance().purchaseDevCard();

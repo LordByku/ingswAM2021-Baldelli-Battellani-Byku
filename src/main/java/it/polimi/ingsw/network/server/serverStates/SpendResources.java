@@ -8,7 +8,6 @@ import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.network.server.GameStateSerializer;
 import it.polimi.ingsw.network.server.ServerParser;
-
 import java.util.function.Consumer;
 
 public class SpendResources extends ServerState{
