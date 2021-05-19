@@ -53,7 +53,6 @@ public abstract class SpendResources extends ClientState{
         jsonObject.addProperty("command", "spentResources");
         jsonObject.add("spentResources", spentResources);
         client.write(jsonObject.toString());
-
     }
 
     @Override

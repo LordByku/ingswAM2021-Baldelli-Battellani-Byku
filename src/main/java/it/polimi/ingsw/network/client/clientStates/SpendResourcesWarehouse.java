@@ -30,6 +30,14 @@ public class SpendResourcesWarehouse extends SpendResources{
         this.deckIndex=deckIndex;
     }
 
+    public static ClientState builder(int numOfDepots, ConcreteResourceSet toSpend, int deckIndex) {
+        if(LocalConfig.getInstance().getTurnOrder().size() == 1) {
+            return new SinglePlayerSpendResourcesWarehouse(numOfDepots, toSpend, deckIndex);
+        } else {
+            return new SpendResourcesWarehouse(numOfDepots, toSpend, deckIndex);
+        }
+    }
+
     @Override
     public void handleUserMessage(Client client, String line) {
         int maxDepotSize = 0;
@@ -41,12 +49,8 @@ public class SpendResourcesWarehouse extends SpendResources{
         String[] arr = line.split(" ");
 
         if(arr.length==1){
-            if(line.toLowerCase().equals("strongbox")) {
-                if (LocalConfig.getInstance().getTurnOrder().size() == 1) {
-                    client.setState(new SinglePlayerSpendResourcesStrongbox(warehouse, strongbox, toSpend, deckIndex));
-                } else {
-                    client.setState(new SpendResourcesStrongbox(warehouse, strongbox, toSpend, deckIndex));
-                }
+            if(line.equalsIgnoreCase("strongbox")) {
+                client.setState(SpendResourcesStrongbox.builder(warehouse, strongbox, toSpend, deckIndex));
             }
         }
         else if(arr.length == 2){
