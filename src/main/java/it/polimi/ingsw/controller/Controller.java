@@ -18,6 +18,7 @@ import it.polimi.ingsw.model.resources.resourceSets.*;
 import it.polimi.ingsw.network.client.clientStates.SpendResources;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -431,7 +432,7 @@ public class Controller {
 
     public boolean canProduce (Person person, int[] activeSet) {
 
-
+        productionDetails = new ArrayList<>();
 
         SpendableResourceSet set = new SpendableResourceSet();
         Board playerBoard = person.getBoard();
@@ -441,7 +442,7 @@ public class Controller {
         for(int index: activeSet){
             if(index <0 || index>playerProductionArea.size())
                 return false;
-            set.union(playerProductionAreaProductionDetails.get(index).getInput());
+            set.union(playerProductionArea.getProduction(index).getInput());
         }
 
         ConcreteResourceSet boardRes = person.getBoard().getResources();
@@ -453,6 +454,24 @@ public class Controller {
 
             productionDetails.add(playerProductionAreaProductionDetails.get(index));
         }
+        return true;
+    }
+
+    public boolean checkProdIndex(Person person, int[] activeSet){
+
+       ProductionArea productionArea = person.getBoard().getProductionArea();
+
+        if (productionArea.getProductionDetails().size() < activeSet.length)
+            return false;
+        for (int j : activeSet) {
+            if (j < 0)
+                return false;
+
+            if (productionArea.getProduction(j)==null)
+                return false;
+
+        }
+
         return true;
     }
 

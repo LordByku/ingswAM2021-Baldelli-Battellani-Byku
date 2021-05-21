@@ -369,4 +369,8 @@ public class CLI {
         System.out.println("[1] Select Card to Purchase");
         System.out.println("[x] Back");
     }
+
+    public void success() {
+        System.out.println("Choices were taken successfully");
+    }
 }

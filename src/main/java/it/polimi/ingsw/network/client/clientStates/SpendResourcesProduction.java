@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.client.clientStates;
 
 import com.google.gson.JsonObject;
+import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.ClientParser;
@@ -32,7 +33,7 @@ public abstract class SpendResourcesProduction extends ClientState {
                         client.getModel().updateModel(message);
                         //if hai scelte client.setState(new );
 
-        //                client.setState(new ChoiceResources());
+                        client.setState(new ChoiceResources(Controller.getInstance().toObtainChoices()));
                         break;
                     }
                     default: {
@@ -47,7 +48,7 @@ public abstract class SpendResourcesProduction extends ClientState {
         }
     }
 
-    public void write(Client client, ConcreteResourceSet[] warehouse, ConcreteResourceSet strongbox){
+    public void handleSelection(Client client, ConcreteResourceSet[] warehouse, ConcreteResourceSet strongbox){
         JsonObject jsonObject = new JsonObject();
         JsonObject spentResources = new JsonObject();
         spentResources.add("warehouse", ClientParser.getInstance().serialize(warehouse));

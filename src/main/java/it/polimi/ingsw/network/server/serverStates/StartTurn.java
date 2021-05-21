@@ -5,6 +5,7 @@ import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.network.server.GameStateSerializer;
 import it.polimi.ingsw.network.server.ServerParser;
+import it.polimi.ingsw.view.cli.CLI;
 
 import java.util.function.Consumer;
 
@@ -38,16 +39,19 @@ public class StartTurn extends ServerState {
 
                     int[] activeSet = ServerParser.getInstance().parseIntArray(message.getAsJsonArray("activeSet"));
 
-
-                    if (Controller.getInstance().canProduce(clientHandler.getPerson(), activeSet)) {
-                        clientHandler.confirm();
-
-                        clientHandler.setState(new ProductionSelection());
+                    if(Controller.getInstance().checkProdIndex(clientHandler.getPerson(),activeSet)) {
+                        if (Controller.getInstance().canProduce(clientHandler.getPerson(), activeSet)) {
+                            CLI.getInstance().success();
+                            clientHandler.confirm();
+                            clientHandler.setState(new SpendResourcesProduction());
+                            //clientHandler.setState(new ProductionSelection());
+                        } else {
+                            clientHandler.error("Not enough resources for all chosen productions");
+                        }
                     }
                     else {
-                        clientHandler.error("Not enough resources for all chosen productions");
+                        clientHandler.error("The productions selected contain at least one production not existing");
                     }
-
 
                     break;
                 }

@@ -5,30 +5,33 @@ import it.polimi.ingsw.model.game.*;
 import it.polimi.ingsw.network.server.serverStates.AcceptNickname;
 import it.polimi.ingsw.network.server.serverStates.ServerState;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class ClientHandler implements Runnable {
-    private final Scanner in;
+    private final Socket socket;
+    private final BufferedReader in;
     private final PrintWriter out;
     private final Server server;
     private Person person;
     private ServerState serverState;
     private Timer timer;
-    private Thread serverClientCommunication;
-    private final int timerDelay = 10000;
+    private final int timerDelay = 5000;
     private volatile boolean ponged;
 
     public ClientHandler(Socket socket, Server server) throws IOException {
-        in = new Scanner(socket.getInputStream());
+        socket.setSoTimeout(2 * timerDelay);
+        this.socket = socket;
+        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out = new PrintWriter(socket.getOutputStream(), true);
         this.server = server;
     }
@@ -80,10 +83,6 @@ public class ClientHandler implements Runnable {
     }
 
     public synchronized void disconnection() {
-        timer.cancel();
-        if(serverClientCommunication.isAlive()) {
-            serverClientCommunication.interrupt();
-        }
         System.out.println("Connection with client has been interrupted");
         try {
             // person may be null if an exception is thrown trying to add the person to the game
@@ -109,7 +108,7 @@ public class ClientHandler implements Runnable {
                 }
             }, timerDelay);
         } else {
-            disconnection();
+            System.out.println("Pong not received");
         }
     }
 
@@ -119,7 +118,7 @@ public class ClientHandler implements Runnable {
 
     public void run() {
         serverState = new AcceptNickname();
-        serverClientCommunication = new Thread(new ServerClientCommunication(this, in));
+        Thread serverClientCommunication = new Thread(new ServerClientCommunication(this, in));
         serverClientCommunication.start();
 
         ponged = false;
@@ -134,8 +133,11 @@ public class ClientHandler implements Runnable {
 
         try {
             serverClientCommunication.join();
+            if(!socket.isClosed()) {
+                socket.close();
+            }
             System.out.println("ServerClientCommunication closed");
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | IOException e) {
             e.printStackTrace();
         }
     }
