@@ -28,7 +28,7 @@ public class StartTurn extends ServerState {
                         clientHandler.setState(new SpendResources(deckIndex));
                     }
                     else{
-                        clientHandler.error("Can't buy this card, not enough resources or not invalid top deck level");
+                        clientHandler.error("Can't buy this card, not enough resources or invalid top deck level");
                     }
 
                     break;
