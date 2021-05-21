@@ -3,22 +3,17 @@ package it.polimi.ingsw.network.server.serverStates;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.game.Game;
+import it.polimi.ingsw.model.game.Person;
+import it.polimi.ingsw.model.game.Player;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.network.server.GameStateSerializer;
 import it.polimi.ingsw.network.server.ServerParser;
 
-import java.util.ArrayList;
 import java.util.function.Consumer;
 
 public class InitResources extends ServerState {
-    private static final ArrayList<ClientHandler> completed = new ArrayList<>();
-
-    public InitResources(ClientHandler clientHandler) {
-        if(Controller.getInstance().getInitResources(clientHandler.getPerson()) == 0) {
-            completed.add(clientHandler);
-        }
-    }
+    public InitResources() {}
 
     @Override
     public void handleClientMessage(ClientHandler clientHandler, String line) {
@@ -30,13 +25,15 @@ public class InitResources extends ServerState {
             ConcreteResourceSet[] warehouse = ServerParser.getInstance().parseConcreteResourceSetArray(json.getAsJsonArray("value"));
 
             if(Controller.getInstance().initResources(clientHandler.getPerson(), warehouse)) {
-                synchronized (completed) {
-                    completed.add(clientHandler);
-                    if(completed.size() == Game.getInstance().getNumberOfPlayers()) {
-                        for(ClientHandler completedClientHandler: completed) {
-                            completedClientHandler.setState(new StartTurn());
-                        }
+                boolean completed = true;
+                for(Player player: Game.getInstance().getPlayers()) {
+                    Person person = (Person) player;
+                    if(person.isConnected() && !Controller.getInstance().hasInitSelected(person)) {
+                        completed = false;
                     }
+                }
+                if(completed) {
+                    clientHandler.advanceAllStates(StartTurn::new);
                 }
 
                 Consumer<GameStateSerializer> lambda = (serializer) -> {

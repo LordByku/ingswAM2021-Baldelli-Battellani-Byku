@@ -32,7 +32,6 @@ public class Controller {
 
     private DevCard cardToBuy;
 
-
     private ArrayList<ProductionDetails> productionDetails;
     private Controller() {}
 
@@ -275,9 +274,16 @@ public class Controller {
         return true;
     }
 
-    public boolean initDiscard(Person person, int [] discardedLeaderCardsIndexes) {
+    public boolean hasInitDiscarded(Person person) {
+        return person.getBoard().getLeaderCardArea().getLeaderCards().size() <= 2;
+    }
 
-        if(person.getBoard().getLeaderCardArea().getLeaderCards().size()<=2)
+    public boolean hasInitSelected(Person person) {
+        return getInitResources(person) == 0 || !onceActionPlayer.contains(person);
+    }
+
+    public boolean initDiscard(Person person, int [] discardedLeaderCardsIndexes) {
+        if(hasInitDiscarded(person))
             //Already discarded
             return false;
 
@@ -301,7 +307,7 @@ public class Controller {
     public boolean initResources(Person person, ConcreteResourceSet[] resources) {
         Warehouse warehouse = person.getBoard().getWarehouse();
 
-        if(!onceActionPlayer.contains(person))
+        if(hasInitSelected(person))
             return false;
 
         if(resources.length != warehouse.numberOfDepots()) {

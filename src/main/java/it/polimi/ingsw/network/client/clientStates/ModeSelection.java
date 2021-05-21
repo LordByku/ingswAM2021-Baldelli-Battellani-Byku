@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.client.clientStates;
 
+import com.google.gson.JsonObject;
 import it.polimi.ingsw.model.game.*;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.ClientParser;
@@ -30,7 +31,9 @@ public class ModeSelection extends ClientState {
                 case 1: {
                     try {
                         client.openServerCommunication();
-                        client.write(client.getNickname());
+                        JsonObject jsonObject = new JsonObject();
+                        jsonObject.addProperty("message", client.getNickname());
+                        client.write(jsonObject.toString());
                         client.setState(new Lobby());
                     } catch (IOException e) {
                         CLI.getInstance().connectionError();

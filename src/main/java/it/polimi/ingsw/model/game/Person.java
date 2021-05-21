@@ -22,7 +22,11 @@ public class Person extends Player {
     /**
      * isHost checks whether this Person is the host of the lobby
      */
-    private boolean isHost;
+    private volatile boolean isHost;
+    /**
+     * isConnected indicates whether this Person is currently connected to the server
+     */
+    private volatile boolean isConnected;
 
     /**
      * The constructor creates a new Person given his/her nickname
@@ -38,6 +42,7 @@ public class Person extends Player {
         isActivePlayer = false;
         board = new Board();
         isHost = false;
+        isConnected = true;
     }
 
     /**
@@ -53,7 +58,15 @@ public class Person extends Player {
      */
     @Override
     protected void startTurn() {
-        isActivePlayer = true;
+        if(isConnected) {
+            isActivePlayer = true;
+        } else {
+            try {
+                endTurn();
+            } catch (GameEndedException | GameNotStartedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -89,5 +102,17 @@ public class Person extends Player {
 
     public boolean isActivePlayer() {
         return isActivePlayer;
+    }
+
+    public boolean isConnected() {
+        return isConnected;
+    }
+
+    public void disconnect() {
+        isConnected = false;
+    }
+
+    public void reconnect() {
+        isConnected = true;
     }
 }

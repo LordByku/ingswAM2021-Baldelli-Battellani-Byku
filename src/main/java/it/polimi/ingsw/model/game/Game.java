@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.playerBoard.Board;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 
 public class Game {
     private static Game instance;
@@ -40,6 +41,13 @@ public class Game {
     public Player addPlayer(String nickname)
             throws FullLobbyException, ExistingNicknameException, InvalidNicknameException, GameAlreadyStartedException {
         if(gameStarted) {
+            for(Player player: players) {
+                Person person = (Person) player;
+                if(person.getNickname().equals(nickname) && person.isConnected()) {
+                    person.reconnect();
+                    return person;
+                }
+            }
             throw new GameAlreadyStartedException();
         }
         synchronized (players) {
@@ -47,17 +55,18 @@ public class Game {
                 throw new FullLobbyException();
             }
             for(Player player: players) {
-                if(((Person) player).getNickname().equals(nickname)) {
+                Person person = (Person) player;
+                if(person.getNickname().equals(nickname)) {
                     throw new ExistingNicknameException();
                 }
             }
 
-            Person player = new Person(nickname);
-            players.add(player);
+            Person person = new Person(nickname);
+            players.add(person);
             if(++numberOfPlayers == 1) {
                 setNewHost();
             }
-            return player;
+            return person;
         }
     }
 
@@ -170,12 +179,12 @@ public class Game {
             throw new GameAlreadyStartedException();
         }
         synchronized (players) {
-            for(Player player: players) {
-                Person person = (Person) player;
-                if(person.getNickname().equals(nickname)) {
+            for (Iterator<Player> iterator = players.iterator(); iterator.hasNext(); ) {
+                Person person = (Person) iterator.next();
+                if (person.getNickname().equals(nickname)) {
                     --numberOfPlayers;
-                    players.remove(person);
-                    if(person.isHost()) {
+                    iterator.remove();
+                    if (person.isHost()) {
                         setNewHost();
                     }
                 }
@@ -191,5 +200,9 @@ public class Game {
             Person person = (Person) players.get(0);
             person.setHost();
         }
+    }
+
+    public boolean hasGameStarted() {
+        return gameStarted;
     }
 }

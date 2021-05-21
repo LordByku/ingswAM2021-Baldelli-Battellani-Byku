@@ -9,12 +9,9 @@ import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.network.server.GameStateSerializer;
 import it.polimi.ingsw.network.server.ServerParser;
 
-import java.util.ArrayList;
 import java.util.function.Consumer;
 
 public class InitDiscard extends ServerState {
-    private static final ArrayList<ClientHandler> completed = new ArrayList<>();
-
     @Override
     public void handleClientMessage(ClientHandler clientHandler, String line) {
         JsonObject json = ServerParser.getInstance().parseLine(line).getAsJsonObject();
@@ -26,24 +23,28 @@ public class InitDiscard extends ServerState {
 
             if(Controller.getInstance().initDiscard(clientHandler.getPerson(), indices)) {
                 Consumer<GameStateSerializer> lambda;
-                synchronized (completed) {
-                    completed.add(clientHandler);
-                    if(completed.size() == Game.getInstance().getNumberOfPlayers()) {
-                        Controller.getInstance().handleInitialResources();
-                        for(ClientHandler completedClientHandler: completed) {
-                            completedClientHandler.setState(new InitResources(completedClientHandler));
-                        }
-                        lambda = (serializer) -> {
-                            serializer.addHandLeaderCards(clientHandler.getPerson());
-                            for(Player player: Game.getInstance().getPlayers()) {
-                                serializer.addFaithTrack((Person) player);
-                            }
-                        };
-                    } else {
-                        lambda = (serializer) -> {
-                            serializer.addHandLeaderCards(clientHandler.getPerson());
-                        };
+                boolean completed = true;
+
+                for(Player player: Game.getInstance().getPlayers()) {
+                    Person person = (Person) player;
+                    if(person.isConnected() && !Controller.getInstance().hasInitDiscarded(person)) {
+                        completed = false;
                     }
+                }
+
+                if(completed) {
+                    Controller.getInstance().handleInitialResources();
+                    clientHandler.advanceAllStates(InitResources::new);
+                    lambda = (serializer) -> {
+                        serializer.addHandLeaderCards(clientHandler.getPerson());
+                        for(Player player: Game.getInstance().getPlayers()) {
+                            serializer.addFaithTrack((Person) player);
+                        }
+                    };
+                } else {
+                    lambda = (serializer) -> {
+                        serializer.addHandLeaderCards(clientHandler.getPerson());
+                    };
                 }
 
                 clientHandler.updateGameState(lambda);

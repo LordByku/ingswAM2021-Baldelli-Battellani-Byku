@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.server;
 
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.network.server.serverStates.InitDiscard;
+import it.polimi.ingsw.network.server.serverStates.ServerState;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class Server {
     private final int port;
@@ -60,8 +62,7 @@ public class Server {
     public void startGame(){
         synchronized (clientHandlers) {
             for(ClientHandler clientHandler: clientHandlers) {
-                GameStateSerializer serializer = new GameStateSerializer(clientHandler.getPerson().getNickname());
-                clientHandler.ok("update", serializer.gameState());
+                clientHandler.sendGameState();
                 clientHandler.setState(new InitDiscard());
             }
         }
@@ -79,6 +80,14 @@ public class Server {
                 GameStateSerializer serializer = new GameStateSerializer(clientHandler.getPerson().getNickname());
                 lambda.accept(serializer);
                 clientHandler.ok("update", serializer.getMessage());
+            }
+        }
+    }
+
+    public void advanceAllStates(Supplier<ServerState> serverStateSupplier) {
+        synchronized (clientHandlers) {
+            for (ClientHandler clientHandler : clientHandlers) {
+                clientHandler.setState(serverStateSupplier.get());
             }
         }
     }

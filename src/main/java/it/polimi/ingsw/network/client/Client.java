@@ -24,7 +24,11 @@ public class Client {
     }
 
     public synchronized void handleServerMessage(String line) {
-        clientState.handleServerMessage(this, line);
+        if(line.equals("ping")) {
+            write("pong");
+        } else {
+            clientState.handleServerMessage(this, line);
+        }
     }
 
     public synchronized void handleUserMessage(String line) {

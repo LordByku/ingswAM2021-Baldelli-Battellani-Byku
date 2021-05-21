@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.ClientParser;
 import it.polimi.ingsw.network.client.LocalConfig;
+import it.polimi.ingsw.network.client.localModel.LocalModel;
 import it.polimi.ingsw.parsing.Parser;
 import it.polimi.ingsw.view.cli.CLI;
 
@@ -78,6 +79,41 @@ public class Lobby extends ClientState {
                         LocalConfig.getInstance().setConfig(config);
 
                         client.setState(new LoadMultiPlayer());
+                        break;
+                    }
+                    case "update": {
+                        JsonObject message = ClientParser.getInstance().getMessage(json).getAsJsonObject();
+                        LocalModel model = ClientParser.getInstance().getLocalModel(message);
+                        client.setModel(model);
+                        break;
+                    }
+                    case "state": {
+                        String message = ClientParser.getInstance().getMessage(json).getAsString();
+
+                        switch (message) {
+                            case "initDiscard": {
+                                ArrayList<Integer> leaderCardsIDs = client.getModel().getPlayer(client.getNickname()).getBoard().getHandLeaderCards();
+                                CLI.getInstance().showLeaderCards(leaderCardsIDs);
+                                client.setState(new InitDiscard(leaderCardsIDs.size()));
+                                break;
+                            }
+                            case "initResources": {
+                                client.setState(new InitResources(LocalConfig.getInstance().getInitialResources(client.getNickname())));
+                                break;
+                            }
+                            case "startTurn": {
+                                if (client.getModel().getPlayer(client.getNickname()).hasInkwell()) {
+                                    client.setState(new StartTurn());
+                                } else {
+                                    client.setState(new WaitTurn());
+                                }
+                                break;
+                            }
+                            default: {
+                                CLI.getInstance().unexpected();
+                            }
+                        }
+
                         break;
                     }
                     default: {
