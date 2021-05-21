@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.client.clientStates;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.resources.ChoiceSet;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
@@ -48,13 +49,9 @@ public class ChoiceResources extends ClientState {
 
                         Board playerBoard = client.getModel().getPlayer(client.getNickname()).getBoard();
 
-/*
                         ConcreteResourceSet concreteResourceSet = ClientParser.getInstance().getConcreteResourceSet(message.getAsJsonObject("obtained"));
-
-                        Board playerBoard = client.getModel().getPlayer(client.getNickname()).getBoard();
                         CLI.getInstance().showWarehouse(playerBoard.getWarehouse(), playerBoard.getPlayedLeaderCards());
-                        client.setState(new ManageWarehouse(concreteResourceSet, playerBoard.getWarehouse(), playerBoard.getPlayedLeaderCards()));
-*/
+                        client.getModel().updateModel(message);
                         client.setState(new EndTurn());
                         break;
                     }

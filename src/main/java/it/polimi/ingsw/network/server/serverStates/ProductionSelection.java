@@ -20,7 +20,7 @@ public class ProductionSelection extends ServerState{
         if(command.equals("production")) {
             int[] productionsSelected =  ServerParser.getInstance().parseIntArray(json.getAsJsonArray("activeSet"));
 
-            if(Controller.getInstance().Production(clientHandler.getPerson(), productionsSelected)){
+            if(Controller.getInstance()){
                 Consumer<GameStateSerializer> lambda;
                 synchronized (productionsSelected)
             }

@@ -8,6 +8,10 @@ import it.polimi.ingsw.model.devCards.ProductionDetails;
  * ProductionLeaderCard represents all LeaderCards with a production power.
  */
 public class ProductionLeaderCard extends LeaderCard {
+    public ProductionDetails getProductionPower() {
+        return productionPower;
+    }
+
     /**
      * The ProductionDetails of the power provided by this LeaderCard
      */

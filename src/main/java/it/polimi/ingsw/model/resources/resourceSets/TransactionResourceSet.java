@@ -5,6 +5,11 @@ package it.polimi.ingsw.model.resources.resourceSets;
  * faith points) that are being moved from a resource location to another one.
  */
 public abstract class TransactionResourceSet implements Cloneable {
+
+    public int size() {
+        return resources.size();
+    }
+
     /**
      * resources is the ResourceSet that contains regular resources (not faith points)
      * Initially this ResourceSet is a ChoiceResourceSet, then, after all choices for that
