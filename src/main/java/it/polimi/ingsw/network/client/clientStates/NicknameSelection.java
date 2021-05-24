@@ -9,7 +9,9 @@ public class NicknameSelection extends ClientState {
     }
 
     @Override
-    public void handleServerMessage(Client client, String line) {}
+    public void handleServerMessage(Client client, String line) {
+        CLI.getInstance().unexpected();
+    }
 
     @Override
     public void handleUserMessage(Client client, String line) {

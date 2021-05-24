@@ -51,11 +51,7 @@
         }
       ]
     },
-    "depotSizes": [
-      1,
-      2,
-      3
-    ],
+    "depotSizes": [1, 2, 3],
     "developmentCardsSlots": 3
   },
   "vaticanReportSections": [
@@ -75,6 +71,12 @@
       "points": 4
     }
   ],
+  "initGame": {
+    "leaderCardsToAssign": 4,
+    "leaderCardsToDiscard": 2,
+    "faithPoints": [0, 0, 1, 1],
+    "resources": [0, 1, 1, 2]
+  },
   "developmentCards": [
     {
       "colour": "GREEN",

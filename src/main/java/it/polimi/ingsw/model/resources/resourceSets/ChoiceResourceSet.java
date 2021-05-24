@@ -99,6 +99,14 @@ public class ChoiceResourceSet implements ResourceSet {
         concreteResources.union(otherConcreteResources);
     }
 
+    public void union(ConcreteResourceSet other) throws InvalidResourceSetException {
+        if(other == null) {
+            throw new InvalidResourceSetException();
+        }
+
+        concreteResources.union(other);
+    }
+
     /**
      * clone returns a copy of the object
      * Note that ChoiceResources in resources are not copied

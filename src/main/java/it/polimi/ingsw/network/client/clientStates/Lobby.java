@@ -4,9 +4,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.network.client.ClientParser;
+import it.polimi.ingsw.network.client.LoadCards;
 import it.polimi.ingsw.network.client.LocalConfig;
-import it.polimi.ingsw.network.client.localModel.LocalModel;
+import it.polimi.ingsw.utility.Deserializer;
+import it.polimi.ingsw.utility.JsonUtil;
+import it.polimi.ingsw.view.localModel.LocalModel;
 import it.polimi.ingsw.parsing.Parser;
 import it.polimi.ingsw.view.cli.CLI;
 
@@ -19,29 +21,29 @@ public class Lobby extends ClientState {
 
     @Override
     public void handleServerMessage(Client client, String line) {
-        JsonObject json = ClientParser.getInstance().parse(line).getAsJsonObject();
+        JsonObject json = JsonUtil.getInstance().parseLine(line).getAsJsonObject();
 
-        String status = ClientParser.getInstance().getStatus(json);
+        String status = json.get("status").getAsString();
 
         switch (status) {
             case "fatalError": {
-                String message = ClientParser.getInstance().getMessage(json).getAsString();
+                String message = json.get("message").getAsString();
                 CLI.getInstance().serverError(message);
                 client.closeServerCommunication();
                 client.setState(new NicknameSelection());
                 break;
             }
             case "error": {
-                String message = ClientParser.getInstance().getMessage(json).getAsString();
+                String message = json.get("message").getAsString();
                 CLI.getInstance().serverError(message);
                 break;
             }
             case "ok": {
-                String type = ClientParser.getInstance().getType(json);
+                String type = json.get("type").getAsString();
 
                 switch (type) {
                     case "playerList": {
-                        JsonObject message = ClientParser.getInstance().getMessage(json).getAsJsonObject();
+                        JsonObject message = json.get("message").getAsJsonObject();
 
                         JsonArray playerList = message.get("playerList").getAsJsonArray();
                         ArrayList<String> nicknames = new ArrayList<>();
@@ -56,11 +58,15 @@ public class Lobby extends ClientState {
                             nicknames.add(nickname);
                             if (isHost) {
                                 hostNickname = nickname;
+                                if(nickname.equals(client.getNickname())) {
+                                    LocalConfig.getInstance().setHost();
+                                }
                             }
                         }
 
                         CLI.getInstance().playerList(nicknames, hostNickname);
-                        if (client.getNickname().equals(hostNickname)) {
+                        // TODO improve ?
+                        if (LocalConfig.getInstance().isHost()) {
                             CLI.getInstance().host();
                         } else {
                             CLI.getInstance().waitStart();
@@ -69,51 +75,35 @@ public class Lobby extends ClientState {
                         break;
                     }
                     case "config": {
-                        JsonObject message = ClientParser.getInstance().getMessage(json).getAsJsonObject();
+                        CLI.getInstance().loadGame();
 
-                        ArrayList<String> turnOrder = ClientParser.getInstance().getTurnOrder(message);
+                        JsonObject message = json.get("message").getAsJsonObject();
+
+                        JsonArray jsonTurnOrder = message.getAsJsonArray("turnOrder");
+                        ArrayList<String> turnOrder = new ArrayList<>();
+                        for(JsonElement jsonElement: jsonTurnOrder) {
+                            turnOrder.add(jsonElement.getAsString());
+                        }
+
                         LocalConfig.getInstance().setTurnOrder(turnOrder);
 
-                        JsonObject config = ClientParser.getInstance().getConfig(message);
+                        JsonObject config = json.getAsJsonObject("config");
                         Parser.getInstance().setConfig(config);
                         LocalConfig.getInstance().setConfig(config);
 
-                        client.setState(new LoadMultiPlayer());
+                        LoadCards.getInstance().leaderCardWidth();
+                        LoadCards.getInstance().devCardsWidth();
                         break;
                     }
                     case "update": {
-                        JsonObject message = ClientParser.getInstance().getMessage(json).getAsJsonObject();
-                        LocalModel model = ClientParser.getInstance().getLocalModel(message);
+                        JsonObject message = json.get("message").getAsJsonObject();
+
+                        System.out.println(message);
+
+                        LocalModel model = Deserializer.getInstance().getLocalModel(message);
                         client.setModel(model);
-                        break;
-                    }
-                    case "state": {
-                        String message = ClientParser.getInstance().getMessage(json).getAsString();
 
-                        switch (message) {
-                            case "initDiscard": {
-                                ArrayList<Integer> leaderCardsIDs = client.getModel().getPlayer(client.getNickname()).getBoard().getHandLeaderCards();
-                                CLI.getInstance().showLeaderCards(leaderCardsIDs);
-                                client.setState(new InitDiscard(leaderCardsIDs.size()));
-                                break;
-                            }
-                            case "initResources": {
-                                client.setState(new InitResources(LocalConfig.getInstance().getInitialResources(client.getNickname())));
-                                break;
-                            }
-                            case "startTurn": {
-                                if (client.getModel().getPlayer(client.getNickname()).hasInkwell()) {
-                                    client.setState(new StartTurn());
-                                } else {
-                                    client.setState(new WaitTurn());
-                                }
-                                break;
-                            }
-                            default: {
-                                CLI.getInstance().unexpected();
-                            }
-                        }
-
+                        client.setState(new GameStarted(client));
                         break;
                     }
                     default: {
@@ -131,11 +121,17 @@ public class Lobby extends ClientState {
 
     @Override
     public void handleUserMessage(Client client, String line) {
-        if(line.equals("")) {
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("command", "startGame");
+        if(LocalConfig.getInstance().isHost()) {
+            if (line.equals("")) {
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("command", "startGame");
 
-            client.write(jsonObject.toString());
+                client.write(jsonObject.toString());
+            } else {
+                CLI.getInstance().host();
+            }
+        } else {
+            CLI.getInstance().waitStart();
         }
     }
 }

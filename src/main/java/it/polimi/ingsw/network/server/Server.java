@@ -1,8 +1,9 @@
 package it.polimi.ingsw.network.server;
 
 import com.google.gson.JsonObject;
-import it.polimi.ingsw.network.server.serverStates.InitDiscard;
+import it.polimi.ingsw.network.server.serverStates.GameStarted;
 import it.polimi.ingsw.network.server.serverStates.ServerState;
+import it.polimi.ingsw.utility.JsonUtil;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -54,6 +55,7 @@ public class Server {
     public void broadcast(String type, JsonObject message) {
         synchronized (clientHandlers) {
             for(ClientHandler clientHandler: clientHandlers) {
+                System.out.println("broadcasting to " + clientHandler);
                 clientHandler.ok(type, message);
             }
         }
@@ -63,7 +65,8 @@ public class Server {
         synchronized (clientHandlers) {
             for(ClientHandler clientHandler: clientHandlers) {
                 clientHandler.sendGameState();
-                clientHandler.setState(new InitDiscard());
+                clientHandler.setState(new GameStarted());
+                sendAllCommandBuffers(clientHandler);
             }
         }
     }
@@ -84,10 +87,22 @@ public class Server {
         }
     }
 
-    public void advanceAllStates(Supplier<ServerState> serverStateSupplier) {
+    public void updateGameState(Consumer<GameStateSerializer> lambda, ClientHandler excluded) {
         synchronized (clientHandlers) {
-            for (ClientHandler clientHandler : clientHandlers) {
-                clientHandler.setState(serverStateSupplier.get());
+            for(ClientHandler clientHandler: clientHandlers) {
+                if (!clientHandler.equals(excluded)) {
+                    GameStateSerializer serializer = new GameStateSerializer(clientHandler.getPerson().getNickname());
+                    lambda.accept(serializer);
+                    clientHandler.ok("update", serializer.getMessage());
+                }
+            }
+        }
+    }
+
+    public void sendAllCommandBuffers(ClientHandler sendingClientHandler) {
+        synchronized (clientHandlers) {
+            for(ClientHandler clientHandler: clientHandlers) {
+                sendingClientHandler.ok("command", clientHandler.serializeCommandBuffer());
             }
         }
     }

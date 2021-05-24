@@ -1,26 +1,34 @@
 package it.polimi.ingsw.view.cli;
 
+import it.polimi.ingsw.controller.Production;
 import it.polimi.ingsw.model.devCards.DevCard;
 import it.polimi.ingsw.model.devCards.DevCardDeck;
+import it.polimi.ingsw.model.devCards.ProductionDetails;
 import it.polimi.ingsw.model.leaderCards.DepotLeaderCard;
 import it.polimi.ingsw.model.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.leaderCards.LeaderCardType;
+import it.polimi.ingsw.model.resources.ChoiceResource;
 import it.polimi.ingsw.model.resources.ChoiceSet;
 import it.polimi.ingsw.model.resources.ConcreteResource;
+import it.polimi.ingsw.model.resources.resourceSets.ChoiceResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
+import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.LocalConfig;
-import it.polimi.ingsw.network.client.localModel.CardMarket;
-import it.polimi.ingsw.network.client.localModel.FaithTrack;
-import it.polimi.ingsw.network.client.localModel.MarbleMarket;
+import it.polimi.ingsw.view.localModel.*;
 import it.polimi.ingsw.parsing.DevCardsParser;
 import it.polimi.ingsw.parsing.LeaderCardsParser;
+import it.polimi.ingsw.view.cli.windows.CLIWindow;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CLI {
     private static CLI instance;
 
-    private CLI() {}
+    private CLI() {
+
+    }
 
     public static CLI getInstance() {
         if(instance == null) {
@@ -38,8 +46,8 @@ public class CLI {
     }
 
     public void selectMode() {
-        System.out.println("[1] MultiPlayer Game");
-        System.out.println("[2] SinglePlayer Game");
+        System.out.println("[0] MultiPlayer Game");
+        System.out.println("[1] SinglePlayer Game");
         System.out.println("Insert your choice:");
     }
 
@@ -107,7 +115,6 @@ public class CLI {
     }
 
     public void purchaseDevCard(){
-
         System.out.println("Insert the rowIndex and the columnIndex of the card you want to buy and the index of the deck you want to place the card in; or press [x] to go back:");
         System.out.println("[x]back\nrowIndex - columnIndex - deckIndex");
     }
@@ -163,20 +170,13 @@ public class CLI {
     }
 
     public void startTurn() {
-        System.out.println("[1] Collect resources from market");
-        System.out.println("[2] Purchase development card");
-        System.out.println("[3] Activate production effects");
-        System.out.println("[4] Play leader card");
-        System.out.println("[5] Discard leader card");
-        System.out.println("[0] Check board state");
+        System.out.println("[0] Collect resources from market");
+        System.out.println("[1] Purchase development card");
+        System.out.println("[2] Activate production effects");
+        System.out.println("[3] Play leader card");
+        System.out.println("[4] Discard leader card");
+        System.out.println("[v] Check board state");
         System.out.println("Insert your choice:");
-    }
-
-    public void viewState() {
-        System.out.println("[1] Check Marble Market");
-        System.out.println("[2] Check Card Market");
-        System.out.println("[3] Check player's board");
-        System.out.println("[x] Back");
     }
 
     public void marbleMarket(MarbleMarket marbleMarket) {
@@ -294,13 +294,20 @@ public class CLI {
         }
     }
 
+    public void choiceResourceSelection(int choices) {
+        if(choices == 1) {
+            System.out.println("Select " + choices + " resource to obtain:");
+        } else {
+            System.out.println("Select " + choices + " resources to obtain:");
+        }
+    }
+
     public void manageWarehouse(ConcreteResourceSet obtained) {
         System.out.println("You have to assign: " + obtained.getCLIString());
-        System.out.println("[1] Add to depot");
-        System.out.println("[2] Remove from depot");
-        System.out.println("[3] Swap from depots");
-        System.out.println("[0] Confirm warehouse");
-        System.out.println("Insert your choice:");
+        System.out.println("To add resources to a depot     : add [depotIndex] [resource] [resource]...");
+        System.out.println("To remove resources from a depot: remove [depotIndex] [resource] [resource]...");
+        System.out.println("To swap resources of two depots : swap [depotIndexA] [depotIndexB]");
+        System.out.println("To confirm the warehouse        : confirm");
     }
 
     public void addToDepot() {
@@ -316,10 +323,10 @@ public class CLI {
     }
 
     public void endTurn() {
-        System.out.println("[1] End Turn");
-        System.out.println("[2] Play Leader Card");
-        System.out.println("[3] Discard Leader Card");
-        System.out.println("[0] Check board state");
+        System.out.println("[0] End Turn");
+        System.out.println("[1] Play Leader Card");
+        System.out.println("[2] Discard Leader Card");
+        System.out.println("[v] Check board state");
         System.out.println("Insert your choice:");
     }
 
@@ -337,31 +344,17 @@ public class CLI {
         System.out.println(deck.getCLIString());
     }
 
-    public void productionSelection(ArrayList<ArrayList<Integer>> devCardDecks, ArrayList<Integer> playedLeaderCards) {
-
-        System.out.println("[0] " + LocalConfig.getInstance().getDefaultProductionPower().getCLIString());
-        if(!devCardDecks.get(0).isEmpty()) {
-            System.out.println("[1] " + DevCardsParser.getInstance().getCard(devCardDecks.get(0).get(devCardDecks.get(0).size()-1)).getProductionPower().getCLIString());
+    public void productionSelection(HashMap<Integer, ProductionDetails> map) {
+        for(Map.Entry<Integer, ProductionDetails> entry: map.entrySet()) {
+            int index = entry.getKey();
+            ProductionDetails productionDetails = entry.getValue();
+            System.out.println("[" + index + "] " + productionDetails.getCLIString());
         }
-        if(!devCardDecks.get(1).isEmpty())
-            System.out.println("[2] " + DevCardsParser.getInstance().getCard(devCardDecks.get(1).get(devCardDecks.get(1).size()-1)).getProductionPower().getCLIString());
-        if(!devCardDecks.get(2).isEmpty())
-            System.out.println("[3] " + DevCardsParser.getInstance().getCard(devCardDecks.get(2).get(devCardDecks.get(2).size()-1)).getProductionPower().getCLIString());
-
-
-        for (int i =0, index = 4; i<playedLeaderCards.size();i++){
-            LeaderCard leaderCard = LeaderCardsParser.getInstance().getCard(playedLeaderCards.get(i));
-            if(leaderCard.isType(LeaderCardType.PRODUCTION))
-                System.out.println("["+(index++)+"] " + leaderCard.getEffectString());
-
-        }
-
-
         System.out.println("[x] Back");
     }
 
     public void activateProductionSelection () {
-        System.out.println("Select the productions: ");
+        System.out.println("Select all the productions to activate: ");
     }
 
     public void purchaseMenu() {
@@ -370,7 +363,14 @@ public class CLI {
         System.out.println("[x] Back");
     }
 
-    public void success() {
-        System.out.println("Choices were taken successfully");
+    public void reconnecting(int timerDelay) {
+        System.out.println("Trying to reconnect in " + timerDelay / 1000 + " seconds...");
+    }
+
+    public void spendResources(ChoiceResourceSet toSpend, ConcreteResourceSet currentSelection) {
+        System.out.println("Resources required: " + toSpend.getCLIString());
+        System.out.println("Resources selected: " + currentSelection.getCLIString());
+        System.out.println("To select resources from warehouse: warehouse [depotIndex] [resource] [resource]...");
+        System.out.println("To select resources from strongbox: strongbox [resource] [resource]...");
     }
 }

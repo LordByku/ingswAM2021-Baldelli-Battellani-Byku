@@ -46,6 +46,7 @@ public class Parser {
         DevCardsParser.getInstance().setConfig(config);
         LeaderCardsParser.getInstance().setConfig(config);
         VRSParser.getInstance().setConfig(config);
+        InitGameParser.getInstance().setConfig(config);
     }
 
     public ConcreteResourceSet parseConcreteResourceSet(JsonArray jsonArray)

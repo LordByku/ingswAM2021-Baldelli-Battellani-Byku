@@ -2,6 +2,8 @@ package it.polimi.ingsw.model.game;
 
 import it.polimi.ingsw.model.gameZone.GameZone;
 import it.polimi.ingsw.model.playerBoard.Board;
+import it.polimi.ingsw.model.playerBoard.faithTrack.VRSObserver;
+import it.polimi.ingsw.parsing.InitGameParser;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,17 +42,19 @@ public class Game {
 
     public Player addPlayer(String nickname)
             throws FullLobbyException, ExistingNicknameException, InvalidNicknameException, GameAlreadyStartedException {
-        if(gameStarted) {
-            for(Player player: players) {
-                Person person = (Person) player;
-                if(person.getNickname().equals(nickname) && person.isConnected()) {
-                    person.reconnect();
-                    return person;
-                }
-            }
-            throw new GameAlreadyStartedException();
-        }
         synchronized (players) {
+            if(gameStarted) {
+                for(Player player: players) {
+                    if(player.getPlayerType() == PlayerType.PERSON) {
+                        Person person = (Person) player;
+                        if (person.getNickname().equals(nickname) && !person.isConnected()) {
+                            person.reconnect();
+                            return person;
+                        }
+                    }
+                }
+                throw new GameAlreadyStartedException();
+            }
             if(players.size() == 4) {
                 throw new FullLobbyException();
             }
@@ -82,12 +86,20 @@ public class Game {
 
             Collections.shuffle(players);
 
-            for(Player player: players) {
-                Person person = (Person) player;
+            for (int i = 0; i < players.size(); i++) {
+                Person person = (Person) players.get(i);
 
                 Board board = person.getBoard();
                 gameZone.getLeaderCardsDeck().assignCards(board);
+                int receivedFaithPoints = InitGameParser.getInstance().getInitFaithPoints(i);
+                int receivedResources = InitGameParser.getInstance().getInitResources(i);
+                board.getFaithTrack().addFaithPoints(receivedFaithPoints);
+                if(receivedResources == 0) {
+                    person.initSelectDone();
+                }
             }
+
+            VRSObserver.getInstance().updateVRS();
 
             gameStarted = true;
             currentPlayer = 0;
@@ -119,6 +131,7 @@ public class Game {
 
             Board board = getSinglePlayer().getBoard();
             gameZone.getLeaderCardsDeck().assignCards(board);
+            getSinglePlayer().initSelectDone();
 
             players.add(new Computer());
 
@@ -204,5 +217,25 @@ public class Game {
 
     public boolean hasGameStarted() {
         return gameStarted;
+    }
+
+    public Person getActivePlayer() {
+        synchronized (players) {
+            for(Player player: players) {
+                if(player.getPlayerType() == PlayerType.PERSON) {
+                    Person person = (Person) player;
+                    if(person.isActivePlayer()) {
+                        return person;
+                    }
+                }
+            }
+            return null;
+        }
+    }
+
+    public int getPlayerIndex(Person person) {
+        synchronized (players) {
+            return players.indexOf(person);
+        }
     }
 }

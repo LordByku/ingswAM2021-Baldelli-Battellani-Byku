@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.devCards.ProductionDetails;
 import it.polimi.ingsw.model.playerBoard.faithTrack.CheckPoint;
 import it.polimi.ingsw.model.playerBoard.faithTrack.VaticanReportSection;
 import it.polimi.ingsw.parsing.Parser;
+import it.polimi.ingsw.utility.Deserializer;
 
 import java.util.ArrayList;
 
@@ -14,6 +15,7 @@ public class LocalConfig {
     private static LocalConfig instance;
     private JsonObject config;
     private ArrayList<String> turnOrder;
+    private boolean host;
 
     private LocalConfig() {}
 
@@ -32,16 +34,22 @@ public class LocalConfig {
         this.turnOrder = (ArrayList<String>) turnOrder.clone();
     }
 
+    public void setHost() {
+        host = true;
+    }
+
+    public boolean isHost() {
+        return host;
+    }
+
+    public int getInitialDiscards() {
+        return config.getAsJsonObject("initGame").get("leaderCardsToDiscard").getAsInt();
+    }
+
     public int getInitialResources(String nickname) {
-        switch(turnOrder.indexOf(nickname)) {
-            case 1:
-            case 2:
-                return 1;
-            case 3:
-                return 2;
-            default:
-                return 0;
-        }
+        int index = turnOrder.indexOf(nickname);
+
+        return config.getAsJsonObject("initGame").getAsJsonArray("resources").get(index).getAsInt();
     }
 
     public int getNumberOfDepots() {
@@ -68,7 +76,7 @@ public class LocalConfig {
     public ArrayList<CheckPoint> getFaithTrackCheckPoints() {
         ArrayList<CheckPoint> checkPoints = new ArrayList<>();
         for(JsonElement checkPointJson: config.getAsJsonObject("board").getAsJsonObject("faithTrack").getAsJsonArray("checkPoints")) {
-            checkPoints.add(ClientParser.getInstance().getCheckPoint((JsonObject) checkPointJson));
+            checkPoints.add(Deserializer.getInstance().getCheckPoint(checkPointJson));
         }
         return checkPoints;
     }

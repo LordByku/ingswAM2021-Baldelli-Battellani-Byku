@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 public class ClientServerCommunication implements Runnable {
     private final BufferedReader in;
@@ -22,6 +23,8 @@ public class ClientServerCommunication implements Runnable {
             while((line = in.readLine()) != null) {
                 client.handleServerMessage(line);
             }
+        } catch(SocketTimeoutException e) {
+            client.reconnect();
         } catch (IOException e) {
             return;
         }

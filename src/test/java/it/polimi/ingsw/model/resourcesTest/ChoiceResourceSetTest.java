@@ -132,7 +132,8 @@ public class ChoiceResourceSetTest {
         assertEquals(1, concreteResources.getCount(ConcreteResource.SHIELD));
 
         try {
-            choiceResourceSet1.union(null);
+            ConcreteResourceSet nullSet = null;
+            choiceResourceSet1.union(nullSet);
             fail();
         } catch (InvalidResourceSetException e) {
             choiceResources = choiceResourceSet1.getChoiceResources();

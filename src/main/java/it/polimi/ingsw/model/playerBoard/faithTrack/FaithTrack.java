@@ -74,7 +74,7 @@ public class FaithTrack implements Scoring {
      * @param points to add.
      */
     public void addFaithPoints(int points) throws InvalidQuantityException {
-        if (points<=0) {
+        if (points < 0) {
             throw new InvalidQuantityException();
         } else {
             markerPosition += points;

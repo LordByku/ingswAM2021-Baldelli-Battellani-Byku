@@ -28,6 +28,12 @@ public class Person extends Player {
      */
     private volatile boolean isConnected;
 
+    private volatile boolean initDiscarded;
+
+    private volatile boolean initSelected;
+
+    private volatile boolean mainAction;
+
     /**
      * The constructor creates a new Person given his/her nickname
      * @param nickname The nickname of the Person
@@ -43,6 +49,9 @@ public class Person extends Player {
         board = new Board();
         isHost = false;
         isConnected = true;
+        initDiscarded = false;
+        initSelected = false;
+        mainAction = false;
     }
 
     /**
@@ -78,6 +87,7 @@ public class Person extends Player {
     @Override
     public void endTurn() throws GameEndedException, GameNotStartedException {
         isActivePlayer = false;
+        mainAction = false;
         Game.getInstance().handleTurnOrder();
     }
 
@@ -114,5 +124,29 @@ public class Person extends Player {
 
     public void reconnect() {
         isConnected = true;
+    }
+
+    public void mainActionDone() {
+        mainAction = true;
+    }
+
+    public boolean mainAction() {
+        return mainAction;
+    }
+
+    public void initDiscardDone() {
+        initDiscarded = true;
+    }
+
+    public boolean initDiscarded() {
+        return initDiscarded;
+    }
+
+    public void initSelectDone() {
+        initSelected = true;
+    }
+
+    public boolean initSelected() {
+        return initSelected;
     }
 }

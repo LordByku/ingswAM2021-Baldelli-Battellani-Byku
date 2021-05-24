@@ -1,9 +1,12 @@
 package it.polimi.ingsw.network.server;
 
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
+import it.polimi.ingsw.controller.CommandBuffer;
 import it.polimi.ingsw.model.game.*;
 import it.polimi.ingsw.network.server.serverStates.AcceptNickname;
 import it.polimi.ingsw.network.server.serverStates.ServerState;
+import it.polimi.ingsw.utility.JsonUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,6 +30,7 @@ public class ClientHandler implements Runnable {
     private Timer timer;
     private final int timerDelay = 5000;
     private volatile boolean ponged;
+    private CommandBuffer commandBuffer;
 
     public ClientHandler(Socket socket, Server server) throws IOException {
         socket.setSoTimeout(2 * timerDelay);
@@ -34,6 +38,7 @@ public class ClientHandler implements Runnable {
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out = new PrintWriter(socket.getOutputStream(), true);
         this.server = server;
+        commandBuffer = null;
     }
 
     public synchronized void fatalError(String message) {
@@ -61,19 +66,13 @@ public class ClientHandler implements Runnable {
         out.println(jsonMessage.toString());
     }
 
-    public synchronized void confirm() {
-        JsonObject jsonMessage = new JsonObject();
-        jsonMessage.addProperty("status", "ok");
-        jsonMessage.addProperty("type", "confirm");
-        out.println(jsonMessage.toString());
-    }
-
     public synchronized void ping() {
         System.out.println(new Timestamp(new Date().getTime()) + " Sending ping from client handler " + this);
         out.println("ping");
     }
 
     public void broadcast(String type, JsonObject message) {
+        System.out.println(this + " requesting broadcast");
         server.broadcast(type, message);
     }
 
@@ -83,16 +82,30 @@ public class ClientHandler implements Runnable {
     }
 
     public synchronized void disconnection() {
-        System.out.println("Connection with client has been interrupted");
+        System.out.println("Client has disconnected");
+        server.removeClientHandler(this);
         try {
             // person may be null if an exception is thrown trying to add the person to the game
             if(person != null) {
                 Game.getInstance().removePlayer(person.getNickname());
-                server.removeClientHandler(this);
-                broadcast("playerList", ServerParser.getInstance().getJsonPlayerList());
+                broadcast("playerList", GameStateSerializer.getJsonPlayerList());
             }
         } catch (GameAlreadyStartedException e) {
             person.disconnect();
+            if(commandBuffer != null) {
+                commandBuffer.kill();
+            }
+            if(person.isActivePlayer()) {
+                endTurn();
+            }
+            Consumer<GameStateSerializer> lambda = (serializer) -> {
+                for(Player player: Game.getInstance().getPlayers()) {
+                    if(player.getPlayerType() == PlayerType.PERSON) {
+                        serializer.addPlayerDetails((Person) player);
+                    }
+                }
+            };
+            updateGameState(lambda);
         }
     }
 
@@ -112,7 +125,14 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    public Person getPerson(){
+    public synchronized Person getPerson() {
+        while (person == null) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         return person;
     }
 
@@ -142,17 +162,27 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    public synchronized void handleClientMessage(String line) {
-        if(line.equals("pong")) {
-            System.out.println(new Timestamp(new Date().getTime()) + " Received pong by client handler " + this);
-            ponged = true;
-        } else {
-            serverState.handleClientMessage(this, line);
+    public void handleClientMessage(String line) {
+        System.out.println(this + " received " + line);
+        switch (line) {
+            case "ping": {
+                out.println("pong");
+                break;
+            }
+            case "pong": {
+                System.out.println(new Timestamp(new Date().getTime()) + " Received pong by client handler " + this);
+                ponged = true;
+                break;
+            }
+            default: {
+                serverState.handleClientMessage(this, line);
+            }
         }
     }
 
-    public void setPlayer(Person person) {
+    public synchronized void setPlayer(Person person) {
         this.person = person;
+        notifyAll();
     }
 
     public void setState(ServerState serverState) {
@@ -167,9 +197,44 @@ public class ClientHandler implements Runnable {
         server.updateGameState(lambda);
     }
 
+    public void updateGameState(Consumer<GameStateSerializer> lambda, ClientHandler excluded) {
+        server.updateGameState(lambda, excluded);
+    }
 
-    public void advanceAllStates(Supplier<ServerState> serverStateSupplier) {
-        server.advanceAllStates(serverStateSupplier);
+    public void sendAllCommandBuffers() {
+        server.sendAllCommandBuffers(this);
+    }
+
+    public CommandBuffer getCommandBuffer() {
+        return commandBuffer;
+    }
+
+    public void setBuffer(CommandBuffer commandBuffer) {
+        this.commandBuffer = commandBuffer;
+    }
+
+    public void endTurn() {
+        try {
+            person.endTurn();
+            commandBuffer = null;
+            broadcast("command", serializeCommandBuffer());
+        } catch (GameEndedException | GameNotStartedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public JsonObject serializeCommandBuffer() {
+        JsonObject jsonObject = new JsonObject();
+
+        jsonObject.addProperty("player", person.getNickname());
+        if(commandBuffer == null) {
+            jsonObject.add("value", JsonNull.INSTANCE);
+        } else {
+            JsonObject commandObject = JsonUtil.getInstance().serialize(commandBuffer).getAsJsonObject();
+            jsonObject.add("value", commandObject)  ;
+        }
+
+        return jsonObject;
     }
 }
 

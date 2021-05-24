@@ -22,10 +22,10 @@ public class ServerClientCommunication implements Runnable {
             while((line = in.readLine()) != null) {
                 clientHandler.handleClientMessage(line);
             }
-        } catch (NoSuchElementException | SocketTimeoutException e) {
-            clientHandler.disconnection();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            clientHandler.disconnection();
         }
     }
 }
