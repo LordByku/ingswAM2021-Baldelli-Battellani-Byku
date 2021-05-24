@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.leaderCards.LeaderCardType;
 import it.polimi.ingsw.model.leaderCards.WhiteConversionLeaderCard;
 import it.polimi.ingsw.model.resources.ChoiceSet;
 import it.polimi.ingsw.model.resources.ConcreteResource;
+import it.polimi.ingsw.model.resources.InvalidResourceException;
 import it.polimi.ingsw.model.resources.resourceSets.ChoiceResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.network.client.Client;
@@ -101,7 +102,7 @@ public class MarketWindow extends CommandWindow {
                         return;
                     }
                 }
-            } catch (NumberFormatException | JsonSyntaxException e) {}
+            } catch (NumberFormatException | JsonSyntaxException | InvalidResourceException e) {}
         }
         render(client);
     }

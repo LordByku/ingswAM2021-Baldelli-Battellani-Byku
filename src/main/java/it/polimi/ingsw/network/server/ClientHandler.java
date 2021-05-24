@@ -28,7 +28,7 @@ public class ClientHandler implements Runnable {
     private Person person;
     private ServerState serverState;
     private Timer timer;
-    private final int timerDelay = 5000;
+    private final int timerDelay = 10000;
     private volatile boolean ponged;
     private CommandBuffer commandBuffer;
 
@@ -67,7 +67,6 @@ public class ClientHandler implements Runnable {
     }
 
     public synchronized void ping() {
-        System.out.println(new Timestamp(new Date().getTime()) + " Sending ping from client handler " + this);
         out.println("ping");
     }
 
@@ -97,15 +96,16 @@ public class ClientHandler implements Runnable {
             }
             if(person.isActivePlayer()) {
                 endTurn();
-            }
-            Consumer<GameStateSerializer> lambda = (serializer) -> {
-                for(Player player: Game.getInstance().getPlayers()) {
-                    if(player.getPlayerType() == PlayerType.PERSON) {
-                        serializer.addPlayerDetails((Person) player);
+            } else {
+                Consumer<GameStateSerializer> lambda = (serializer) -> {
+                    for(Player player: Game.getInstance().getPlayers()) {
+                        if(player.getPlayerType() == PlayerType.PERSON) {
+                            serializer.addPlayerDetails((Person) player);
+                        }
                     }
-                }
-            };
-            updateGameState(lambda);
+                };
+                updateGameState(lambda);
+            }
         }
     }
 
@@ -170,7 +170,6 @@ public class ClientHandler implements Runnable {
                 break;
             }
             case "pong": {
-                System.out.println(new Timestamp(new Date().getTime()) + " Received pong by client handler " + this);
                 ponged = true;
                 break;
             }
@@ -216,8 +215,14 @@ public class ClientHandler implements Runnable {
     public void endTurn() {
         try {
             person.endTurn();
-            commandBuffer = null;
-            broadcast("command", serializeCommandBuffer());
+            Consumer<GameStateSerializer> lambda = (serializer) -> {
+                for(Player player: Game.getInstance().getPlayers()) {
+                    if(player.getPlayerType() == PlayerType.PERSON) {
+                        serializer.addPlayerDetails((Person) player);
+                    }
+                }
+            };
+            updateGameState(lambda);
         } catch (GameEndedException | GameNotStartedException e) {
             e.printStackTrace();
         }

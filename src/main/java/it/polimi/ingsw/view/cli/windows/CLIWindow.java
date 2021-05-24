@@ -25,7 +25,6 @@ public abstract class CLIWindow {
 
         LocalModel model = client.getModel();
         Player self = model.getPlayer(client.getNickname());
-        ArrayList<String> players = LocalConfig.getInstance().getTurnOrder();
 
         CommandBuffer buffer = self.getCommandBuffer();
         if(buffer != null && !buffer.isCompleted()) {

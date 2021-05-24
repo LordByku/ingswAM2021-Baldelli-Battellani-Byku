@@ -21,7 +21,7 @@ public class Client {
     private PrintWriter serverOut;
     private Socket socket;
     private LocalModel localModel;
-    private final int timerDelay = 5000;
+    private final int timerDelay = 10000;
     private Boolean singlePlayer;
 
     public Client(String hostname, int port) {

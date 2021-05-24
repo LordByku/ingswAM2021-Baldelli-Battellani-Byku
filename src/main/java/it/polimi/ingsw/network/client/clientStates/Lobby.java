@@ -77,7 +77,7 @@ public class Lobby extends ClientState {
                     case "config": {
                         CLI.getInstance().loadGame();
 
-                        JsonObject message = json.get("message").getAsJsonObject();
+                        JsonObject message = json.getAsJsonObject("message");
 
                         JsonArray jsonTurnOrder = message.getAsJsonArray("turnOrder");
                         ArrayList<String> turnOrder = new ArrayList<>();
@@ -87,7 +87,7 @@ public class Lobby extends ClientState {
 
                         LocalConfig.getInstance().setTurnOrder(turnOrder);
 
-                        JsonObject config = json.getAsJsonObject("config");
+                        JsonObject config = message.getAsJsonObject("config");
                         Parser.getInstance().setConfig(config);
                         LocalConfig.getInstance().setConfig(config);
 
