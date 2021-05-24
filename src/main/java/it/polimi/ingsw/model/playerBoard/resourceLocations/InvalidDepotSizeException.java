@@ -5,5 +5,6 @@ package it.polimi.ingsw.model.playerBoard.resourceLocations;
  * size is trying to get created
  */
 public class InvalidDepotSizeException extends RuntimeException {
-    public InvalidDepotSizeException() {}
+    public InvalidDepotSizeException() {
+    }
 }

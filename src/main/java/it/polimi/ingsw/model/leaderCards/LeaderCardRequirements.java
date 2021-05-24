@@ -20,6 +20,7 @@ public interface LeaderCardRequirements extends Cloneable {
 
     /**
      * clone returns a copy of the object
+     *
      * @return A copy of the object
      */
     Object clone();

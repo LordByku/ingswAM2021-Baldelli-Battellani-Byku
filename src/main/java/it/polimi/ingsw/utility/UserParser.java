@@ -15,7 +15,7 @@ public class UserParser {
     }
 
     public static UserParser getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new UserParser();
         }
         return instance;
@@ -28,7 +28,7 @@ public class UserParser {
     public ConcreteResourceSet readUserResources(String[] words) throws JsonSyntaxException, InvalidResourceException {
         ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
 
-        for(String word: words) {
+        for (String word : words) {
             concreteResourceSet.addResource(readUserResource(word));
         }
 
@@ -38,7 +38,7 @@ public class UserParser {
     public int[] readIntArray(String[] words) throws JsonSyntaxException, NumberFormatException {
         int[] result = new int[words.length];
 
-        for(int i = 0; i < words.length; ++i) {
+        for (int i = 0; i < words.length; ++i) {
             result[i] = Integer.parseInt(words[i]);
         }
 

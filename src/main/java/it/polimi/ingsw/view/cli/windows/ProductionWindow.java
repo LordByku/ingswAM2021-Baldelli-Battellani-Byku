@@ -22,12 +22,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class ProductionWindow extends CommandWindow {
-    private ConcreteResourceSet[] warehouse;
-    private ConcreteResourceSet strongbox;
+    private final ConcreteResourceSet[] warehouse;
+    private final ConcreteResourceSet strongbox;
 
     public ProductionWindow(Client client) {
         warehouse = new ConcreteResourceSet[LocalConfig.getInstance().getNumberOfDepots()];
-        for(int i = 0; i < warehouse.length; ++i) {
+        for (int i = 0; i < warehouse.length; ++i) {
             warehouse[i] = new ConcreteResourceSet();
         }
         strongbox = new ConcreteResourceSet();
@@ -37,7 +37,7 @@ public class ProductionWindow extends CommandWindow {
     public void handleUserMessage(Client client, String line) {
         String[] words = Strings.splitLine(line);
 
-        if(words.length > 0) {
+        if (words.length > 0) {
             try {
                 switch (words[0]) {
                     case "x": {
@@ -48,10 +48,10 @@ public class ProductionWindow extends CommandWindow {
                         break;
                     }
                     case "warehouse": {
-                        if(words.length >= 2) {
+                        if (words.length >= 2) {
                             int depotIndex = Integer.parseInt(words[1]);
 
-                            if(depotIndex >= 0 && depotIndex < warehouse.length) {
+                            if (depotIndex >= 0 && depotIndex < warehouse.length) {
                                 ConcreteResourceSet toAdd = UserParser.getInstance().readUserResources(Arrays.copyOfRange(words, 2, words.length));
                                 warehouse[depotIndex].union(toAdd);
 
@@ -75,7 +75,7 @@ public class ProductionWindow extends CommandWindow {
                             return;
                         } catch (NumberFormatException | JsonSyntaxException e) {
                             JsonArray jsonArray = new JsonArray();
-                            for(String word: words) {
+                            for (String word : words) {
                                 ConcreteResource concreteResource = UserParser.getInstance().readUserResource(word);
                                 jsonArray.add(JsonUtil.getInstance().serialize(concreteResource));
                             }
@@ -85,36 +85,40 @@ public class ProductionWindow extends CommandWindow {
                         }
                     }
                 }
-            } catch (NumberFormatException | JsonSyntaxException | InvalidResourceException e) {}
+            } catch (NumberFormatException | JsonSyntaxException | InvalidResourceException e) {
+            }
         }
 
-        render(client);
+        CLI.getInstance().renderWindow(client);
     }
 
     @Override
     public void render(Client client) {
         Player self = client.getModel().getPlayer(client.getNickname());
         Production commandBuffer = (Production) self.getCommandBuffer();
-        if(commandBuffer.getProductionsToActivate() == null) {
-            CLI.getInstance().activateProductionSelection();
+        Board board = self.getBoard();
+        HashMap<Integer, ProductionDetails> map = board.activeProductionDetails();
+        if (commandBuffer.getProductionsToActivate() == null) {
+            CLI.getInstance().activateProductionSelection(map);
         } else {
-            Board board = self.getBoard();
-            HashMap<Integer, ProductionDetails> map = board.activeProductionDetails();
-            if(commandBuffer.getObtainedResources() == null) {
+            if (commandBuffer.getObtainedResources() == null) {
                 ChoiceResourceSet toSpend = new ChoiceResourceSet();
-                for(int toActivate: commandBuffer.getProductionsToActivate()) {
+                for (int toActivate : commandBuffer.getProductionsToActivate()) {
                     ProductionDetails productionDetails = map.get(toActivate);
                     toSpend.union(productionDetails.getInput().getResourceSet());
                 }
                 ConcreteResourceSet currentSelection = new ConcreteResourceSet();
-                for(ConcreteResourceSet depot: warehouse) {
+                for (ConcreteResourceSet depot : warehouse) {
                     currentSelection.union(depot);
                 }
                 currentSelection.union(strongbox);
+
+                CLI.getInstance().showWarehouse(self.getBoard().getWarehouse(), self.getBoard().getPlayedLeaderCards());
+                CLI.getInstance().showStrongbox(self.getBoard().getStrongBox());
                 CLI.getInstance().spendResources(toSpend, currentSelection);
             } else {
                 ChoiceResourceSet toObtain = new ChoiceResourceSet();
-                for(ProductionDetails productionDetails: map.values()) {
+                for (ProductionDetails productionDetails : map.values()) {
                     toObtain.union(productionDetails.getOutput().getResourceSet());
                 }
                 CLI.getInstance().choiceResourceSelection(toObtain.getChoiceResources().size());
@@ -124,7 +128,7 @@ public class ProductionWindow extends CommandWindow {
 
     private boolean sendSpendResourcesCommand(Client client) {
         ConcreteResourceSet total = new ConcreteResourceSet();
-        for(ConcreteResourceSet depot: warehouse) {
+        for (ConcreteResourceSet depot : warehouse) {
             total.union(depot);
         }
         total.union(strongbox);
@@ -136,12 +140,12 @@ public class ProductionWindow extends CommandWindow {
         HashMap<Integer, ProductionDetails> map = board.activeProductionDetails();
 
         ChoiceResourceSet toSpend = new ChoiceResourceSet();
-        for(int toActivate: commandBuffer.getProductionsToActivate()) {
+        for (int toActivate : commandBuffer.getProductionsToActivate()) {
             ProductionDetails productionDetails = map.get(toActivate);
             toSpend.union(productionDetails.getInput().getResourceSet());
         }
 
-        if(total.size() > toSpend.size()) {
+        if (total.size() >= toSpend.size()) {
             JsonObject jsonObject = new JsonObject();
             jsonObject.add("warehouse", JsonUtil.getInstance().serialize(warehouse));
             jsonObject.add("strongbox", JsonUtil.getInstance().serialize(strongbox));

@@ -28,6 +28,7 @@ public class GameZone {
 
     /**
      * getMarbleMarket returns the marble market
+     *
      * @return marbleMarket
      */
     public MarbleMarket getMarbleMarket() {
@@ -36,6 +37,7 @@ public class GameZone {
 
     /**
      * getCardMarket returns the card market
+     *
      * @return cardMarket
      */
     public CardMarket getCardMarket() {
@@ -44,6 +46,7 @@ public class GameZone {
 
     /**
      * getLeaderCardsDeck returns the leader cards deck
+     *
      * @return leaderCardsDeck
      */
     public LeaderCardsDeck getLeaderCardsDeck() {

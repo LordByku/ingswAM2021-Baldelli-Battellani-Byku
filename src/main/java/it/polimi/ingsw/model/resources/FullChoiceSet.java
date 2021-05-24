@@ -9,7 +9,7 @@ public class FullChoiceSet extends ChoiceSet {
      */
     public FullChoiceSet() {
         super();
-        for(ConcreteResource concreteResource: ConcreteResource.values()) {
+        for (ConcreteResource concreteResource : ConcreteResource.values()) {
             addChoice(concreteResource);
         }
     }

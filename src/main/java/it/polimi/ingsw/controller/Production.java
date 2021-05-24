@@ -12,7 +12,6 @@ import it.polimi.ingsw.model.playerBoard.resourceLocations.StrongBox;
 import it.polimi.ingsw.model.playerBoard.resourceLocations.Warehouse;
 import it.polimi.ingsw.model.resources.ChoiceResource;
 import it.polimi.ingsw.model.resources.ConcreteResource;
-import it.polimi.ingsw.model.resources.Resource;
 import it.polimi.ingsw.model.resources.resourceSets.ChoiceResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ObtainableResourceSet;
@@ -34,7 +33,7 @@ public class Production extends CommandBuffer {
     protected Production(CommandType commandType, Person person) {
         super(commandType, person);
 
-        if(!person.isActivePlayer() || person.mainAction() || initDiscardsMissing() || initSelectsMissing()) {
+        if (!person.isActivePlayer() || person.mainAction() || initDiscardsMissing() || initSelectsMissing()) {
             throw new InvalidCommandException();
         }
 
@@ -47,12 +46,12 @@ public class Production extends CommandBuffer {
 
     @Override
     public boolean isReady() {
-        return obtainedResources.isConcrete();
+        return obtainedResources != null && obtainedResources.isConcrete();
     }
 
     @Override
     public void complete() throws CommandNotCompleteException {
-        if(!isReady()) {
+        if (!isReady()) {
             throw new CommandNotCompleteException();
         }
 
@@ -61,7 +60,7 @@ public class Production extends CommandBuffer {
         StrongBox strongBox = person.getBoard().getStrongBox();
         FaithTrack faithTrack = person.getBoard().getFaithTrack();
 
-        for(int i = 0; i < warehouseToSpend.length; ++i) {
+        for (int i = 0; i < warehouseToSpend.length; ++i) {
             warehouse.removeResources(i, warehouseToSpend[i]);
         }
         strongBox.removeResources(strongboxToSpend);
@@ -107,20 +106,20 @@ public class Production extends CommandBuffer {
                 JsonElement strongBoxElement = jsonObject.get("strongbox");
                 ConcreteResourceSet strongbox = Deserializer.getInstance().getConcreteResourceSet(strongBoxElement);
 
-                if(warehouse != null && strongbox != null) {
+                if (warehouse != null && strongbox != null) {
                     setResourcesToSpend(warehouse, strongbox);
                 }
 
                 return checkCompletion();
             }
             case "choiceSelection": {
-                if(obtainedResources == null) {
+                if (obtainedResources == null) {
                     return null;
                 }
 
                 JsonArray resourcesElement = value.getAsJsonArray();
                 ConcreteResource[] resources = Deserializer.getInstance().getConcreteResourceArray(resourcesElement);
-                if(resources != null) {
+                if (resources != null) {
                     selectChoices(resources);
                 }
 
@@ -133,7 +132,7 @@ public class Production extends CommandBuffer {
     }
 
     private Consumer<GameStateSerializer> checkCompletion() {
-        if(isReady()) {
+        if (isReady()) {
             complete();
             Person person = getPerson();
             return (serializer) -> {
@@ -151,12 +150,12 @@ public class Production extends CommandBuffer {
         ProductionArea productionArea = person.getBoard().getProductionArea();
         HashSet<Integer> set = new HashSet<>();
 
-        for(int productionIndex: productionsToActivate) {
-            if(productionIndex < 0 || productionIndex >= productionArea.size() ||
+        for (int productionIndex : productionsToActivate) {
+            if (productionIndex < 0 || productionIndex >= productionArea.size() ||
                     productionArea.getProduction(productionIndex) == null) {
                 return;
             }
-            if(set.contains(productionIndex)) {
+            if (set.contains(productionIndex)) {
                 return;
             }
             set.add(productionIndex);
@@ -171,7 +170,7 @@ public class Production extends CommandBuffer {
 
     private void setResourcesToSpend(ConcreteResourceSet[] warehouseToSpend, ConcreteResourceSet strongboxToSpend) {
         ConcreteResourceSet totalToSpend = checkResourcesToSpend(warehouseToSpend, strongboxToSpend);
-        if(totalToSpend == null) {
+        if (totalToSpend == null) {
             return;
         }
 
@@ -181,13 +180,13 @@ public class Production extends CommandBuffer {
         SpendableResourceSet toSpend = new SpendableResourceSet();
         ObtainableResourceSet obtained = new ObtainableResourceSet();
 
-        for(int productionIndex: productionsToActivate) {
+        for (int productionIndex : productionsToActivate) {
             ProductionDetails productionDetails = productionArea.getProduction(productionIndex);
-            toSpend.union(productionDetails.getInput());
-            obtained.union(productionDetails.getOutput());
+            toSpend = toSpend.union(productionDetails.getInput());
+            obtained = obtained.union(productionDetails.getOutput());
         }
 
-        if(toSpend.match(totalToSpend)) {
+        if (toSpend.match(totalToSpend)) {
             this.warehouseToSpend = warehouseToSpend;
             this.strongboxToSpend = strongboxToSpend;
             this.obtainedResources = obtained.getResourceSet();
@@ -196,12 +195,12 @@ public class Production extends CommandBuffer {
     }
 
     private void selectChoices(ConcreteResource[] resources) {
-        ArrayList<Resource> choiceResources = obtainedResources.getChoiceResources();
-        if(resources.length != choiceResources.size()) {
+        ArrayList<ChoiceResource> choiceResources = obtainedResources.getChoiceResources();
+        if (resources.length != choiceResources.size()) {
             return;
         }
-        for(int i = 0; i < resources.length; ++i) {
-            ChoiceResource choiceResource = (ChoiceResource) choiceResources.get(i);
+        for (int i = 0; i < resources.length; ++i) {
+            ChoiceResource choiceResource = choiceResources.get(i);
             choiceResource.makeChoice(resources[i]);
         }
     }

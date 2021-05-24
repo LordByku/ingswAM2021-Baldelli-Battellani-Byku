@@ -3,22 +3,19 @@ package it.polimi.ingsw.parsing;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import it.polimi.ingsw.model.devCards.ProductionDetails;
 import it.polimi.ingsw.model.leaderCards.*;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.HashMap;
 
 public class LeaderCardsParser {
     private static LeaderCardsParser instance;
-    private JsonArray leaderCards;
-    private int currentCard;
     private final Gson gson;
     private final Parser parser;
     private final LeaderCard[] map;
+    private JsonArray leaderCards;
+    private int currentCard;
 
     private LeaderCardsParser() throws FileNotFoundException {
         gson = new Gson();
@@ -30,7 +27,7 @@ public class LeaderCardsParser {
     }
 
     public static LeaderCardsParser getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             try {
                 instance = new LeaderCardsParser();
             } catch (FileNotFoundException e) {
@@ -45,15 +42,15 @@ public class LeaderCardsParser {
     }
 
     public LeaderCard getCard(int index) throws NoConfigFileException {
-        if(leaderCards == null) {
+        if (leaderCards == null) {
             throw new NoConfigFileException();
         }
 
-        if(index < 0 || index >= leaderCards.size()) {
+        if (index < 0 || index >= leaderCards.size()) {
             return null;
         }
 
-        if(map[index] != null) {
+        if (map[index] != null) {
             return map[index];
         }
 
@@ -64,7 +61,7 @@ public class LeaderCardsParser {
 
         LeaderCardRequirements requirements;
 
-        if(requirementsType.equals("cardSet")) {
+        if (requirementsType.equals("cardSet")) {
             requirements = parser.parseCardTypeSet(jsonLeaderCard.getAsJsonArray("requirements"));
         } else {
             requirements = parser.parseConcreteResourceSet(jsonLeaderCard.getAsJsonArray("requirements"));
@@ -102,7 +99,7 @@ public class LeaderCardsParser {
 
     public LeaderCard nextCard() throws NoConfigFileException {
         LeaderCard leaderCard = getCard(currentCard++);
-        if(leaderCard == null) {
+        if (leaderCard == null) {
             currentCard = 0;
         }
         return leaderCard;

@@ -27,7 +27,7 @@ public class ModeSelection extends ClientState {
         try {
             int mode = Integer.parseInt(line);
 
-            switch(mode) {
+            switch (mode) {
                 case 0: {
                     try {
                         client.connectToServer();
@@ -57,7 +57,7 @@ public class ModeSelection extends ClientState {
                     ArrayList<Integer> leaderCardsIDs = client.getModel().getPlayer(client.getNickname()).getBoard().getHandLeaderCards();
                     CLI.getInstance().showLeaderCards(leaderCardsIDs);
 
-                    //client.setState(new SinglePlayerInitDiscard(leaderCardsIDs.size()));
+                    // TODO
                     break;
                 }
                 default: {

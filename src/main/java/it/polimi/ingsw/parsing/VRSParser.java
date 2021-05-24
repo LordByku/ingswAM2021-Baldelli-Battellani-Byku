@@ -5,16 +5,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.model.playerBoard.faithTrack.VaticanReportSection;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 public class VRSParser {
     private static VRSParser instance;
     private final Gson gson;
     private final Parser parser;
+    private final VaticanReportSection[] map;
     private JsonArray vaticanReportSections;
     private int currentVRS;
-    private final VaticanReportSection[] map;
 
     private VRSParser() {
         gson = new Gson();
@@ -26,7 +23,7 @@ public class VRSParser {
     }
 
     public static VRSParser getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new VRSParser();
         }
         return instance;
@@ -37,15 +34,15 @@ public class VRSParser {
     }
 
     public VaticanReportSection getVRS(int index) throws NoConfigFileException {
-        if(vaticanReportSections == null) {
+        if (vaticanReportSections == null) {
             throw new NoConfigFileException();
         }
 
-        if(index < 0 || index >= vaticanReportSections.size()) {
+        if (index < 0 || index >= vaticanReportSections.size()) {
             return null;
         }
 
-        if(map[index] != null) {
+        if (map[index] != null) {
             return map[index];
         }
 
@@ -60,7 +57,7 @@ public class VRSParser {
 
     public VaticanReportSection getNextVRS() throws NoConfigFileException {
         VaticanReportSection vaticanReportSection = getVRS(currentVRS++);
-        if(vaticanReportSection == null) {
+        if (vaticanReportSection == null) {
             currentVRS = 0;
         }
         return vaticanReportSection;

@@ -5,5 +5,6 @@ package it.polimi.ingsw.model.devCards;
  * card or a development card is trying to get used
  */
 public class InvalidIdException extends RuntimeException {
-    public InvalidIdException() {}
+    public InvalidIdException() {
+    }
 }

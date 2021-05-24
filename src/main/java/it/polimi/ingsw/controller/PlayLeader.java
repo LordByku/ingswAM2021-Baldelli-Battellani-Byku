@@ -14,7 +14,7 @@ public class PlayLeader extends CommandBuffer {
     protected PlayLeader(CommandType commandType, Person person) throws InvalidCommandException {
         super(commandType, person);
 
-        if(!person.isActivePlayer() || initDiscardsMissing() || initSelectsMissing()) {
+        if (!person.isActivePlayer() || initDiscardsMissing() || initSelectsMissing()) {
             throw new InvalidCommandException();
         }
 
@@ -47,12 +47,12 @@ public class PlayLeader extends CommandBuffer {
 
     @Override
     public Consumer<GameStateSerializer> handleMessage(String command, JsonElement value) throws RuntimeException {
-        if(command.equals("index")) {
+        if (command.equals("index")) {
             int index = value.getAsInt();
             setIndex(index);
         }
 
-        if(isReady()) {
+        if (isReady()) {
             complete();
             Person person = getPerson();
             return (serializer) -> {
@@ -68,11 +68,11 @@ public class PlayLeader extends CommandBuffer {
         Person person = getPerson();
         ArrayList<LeaderCard> leaderCards = person.getBoard().getLeaderCardArea().getLeaderCards();
 
-        if(index < 0 || index >= leaderCards.size()) {
+        if (index < 0 || index >= leaderCards.size()) {
             return;
         }
 
-        if(leaderCards.get(index).isPlayable()) {
+        if (leaderCards.get(index).isPlayable()) {
             this.index = index;
         }
     }

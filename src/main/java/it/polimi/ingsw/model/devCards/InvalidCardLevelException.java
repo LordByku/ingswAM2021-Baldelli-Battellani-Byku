@@ -5,5 +5,6 @@ package it.polimi.ingsw.model.devCards;
  * card level is trying to get used
  */
 public class InvalidCardLevelException extends RuntimeException {
-    public InvalidCardLevelException() {}
+    public InvalidCardLevelException() {
+    }
 }

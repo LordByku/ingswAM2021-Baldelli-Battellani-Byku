@@ -13,22 +13,19 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class ClientHandler implements Runnable {
     private final Socket socket;
     private final BufferedReader in;
     private final PrintWriter out;
     private final Server server;
+    private final int timerDelay = 10000;
     private Person person;
     private ServerState serverState;
     private Timer timer;
-    private final int timerDelay = 10000;
     private volatile boolean ponged;
     private CommandBuffer commandBuffer;
 
@@ -85,32 +82,21 @@ public class ClientHandler implements Runnable {
         server.removeClientHandler(this);
         try {
             // person may be null if an exception is thrown trying to add the person to the game
-            if(person != null) {
+            if (person != null) {
                 Game.getInstance().removePlayer(person.getNickname());
                 broadcast("playerList", GameStateSerializer.getJsonPlayerList());
             }
         } catch (GameAlreadyStartedException e) {
             person.disconnect();
-            if(commandBuffer != null) {
+            if (commandBuffer != null) {
                 commandBuffer.kill();
             }
-            if(person.isActivePlayer()) {
-                endTurn();
-            } else {
-                Consumer<GameStateSerializer> lambda = (serializer) -> {
-                    for(Player player: Game.getInstance().getPlayers()) {
-                        if(player.getPlayerType() == PlayerType.PERSON) {
-                            serializer.addPlayerDetails((Person) player);
-                        }
-                    }
-                };
-                updateGameState(lambda);
-            }
+            endTurn();
         }
     }
 
     public synchronized void handlePing() {
-        if(ponged) {
+        if (ponged) {
             ponged = false;
             timer = new Timer();
             ping();
@@ -153,7 +139,7 @@ public class ClientHandler implements Runnable {
 
         try {
             serverClientCommunication.join();
-            if(!socket.isClosed()) {
+            if (!socket.isClosed()) {
                 socket.close();
             }
             System.out.println("ServerClientCommunication closed");
@@ -214,15 +200,19 @@ public class ClientHandler implements Runnable {
 
     public void endTurn() {
         try {
-            person.endTurn();
+            if (person.isActivePlayer()) {
+                person.endTurn();
+            }
             Consumer<GameStateSerializer> lambda = (serializer) -> {
-                for(Player player: Game.getInstance().getPlayers()) {
-                    if(player.getPlayerType() == PlayerType.PERSON) {
+                for (Player player : Game.getInstance().getPlayers()) {
+                    if (player.getPlayerType() == PlayerType.PERSON) {
                         serializer.addPlayerDetails((Person) player);
                     }
                 }
             };
             updateGameState(lambda);
+
+            broadcast("command", serializeCommandBuffer());
         } catch (GameEndedException | GameNotStartedException e) {
             e.printStackTrace();
         }
@@ -232,11 +222,11 @@ public class ClientHandler implements Runnable {
         JsonObject jsonObject = new JsonObject();
 
         jsonObject.addProperty("player", person.getNickname());
-        if(commandBuffer == null) {
+        if (commandBuffer == null) {
             jsonObject.add("value", JsonNull.INSTANCE);
         } else {
             JsonObject commandObject = JsonUtil.getInstance().serialize(commandBuffer).getAsJsonObject();
-            jsonObject.add("value", commandObject)  ;
+            jsonObject.add("value", commandObject);
         }
 
         return jsonObject;

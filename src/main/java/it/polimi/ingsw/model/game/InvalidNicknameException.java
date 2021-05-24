@@ -5,5 +5,6 @@ package it.polimi.ingsw.model.game;
  * nickname is trying to get used
  */
 public class InvalidNicknameException extends Exception {
-    public InvalidNicknameException() {}
+    public InvalidNicknameException() {
+    }
 }

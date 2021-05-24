@@ -18,7 +18,7 @@ public class InitDiscard extends CommandBuffer {
     protected InitDiscard(CommandType commandType, Person person) throws InvalidCommandException {
         super(commandType, person);
 
-        if(person.initDiscarded()) {
+        if (person.initDiscarded()) {
             throw new InvalidCommandException();
         }
 
@@ -32,7 +32,7 @@ public class InitDiscard extends CommandBuffer {
 
     @Override
     public void complete() throws CommandNotCompleteException {
-        if(!isReady()) {
+        if (!isReady()) {
             throw new CommandNotCompleteException();
         }
 
@@ -40,11 +40,11 @@ public class InitDiscard extends CommandBuffer {
 
         Person person = getPerson();
         ArrayList<LeaderCard> leaderCards = person.getBoard().getLeaderCardArea().getLeaderCards();
-        for(int index: indices) {
+        for (int index : indices) {
             toDiscard.add(leaderCards.get(index));
         }
 
-        for(LeaderCard leaderCard: toDiscard) {
+        for (LeaderCard leaderCard : toDiscard) {
             leaderCard.initDiscard();
         }
 
@@ -68,12 +68,12 @@ public class InitDiscard extends CommandBuffer {
         if (command.equals("indices")) {
             JsonArray jsonArray = value.getAsJsonArray();
             int[] indices = Deserializer.getInstance().getIntArray(jsonArray);
-            if(indices != null) {
+            if (indices != null) {
                 setIndices(indices);
             }
         }
 
-        if(isReady()) {
+        if (isReady()) {
             complete();
             Person person = getPerson();
             return (serializer) -> {
@@ -85,18 +85,18 @@ public class InitDiscard extends CommandBuffer {
     }
 
     public void setIndices(int[] indices) {
-        if(indices.length != InitGameParser.getInstance().getLeaderCardsToDiscard()) {
+        if (indices.length != InitGameParser.getInstance().getLeaderCardsToDiscard()) {
             return;
         }
 
         HashSet<Integer> set = new HashSet<>();
         Person person = getPerson();
         ArrayList<LeaderCard> handLeaderCards = person.getBoard().getLeaderCardArea().getLeaderCards();
-        for(int index: indices) {
-            if(index < 0 || index >= handLeaderCards.size()) {
+        for (int index : indices) {
+            if (index < 0 || index >= handLeaderCards.size()) {
                 return;
             }
-            if(set.contains(index)) {
+            if (set.contains(index)) {
                 return;
             }
             set.add(index);

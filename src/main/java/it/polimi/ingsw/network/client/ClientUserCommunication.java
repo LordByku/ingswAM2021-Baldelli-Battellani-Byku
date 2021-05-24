@@ -1,7 +1,5 @@
 package it.polimi.ingsw.network.client;
 
-import it.polimi.ingsw.network.client.Client;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,7 +17,7 @@ public class ClientUserCommunication implements Runnable {
     public void run() {
         String line;
         try {
-            while((line = stdin.readLine()) != null) {
+            while ((line = stdin.readLine()) != null) {
                 client.handleUserMessage(line);
             }
         } catch (IOException e) {

@@ -3,26 +3,17 @@ package it.polimi.ingsw.network.client.clientStates;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.controller.CommandBuffer;
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.view.cli.windows.viewWindows.CLIViewWindow;
 import it.polimi.ingsw.utility.Deserializer;
 import it.polimi.ingsw.utility.JsonUtil;
 import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.view.cli.windows.CLIWindow;
+import it.polimi.ingsw.view.cli.windows.viewWindows.ViewModel;
 
 public class GameStarted extends ClientState {
-    private CLIWindow cliWindow;
-    private CLIViewWindow cliViewWindow;
+    private boolean pendingUpdate;
 
-    public GameStarted(Client client) {
-        cliWindow = null;
-        cliViewWindow = null;
-    }
-
-    public CLIWindow getActiveWindow() {
-        if(cliViewWindow != null) {
-            return cliViewWindow;
-        }
-        return cliWindow;
+    public GameStarted() {
+        pendingUpdate = false;
     }
 
     @Override
@@ -34,8 +25,8 @@ public class GameStarted extends ClientState {
             case "error": {
                 String message = json.get("message").getAsString();
                 CLI.getInstance().serverError(message);
-                cliWindow = CLIWindow.refresh(client);
-                cliWindow.render(client);
+                CLI.getInstance().refreshWindow(client);
+                CLI.getInstance().renderWindow(client);
                 break;
             }
             case "ok": {
@@ -47,22 +38,22 @@ public class GameStarted extends ClientState {
                         String player = message.get("player").getAsString();
                         CommandBuffer commandBuffer = Deserializer.getInstance().getCommandBuffer(message.get("value"));
 
-                        System.out.println("Command buffer from " + player + " : " + message.get("value"));
-
                         client.getModel().getPlayer(player).setCommandBuffer(commandBuffer);
 
-                        if(player.equals(client.getNickname())) {
-                            cliWindow = CLIWindow.refresh(client);
-                            cliWindow.render(client);
+                        if (pendingUpdate || player.equals(client.getNickname())) {
+                            pendingUpdate = false;
+                            CLI.getInstance().refreshWindow(client);
+                            CLI.getInstance().renderWindow(client);
                         }
                         break;
                     }
                     case "update": {
                         JsonObject message = json.getAsJsonObject("message");
                         client.getModel().updateModel(message);
-                        if(cliWindow == null || cliWindow.refreshOnUpdate(client)) {
-                            cliWindow = CLIWindow.refresh(client);
-                            cliWindow.render(client);
+
+                        CLIWindow currentWindow = CLI.getInstance().getActiveWindow();
+                        if (currentWindow == null || currentWindow.refreshOnUpdate(client)) {
+                            pendingUpdate = true;
                         }
                         break;
                     }
@@ -80,6 +71,15 @@ public class GameStarted extends ClientState {
 
     @Override
     public void handleUserMessage(Client client, String line) {
-        getActiveWindow().handleUserMessage(client, line);
+        if (line.equals("v")) {
+            if (CLI.getInstance().getViewWindow() == null) {
+                CLI.getInstance().setViewWindow(new ViewModel());
+            } else {
+                CLI.getInstance().setViewWindow(null);
+            }
+            CLI.getInstance().renderWindow(client);
+            return;
+        }
+        CLI.getInstance().getActiveWindow().handleUserMessage(client, line);
     }
 }

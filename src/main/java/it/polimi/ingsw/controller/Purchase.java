@@ -24,7 +24,7 @@ public class Purchase extends CommandBuffer {
     protected Purchase(CommandType commandType, Person person) {
         super(commandType, person);
 
-        if(!person.isActivePlayer() || person.mainAction() || initDiscardsMissing() || initSelectsMissing()) {
+        if (!person.isActivePlayer() || person.mainAction() || initDiscardsMissing() || initSelectsMissing()) {
             throw new InvalidCommandException();
         }
 
@@ -42,7 +42,7 @@ public class Purchase extends CommandBuffer {
 
     @Override
     public void complete() throws CommandNotCompleteException {
-        if(!isReady()) {
+        if (!isReady()) {
             throw new CommandNotCompleteException();
         }
 
@@ -55,7 +55,7 @@ public class Purchase extends CommandBuffer {
 
         devCard.play(person.getBoard(), deckIndex);
 
-        for(int i = 0; i < warehouseToSpend.length; ++i) {
+        for (int i = 0; i < warehouseToSpend.length; ++i) {
             warehouse.removeResources(i, warehouseToSpend[i]);
         }
         strongBox.removeResources(strongboxToSpend);
@@ -88,7 +88,7 @@ public class Purchase extends CommandBuffer {
                 return null;
             }
             case "spendResources": {
-                if(marketRow == -1 || marketCol == -1 || deckIndex == -1) {
+                if (marketRow == -1 || marketCol == -1 || deckIndex == -1) {
                     return null;
                 }
 
@@ -98,11 +98,11 @@ public class Purchase extends CommandBuffer {
                 JsonElement strongBoxElement = jsonObject.get("strongbox");
                 ConcreteResourceSet strongbox = Deserializer.getInstance().getConcreteResourceSet(strongBoxElement);
 
-                if(warehouse != null && strongbox != null) {
+                if (warehouse != null && strongbox != null) {
                     setResourcesToSpend(warehouse, strongbox);
                 }
 
-                if(isReady()) {
+                if (isReady()) {
                     complete();
                     Person person = getPerson();
                     return (serializer) -> {
@@ -127,7 +127,7 @@ public class Purchase extends CommandBuffer {
         CardMarket cardMarket = Game.getInstance().getGameZone().getCardMarket();
         DevCard devCard = cardMarket.top(marketRow, marketCol);
 
-        if(devCard.canPlay(person.getBoard(), deckIndex)) {
+        if (devCard.canPlay(person.getBoard(), deckIndex)) {
             this.marketRow = marketRow;
             this.marketCol = marketCol;
             this.deckIndex = deckIndex;
@@ -136,7 +136,7 @@ public class Purchase extends CommandBuffer {
 
     private void setResourcesToSpend(ConcreteResourceSet[] warehouseToSpend, ConcreteResourceSet strongboxToSpend) {
         ConcreteResourceSet totalToSpend = checkResourcesToSpend(warehouseToSpend, strongboxToSpend);
-        if(totalToSpend == null) {
+        if (totalToSpend == null) {
             return;
         }
 
@@ -144,7 +144,7 @@ public class Purchase extends CommandBuffer {
         DevCard devCard = cardMarket.top(marketRow, marketCol);
         ConcreteResourceSet requirements = devCard.getReqResources();
 
-        if(requirements.contains(totalToSpend) && totalToSpend.contains(requirements)) {
+        if (requirements.contains(totalToSpend) && totalToSpend.contains(requirements)) {
             this.warehouseToSpend = warehouseToSpend;
             this.strongboxToSpend = strongboxToSpend;
         }

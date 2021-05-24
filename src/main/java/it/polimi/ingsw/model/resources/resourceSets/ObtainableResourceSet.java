@@ -1,9 +1,6 @@
 package it.polimi.ingsw.model.resources.resourceSets;
 
-import it.polimi.ingsw.model.resources.Resource;
 import it.polimi.ingsw.view.cli.Strings;
-
-import java.util.ArrayList;
 
 /**
  * ObtainableResourceSet is a TransactionResourceSet where the resource set
@@ -27,6 +24,7 @@ public class ObtainableResourceSet extends TransactionResourceSet {
 
     /**
      * This constructor calls the constructor for TransactionResourceSet which uses a ChoiceResourceSet
+     *
      * @param choiceResourceSet The ChoiceResourceSet to copy from
      * @throws InvalidResourceSetException choiceResourceSet is null
      */
@@ -38,15 +36,16 @@ public class ObtainableResourceSet extends TransactionResourceSet {
     /**
      * This constructor calls the constructor for TransactionResourceSet which uses a ChoiceResourceSet
      * and initializes faithPoints to the given value
+     *
      * @param choiceResourceSet The ChoiceResourceSet to copy from
-     * @param faithPoints The initial value for faithPoints
+     * @param faithPoints       The initial value for faithPoints
      * @throws InvalidResourceSetException choiceResourceSet is null
-     * @throws InvalidQuantityException faithPoints is negative
+     * @throws InvalidQuantityException    faithPoints is negative
      */
     public ObtainableResourceSet(ChoiceResourceSet choiceResourceSet, int faithPoints)
             throws InvalidResourceSetException, InvalidQuantityException {
         super(choiceResourceSet);
-        if(faithPoints < 0) {
+        if (faithPoints < 0) {
             throw new InvalidQuantityException();
         }
         this.faithPoints = faithPoints;
@@ -54,6 +53,7 @@ public class ObtainableResourceSet extends TransactionResourceSet {
 
     /**
      * getFaithPoints returns the faith points in this set
+     *
      * @return The faith points in this set
      */
     public int getFaithPoints() {
@@ -63,12 +63,13 @@ public class ObtainableResourceSet extends TransactionResourceSet {
     /**
      * union adds to this ObtainableResourceSet all the resources and faith points
      * contained in another ObtainableResourceSet
+     *
      * @param other The ObtainableResourceSet to add resources from
      * @throws InvalidResourceSetException other is null, or this ObtainableResourceSet
-     * has been converted but other has not, or vice versa
+     *                                     has been converted but other has not, or vice versa
      */
     public ObtainableResourceSet union(ObtainableResourceSet other) throws InvalidResourceSetException {
-        if(other == null) {
+        if (other == null) {
             throw new InvalidResourceSetException();
         }
         ChoiceResourceSet resourceSet = getResourceSet();
@@ -78,6 +79,7 @@ public class ObtainableResourceSet extends TransactionResourceSet {
 
     /**
      * clone returns a copy of the object
+     *
      * @return A copy of the object
      */
     @Override
@@ -87,30 +89,8 @@ public class ObtainableResourceSet extends TransactionResourceSet {
         return cloneORS;
     }
 
-    public boolean match(ConcreteResourceSet concreteResourceSet) throws InvalidResourceSetException {
-        if(concreteResourceSet == null) {
-            throw new InvalidResourceSetException();
-        }
-
-        if(getResourceSet().size() != concreteResourceSet.size()) {
-            return false;
-        }
-
-        ArrayList<Resource> choiceResources = getResourceSet().getChoiceResources();
-        ConcreteResourceSet currentConcreteResourceSet = getResourceSet().getConcreteResources();
-
-        // ChoiceResources in SpendableResourceSet always have a FullChoiceSet
-        for(Resource resource: choiceResources) {
-            if(resource.isConcrete()) {
-                currentConcreteResourceSet.addResource(resource.getResource());
-            }
-        }
-
-        return concreteResourceSet.contains(currentConcreteResourceSet);
-    }
-
     public String getCLIString() {
-        if(faithPoints > 0) {
+        if (faithPoints > 0) {
             return super.getCLIString() + faithPoints + Strings.getFaithPointsSymbol() + " ";
         } else {
             return super.getCLIString();

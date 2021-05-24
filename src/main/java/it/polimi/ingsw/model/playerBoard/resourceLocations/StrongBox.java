@@ -10,7 +10,7 @@ public class StrongBox implements ConcreteResourceLocation {
     /**
      * resource is the set of ConcreteResources contained in this StrongBox
      */
-    private ConcreteResourceSet resources;
+    private final ConcreteResourceSet resources;
 
     /**
      * The constructor initializes resources to an empty set
@@ -21,6 +21,7 @@ public class StrongBox implements ConcreteResourceLocation {
 
     /**
      * addResources adds a given ConcreteResourceSet to this StrongBox
+     *
      * @param concreteResourceSet The ConcreteResourceSet to add
      * @throws InvalidResourceSetException concreteResourceSet is null
      */
@@ -31,14 +32,15 @@ public class StrongBox implements ConcreteResourceLocation {
 
     /**
      * removeResources removes a given ConcreteResourceSet to this StrongBox
+     *
      * @param concreteResourceSet The ConcreteResourceSet to remove
-     * @throws InvalidResourceSetException concreteResourceSet is null
+     * @throws InvalidResourceSetException               concreteResourceSet is null
      * @throws InvalidResourceLocationOperationException concreteResourceSet cannot
-     * be removed from this StrongBox
+     *                                                   be removed from this StrongBox
      */
     @Override
     public void removeResources(ConcreteResourceSet concreteResourceSet) throws InvalidResourceSetException, InvalidResourceLocationOperationException {
-        if(!containsResources(concreteResourceSet)) {
+        if (!containsResources(concreteResourceSet)) {
             throw new InvalidResourceLocationOperationException();
         }
         resources.difference(concreteResourceSet);
@@ -46,13 +48,14 @@ public class StrongBox implements ConcreteResourceLocation {
 
     /**
      * canAdd always returns true as StrongBox does not have any capacity limitations
+     *
      * @param concreteResourceSet The ConcreteResourceSet to check
      * @return True
      * @throws InvalidResourceSetException concreteResourceSet is null
      */
     @Override
     public boolean canAdd(ConcreteResourceSet concreteResourceSet) throws InvalidResourceSetException {
-        if(concreteResourceSet == null) {
+        if (concreteResourceSet == null) {
             throw new InvalidResourceSetException();
         }
         return true;
@@ -60,6 +63,7 @@ public class StrongBox implements ConcreteResourceLocation {
 
     /**
      * containsResources checks whether a given ConcreteResourceSet is contained in this StrongBox
+     *
      * @param concreteResourceSet The ConcreteResourceSet to check
      * @return True iff this StrongBox contains concreteResourceSet
      * @throws InvalidResourceSetException concreteResourceSet is null
@@ -71,6 +75,7 @@ public class StrongBox implements ConcreteResourceLocation {
 
     /**
      * getResources returns a copy of the resources contained in this StrongBox
+     *
      * @return A ConcreteResourceSet representing the resources in this StrongBox
      */
     @Override

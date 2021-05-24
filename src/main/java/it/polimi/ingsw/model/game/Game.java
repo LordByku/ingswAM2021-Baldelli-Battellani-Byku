@@ -11,12 +11,12 @@ import java.util.Iterator;
 
 public class Game {
     private static Game instance;
-    private int numberOfPlayers;
     private final ArrayList<Player> players;
+    private final GameZone gameZone;
+    private int numberOfPlayers;
     private volatile boolean gameStarted;
     private volatile boolean gameEnded;
     private boolean isLastTurn;
-    private final GameZone gameZone;
     private int currentPlayer;
 
     private Game() {
@@ -29,7 +29,7 @@ public class Game {
     }
 
     public synchronized static Game getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new Game();
         }
         return instance;
@@ -43,9 +43,9 @@ public class Game {
     public Player addPlayer(String nickname)
             throws FullLobbyException, ExistingNicknameException, InvalidNicknameException, GameAlreadyStartedException {
         synchronized (players) {
-            if(gameStarted) {
-                for(Player player: players) {
-                    if(player.getPlayerType() == PlayerType.PERSON) {
+            if (gameStarted) {
+                for (Player player : players) {
+                    if (player.getPlayerType() == PlayerType.PERSON) {
                         Person person = (Person) player;
                         if (person.getNickname().equals(nickname) && !person.isConnected()) {
                             person.reconnect();
@@ -55,19 +55,19 @@ public class Game {
                 }
                 throw new GameAlreadyStartedException();
             }
-            if(players.size() == 4) {
+            if (players.size() == 4) {
                 throw new FullLobbyException();
             }
-            for(Player player: players) {
+            for (Player player : players) {
                 Person person = (Person) player;
-                if(person.getNickname().equals(nickname)) {
+                if (person.getNickname().equals(nickname)) {
                     throw new ExistingNicknameException();
                 }
             }
 
             Person person = new Person(nickname);
             players.add(person);
-            if(++numberOfPlayers == 1) {
+            if (++numberOfPlayers == 1) {
                 setNewHost();
             }
             return person;
@@ -75,12 +75,12 @@ public class Game {
     }
 
     public void startMultiPlayer() throws NotEnoughPlayersException, GameAlreadyStartedException {
-        if(gameStarted) {
+        if (gameStarted) {
             throw new GameAlreadyStartedException();
         }
 
         synchronized (players) {
-            if(players.size() < 2) {
+            if (players.size() < 2) {
                 throw new NotEnoughPlayersException();
             }
 
@@ -94,7 +94,7 @@ public class Game {
                 int receivedFaithPoints = InitGameParser.getInstance().getInitFaithPoints(i);
                 int receivedResources = InitGameParser.getInstance().getInitResources(i);
                 board.getFaithTrack().addFaithPoints(receivedFaithPoints);
-                if(receivedResources == 0) {
+                if (receivedResources == 0) {
                     person.initSelectDone();
                 }
             }
@@ -120,12 +120,12 @@ public class Game {
     }
 
     public void startSinglePlayer() throws NotEnoughPlayersException, GameAlreadyStartedException {
-        if(gameStarted) {
+        if (gameStarted) {
             throw new GameAlreadyStartedException();
         }
 
         synchronized (players) {
-            if(players.size() != 1) {
+            if (players.size() != 1) {
                 throw new NotEnoughPlayersException();
             }
 
@@ -142,25 +142,25 @@ public class Game {
     }
 
     protected void setLastTurn() throws GameNotStartedException, GameEndedException {
-        if(!gameStarted) {
+        if (!gameStarted) {
             throw new GameNotStartedException();
         }
-        if(gameEnded) {
+        if (gameEnded) {
             throw new GameEndedException();
         }
         isLastTurn = true;
     }
 
     protected void handleTurnOrder() throws GameNotStartedException, GameEndedException {
-        if(!gameStarted) {
+        if (!gameStarted) {
             throw new GameNotStartedException();
         }
-        if(gameEnded) {
+        if (gameEnded) {
             throw new GameEndedException();
         }
         synchronized (players) {
             currentPlayer = (currentPlayer + 1) % players.size();
-            if(isLastTurn && currentPlayer == 0) {
+            if (isLastTurn && currentPlayer == 0) {
                 endGame();
             } else {
                 players.get(currentPlayer).startTurn();
@@ -168,7 +168,7 @@ public class Game {
         }
     }
 
-    public int getNumberOfPlayers(){
+    public int getNumberOfPlayers() {
         return numberOfPlayers;
     }
 
@@ -188,7 +188,7 @@ public class Game {
     }
 
     public void removePlayer(String nickname) throws GameAlreadyStartedException {
-        if(gameStarted) {
+        if (gameStarted) {
             throw new GameAlreadyStartedException();
         }
         synchronized (players) {
@@ -207,7 +207,7 @@ public class Game {
 
     private void setNewHost() {
         synchronized (players) {
-            if(players.size() == 0) {
+            if (players.size() == 0) {
                 return;
             }
             Person person = (Person) players.get(0);
@@ -221,10 +221,10 @@ public class Game {
 
     public Person getActivePlayer() {
         synchronized (players) {
-            for(Player player: players) {
-                if(player.getPlayerType() == PlayerType.PERSON) {
+            for (Player player : players) {
+                if (player.getPlayerType() == PlayerType.PERSON) {
                     Person person = (Person) player;
-                    if(person.isActivePlayer()) {
+                    if (person.isActivePlayer()) {
                         return person;
                     }
                 }
@@ -236,6 +236,20 @@ public class Game {
     public int getPlayerIndex(Person person) {
         synchronized (players) {
             return players.indexOf(person);
+        }
+    }
+
+    public boolean allDisconnected() {
+        synchronized (players) {
+            for (Player player : players) {
+                if (player.getPlayerType() == PlayerType.PERSON) {
+                    Person person = (Person) player;
+                    if (person.isConnected()) {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
     }
 }

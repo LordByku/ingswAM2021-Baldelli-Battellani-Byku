@@ -4,8 +4,8 @@ import com.google.gson.JsonObject;
 import it.polimi.ingsw.network.client.clientStates.ClientState;
 import it.polimi.ingsw.network.client.clientStates.Lobby;
 import it.polimi.ingsw.network.client.clientStates.NicknameSelection;
-import it.polimi.ingsw.view.localModel.LocalModel;
 import it.polimi.ingsw.view.cli.CLI;
+import it.polimi.ingsw.view.localModel.LocalModel;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,12 +16,12 @@ import java.util.TimerTask;
 public class Client {
     private final String hostname;
     private final int port;
+    private final int timerDelay = 10000;
     private ClientState clientState;
     private String nickname;
     private PrintWriter serverOut;
     private Socket socket;
     private LocalModel localModel;
-    private final int timerDelay = 10000;
     private Boolean singlePlayer;
 
     public Client(String hostname, int port) {
@@ -32,7 +32,7 @@ public class Client {
     }
 
     public synchronized void handleServerMessage(String line) {
-        if(line.equals("ping")) {
+        if (line.equals("ping")) {
             write("pong");
         } else {
             clientState.handleServerMessage(this, line);
@@ -75,12 +75,12 @@ public class Client {
         this.clientState = clientState;
     }
 
-    public void setModel(LocalModel localModel) {
-        this.localModel = localModel;
-    }
-
     public LocalModel getModel() {
         return localModel;
+    }
+
+    public void setModel(LocalModel localModel) {
+        this.localModel = localModel;
     }
 
     public void write(String message) {
@@ -104,7 +104,7 @@ public class Client {
     }
 
     public void reconnect() {
-        if(!socket.isClosed()) {
+        if (!socket.isClosed()) {
             closeServerCommunication();
         }
 

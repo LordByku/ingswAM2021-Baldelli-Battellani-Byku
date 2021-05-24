@@ -12,7 +12,7 @@ public class MarbleMarket implements LocalModelElement {
     }
 
     public int getColumns() {
-        if(getRows() == 0) {
+        if (getRows() == 0) {
             return 0;
         }
         return market[0].length;
@@ -20,7 +20,7 @@ public class MarbleMarket implements LocalModelElement {
 
     public String getCLIString() {
         StringBuilder result = new StringBuilder(" ");
-        for(int i = 0; i < getColumns(); ++i) {
+        for (int i = 0; i < getColumns(); ++i) {
             result.append("   ");
         }
         result.append(freeMarble.getCLIString()).append("\n");
@@ -33,11 +33,11 @@ public class MarbleMarket implements LocalModelElement {
             result.append("< [").append(i).append("]\n");
         }
         result.append(" ");
-        for(int i = 0; i < getColumns(); ++i) {
+        for (int i = 0; i < getColumns(); ++i) {
             result.append(" ^ ");
         }
         result.append(" \n ");
-        for(int i = 0; i < getColumns(); ++i) {
+        for (int i = 0; i < getColumns(); ++i) {
             result.append("[").append(i).append("]");
         }
         result.append(" \n");

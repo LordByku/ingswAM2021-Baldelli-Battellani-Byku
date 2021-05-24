@@ -24,6 +24,36 @@ public abstract class CommandBuffer {
         completed = false;
     }
 
+    protected static boolean initDiscardsMissing() {
+        ArrayList<Player> players = Game.getInstance().getPlayers();
+
+        for (Player player : players) {
+            if (player.getPlayerType() == PlayerType.PERSON) {
+                Person person = (Person) player;
+                if (person.isConnected() && !person.initDiscarded()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    protected static boolean initSelectsMissing() {
+        ArrayList<Player> players = Game.getInstance().getPlayers();
+
+        for (Player player : players) {
+            if (player.getPlayerType() == PlayerType.PERSON) {
+                Person person = (Person) player;
+                if (person.isConnected() && !person.initSelected()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public Person getPerson() {
         return person;
     }
@@ -41,40 +71,14 @@ public abstract class CommandBuffer {
     }
 
     public abstract boolean isReady();
+
     public abstract void complete() throws CommandNotCompleteException;
+
     public abstract boolean cancel();
+
     public abstract void kill();
+
     public abstract Consumer<GameStateSerializer> handleMessage(String command, JsonElement value) throws RuntimeException;
-
-    protected static boolean initDiscardsMissing() {
-        ArrayList<Player> players = Game.getInstance().getPlayers();
-
-        for(Player player: players) {
-            if(player.getPlayerType() == PlayerType.PERSON) {
-                Person person = (Person) player;
-                if(person.isConnected() && !person.initDiscarded()) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    protected static boolean initSelectsMissing() {
-        ArrayList<Player> players = Game.getInstance().getPlayers();
-
-        for(Player player: players) {
-            if(player.getPlayerType() == PlayerType.PERSON) {
-                Person person = (Person) player;
-                if(person.isConnected() && !person.initSelected()) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
 
     protected ConcreteResourceSet checkResourcesToSpend(ConcreteResourceSet[] warehouseToSpend, ConcreteResourceSet strongboxToSpend) {
         Person person = getPerson();
@@ -83,18 +87,18 @@ public abstract class CommandBuffer {
 
         ConcreteResourceSet totalToSpend = new ConcreteResourceSet();
 
-        if(warehouseToSpend.length != warehouse.numberOfDepots()) {
+        if (warehouseToSpend.length != warehouse.numberOfDepots()) {
             return null;
         }
         for (int i = 0; i < warehouseToSpend.length; i++) {
             ConcreteResourceSet depotToSpend = warehouseToSpend[i];
-            if(!warehouse.getDepotResources(i).contains(depotToSpend)) {
+            if (!warehouse.getDepotResources(i).contains(depotToSpend)) {
                 return null;
             }
             totalToSpend.union(depotToSpend);
         }
 
-        if(!strongBox.containsResources(strongboxToSpend)) {
+        if (!strongBox.containsResources(strongboxToSpend)) {
             return null;
         }
         totalToSpend.union(strongboxToSpend);

@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.playerBoard.InvalidBoardException;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.InvalidResourceException;
 import it.polimi.ingsw.model.resources.NotEnoughResourcesException;
-import it.polimi.ingsw.model.resources.Resource;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,12 +28,13 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
 
     /**
      * getCount returns the number of occurrences of the given resource
+     *
      * @param resource The ConcreteResource to count
      * @return The number of occurrences of resource in the set
      * @throws InvalidResourceException resource is null
      */
     public int getCount(ConcreteResource resource) throws InvalidResourceException {
-        if(resource == null) {
+        if (resource == null) {
             throw new InvalidResourceException();
         }
         return resources.getOrDefault(resource, 0);
@@ -42,16 +42,17 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
 
     /**
      * AddResource adds new ConcreteResources to the set
+     *
      * @param resource The ConcreteResource to add
      * @param quantity The quantity to add
      * @throws InvalidResourceException resource is null
      * @throws InvalidQuantityException quantity is not strictly positive
      */
     public void addResource(ConcreteResource resource, int quantity) throws InvalidResourceException, InvalidQuantityException {
-        if(resource == null) {
+        if (resource == null) {
             throw new InvalidResourceException();
         }
-        if(quantity <= 0) {
+        if (quantity <= 0) {
             throw new InvalidQuantityException();
         }
         int prevQuantity = getCount(resource);
@@ -61,6 +62,7 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
 
     /**
      * This method offers the option to add a single resource
+     *
      * @param resource The ConcreteResource to add
      * @throws InvalidResourceException resource is null
      */
@@ -70,27 +72,28 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
 
     /**
      * removeResource removes ConcreteResources from the set
+     *
      * @param resource The ConcreteResource to remove
      * @param quantity The quantity to remove
-     * @throws InvalidResourceException resource is null
-     * @throws InvalidQuantityException quantity is not strictly positive
+     * @throws InvalidResourceException    resource is null
+     * @throws InvalidQuantityException    quantity is not strictly positive
      * @throws NotEnoughResourcesException There are less than quantity occurrences of resource in the set
      */
     public void removeResource(ConcreteResource resource, int quantity)
             throws InvalidResourceException, InvalidQuantityException, NotEnoughResourcesException {
-        if(resource == null) {
+        if (resource == null) {
             throw new InvalidResourceException();
         }
-        if(quantity <= 0) {
+        if (quantity <= 0) {
             throw new InvalidQuantityException();
         }
         int prevQuantity = getCount(resource);
-        if(prevQuantity < quantity) {
+        if (prevQuantity < quantity) {
             throw new NotEnoughResourcesException();
         }
 
         int newQuantity = prevQuantity - quantity;
-        if(newQuantity == 0) {
+        if (newQuantity == 0) {
             resources.remove(resource);
         } else {
             resources.put(resource, newQuantity);
@@ -99,8 +102,9 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
 
     /**
      * This method offers the option to remove a single resource
+     *
      * @param resource The ConcreteResource to remove
-     * @throws InvalidResourceException resource is null
+     * @throws InvalidResourceException    resource is null
      * @throws NotEnoughResourcesException There are no occurrences of resource in the set
      */
     public void removeResource(ConcreteResource resource) throws InvalidResourceException, NotEnoughResourcesException {
@@ -110,16 +114,17 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
     /**
      * union adds to this ConcreteResourceSet all the resources contained
      * in another ConcreteResourceSet
+     *
      * @param other The ConcreteResourceSet to add resources from
      * @throws InvalidResourceSetException other is null
      */
     public void union(ConcreteResourceSet other) throws InvalidResourceSetException {
-        if(other == null) {
+        if (other == null) {
             throw new InvalidResourceSetException();
         }
-        for(ConcreteResource resource: ConcreteResource.values()) {
+        for (ConcreteResource resource : ConcreteResource.values()) {
             int quantity = other.getCount(resource);
-            if(quantity > 0) {
+            if (quantity > 0) {
                 addResource(resource, quantity);
             }
         }
@@ -127,23 +132,24 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
 
     /**
      * difference removes from this set all the resources contained in another ConcreteResourceSet
+     *
      * @param other The given ConcreteResourceSet
      * @throws InvalidResourceSetException other is null
      * @throws NotEnoughResourcesException There aren't enough resources in this set
-     * to perform the operation
+     *                                     to perform the operation
      */
     public void difference(ConcreteResourceSet other) throws InvalidResourceSetException, NotEnoughResourcesException {
-        if(other == null) {
+        if (other == null) {
             throw new InvalidResourceSetException();
         }
 
-        if(!contains(other)) {
+        if (!contains(other)) {
             throw new NotEnoughResourcesException();
         }
 
-        for(ConcreteResource resource: ConcreteResource.values()) {
+        for (ConcreteResource resource : ConcreteResource.values()) {
             int otherQuantity = other.getCount(resource);
-            if(otherQuantity > 0) {
+            if (otherQuantity > 0) {
                 removeResource(resource, other.getCount(resource));
             }
         }
@@ -151,6 +157,7 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
 
     /**
      * clone returns a copy of the object
+     *
      * @return A copy of the object
      */
     @Override
@@ -167,17 +174,18 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
 
     /**
      * contains checks whether a given ConcreteResourceSet is a subset of this ConcreteResourceSet
+     *
      * @param other The ConcreteResourceSet to check
      * @return True iff other is a subset of this ConcreteResourceSet
      * @throws InvalidResourceSetException other is null
      */
     public boolean contains(ConcreteResourceSet other) throws InvalidResourceSetException {
-        if(other == null) {
+        if (other == null) {
             throw new InvalidResourceSetException();
         }
 
-        for(ConcreteResource resource: ConcreteResource.values()) {
-            if(other.getCount(resource) > getCount(resource)) {
+        for (ConcreteResource resource : ConcreteResource.values()) {
+            if (other.getCount(resource) > getCount(resource)) {
                 return false;
             }
         }
@@ -189,13 +197,14 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
      * isSatisfied implements the method of the LeaderCardRequirements interface
      * It checks whether a given board contains all the resources indicated
      * by this ConcreteResourceSet
+     *
      * @param board The board of the current player.
      * @return True iff board contains this ConcreteResourceSet
      * @throws InvalidBoardException board is null
      */
     @Override
     public boolean isSatisfied(Board board) throws InvalidBoardException {
-        if(board == null) {
+        if (board == null) {
             throw new InvalidBoardException();
         }
         return board.containsResources((ConcreteResourceSet) clone());
@@ -203,16 +212,17 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
 
     /**
      * getResourceType returns what type of resource is contained in this ConcreteResourceSet
+     *
      * @return The only type of ConcreteResource contained in this set or null if this set
      * contains no resources
      * @throws NotSingleTypeException This set contains more than one type of resources
      */
     public ConcreteResource getResourceType() throws NotSingleTypeException {
-        if(!isSingleType()) {
+        if (hasMultipleTypes()) {
             throw new NotSingleTypeException();
         }
 
-        if(resources.size() == 0) {
+        if (resources.size() == 0) {
             return null;
         }
 
@@ -221,20 +231,22 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
 
     /**
      * isSingleType checks whether this ConcreteResourceSet contains at most one type of resource
+     *
      * @return True iff this set contains at most one type of resource
      */
-    public boolean isSingleType() {
-        return resources.size() <= 1;
+    public boolean hasMultipleTypes() {
+        return resources.size() > 1;
     }
 
     /**
      * size returns the number of Resources in this ResourceSet
+     *
      * @return The number of Resources in this ResourceSet
      */
     @Override
     public int size() {
         int result = 0;
-        for(ConcreteResource resource: ConcreteResource.values()) {
+        for (ConcreteResource resource : ConcreteResource.values()) {
             result += getCount(resource);
         }
         return result;
@@ -254,9 +266,9 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
     public String getCLIString() {
         StringBuilder result = new StringBuilder();
 
-        for(Map.Entry entry: resources.entrySet()) {
-            ConcreteResource resource = (ConcreteResource) entry.getKey();
-            int count = (int) entry.getValue();
+        for (Map.Entry<ConcreteResource, Integer> entry : resources.entrySet()) {
+            ConcreteResource resource = entry.getKey();
+            int count = entry.getValue();
             result.append(count).append(resource.getCLIString()).append(" ");
         }
 

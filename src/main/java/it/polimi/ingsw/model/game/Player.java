@@ -17,7 +17,8 @@ public abstract class Player {
 
     /**
      * endTurn is called by this Player to confirm that his/her turn ended
-     * @throws GameEndedException The game already ended
+     *
+     * @throws GameEndedException      The game already ended
      * @throws GameNotStartedException The game did not start yet
      */
     public abstract void endTurn() throws GameEndedException, GameNotStartedException;

@@ -3,7 +3,6 @@ package it.polimi.ingsw.view.localModel;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import it.polimi.ingsw.controller.Production;
 import it.polimi.ingsw.model.devCards.DevCard;
 import it.polimi.ingsw.model.devCards.ProductionDetails;
 import it.polimi.ingsw.model.leaderCards.LeaderCard;
@@ -13,13 +12,12 @@ import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.network.client.LocalConfig;
 import it.polimi.ingsw.parsing.DevCardsParser;
 import it.polimi.ingsw.parsing.LeaderCardsParser;
+import it.polimi.ingsw.view.cli.CLIPrintable;
 
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
-public class Board implements LocalModelElement {
+public class Board implements LocalModelElement, CLIPrintable {
     private FaithTrack faithTrack;
     private ArrayList<ConcreteResourceSet> warehouse;
     private ConcreteResourceSet strongbox;
@@ -28,56 +26,56 @@ public class Board implements LocalModelElement {
     private ArrayList<Integer> playedLeaderCards;
     private ArrayList<Integer> handLeaderCards;
 
+    @Override
+    public void updateModel(JsonObject boardJson) {
+        if (boardJson.has("faithTrack")) {
+            faithTrack = gson.fromJson(boardJson.getAsJsonObject("faithTrack"), FaithTrack.class);
+        }
+        if (boardJson.has("warehouse")) {
+            warehouse = new ArrayList<>();
+            JsonArray depotArray = boardJson.getAsJsonArray("warehouse");
+            for (JsonElement depotJsonElement : depotArray) {
+                JsonObject depotJson = (JsonObject) depotJsonElement;
+                warehouse.add(gson.fromJson(depotJson, ConcreteResourceSet.class));
+            }
+        }
+        if (boardJson.has("strongbox")) {
+            strongbox = gson.fromJson(boardJson.getAsJsonObject("strongbox"), ConcreteResourceSet.class);
+        }
+        if (boardJson.has("devCards")) {
+            devCards = new ArrayList<>();
+            JsonArray decks = boardJson.getAsJsonArray("devCards");
+            for (JsonElement deckJsonElement : decks) {
+                ArrayList<Integer> deck = new ArrayList<>();
+                JsonArray cards = deckJsonElement.getAsJsonArray();
+                for (JsonElement cardJsonElement : cards) {
+                    deck.add(cardJsonElement.getAsInt());
+                }
+                devCards.add(deck);
+            }
+        }
+        if (boardJson.has("playedLeaderCards")) {
+            playedLeaderCards = new ArrayList<>();
+            JsonArray cards = boardJson.getAsJsonArray("playedLeaderCards");
+            for (JsonElement cardJson : cards) {
+                playedLeaderCards.add(cardJson.getAsInt());
+            }
+        }
+        if (boardJson.has("handLeaderCards")) {
+            handLeaderCards = new ArrayList<>();
+            JsonArray cards = boardJson.getAsJsonArray("handLeaderCards");
+            for (JsonElement cardJson : cards) {
+                handLeaderCards.add(gson.fromJson(cardJson, Integer.class));
+            }
+        }
+    }
+
     public ArrayList<Integer> getHandLeaderCards() {
         return handLeaderCards;
     }
 
     public ArrayList<ConcreteResourceSet> getWarehouse() {
         return warehouse;
-    }
-
-    @Override
-    public void updateModel(JsonObject boardJson) {
-        if(boardJson.has("faithTrack")) {
-            faithTrack = gson.fromJson(boardJson.getAsJsonObject("faithTrack"), FaithTrack.class);
-        }
-        if(boardJson.has("warehouse")) {
-            warehouse = new ArrayList<>();
-            JsonArray depotArray = boardJson.getAsJsonArray("warehouse");
-            for(JsonElement depotJsonElement: depotArray) {
-                JsonObject depotJson = (JsonObject) depotJsonElement;
-                warehouse.add(gson.fromJson(depotJson, ConcreteResourceSet.class));
-            }
-        }
-        if(boardJson.has("strongbox")) {
-            strongbox = gson.fromJson(boardJson.getAsJsonObject("strongbox"), ConcreteResourceSet.class);
-        }
-        if(boardJson.has("devCards")) {
-            devCards = new ArrayList<>();
-            JsonArray decks = boardJson.getAsJsonArray("devCards");
-            for(JsonElement deckJsonElement: decks) {
-                ArrayList<Integer> deck = new ArrayList<>();
-                JsonArray cards = deckJsonElement.getAsJsonArray();
-                for(JsonElement cardJsonElement: cards) {
-                    deck.add(cardJsonElement.getAsInt());
-                }
-                devCards.add(deck);
-            }
-        }
-        if(boardJson.has("playedLeaderCards")) {
-            playedLeaderCards = new ArrayList<>();
-            JsonArray cards = boardJson.getAsJsonArray("playedLeaderCards");
-            for(JsonElement cardJson: cards) {
-                playedLeaderCards.add(cardJson.getAsInt());
-            }
-        }
-        if(boardJson.has("handLeaderCards")) {
-            handLeaderCards = new ArrayList<>();
-            JsonArray cards = boardJson.getAsJsonArray("handLeaderCards");
-            for(JsonElement cardJson: cards) {
-                handLeaderCards.add(gson.fromJson(cardJson, Integer.class));
-            }
-        }
     }
 
     public FaithTrack getFaithTrack() {
@@ -112,14 +110,25 @@ public class Board implements LocalModelElement {
             }
         }
         int index = devCards.size() + 1;
-        for(int leaderCardID: playedLeaderCards) {
+        for (int leaderCardID : playedLeaderCards) {
             LeaderCard leaderCard = LeaderCardsParser.getInstance().getCard(leaderCardID);
-            if(leaderCard.isType(LeaderCardType.PRODUCTION)) {
+            if (leaderCard.isType(LeaderCardType.PRODUCTION)) {
                 ProductionLeaderCard productionLeaderCard = (ProductionLeaderCard) leaderCard;
                 map.put(index++, productionLeaderCard.getProductionPower());
             }
         }
 
         return map;
+    }
+
+    @Override
+    public String getCLIString() {
+        return "[0] Check Faith Track\n" +
+                "[1] Check Warehouse\n" +
+                "[2] Check Strongbox\n" +
+                "[3] Check Development Cards\n" +
+                "[4] Check Played Leader Cards\n" +
+                "[5] Check Hand Leader Cards\n" +
+                "[x] Back";
     }
 }

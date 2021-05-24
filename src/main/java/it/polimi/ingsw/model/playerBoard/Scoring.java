@@ -6,6 +6,7 @@ package it.polimi.ingsw.model.playerBoard;
 public interface Scoring {
     /**
      * getPoints returns the points awarded by the object implementing this interface
+     *
      * @return The points awarded by the object
      */
     int getPoints();

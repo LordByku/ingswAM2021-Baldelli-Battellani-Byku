@@ -15,7 +15,7 @@ public class JsonUtil {
     }
 
     public static JsonUtil getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new JsonUtil();
         }
         return instance;

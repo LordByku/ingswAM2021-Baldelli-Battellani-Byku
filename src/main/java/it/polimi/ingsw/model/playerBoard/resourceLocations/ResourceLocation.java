@@ -10,6 +10,7 @@ public interface ResourceLocation {
     /**
      * containsResources checks whether a given ConcreteResourceSet
      * is contained in this ResourceLocation
+     *
      * @param concreteResourceSet The ConcreteResourceSet to check
      * @return True iff this ResourceLocation contains concreteResourceSet
      * @throws InvalidResourceSetException concreteResourceSet is null
@@ -18,6 +19,7 @@ public interface ResourceLocation {
 
     /**
      * getResources returns a copy of the resources contained in this ResourceLocation
+     *
      * @return A ConcreteResourceSet representing the resources in this ResourceLocation
      */
     ConcreteResourceSet getResources();

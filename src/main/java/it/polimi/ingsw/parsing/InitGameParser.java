@@ -6,9 +6,9 @@ import com.google.gson.JsonObject;
 
 public class InitGameParser {
     private static InitGameParser instance;
-    private JsonObject initGame;
     private final Gson gson;
     private final Parser parser;
+    private JsonObject initGame;
 
     private InitGameParser() {
         gson = new Gson();
@@ -17,7 +17,7 @@ public class InitGameParser {
     }
 
     public static InitGameParser getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new InitGameParser();
         }
         return instance;
@@ -28,36 +28,36 @@ public class InitGameParser {
     }
 
     public int getLeaderCardsToAssign() throws NoConfigFileException {
-        if(initGame == null) {
+        if (initGame == null) {
             throw new NoConfigFileException();
         }
         return initGame.get("leaderCardsToAssign").getAsInt();
     }
 
     public int getLeaderCardsToDiscard() throws NoConfigFileException {
-        if(initGame == null) {
+        if (initGame == null) {
             throw new NoConfigFileException();
         }
         return initGame.get("leaderCardsToDiscard").getAsInt();
     }
 
     public int getInitResources(int playerIndex) {
-        if(initGame == null) {
+        if (initGame == null) {
             throw new NoConfigFileException();
         }
         JsonArray initResources = initGame.getAsJsonArray("resources");
-        if(playerIndex < 0 || playerIndex >= initResources.size()) {
+        if (playerIndex < 0 || playerIndex >= initResources.size()) {
             return 0;
         }
         return initResources.get(playerIndex).getAsInt();
     }
 
     public int getInitFaithPoints(int playerIndex) {
-        if(initGame == null) {
+        if (initGame == null) {
             throw new NoConfigFileException();
         }
         JsonArray initFaithPoints = initGame.getAsJsonArray("faithPoints");
-        if(playerIndex < 0 || playerIndex >= initFaithPoints.size()) {
+        if (playerIndex < 0 || playerIndex >= initFaithPoints.size()) {
             return 0;
         }
         return initFaithPoints.get(playerIndex).getAsInt();

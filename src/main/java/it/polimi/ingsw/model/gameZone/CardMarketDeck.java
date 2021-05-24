@@ -32,7 +32,7 @@ public class CardMarketDeck {
     /**
      * Constructor creates a new stack and initialize attributes.
      */
-    public CardMarketDeck(CardColour colour, CardLevel level){
+    public CardMarketDeck(CardColour colour, CardLevel level) {
 
         this.colour = colour;
         this.level = level;
@@ -42,6 +42,7 @@ public class CardMarketDeck {
 
     /**
      * Getter for attribute colour.
+     *
      * @return The value of the attribute colour.
      */
     public CardColour getColour() {
@@ -50,6 +51,7 @@ public class CardMarketDeck {
 
     /**
      * Getter for attribute level.
+     *
      * @return The value of the attribute level.
      */
     public CardLevel getLevel() {
@@ -58,18 +60,20 @@ public class CardMarketDeck {
 
     /**
      * Appends a devCard to the end of the Deck
+     *
      * @param devCard The card to be added
      */
-    public void appendToDeck(DevCard devCard){
+    public void appendToDeck(DevCard devCard) {
         devCardStack.add(devCard);
     }
 
     /**
      * Removes the card at the top of the Deck.
+     *
      * @return The devCard removed.
      */
     public DevCard removeTop() throws EmptyDeckException {
-        if(isEmpty()) {
+        if (isEmpty()) {
             throw new EmptyDeckException();
         }
         return devCardStack.pop();
@@ -79,28 +83,28 @@ public class CardMarketDeck {
      * @return The devCard at the top of the deck
      */
     public DevCard top() throws EmptyDeckException {
-        if(isEmpty()) {
+        if (isEmpty()) {
             throw new EmptyDeckException();
         }
         return devCardStack.peek();
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return devCardStack.isEmpty();
     }
 
     /**
      * Shuffle the deck.
      */
-    public void shuffleDeck(){
+    public void shuffleDeck() {
         ArrayList<DevCard> arrayList = new ArrayList<>();
-        while (!devCardStack.isEmpty()){
+        while (!devCardStack.isEmpty()) {
             arrayList.add(devCardStack.pop());
         }
 
         Collections.shuffle(arrayList);
 
-        for(int i=0; i < arrayList.size(); i++){
+        for (int i = 0; i < arrayList.size(); i++) {
             devCardStack.add(i, arrayList.get(i));
         }
     }

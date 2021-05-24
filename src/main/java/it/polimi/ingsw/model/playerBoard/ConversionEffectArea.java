@@ -14,7 +14,7 @@ public class ConversionEffectArea {
      * conversionEffects is the set of ConversionEffects contained
      * in this ConversionEffectArea
      */
-    private HashSet<ConversionEffect> conversionEffects;
+    private final HashSet<ConversionEffect> conversionEffects;
 
     /**
      * The constructor initializes conversionEffects to an empty set
@@ -25,11 +25,12 @@ public class ConversionEffectArea {
 
     /**
      * addConversionEffect adds a new ConversionEffect to this ConversionEffectArea
+     *
      * @param effect The ConversionEffect to add
      * @throws InvalidConversionEffectException effect is null
      */
     public void addConversionEffect(ConversionEffect effect) throws InvalidConversionEffectException {
-        if(effect == null) {
+        if (effect == null) {
             throw new InvalidConversionEffectException();
         }
         conversionEffects.add(effect);
@@ -38,13 +39,14 @@ public class ConversionEffectArea {
     /**
      * getConversionEffects returns a ChoiceSet where possible choices are
      * the ConversionEffects provided by this ConversionEffectArea
+     *
      * @return A ChoiceSet containing the ConversionEffects in this
      * ConversionEffectArea as choices
      */
     public ChoiceSet getConversionEffects() {
         ChoiceSet choiceSet = new ChoiceSet();
 
-        for(ConversionEffect conversionEffect: conversionEffects) {
+        for (ConversionEffect conversionEffect : conversionEffects) {
             choiceSet.addChoice(conversionEffect.getResource());
         }
 

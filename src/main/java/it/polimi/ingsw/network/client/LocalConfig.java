@@ -5,7 +5,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.model.devCards.ProductionDetails;
 import it.polimi.ingsw.model.playerBoard.faithTrack.CheckPoint;
-import it.polimi.ingsw.model.playerBoard.faithTrack.VaticanReportSection;
 import it.polimi.ingsw.parsing.Parser;
 import it.polimi.ingsw.utility.Deserializer;
 
@@ -17,10 +16,11 @@ public class LocalConfig {
     private ArrayList<String> turnOrder;
     private boolean host;
 
-    private LocalConfig() {}
+    private LocalConfig() {
+    }
 
     public static LocalConfig getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new LocalConfig();
         }
         return instance;
@@ -28,10 +28,6 @@ public class LocalConfig {
 
     public void setConfig(JsonObject config) {
         this.config = config;
-    }
-
-    public void setTurnOrder(ArrayList<String> turnOrder) {
-        this.turnOrder = (ArrayList<String>) turnOrder.clone();
     }
 
     public void setHost() {
@@ -59,7 +55,7 @@ public class LocalConfig {
     public ArrayList<Integer> getDepotSizes() {
         JsonArray depotSizesJson = config.getAsJsonObject("board").getAsJsonArray("depotSizes");
         ArrayList<Integer> depotSizes = new ArrayList<>();
-        for(JsonElement depotSize: depotSizesJson) {
+        for (JsonElement depotSize : depotSizesJson) {
             depotSizes.add(depotSize.getAsInt());
         }
         return depotSizes;
@@ -69,13 +65,17 @@ public class LocalConfig {
         return (ArrayList<String>) turnOrder.clone();
     }
 
+    public void setTurnOrder(ArrayList<String> turnOrder) {
+        this.turnOrder = (ArrayList<String>) turnOrder.clone();
+    }
+
     public int getFaithTrackFinalPosition() {
         return config.getAsJsonObject("board").getAsJsonObject("faithTrack").get("finalPosition").getAsInt();
     }
 
     public ArrayList<CheckPoint> getFaithTrackCheckPoints() {
         ArrayList<CheckPoint> checkPoints = new ArrayList<>();
-        for(JsonElement checkPointJson: config.getAsJsonObject("board").getAsJsonObject("faithTrack").getAsJsonArray("checkPoints")) {
+        for (JsonElement checkPointJson : config.getAsJsonObject("board").getAsJsonObject("faithTrack").getAsJsonArray("checkPoints")) {
             checkPoints.add(Deserializer.getInstance().getCheckPoint(checkPointJson));
         }
         return checkPoints;

@@ -22,11 +22,12 @@ public class ChoiceSet implements Cloneable, CLIPrintable {
 
     /**
      * addChoice inserts a new resource into the set
+     *
      * @param resource The ConcreteResource to add
      * @throws InvalidResourceException resource is null
      */
     public void addChoice(ConcreteResource resource) throws InvalidResourceException {
-        if(resource == null) {
+        if (resource == null) {
             throw new InvalidResourceException();
         }
         set.add(resource);
@@ -34,12 +35,13 @@ public class ChoiceSet implements Cloneable, CLIPrintable {
 
     /**
      * containsResource checks whether a given resource is in the set
+     *
      * @param resource The ConcreteResource to check
      * @return True iff resource is contained in the set
      * @throws InvalidResourceException resource is null
      */
     public boolean containsResource(ConcreteResource resource) throws InvalidResourceException {
-        if(resource == null) {
+        if (resource == null) {
             throw new InvalidResourceException();
         }
         return set.contains(resource);
@@ -47,6 +49,7 @@ public class ChoiceSet implements Cloneable, CLIPrintable {
 
     /**
      * empty() checks whether the set is empty
+     *
      * @return True iff the set is empty
      */
     public boolean empty() {
@@ -55,6 +58,7 @@ public class ChoiceSet implements Cloneable, CLIPrintable {
 
     /**
      * size() returns the number of ConcreteResources contained in the set
+     *
      * @return The size of the set
      */
     public int size() {
@@ -63,6 +67,7 @@ public class ChoiceSet implements Cloneable, CLIPrintable {
 
     /**
      * clone returns a copy of the object
+     *
      * @return A copy of the object
      */
     @Override
@@ -83,9 +88,9 @@ public class ChoiceSet implements Cloneable, CLIPrintable {
 
         int count = 0;
 
-        for(ConcreteResource concreteResource: ConcreteResource.values()) {
-            if(containsResource(concreteResource)) {
-                if(count++ > 0) {
+        for (ConcreteResource concreteResource : ConcreteResource.values()) {
+            if (containsResource(concreteResource)) {
+                if (count++ > 0) {
                     result.append(", ");
                 }
                 result.append(concreteResource.getExtendedCLIString()).append(" ").append(concreteResource.getCLIString());

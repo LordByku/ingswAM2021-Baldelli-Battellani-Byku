@@ -16,11 +16,12 @@ public class ConversionEffect {
 
     /**
      * Constructor sets the parameter resource.
+     *
      * @param resource the resource to convert the white marble into.
      * @throws InvalidResourceException resource is null
      */
     public ConversionEffect(ConcreteResource resource) throws InvalidResourceException {
-        if(resource == null ){
+        if (resource == null) {
             throw new InvalidResourceException();
         }
         this.resource = resource;
@@ -29,6 +30,8 @@ public class ConversionEffect {
     /**
      * @return the resource to convert the white marble into.
      */
-    public ConcreteResource getResource(){ return resource; }
+    public ConcreteResource getResource() {
+        return resource;
+    }
 
 }

@@ -19,10 +19,11 @@ public class PopeFavor implements Scoring {
 
     /**
      * The constructor creates a new Pope Favor
+     *
      * @param points The pope favor card's points
      */
     public PopeFavor(int points, int id) throws InvalidQuantityException {
-        if(points <= 0) {
+        if (points <= 0) {
             throw new InvalidQuantityException();
         }
         this.points = points;
@@ -31,6 +32,7 @@ public class PopeFavor implements Scoring {
 
     /**
      * getPoints is an overridden getter of the attribute points of the object
+     *
      * @return the points of the Pope Favor card
      */
     @Override

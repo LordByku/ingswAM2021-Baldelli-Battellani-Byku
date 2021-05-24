@@ -19,7 +19,7 @@ public class SpendableResourceSetTest {
         ChoiceResourceSet internalResources = spendableResourceSet.getResourceSet();
 
         internalResources.getChoiceResources();
-        ArrayList<Resource> choiceResources;
+        ArrayList<ChoiceResource> choiceResources;
         internalResources.getConcreteResources();
         ConcreteResourceSet concreteResources;
 
@@ -78,7 +78,7 @@ public class SpendableResourceSetTest {
         spendableResourceSet1 = spendableResourceSet1.union(spendableResourceSet2);
 
         ChoiceResourceSet resourceSet = spendableResourceSet1.getResourceSet();
-        ArrayList<Resource> choiceResources = resourceSet.getChoiceResources();
+        ArrayList<ChoiceResource> choiceResources = resourceSet.getChoiceResources();
         ConcreteResourceSet concreteResources = resourceSet.getConcreteResources();
 
         assertEquals(5, resourceSet.size());
@@ -114,7 +114,7 @@ public class SpendableResourceSetTest {
         resources1 = spendableResourceSet1.getResourceSet();
         resources2 = spendableResourceSet2.getResourceSet();
 
-        ArrayList<Resource> choiceResources1 = resources1.getChoiceResources();
+        ArrayList<ChoiceResource> choiceResources1 = resources1.getChoiceResources();
         ConcreteResourceSet concreteResources1 = resources1.getConcreteResources();
 
         assertEquals(2, resources1.size());
@@ -133,7 +133,7 @@ public class SpendableResourceSetTest {
 
         choiceResources1 = resources1.getChoiceResources();
         concreteResources1 = resources1.getConcreteResources();
-        ArrayList<Resource> choiceResources2 = resources2.getChoiceResources();
+        ArrayList<ChoiceResource> choiceResources2 = resources2.getChoiceResources();
         ConcreteResourceSet concreteResources2 = resources2.getConcreteResources();
 
         assertEquals(2, resources1.size());
@@ -150,7 +150,7 @@ public class SpendableResourceSetTest {
         assertFalse(choiceResources2.get(0).isConcrete());
         assertEquals(1, concreteResources2.getCount(ConcreteResource.COIN));
 
-        ((ChoiceResource) choiceResources1.get(0)).makeChoice(ConcreteResource.STONE);
+        choiceResources1.get(0).makeChoice(ConcreteResource.STONE);
 
         resources1 = spendableResourceSet1.getResourceSet();
         choiceResources1 = resources1.getChoiceResources();

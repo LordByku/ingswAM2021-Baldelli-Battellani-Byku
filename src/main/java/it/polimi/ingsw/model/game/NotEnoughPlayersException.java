@@ -5,5 +5,6 @@ package it.polimi.ingsw.model.game;
  * for the requested operation
  */
 public class NotEnoughPlayersException extends RuntimeException {
-    public NotEnoughPlayersException() {}
+    public NotEnoughPlayersException() {
+    }
 }

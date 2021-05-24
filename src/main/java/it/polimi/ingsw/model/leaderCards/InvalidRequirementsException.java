@@ -5,5 +5,6 @@ package it.polimi.ingsw.model.leaderCards;
  * LeaderCardRequirements is trying to get used
  */
 public class InvalidRequirementsException extends RuntimeException {
-    public InvalidRequirementsException(){}
+    public InvalidRequirementsException() {
+    }
 }

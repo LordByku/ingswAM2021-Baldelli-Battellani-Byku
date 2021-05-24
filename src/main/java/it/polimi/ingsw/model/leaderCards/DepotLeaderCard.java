@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.devCards.InvalidIdException;
 import it.polimi.ingsw.model.playerBoard.resourceLocations.InvalidDepotSizeException;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.InvalidResourceException;
-import it.polimi.ingsw.view.cli.Strings;
 import it.polimi.ingsw.view.cli.TextColour;
 
 /**
@@ -23,22 +22,23 @@ public class DepotLeaderCard extends LeaderCard {
 
     /**
      * The constructor sets the parameters of the leader cards.
-     * @param points victory points given by the leader card.
+     *
+     * @param points       victory points given by the leader card.
      * @param requirements requirements needed to play the leader card.
-     * @param type type of resource that can be stored into the depot.
-     * @param depotSize The size of the depot.
-     * @throws InvalidPointsValueException points are less or equal to zero.
+     * @param type         type of resource that can be stored into the depot.
+     * @param depotSize    The size of the depot.
+     * @throws InvalidPointsValueException  points are less or equal to zero.
      * @throws InvalidRequirementsException requirements is null.
-     * @throws InvalidResourceException type is null.
-     * @throws InvalidDepotSizeException depotSize is not strictly positive
+     * @throws InvalidResourceException     type is null.
+     * @throws InvalidDepotSizeException    depotSize is not strictly positive
      */
     public DepotLeaderCard(int points, LeaderCardRequirements requirements, ConcreteResource type, int depotSize, int id)
             throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceException, InvalidDepotSizeException, InvalidIdException {
         super(points, requirements, id, LeaderCardType.DEPOT);
-        if(type == null) {
+        if (type == null) {
             throw new InvalidResourceException();
         }
-        if(depotSize <= 0) {
+        if (depotSize <= 0) {
             throw new InvalidDepotSizeException();
         }
 
@@ -51,7 +51,7 @@ public class DepotLeaderCard extends LeaderCard {
      */
     @Override
     public void play() {
-        if(isPlayable()) {
+        if (isPlayable()) {
             active = true;
             board.getWarehouse().addLeaderCardDepot(new LeaderCardDepot(type, depotSize));
         }
@@ -60,8 +60,8 @@ public class DepotLeaderCard extends LeaderCard {
     @Override
     public String getEffectString() {
         StringBuilder effect = new StringBuilder(type.getColour().escape());
-        for(int i = 0; i < depotSize; ++i) {
-            if(i > 0) {
+        for (int i = 0; i < depotSize; ++i) {
+            if (i > 0) {
                 effect.append(" ");
             }
             effect.append("\u25ef");

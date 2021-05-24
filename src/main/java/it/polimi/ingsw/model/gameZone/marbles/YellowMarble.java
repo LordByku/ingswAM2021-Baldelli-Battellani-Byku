@@ -19,13 +19,14 @@ public class YellowMarble extends Marble {
 
     /**
      * collect returns an ObtainableResourceSet containing a COIN
+     *
      * @param choiceSet The ChoiceSet of possible conversions for this operation
      * @return An ObtainableResourceSet containing a COIN
      * @throws InvalidChoiceSetException choiceSet is null
      */
     @Override
     public ObtainableResourceSet collect(ChoiceSet choiceSet) throws InvalidChoiceSetException {
-        if(choiceSet == null) {
+        if (choiceSet == null) {
             throw new InvalidChoiceSetException();
         }
         ChoiceResourceSet choiceResourceSet = new ChoiceResourceSet();

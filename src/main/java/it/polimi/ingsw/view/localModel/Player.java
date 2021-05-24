@@ -26,17 +26,17 @@ public class Player implements LocalModelElement {
         initDiscard = playerJson.get("initDiscard").getAsBoolean();
         initResources = playerJson.get("initResources").getAsBoolean();
         mainAction = playerJson.get("mainAction").getAsBoolean();
-        if(playerJson.has("board")) {
+        if (playerJson.has("board")) {
             board.updateModel(playerJson.getAsJsonObject("board"));
         }
     }
 
-    public void setCommandBuffer(CommandBuffer commandBuffer) {
-        this.commandBuffer = commandBuffer;
-    }
-
     public CommandBuffer getCommandBuffer() {
         return commandBuffer;
+    }
+
+    public void setCommandBuffer(CommandBuffer commandBuffer) {
+        this.commandBuffer = commandBuffer;
     }
 
     public boolean hasInkwell() {

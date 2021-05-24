@@ -8,12 +8,14 @@ import it.polimi.ingsw.model.resources.NotConcreteException;
 public interface ResourceSet extends Cloneable {
     /**
      * clone returns a copy of the object
+     *
      * @return A copy of the object
      */
     Object clone();
 
     /**
      * size returns the number of Resources in this ResourceSet
+     *
      * @return The number of Resources in this ResourceSet
      */
     int size();
