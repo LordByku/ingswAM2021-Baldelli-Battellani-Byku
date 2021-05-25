@@ -13,7 +13,7 @@ public class Person extends Player {
     /**
      * board is the personal Board of the player
      */
-    private final Board board;
+    private Board board;
     /**
      * isActivePlayer is a flag that tells whether it's currently
      * the turn of this Player
@@ -47,7 +47,7 @@ public class Person extends Player {
         }
         this.nickname = nickname;
         isActivePlayer = false;
-        board = new Board();
+        board = null;
         isHost = false;
         isConnected = true;
         initDiscarded = false;
@@ -102,6 +102,9 @@ public class Person extends Player {
      * @return A copy of the Board of this Player
      */
     public Board getBoard() {
+        if(board == null) {
+            board = new Board();
+        }
         return board.clone();
     }
 

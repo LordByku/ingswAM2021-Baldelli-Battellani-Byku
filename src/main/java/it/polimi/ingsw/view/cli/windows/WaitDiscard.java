@@ -9,12 +9,12 @@ public class WaitDiscard extends CLIWindow {
 
     @Override
     public void handleUserMessage(Client client, String line) {
-        CLI.getInstance().renderWindow(client);
+        CLI.renderWindow(client);
     }
 
     @Override
     public void render(Client client) {
-        CLI.getInstance().waitInitDiscard();
+        CLI.waitInitDiscard();
     }
 
     @Override

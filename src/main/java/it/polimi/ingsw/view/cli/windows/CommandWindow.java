@@ -42,6 +42,6 @@ public abstract class CommandWindow extends CLIWindow {
         } catch (NumberFormatException e) {
         }
 
-        CLI.getInstance().renderWindow(client);
+        CLI.renderWindow(client);
     }
 }

@@ -25,14 +25,14 @@ public class InitDiscard extends CommandWindow {
         } catch (NumberFormatException e) {
         }
 
-        CLI.getInstance().renderWindow(client);
+        CLI.renderWindow(client);
     }
 
     @Override
     public void render(Client client) {
         Player self = client.getModel().getPlayer(client.getNickname());
-        CLI.getInstance().showLeaderCards(self.getBoard().getHandLeaderCards());
-        CLI.getInstance().initDiscard();
+        CLI.showLeaderCards(self.getBoard().getHandLeaderCards());
+        CLI.initDiscard();
     }
 
     @Override

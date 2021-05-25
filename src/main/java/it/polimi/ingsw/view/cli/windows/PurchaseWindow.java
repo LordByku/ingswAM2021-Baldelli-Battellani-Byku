@@ -93,7 +93,7 @@ public class PurchaseWindow extends CommandWindow {
             }
         }
 
-        CLI.getInstance().renderWindow(client);
+        CLI.renderWindow(client);
     }
 
     private void sendSpendResourcesCommand(Client client) {
@@ -109,10 +109,10 @@ public class PurchaseWindow extends CommandWindow {
         Player self = client.getModel().getPlayer(client.getNickname());
         Purchase commandBuffer = (Purchase) self.getCommandBuffer();
         if (commandBuffer.getMarketRow() == -1 || commandBuffer.getMarketCol() == -1) {
-            CLI.getInstance().purchaseSelectRowAndCol();
+            CLI.purchaseSelectRowAndCol();
         } else {
             if (commandBuffer.getDeckIndex() == -1) {
-                CLI.getInstance().purchaseSelectDeckIndex();
+                CLI.purchaseSelectDeckIndex();
             } else {
                 int row = commandBuffer.getMarketRow();
                 int col = commandBuffer.getMarketCol();
@@ -132,9 +132,9 @@ public class PurchaseWindow extends CommandWindow {
 
                 ConcreteResourceSet currentSelection = commandBuffer.getCurrentTotalToSpend();
 
-                CLI.getInstance().showWarehouse(self.getBoard().getWarehouse(), self.getBoard().getPlayedLeaderCards());
-                CLI.getInstance().showStrongbox(self.getBoard().getStrongBox());
-                CLI.getInstance().spendResources(toSpend, currentSelection);
+                CLI.showWarehouse(self.getBoard().getWarehouse(), self.getBoard().getPlayedLeaderCards());
+                CLI.showStrongbox(self.getBoard().getStrongBox());
+                CLI.spendResources(toSpend, currentSelection);
             }
         }
     }

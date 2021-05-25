@@ -16,23 +16,23 @@ public class ViewDevCardDeck extends CLIViewWindow {
     @Override
     public void handleUserMessage(Client client, String line) {
         if (line.equals("x")) {
-            CLI.getInstance().setViewWindow(new ViewPlayerBoard(board));
+            CLI.setViewWindow(new ViewPlayerBoard(board));
         } else {
             try {
                 int selection = Integer.parseInt(line);
                 ArrayList<ArrayList<Integer>> devCards = board.getDevCards();
                 if (selection >= 0 && selection < devCards.size()) {
-                    CLI.getInstance().showDevCardDeck(devCards.get(selection));
+                    CLI.showDevCardDeck(devCards.get(selection));
                 }
             } catch (NumberFormatException e) {
             }
         }
 
-        CLI.getInstance().renderWindow(client);
+        CLI.renderWindow(client);
     }
 
     @Override
     public void render(Client client) {
-        CLI.getInstance().selectDevCardDeck();
+        CLI.selectDevCardDeck();
     }
 }

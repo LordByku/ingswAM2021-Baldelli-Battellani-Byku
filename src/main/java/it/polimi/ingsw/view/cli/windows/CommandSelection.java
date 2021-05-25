@@ -71,7 +71,7 @@ public class CommandSelection extends CLIWindow {
         } catch (NumberFormatException e) {
         }
 
-        CLI.getInstance().renderWindow(client);
+        CLI.renderWindow(client);
     }
 
     @Override
@@ -79,12 +79,12 @@ public class CommandSelection extends CLIWindow {
         Player self = client.getModel().getPlayer(client.getNickname());
         if (self.hasInkwell()) {
             if (self.mainAction()) {
-                CLI.getInstance().endTurn();
+                CLI.endTurn();
             } else {
-                CLI.getInstance().startTurn(client.getModel().getGameZone());
+                CLI.startTurn(client.getModel().getGameZone());
             }
         } else {
-            CLI.getInstance().waitTurn();
+            CLI.waitTurn();
         }
     }
 

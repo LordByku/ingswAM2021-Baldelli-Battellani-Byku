@@ -90,7 +90,7 @@ public class ProductionWindow extends CommandWindow {
             }
         }
 
-        CLI.getInstance().renderWindow(client);
+        CLI.renderWindow(client);
     }
 
     @Override
@@ -100,7 +100,7 @@ public class ProductionWindow extends CommandWindow {
         Board board = self.getBoard();
         HashMap<Integer, ProductionDetails> map = board.activeProductionDetails();
         if (commandBuffer.getProductionsToActivate() == null) {
-            CLI.getInstance().activateProductionSelection(map);
+            CLI.activateProductionSelection(map);
         } else {
             if (commandBuffer.getObtainedResources() == null) {
                 ChoiceResourceSet toSpend = new ChoiceResourceSet();
@@ -110,16 +110,16 @@ public class ProductionWindow extends CommandWindow {
                 }
                 ConcreteResourceSet currentSelection = commandBuffer.getCurrentTotalToSpend();
 
-                CLI.getInstance().showWarehouse(self.getBoard().getWarehouse(), self.getBoard().getPlayedLeaderCards());
-                CLI.getInstance().showStrongbox(self.getBoard().getStrongBox());
-                CLI.getInstance().spendResources(toSpend, currentSelection);
+                CLI.showWarehouse(self.getBoard().getWarehouse(), self.getBoard().getPlayedLeaderCards());
+                CLI.showStrongbox(self.getBoard().getStrongBox());
+                CLI.spendResources(toSpend, currentSelection);
             } else {
                 ChoiceResourceSet toObtain = new ChoiceResourceSet();
                 for (int toActivate : commandBuffer.getProductionsToActivate()) {
                     ProductionDetails productionDetails = map.get(toActivate);
                     toObtain.union(productionDetails.getOutput().getResourceSet());
                 }
-                CLI.getInstance().choiceResourceSelection(toObtain.getChoiceResources().size());
+                CLI.choiceResourceSelection(toObtain.getChoiceResources().size());
             }
         }
     }

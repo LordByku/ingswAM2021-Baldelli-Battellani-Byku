@@ -14,34 +14,34 @@ public class ViewPlayerBoard extends CLIViewWindow {
     @Override
     public void handleUserMessage(Client client, String line) {
         if (line.equals("x")) {
-            CLI.getInstance().setViewWindow(new ViewModel());
+            CLI.setViewWindow(new ViewModel());
         } else {
             try {
                 int selection = Integer.parseInt(line);
 
                 switch (selection) {
                     case 0: {
-                        CLI.getInstance().showFaithTrack(board.getFaithTrack());
+                        CLI.showFaithTrack(board.getFaithTrack());
                         break;
                     }
                     case 1: {
-                        CLI.getInstance().showWarehouse(board.getWarehouse(), board.getPlayedLeaderCards());
+                        CLI.showWarehouse(board.getWarehouse(), board.getPlayedLeaderCards());
                         break;
                     }
                     case 2: {
-                        CLI.getInstance().showStrongbox(board.getStrongBox());
+                        CLI.showStrongbox(board.getStrongBox());
                         break;
                     }
                     case 3: {
-                        CLI.getInstance().setViewWindow(new ViewDevCardDeck(board));
+                        CLI.setViewWindow(new ViewDevCardDeck(board));
                         break;
                     }
                     case 4: {
-                        CLI.getInstance().showLeaderCards(board.getPlayedLeaderCards());
+                        CLI.showLeaderCards(board.getPlayedLeaderCards());
                         break;
                     }
                     case 5: {
-                        CLI.getInstance().showLeaderCards(board.getHandLeaderCards());
+                        CLI.showLeaderCards(board.getHandLeaderCards());
                         break;
                     }
                 }
@@ -49,11 +49,11 @@ public class ViewPlayerBoard extends CLIViewWindow {
             }
         }
 
-        CLI.getInstance().renderWindow(client);
+        CLI.renderWindow(client);
     }
 
     @Override
     public void render(Client client) {
-        CLI.getInstance().boardComponentSelection(board);
+        CLI.boardComponentSelection(board);
     }
 }

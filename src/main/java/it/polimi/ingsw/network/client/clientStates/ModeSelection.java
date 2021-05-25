@@ -14,12 +14,12 @@ import java.util.ArrayList;
 
 public class ModeSelection extends ClientState {
     public ModeSelection() {
-        CLI.getInstance().selectMode();
+        CLI.selectMode();
     }
 
     @Override
     public void handleServerMessage(Client client, String line) {
-        CLI.getInstance().unexpected();
+        CLI.unexpected();
     }
 
     @Override
@@ -32,13 +32,13 @@ public class ModeSelection extends ClientState {
                     try {
                         client.connectToServer();
                     } catch (IOException e) {
-                        CLI.getInstance().connectionError();
-                        CLI.getInstance().selectMode();
+                        CLI.connectionError();
+                        CLI.selectMode();
                     }
                     break;
                 }
                 case 1: {
-                    CLI.getInstance().loadGame();
+                    CLI.loadGame();
 
                     Game.getInstance().addPlayer(client.getNickname());
                     Game.getInstance().startSinglePlayer();
@@ -56,17 +56,17 @@ public class ModeSelection extends ClientState {
                     GameStateSerializer serializer = new GameStateSerializer(client.getNickname());
                     client.setModel(Deserializer.getInstance().getLocalModel(serializer.gameState()));
 
-                    client.setState(new GameStarted());
+                    client.setState(new GameStarted(new CLI()));
 
                     client.startLocalController();
                     break;
                 }
                 default: {
-                    CLI.getInstance().selectMode();
+                    CLI.selectMode();
                 }
             }
         } catch (NumberFormatException | InvalidNicknameException | ExistingNicknameException | GameAlreadyStartedException | FullLobbyException e) {
-            CLI.getInstance().selectMode();
+            CLI.selectMode();
         }
     }
 }

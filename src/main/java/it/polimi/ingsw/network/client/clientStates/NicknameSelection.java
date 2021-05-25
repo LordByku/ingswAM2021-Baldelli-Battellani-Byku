@@ -5,12 +5,12 @@ import it.polimi.ingsw.view.cli.CLI;
 
 public class NicknameSelection extends ClientState {
     public NicknameSelection() {
-        CLI.getInstance().selectNickname();
+        CLI.selectNickname();
     }
 
     @Override
     public void handleServerMessage(Client client, String line) {
-        CLI.getInstance().unexpected();
+        CLI.unexpected();
     }
 
     @Override

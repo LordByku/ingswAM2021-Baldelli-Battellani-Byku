@@ -9,12 +9,12 @@ public class WaitResources extends CLIWindow {
 
     @Override
     public void handleUserMessage(Client client, String line) {
-        CLI.getInstance().renderWindow(client);
+        CLI.renderWindow(client);
     }
 
     @Override
     public void render(Client client) {
-        CLI.getInstance().waitInitResources();
+        CLI.waitInitResources();
     }
 
     @Override

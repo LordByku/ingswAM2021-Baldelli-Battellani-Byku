@@ -16,7 +16,7 @@ public class DiscardLeader extends CommandWindow {
     @Override
     public void render(Client client) {
         Player self = client.getModel().getPlayer(client.getNickname());
-        CLI.getInstance().showLeaderCards(self.getBoard().getHandLeaderCards());
-        CLI.getInstance().discardLeaderCard();
+        CLI.showLeaderCards(self.getBoard().getHandLeaderCards());
+        CLI.discardLeaderCard();
     }
 }

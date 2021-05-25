@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class Lobby extends ClientState {
     public Lobby() {
-        CLI.getInstance().connecting();
+        CLI.connecting();
     }
 
     @Override
@@ -28,14 +28,14 @@ public class Lobby extends ClientState {
         switch (status) {
             case "fatalError": {
                 String message = json.get("message").getAsString();
-                CLI.getInstance().error(message);
+                CLI.error(message);
                 client.closeServerCommunication();
                 client.setState(new NicknameSelection());
                 break;
             }
             case "error": {
                 String message = json.get("message").getAsString();
-                CLI.getInstance().error(message);
+                CLI.error(message);
                 break;
             }
             case "ok": {
@@ -64,18 +64,18 @@ public class Lobby extends ClientState {
                             }
                         }
 
-                        CLI.getInstance().playerList(nicknames, hostNickname);
+                        CLI.playerList(nicknames, hostNickname);
                         // TODO improve ?
                         if (LocalConfig.getInstance().isHost()) {
-                            CLI.getInstance().host();
+                            CLI.host();
                         } else {
-                            CLI.getInstance().waitStart();
+                            CLI.waitStart();
                         }
 
                         break;
                     }
                     case "config": {
-                        CLI.getInstance().loadGame();
+                        CLI.loadGame();
 
                         JsonObject message = json.getAsJsonObject("message");
 
@@ -101,18 +101,18 @@ public class Lobby extends ClientState {
                         LocalModel model = Deserializer.getInstance().getLocalModel(message);
                         client.setModel(model);
 
-                        client.setState(new GameStarted());
+                        client.setState(new GameStarted(new CLI()));
                         break;
                     }
                     default: {
-                        CLI.getInstance().unexpected();
+                        CLI.unexpected();
                     }
                 }
 
                 break;
             }
             default: {
-                CLI.getInstance().unexpected();
+                CLI.unexpected();
             }
         }
     }
@@ -126,10 +126,10 @@ public class Lobby extends ClientState {
 
                 client.write(jsonObject.toString());
             } else {
-                CLI.getInstance().host();
+                CLI.host();
             }
         } else {
-            CLI.getInstance().waitStart();
+            CLI.waitStart();
         }
     }
 }

@@ -49,7 +49,7 @@ public class Client {
     }
 
     public void start() {
-        CLI.getInstance().welcome();
+        CLI.welcome();
         clientState = new NicknameSelection();
         Thread thread = new Thread(new ClientUserCommunication(this));
         thread.start();
@@ -124,8 +124,8 @@ public class Client {
         try {
             connectToServer();
         } catch (IOException e) {
-            CLI.getInstance().connectionError();
-            CLI.getInstance().reconnecting(timerDelay);
+            CLI.connectionError();
+            CLI.reconnecting(timerDelay);
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override

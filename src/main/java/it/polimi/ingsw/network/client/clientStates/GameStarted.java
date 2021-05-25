@@ -5,15 +5,18 @@ import it.polimi.ingsw.controller.CommandBuffer;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.utility.Deserializer;
 import it.polimi.ingsw.utility.JsonUtil;
+import it.polimi.ingsw.view.ViewInterface;
 import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.view.cli.windows.CLIWindow;
 import it.polimi.ingsw.view.cli.windows.viewWindows.ViewModel;
 
 public class GameStarted extends ClientState {
     private boolean pendingUpdate;
+    private final ViewInterface viewInterface;
 
-    public GameStarted() {
+    public GameStarted(ViewInterface viewInterface) {
         pendingUpdate = false;
+        this.viewInterface = viewInterface;
     }
 
     @Override
@@ -24,9 +27,7 @@ public class GameStarted extends ClientState {
         switch (status) {
             case "error": {
                 String message = json.get("message").getAsString();
-                CLI.getInstance().error(message);
-                CLI.getInstance().refreshWindow(client);
-                CLI.getInstance().renderWindow(client);
+                viewInterface.onError(client, message);
                 break;
             }
             case "ok": {
@@ -40,46 +41,30 @@ public class GameStarted extends ClientState {
 
                         client.getModel().getPlayer(player).setCommandBuffer(commandBuffer);
 
-                        if (pendingUpdate || player.equals(client.getNickname())) {
-                            pendingUpdate = false;
-                            CLI.getInstance().refreshWindow(client);
-                            CLI.getInstance().renderWindow(client);
-                        }
+                        viewInterface.onCommand(client, player, commandBuffer);
                         break;
                     }
                     case "update": {
                         JsonObject message = json.getAsJsonObject("message");
                         client.getModel().updateModel(message);
 
-                        CLIWindow currentWindow = CLI.getInstance().getActiveWindow();
-                        if (currentWindow == null || currentWindow.refreshOnUpdate(client)) {
-                            pendingUpdate = true;
-                        }
+                        viewInterface.onUpdate(client);
                         break;
                     }
                     default: {
-                        CLI.getInstance().unexpected();
+                        viewInterface.onUnexpected(client);
                     }
                 }
                 break;
             }
             default: {
-                CLI.getInstance().unexpected();
+                viewInterface.onUnexpected(client);
             }
         }
     }
 
     @Override
     public void handleUserMessage(Client client, String line) {
-        if (line.equals("v")) {
-            if (CLI.getInstance().getViewWindow() == null) {
-                CLI.getInstance().setViewWindow(new ViewModel());
-            } else {
-                CLI.getInstance().setViewWindow(null);
-            }
-            CLI.getInstance().renderWindow(client);
-            return;
-        }
-        CLI.getInstance().getActiveWindow().handleUserMessage(client, line);
+        viewInterface.onUserInput(client, line);
     }
 }

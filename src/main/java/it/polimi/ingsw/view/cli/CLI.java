@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.cli;
 
+import it.polimi.ingsw.controller.CommandBuffer;
 import it.polimi.ingsw.model.devCards.DevCard;
 import it.polimi.ingsw.model.devCards.DevCardDeck;
 import it.polimi.ingsw.model.devCards.ProductionDetails;
@@ -15,40 +16,36 @@ import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.LocalConfig;
 import it.polimi.ingsw.parsing.DevCardsParser;
 import it.polimi.ingsw.parsing.LeaderCardsParser;
+import it.polimi.ingsw.view.ViewInterface;
 import it.polimi.ingsw.view.cli.windows.CLIWindow;
 import it.polimi.ingsw.view.cli.windows.viewWindows.CLIViewWindow;
+import it.polimi.ingsw.view.cli.windows.viewWindows.ViewModel;
 import it.polimi.ingsw.view.localModel.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CLI {
-    private static CLI instance;
-    private CLIWindow cliWindow;
-    private CLIViewWindow cliViewWindow;
+public class CLI implements ViewInterface {
+    private static CLIWindow cliWindow;
+    private static CLIViewWindow cliViewWindow;
+    private boolean pendingUpdate;
 
-    private CLI() {
+    public CLI() {
+        pendingUpdate = false;
         cliWindow = null;
         cliViewWindow = null;
-    }
-
-    public synchronized static CLI getInstance() {
-        if (instance == null) {
-            instance = new CLI();
-        }
-        return instance;
     }
 
     public CLIViewWindow getViewWindow() {
         return cliViewWindow;
     }
 
-    public void setViewWindow(CLIViewWindow cliViewWindow) {
-        this.cliViewWindow = cliViewWindow;
+    public static void setViewWindow(CLIViewWindow cliViewWindow) {
+        CLI.cliViewWindow = cliViewWindow;
     }
 
-    public CLIWindow getActiveWindow() {
+    public static CLIWindow getActiveWindow() {
         if (cliViewWindow != null) {
             return cliViewWindow;
         }
@@ -59,7 +56,7 @@ public class CLI {
         cliWindow = CLIWindow.refresh(client);
     }
 
-    public void renderWindow(Client client) {
+    public static void renderWindow(Client client) {
         if (getActiveWindow() != null) {
             System.out.println();
             getActiveWindow().render(client);
@@ -71,22 +68,22 @@ public class CLI {
         }
     }
 
-    public void welcome() {
+    public static void welcome() {
         System.out.println("---- Masters of Renaissance ----");
     }
 
-    public void selectNickname() {
+    public static void selectNickname() {
         System.out.println("Insert your nickname to continue:");
     }
 
-    public void selectMode() {
+    public static void selectMode() {
         System.out.println();
         System.out.println("[0] Play Online");
         System.out.println("[1] Play Offline");
         System.out.println("Insert your choice:");
     }
 
-    public void playerList(ArrayList<String> nicknames, String hostname) {
+    public static void playerList(ArrayList<String> nicknames, String hostname) {
         System.out.println();
         System.out.println("Current lobby:");
 
@@ -99,35 +96,35 @@ public class CLI {
         }
     }
 
-    public void host() {
+    public static void host() {
         System.out.println("Press ENTER to start the game:");
     }
 
-    public void waitStart() {
+    public static void waitStart() {
         System.out.println("Waiting for host to start the game...");
     }
 
-    public void unexpected() {
+    public static void unexpected() {
         System.out.println(TextColour.RED.escape() + "Error: an unknown message has been received" + TextColour.RESET);
     }
 
-    public void connectionError() {
+    public static void connectionError() {
         System.out.println("There was an error connecting to the server");
     }
 
-    public void connecting() {
+    public static void connecting() {
         System.out.println("Connecting to server...");
     }
 
-    public void error(String message) {
+    public static void error(String message) {
         System.out.println(TextColour.RED.escape() + "Error: " + message + TextColour.RESET);
     }
 
-    public void loadGame() {
+    public static void loadGame() {
         System.out.println("Game is loading...");
     }
 
-    public void showLeaderCards(ArrayList<Integer> leaderCardIDs) {
+    public static void showLeaderCards(ArrayList<Integer> leaderCardIDs) {
         for (int i = 0; i < leaderCardIDs.size(); i++) {
             System.out.println("[" + i + "]");
             if (leaderCardIDs.get(i) == null) {
@@ -138,33 +135,33 @@ public class CLI {
         }
     }
 
-    public void initDiscard() {
+    public static void initDiscard() {
         System.out.println("Insert the indices of the two Leader Cards you want to discard:");
     }
 
-    public void discardLeaderCard() {
+    public static void discardLeaderCard() {
         System.out.println("Insert the index of the leader card you want to discard or press [x] to go back:");
     }
 
-    public void playLeaderCard() {
+    public static void playLeaderCard() {
         System.out.println("Insert the index of the leader card you want to play or press [x] to go back:");
     }
 
-    public void purchaseSelectRowAndCol() {
+    public static void purchaseSelectRowAndCol() {
         System.out.println("Insert row and column of the card you want to buy from the card market:");
         System.out.println("[x] Back");
     }
 
-    public void purchaseSelectDeckIndex() {
+    public static void purchaseSelectDeckIndex() {
         System.out.println("Insert the index of the deck you want to place the card in:");
         System.out.println("[x] Back");
     }
 
-    public void waitInitDiscard() {
+    public static void waitInitDiscard() {
         System.out.println("Waiting for players to discard Leader Cards...");
     }
 
-    public void initResources(int selectionsLeft, int currentDepotIndex) {
+    public static void initResources(int selectionsLeft, int currentDepotIndex) {
         switch (selectionsLeft) {
             case 0:
                 waitInitResources();
@@ -178,15 +175,15 @@ public class CLI {
         }
     }
 
-    public void waitInitResources() {
+    public static void waitInitResources() {
         System.out.println("Waiting for players to select resources...");
     }
 
-    public void waitTurn() {
+    public static void waitTurn() {
         System.out.println("Waiting for other players to complete their turn...");
     }
 
-    public void startTurn(GameZone gameZone) {
+    public static void startTurn(GameZone gameZone) {
         ActionToken actionToken = gameZone.getActionToken();
         if (actionToken != null) {
             System.out.println(actionToken.getCLIString());
@@ -200,15 +197,15 @@ public class CLI {
         System.out.println("Insert your choice:");
     }
 
-    public void marbleMarket(MarbleMarket marbleMarket) {
+    public static void marbleMarket(MarbleMarket marbleMarket) {
         System.out.println(marbleMarket.getCLIString());
     }
 
-    public void cardMarket(CardMarket cardMarket) {
+    public static void cardMarket(CardMarket cardMarket) {
         System.out.println(cardMarket.getCLIString());
     }
 
-    public void showDevCard(Integer devCardID) {
+    public static void showDevCard(Integer devCardID) {
         if (devCardID == null) {
             System.out.println("This deck is empty");
         } else {
@@ -217,15 +214,15 @@ public class CLI {
         }
     }
 
-    public void boardComponentSelection(Board board) {
+    public static void boardComponentSelection(Board board) {
         System.out.println(board.getCLIString());
     }
 
-    public void showFaithTrack(FaithTrack faithTrack) {
+    public static void showFaithTrack(FaithTrack faithTrack) {
         System.out.println(faithTrack.getCLIString());
     }
 
-    public void showWarehouse(ArrayList<ConcreteResourceSet> warehouse, ArrayList<Integer> playedLeaderCards) {
+    public static void showWarehouse(ArrayList<ConcreteResourceSet> warehouse, ArrayList<Integer> playedLeaderCards) {
         ArrayList<Integer> depotSizes = LocalConfig.getInstance().getDepotSizes();
         int maxDepotSize = 0;
         for (int depotSize : depotSizes) {
@@ -270,15 +267,15 @@ public class CLI {
         System.out.println(result);
     }
 
-    public void showStrongbox(ConcreteResourceSet strongBox) {
+    public static void showStrongbox(ConcreteResourceSet strongBox) {
         System.out.println("[ " + strongBox.getCLIString() + "]");
     }
 
-    public void marbleMarketSelection() {
+    public static void marbleMarketSelection() {
         System.out.println("Insert row or col followed by the index of your choice or press [x] to go back:");
     }
 
-    public void whiteMarbleSelection(ChoiceSet choiceSet, int choices) {
+    public static void whiteMarbleSelection(ChoiceSet choiceSet, int choices) {
         if (choices == 1) {
             System.out.println("Select " + choices + " resource to obtain from white marbles (you can choose from " + choiceSet.getCLIString() + "):");
         } else {
@@ -286,7 +283,7 @@ public class CLI {
         }
     }
 
-    public void choiceResourceSelection(int choices) {
+    public static void choiceResourceSelection(int choices) {
         if (choices == 1) {
             System.out.println("Select " + choices + " resource to obtain:");
         } else {
@@ -294,7 +291,7 @@ public class CLI {
         }
     }
 
-    public void manageWarehouse(ConcreteResourceSet obtained) {
+    public static void manageWarehouse(ConcreteResourceSet obtained) {
         System.out.println("You have to assign: " + obtained.getCLIString());
         System.out.println("To add resources to a depot     : add [depotIndex] [resource] [resource]...");
         System.out.println("To remove resources from a depot: remove [depotIndex] [resource] [resource]...");
@@ -302,21 +299,21 @@ public class CLI {
         System.out.println("To confirm the warehouse        : confirm");
     }
 
-    public void endTurn() {
+    public static void endTurn() {
         System.out.println("[0] End Turn");
         System.out.println("[1] Play Leader Card");
         System.out.println("[2] Discard Leader Card");
         System.out.println("Insert your choice:");
     }
 
-    public void selectDevCardDeck() {
+    public static void selectDevCardDeck() {
         System.out.println("[0] Check first deck");
         System.out.println("[1] Check second deck");
         System.out.println("[2] Check third deck");
         System.out.println("[x] Back");
     }
 
-    public void showDevCardDeck(ArrayList<Integer> devCardIDs) {
+    public static void showDevCardDeck(ArrayList<Integer> devCardIDs) {
         //Maybe to be adjusted
 
         DevCardDeck deck = new DevCardDeck();
@@ -326,7 +323,7 @@ public class CLI {
         System.out.println(deck.getCLIString());
     }
 
-    public void activateProductionSelection(HashMap<Integer, ProductionDetails> map) {
+    public static void activateProductionSelection(HashMap<Integer, ProductionDetails> map) {
         System.out.println("Select all the productions to activate: ");
         for (Map.Entry<Integer, ProductionDetails> entry : map.entrySet()) {
             System.out.println("[" + entry.getKey() + "] " + entry.getValue().getCLIString());
@@ -334,11 +331,11 @@ public class CLI {
         System.out.println("[x] Back");
     }
 
-    public void reconnecting(int timerDelay) {
+    public static void reconnecting(int timerDelay) {
         System.out.println("Trying to reconnect in " + timerDelay / 1000 + " seconds...");
     }
 
-    public void spendResources(ChoiceResourceSet toSpend, ConcreteResourceSet currentSelection) {
+    public static void spendResources(ChoiceResourceSet toSpend, ConcreteResourceSet currentSelection) {
         System.out.println("Resources required: " + toSpend.getCLIString());
         System.out.println("Resources selected: " + currentSelection.getCLIString());
         System.out.println("To select resources from warehouse: warehouse [depotIndex] [resource] [resource]...");
@@ -346,7 +343,50 @@ public class CLI {
         System.out.println("[x] Back");
     }
 
-    public void showModel(LocalModel model) {
+    public static void showModel(LocalModel model) {
         System.out.println(model.getCLIString());
+    }
+
+    @Override
+    public void onError(Client client, String message) {
+        error(message);
+        refreshWindow(client);
+        renderWindow(client);
+    }
+
+    @Override
+    public void onCommand(Client client, String player, CommandBuffer commandBuffer) {
+        if (pendingUpdate || player.equals(client.getNickname())) {
+            pendingUpdate = false;
+            refreshWindow(client);
+            renderWindow(client);
+        }
+    }
+
+    @Override
+    public void onUpdate(Client client) {
+        CLIWindow currentWindow = getActiveWindow();
+        if (currentWindow == null || currentWindow.refreshOnUpdate(client)) {
+            pendingUpdate = true;
+        }
+    }
+
+    @Override
+    public void onUserInput(Client client, String line) {
+        if (line.equals("v")) {
+            if (getViewWindow() == null) {
+                setViewWindow(new ViewModel());
+            } else {
+                setViewWindow(null);
+            }
+            renderWindow(client);
+            return;
+        }
+        getActiveWindow().handleUserMessage(client, line);
+    }
+
+    @Override
+    public void onUnexpected(Client client) {
+        unexpected();
     }
 }

@@ -107,7 +107,7 @@ public class MarketWindow extends CommandWindow {
             }
         }
 
-        CLI.getInstance().renderWindow(client);
+        CLI.renderWindow(client);
     }
 
     private void sendDepotCommand(Client client, String[] words, String command) {
@@ -135,8 +135,8 @@ public class MarketWindow extends CommandWindow {
         Market commandBuffer = (Market) self.getCommandBuffer();
         if (commandBuffer.getIndex() == -1) {
             MarbleMarket marbleMarket = client.getModel().getGameZone().getMarbleMarket();
-            CLI.getInstance().marbleMarket(marbleMarket);
-            CLI.getInstance().marbleMarketSelection();
+            CLI.marbleMarket(marbleMarket);
+            CLI.marbleMarketSelection();
         } else {
             Board board = self.getBoard();
             ChoiceResourceSet obtained = commandBuffer.getObtainedResources();
@@ -148,10 +148,10 @@ public class MarketWindow extends CommandWindow {
                         choiceSet.addChoice(((WhiteConversionLeaderCard) leaderCard).getType());
                     }
                 }
-                CLI.getInstance().whiteMarbleSelection(choiceSet, obtained.getChoiceResources().size());
+                CLI.whiteMarbleSelection(choiceSet, obtained.getChoiceResources().size());
             } else {
-                CLI.getInstance().showWarehouse(board.getWarehouse(), board.getPlayedLeaderCards());
-                CLI.getInstance().manageWarehouse(commandBuffer.getToDiscard());
+                CLI.showWarehouse(board.getWarehouse(), board.getPlayedLeaderCards());
+                CLI.manageWarehouse(commandBuffer.getToDiscard());
             }
         }
     }

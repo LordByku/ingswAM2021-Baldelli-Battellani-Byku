@@ -11,7 +11,7 @@ public class ViewCardMarket extends CLIViewWindow {
     @Override
     public void handleUserMessage(Client client, String line) {
         if (line.equals("x")) {
-            CLI.getInstance().setViewWindow(new ViewModel());
+            CLI.setViewWindow(new ViewModel());
         } else {
             String[] words = Strings.splitLine(line);
             if (words.length == 2) {
@@ -23,19 +23,19 @@ public class ViewCardMarket extends CLIViewWindow {
                             col >= 0 && col < CardColour.values().length) {
                         CardMarket cardMarket = client.getModel().getGameZone().getCardMarket();
                         Integer cardID = cardMarket.getDevCard(row, col);
-                        CLI.getInstance().showDevCard(cardID);
+                        CLI.showDevCard(cardID);
                     }
                 } catch (NumberFormatException e) {
                 }
             }
         }
 
-        CLI.getInstance().renderWindow(client);
+        CLI.renderWindow(client);
     }
 
     @Override
     public void render(Client client) {
         CardMarket cardMarket = client.getModel().getGameZone().getCardMarket();
-        CLI.getInstance().cardMarket(cardMarket);
+        CLI.cardMarket(cardMarket);
     }
 }

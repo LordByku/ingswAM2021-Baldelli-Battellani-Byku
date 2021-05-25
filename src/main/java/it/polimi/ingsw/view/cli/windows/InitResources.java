@@ -36,19 +36,19 @@ public class InitResources extends CommandWindow {
             selectionsLeft -= selection.size();
             if (selectionsLeft > 0) {
                 currentDepotIndex = (currentDepotIndex + 1) % assignment.length;
-                CLI.getInstance().renderWindow(client);
+                CLI.renderWindow(client);
             } else {
                 JsonObject message = buildCommandMessage("resources", JsonUtil.getInstance().serialize(assignment));
                 client.write(message.toString());
             }
         } catch (JsonSyntaxException | InvalidResourceException e) {
-            CLI.getInstance().renderWindow(client);
+            CLI.renderWindow(client);
         }
     }
 
     @Override
     public void render(Client client) {
-        CLI.getInstance().initResources(selectionsLeft, currentDepotIndex);
+        CLI.initResources(selectionsLeft, currentDepotIndex);
     }
 
     @Override
