@@ -19,7 +19,7 @@ public class AcceptNickname extends ServerState {
             Person currentPerson = (Person) Game.getInstance().addPlayer(nickname);
             clientHandler.setPlayer(currentPerson);
             System.out.println("Accepted nickname " + nickname);
-            if(Game.getInstance().hasGameStarted()) {
+            if (Game.getInstance().hasGameStarted()) {
                 // handle reconnection here
                 clientHandler.ok("config", getConfigMessage());
                 clientHandler.setState(new GameStarted());

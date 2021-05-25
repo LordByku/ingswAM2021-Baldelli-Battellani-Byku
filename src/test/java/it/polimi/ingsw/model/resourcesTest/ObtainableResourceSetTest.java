@@ -31,7 +31,7 @@ public class ObtainableResourceSetTest {
         obtainableResourceSet = new ObtainableResourceSet(choiceResourceSet);
 
         resources = obtainableResourceSet.getResourceSet();
-        ArrayList<Resource> choiceResources = resources.getChoiceResources();
+        ArrayList<ChoiceResource> choiceResources = resources.getChoiceResources();
         ConcreteResourceSet concreteResourcs = resources.getConcreteResources();
 
         assertEquals(2, resources.size());
@@ -105,7 +105,7 @@ public class ObtainableResourceSetTest {
         obtainableResourceSet1 = obtainableResourceSet1.union(obtainableResourceSet2);
 
         ChoiceResourceSet resources = obtainableResourceSet1.getResourceSet();
-        ArrayList<Resource> choiceResources = resources.getChoiceResources();
+        ArrayList<ChoiceResource> choiceResources = resources.getChoiceResources();
         ConcreteResourceSet concreteResources = resources.getConcreteResources();
         assertEquals(1, resources.size());
         assertEquals(1, choiceResources.size());
@@ -116,6 +116,6 @@ public class ObtainableResourceSetTest {
 
         resources = obtainableResourceSet1.getResourceSet();
         choiceResources = resources.getChoiceResources();
-        ((ChoiceResource) choiceResources.get(0)).makeChoice(ConcreteResource.COIN);
+        choiceResources.get(0).makeChoice(ConcreteResource.COIN);
     }
 }

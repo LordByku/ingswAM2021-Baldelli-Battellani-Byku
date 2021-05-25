@@ -17,29 +17,7 @@ import static org.junit.Assert.assertFalse;
 public class ProductionDetailsTest {
     @Test
     public void getProductionDetailsTest(){
-
-
-
-        ConcreteResourceSet concreteResourceSet1 = new ConcreteResourceSet();
-        concreteResourceSet1.addResource(ConcreteResource.COIN, 2);
-        ConcreteResourceSet concreteResourceSet2 = new ConcreteResourceSet();
-        concreteResourceSet2.addResource(ConcreteResource.STONE, 2);
-
-        ChoiceResourceSet choiceResourceSet1 = new ChoiceResourceSet();
-        choiceResourceSet1.addResource(ConcreteResource.SHIELD);
-        ChoiceResourceSet choiceResourceSet2 = new ChoiceResourceSet();
-        choiceResourceSet2.addResource(ConcreteResource.SERVANT);
-
-        SpendableResourceSet input1 = new SpendableResourceSet(choiceResourceSet1);
-        ObtainableResourceSet output1 = new ObtainableResourceSet(choiceResourceSet2);
-
-        ProductionDetails details1 = new ProductionDetails(input1,output1);
-        assertEquals(1, details1.getInput().getResourceSet().size());
-        assertEquals(1, details1.getOutput().getResourceSet().size());
-        assertTrue(details1.getInput().match(choiceResourceSet1.getConcreteResources()));
-        assertTrue(details1.getOutput().match(choiceResourceSet2.getConcreteResources()));
-        assertFalse(details1.getInput().match(choiceResourceSet2.getConcreteResources()));
-        assertFalse(details1.getOutput().match(choiceResourceSet1.getConcreteResources()));
+        // TODO
     }
 
     @Test

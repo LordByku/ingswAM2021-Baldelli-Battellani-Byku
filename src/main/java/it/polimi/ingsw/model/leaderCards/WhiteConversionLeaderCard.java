@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.leaderCards;
 
 import it.polimi.ingsw.model.devCards.InvalidIdException;
 import it.polimi.ingsw.model.gameZone.marbles.MarbleColour;
-import it.polimi.ingsw.model.gameZone.marbles.WhiteMarble;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.InvalidResourceException;
 
@@ -18,17 +17,18 @@ public class WhiteConversionLeaderCard extends LeaderCard {
 
     /**
      * The constructor sets the parameters of the leader cards.
-     * @param points victory points given by the leader card.
+     *
+     * @param points       victory points given by the leader card.
      * @param requirements needed to play the leader card.
-     * @param type of resource to convert the white marble into.
-     * @throws InvalidPointsValueException points are less or equal to zero.
+     * @param type         of resource to convert the white marble into.
+     * @throws InvalidPointsValueException  points are less or equal to zero.
      * @throws InvalidRequirementsException requirements is null.
-     * @throws InvalidResourceException type is null.
+     * @throws InvalidResourceException     type is null.
      */
     public WhiteConversionLeaderCard(int points, LeaderCardRequirements requirements, ConcreteResource type, int id)
             throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceException, InvalidIdException {
         super(points, requirements, id, LeaderCardType.CONVERSION);
-        if(type == null){
+        if (type == null) {
             throw new InvalidResourceException();
         }
 
@@ -40,7 +40,7 @@ public class WhiteConversionLeaderCard extends LeaderCard {
      */
     @Override
     public void play() {
-        if(isPlayable()){
+        if (isPlayable()) {
             active = true;
             board.getConversionEffectArea().addConversionEffect(new ConversionEffect(this.type));
         }

@@ -15,16 +15,17 @@ public class Depot implements ConcreteResourceLocation {
     /**
      * resources is the set of ConcreteResources contained in this depot
      */
-    private ConcreteResourceSet resources;
+    private final ConcreteResourceSet resources;
 
     /**
      * The constructor creates a new Depot with an empty ConcreteResourceSet and the capacity
      * received as parameter
+     *
      * @param slots The required capacity
      * @throws InvalidDepotSizeException slots is not strictly positive
      */
     public Depot(int slots) throws InvalidDepotSizeException {
-        if(slots <= 0) {
+        if (slots <= 0) {
             throw new InvalidDepotSizeException();
         }
         this.slots = slots;
@@ -33,6 +34,7 @@ public class Depot implements ConcreteResourceLocation {
 
     /**
      * getResourceType returns the type of resource contained in this Depot
+     *
      * @return The type of ConcreteResource contained in this Depot or null if
      * no resources are present
      */
@@ -42,14 +44,15 @@ public class Depot implements ConcreteResourceLocation {
 
     /**
      * addResources adds a given ConcreteResourceSet to this Depot
+     *
      * @param concreteResourceSet The ConcreteResourceSet to add
-     * @throws InvalidResourceSetException concreteResourceSet is null
+     * @throws InvalidResourceSetException               concreteResourceSet is null
      * @throws InvalidResourceLocationOperationException concreteResourcesSet cannot
-     * be added to this Depot
+     *                                                   be added to this Depot
      */
     @Override
     public void addResources(ConcreteResourceSet concreteResourceSet) throws InvalidResourceSetException, InvalidResourceLocationOperationException {
-        if(!canAdd(concreteResourceSet)) {
+        if (!canAdd(concreteResourceSet)) {
             throw new InvalidResourceLocationOperationException();
         }
 
@@ -58,14 +61,15 @@ public class Depot implements ConcreteResourceLocation {
 
     /**
      * removeResources removes a given ConcreteResourceSet to this Depot
+     *
      * @param concreteResourceSet The ConcreteResourceSet to remove
-     * @throws InvalidResourceSetException concreteResourceSet is null
+     * @throws InvalidResourceSetException               concreteResourceSet is null
      * @throws InvalidResourceLocationOperationException concreteResourceSet cannot
-     * be removed from this Depot
+     *                                                   be removed from this Depot
      */
     @Override
     public void removeResources(ConcreteResourceSet concreteResourceSet) throws InvalidResourceSetException, InvalidResourceLocationOperationException {
-        if(!containsResources(concreteResourceSet)) {
+        if (!containsResources(concreteResourceSet)) {
             throw new InvalidResourceLocationOperationException();
         }
         resources.difference(concreteResourceSet);
@@ -73,25 +77,26 @@ public class Depot implements ConcreteResourceLocation {
 
     /**
      * canAdd checks whether a given ConcreteResourceSet can be added to this Depot
+     *
      * @param concreteResourceSet The ConcreteResourceSet to check
      * @return True iff concreteResourceSet can be added to this Depot
      * @throws InvalidResourceSetException concreteResourceSet is null
      */
     @Override
     public boolean canAdd(ConcreteResourceSet concreteResourceSet) throws InvalidResourceSetException {
-        if(concreteResourceSet == null) {
+        if (concreteResourceSet == null) {
             throw new InvalidResourceSetException();
         }
 
         // concreteResourceSet has more than one type of resources: return false
-        if(!concreteResourceSet.isSingleType()) {
+        if (concreteResourceSet.hasMultipleTypes()) {
             return false;
         }
 
         ConcreteResource otherResourceType = concreteResourceSet.getResourceType();
 
         // concreteResourceSet has no resources: return true
-        if(otherResourceType == null) {
+        if (otherResourceType == null) {
             return true;
         }
 
@@ -103,7 +108,7 @@ public class Depot implements ConcreteResourceLocation {
         // There are currently no resources in this depot: return true
         // if the amount of resources in concreteResourceSet is
         // less than the capacity of the depot
-        if(currentResourceType == null) {
+        if (currentResourceType == null) {
             return otherAmount <= slots;
         }
 
@@ -117,6 +122,7 @@ public class Depot implements ConcreteResourceLocation {
 
     /**
      * containsResources checks whether a given ConcreteResourceSet is contained in this depot
+     *
      * @param concreteResourceSet The ConcreteResourceSet to check
      * @return True iff this Depot contains concreteResourceSet
      * @throws InvalidResourceSetException concreteResourceSet is null
@@ -128,6 +134,7 @@ public class Depot implements ConcreteResourceLocation {
 
     /**
      * getResources returns a copy of the resources contained in this Depot
+     *
      * @return A ConcreteResourceSet representing the resources in this Depot
      */
     @Override

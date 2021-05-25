@@ -12,10 +12,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 
 public class Parser {
+    private static final String path = "src/main/resources/config.json";
     private static Parser instance;
     private final Gson gson;
     private JsonObject config;
-    private static final String path = "src/main/resources/config.json";
 
     private Parser() throws FileNotFoundException {
         JsonParser parser = new JsonParser();
@@ -26,7 +26,7 @@ public class Parser {
     }
 
     public static Parser getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             try {
                 instance = new Parser();
             } catch (FileNotFoundException e) {
@@ -53,7 +53,7 @@ public class Parser {
             throws InvalidResourceException, InvalidQuantityException {
         ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
 
-        for(JsonElement jsonElementResource: jsonArray) {
+        for (JsonElement jsonElementResource : jsonArray) {
             JsonObject jsonResource = (JsonObject) jsonElementResource;
 
             ConcreteResource concreteResource = gson.fromJson(jsonResource.get("resource").getAsString(), ConcreteResource.class);
@@ -68,11 +68,11 @@ public class Parser {
     public CardTypeSet parseCardTypeSet(JsonArray jsonArray) {
         CardTypeSet cardTypeSet = new CardTypeSet();
 
-        for(JsonElement jsonElementCardType: jsonArray) {
+        for (JsonElement jsonElementCardType : jsonArray) {
             JsonObject jsonCardType = (JsonObject) jsonElementCardType;
 
             CardType cardType = new CardType(gson.fromJson(jsonCardType.get("colour").getAsString(), CardColour.class));
-            for(JsonElement jsonElementLevel: jsonCardType.getAsJsonArray("levelSet")) {
+            for (JsonElement jsonElementLevel : jsonCardType.getAsJsonArray("levelSet")) {
                 cardType.addLevel(gson.fromJson(jsonElementLevel.getAsString(), CardLevel.class));
             }
 
@@ -87,7 +87,7 @@ public class Parser {
     public SpendableResourceSet parseSpendableResourceSet(JsonArray jsonArray) throws InvalidResourceException {
         ChoiceResourceSet choiceResourceSet = new ChoiceResourceSet();
 
-        for(JsonElement jsonElementResource: jsonArray) {
+        for (JsonElement jsonElementResource : jsonArray) {
             JsonObject jsonResource = (JsonObject) jsonElementResource;
 
             String resourceString = jsonResource.get("resource").getAsString();
@@ -100,13 +100,13 @@ public class Parser {
     }
 
     private void addResources(ChoiceResourceSet choiceResourceSet, String resourceString, int quantity) {
-        if(resourceString.equals("CHOICE")) {
-            for(int i = 0; i < quantity; ++i) {
+        if (resourceString.equals("CHOICE")) {
+            for (int i = 0; i < quantity; ++i) {
                 choiceResourceSet.addResource(new ChoiceResource(new FullChoiceSet()));
             }
         } else {
             ConcreteResource concreteResource = gson.fromJson(resourceString, ConcreteResource.class);
-            for(int i = 0; i < quantity; ++i) {
+            for (int i = 0; i < quantity; ++i) {
                 choiceResourceSet.addResource(concreteResource);
             }
         }
@@ -116,13 +116,13 @@ public class Parser {
         ChoiceResourceSet choiceResourceSet = new ChoiceResourceSet();
         int faithPoints = 0;
 
-        for(JsonElement jsonElementResource: jsonArray) {
+        for (JsonElement jsonElementResource : jsonArray) {
             JsonObject jsonResource = (JsonObject) jsonElementResource;
 
             String resourceString = jsonResource.get("resource").getAsString();
             int quantity = jsonResource.get("quantity").getAsInt();
 
-            if(resourceString.equals("FAITH POINTS")) {
+            if (resourceString.equals("FAITH POINTS")) {
                 faithPoints += quantity;
             } else {
                 addResources(choiceResourceSet, resourceString, quantity);

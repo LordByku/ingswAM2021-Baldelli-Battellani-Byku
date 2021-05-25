@@ -9,24 +9,19 @@ import java.util.ArrayList;
 
 /**
  * FaithTrack represents the on-board faith track
- *
  */
 public class FaithTrack implements Scoring {
     private final int finalPosition;
     private final ArrayList<CheckPoint> checkPoints;
     /**
-     * markerPosition represents the position on the faith track
-     */
-    private int markerPosition;
-    /**
      * receivedPopeFavors represents a list of the pope favors card obtained
      * on the faith track
      */
     private final ArrayList<PopeFavor> receivedPopeFavors;
-
-    public static FaithTrack builder() {
-        return BoardParser.getInstance().getFaithTrack();
-    }
+    /**
+     * markerPosition represents the position on the faith track
+     */
+    private int markerPosition;
 
     /**
      * The constructor initializes receivedPopeFavors to an empty list
@@ -39,12 +34,17 @@ public class FaithTrack implements Scoring {
         VRSObserver.getInstance().addFaithTrack(this);
     }
 
+    public static FaithTrack builder() {
+        return BoardParser.getInstance().getFaithTrack();
+    }
+
     /**
      * receivePopeFavor inserts a 'pope favor' into the list
+     *
      * @param popeFavor the PopeFavor to add
      */
     public void addPopeFavor(PopeFavor popeFavor) throws InvalidPopeFavorException {
-        if(popeFavor==null)
+        if (popeFavor == null)
             throw new InvalidPopeFavorException();
         receivedPopeFavors.add(popeFavor);
     }
@@ -52,25 +52,27 @@ public class FaithTrack implements Scoring {
     /**
      * notifyEndOfTrack notifies the player's last turn
      * calls setLastTurn of Board
-     *
      */
-    private void notifyEndOfTrack(){
+    private void notifyEndOfTrack() {
         Board.setLastTurn();
     }
 
     /**
      * getMarkerPosition returns the position of the player on the faith track
+     *
      * @return markerPosition of the object
      */
-    public int getMarkerPosition(){
+    public int getMarkerPosition() {
         return markerPosition;
     }
 
-    public boolean containsPopeFavor(PopeFavor popeFavor){
+    public boolean containsPopeFavor(PopeFavor popeFavor) {
         return receivedPopeFavors.contains(popeFavor);
     }
+
     /**
      * addFaithPoints adds "points" FaithPoints
+     *
      * @param points to add.
      */
     public void addFaithPoints(int points) throws InvalidQuantityException {
@@ -94,17 +96,18 @@ public class FaithTrack implements Scoring {
 
     /**
      * getPoints represents sum of pope favor card's points
+     *
      * @return sum of pope favor card's points
      */
     @Override
     public int getPoints() {
         int points = 0;
-        for(CheckPoint checkPoint: checkPoints) {
-            if(checkPoint.getPosition() <= markerPosition) {
+        for (CheckPoint checkPoint : checkPoints) {
+            if (checkPoint.getPosition() <= markerPosition) {
                 points = Math.max(points, checkPoint.getPoints());
             }
         }
-        for(PopeFavor popeFavor: receivedPopeFavors) {
+        for (PopeFavor popeFavor : receivedPopeFavors) {
             points += popeFavor.getPoints();
         }
         return points;
@@ -114,7 +117,7 @@ public class FaithTrack implements Scoring {
         return finalPosition;
     }
 
-    public ArrayList<PopeFavor> getReceivedPopeFavors(){
+    public ArrayList<PopeFavor> getReceivedPopeFavors() {
         return (ArrayList<PopeFavor>) receivedPopeFavors.clone();
     }
 }

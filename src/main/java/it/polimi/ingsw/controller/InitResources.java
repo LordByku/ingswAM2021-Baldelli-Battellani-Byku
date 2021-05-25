@@ -20,7 +20,7 @@ public class InitResources extends CommandBuffer {
     protected InitResources(CommandType commandType, Person person) {
         super(commandType, person);
 
-        if(person.initSelected() && initDiscardsMissing()) {
+        if (person.initSelected() && initDiscardsMissing()) {
             throw new InvalidCommandException();
         }
 
@@ -34,14 +34,14 @@ public class InitResources extends CommandBuffer {
 
     @Override
     public void complete() throws InvalidCommandException {
-        if(!isReady()) {
+        if (!isReady()) {
             throw new CommandNotCompleteException();
         }
 
         Person person = getPerson();
         Warehouse warehouse = person.getBoard().getWarehouse();
 
-        for(int i = 0; i < resources.length; ++i) {
+        for (int i = 0; i < resources.length; ++i) {
             warehouse.addResources(i, resources[i]);
         }
 
@@ -62,15 +62,15 @@ public class InitResources extends CommandBuffer {
 
     @Override
     public Consumer<GameStateSerializer> handleMessage(String command, JsonElement value) throws RuntimeException {
-        if(command.equals("resources")) {
+        if (command.equals("resources")) {
             JsonArray jsonArray = value.getAsJsonArray();
             ConcreteResourceSet[] resources = Deserializer.getInstance().getConcreteResourceSetArray(jsonArray);
-            if(resources != null) {
+            if (resources != null) {
                 setResources(resources);
             }
         }
 
-        if(isReady()) {
+        if (isReady()) {
             complete();
             Person person = getPerson();
             return (serializer) -> {
@@ -85,22 +85,22 @@ public class InitResources extends CommandBuffer {
         Person person = getPerson();
         Warehouse warehouse = person.getBoard().getWarehouse();
 
-        if(resources.length != warehouse.numberOfDepots()) {
+        if (resources.length != warehouse.numberOfDepots()) {
             return;
         }
 
         HashSet<ConcreteResource> resourceTypes = new HashSet<>();
         int totalSize = 0;
-        for(int i = 0; i < resources.length; ++i) {
-            if(!resources[i].isSingleType()) {
+        for (int i = 0; i < resources.length; ++i) {
+            if (resources[i].hasMultipleTypes()) {
                 return;
             }
-            if(!warehouse.canAdd(i, resources[i])) {
+            if (!warehouse.canAdd(i, resources[i])) {
                 return;
             }
             ConcreteResource resourceType = resources[i].getResourceType();
-            if(resourceType != null) {
-                if(resourceTypes.contains(resourceType)) {
+            if (resourceType != null) {
+                if (resourceTypes.contains(resourceType)) {
                     return;
                 }
                 resourceTypes.add(resources[i].getResourceType());
@@ -111,7 +111,7 @@ public class InitResources extends CommandBuffer {
         int playerIndex = Game.getInstance().getPlayerIndex(person);
         int resourcesToReceive = InitGameParser.getInstance().getInitResources(playerIndex);
 
-        if(totalSize == resourcesToReceive) {
+        if (totalSize == resourcesToReceive) {
             this.resources = resources;
         }
     }

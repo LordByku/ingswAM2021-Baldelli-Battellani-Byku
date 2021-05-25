@@ -6,10 +6,6 @@ package it.polimi.ingsw.model.resources.resourceSets;
  */
 public abstract class TransactionResourceSet implements Cloneable {
 
-    public int size() {
-        return resources.size();
-    }
-
     /**
      * resources is the ResourceSet that contains regular resources (not faith points)
      * Initially this ResourceSet is a ChoiceResourceSet, then, after all choices for that
@@ -26,18 +22,24 @@ public abstract class TransactionResourceSet implements Cloneable {
 
     /**
      * This constructor initializes resources to a given ChoiceResourceSet
+     *
      * @param choiceResourceSet The ChoiceResourceSet to copy from
      * @throws InvalidResourceSetException choiceResourceSet is null
      */
     public TransactionResourceSet(ChoiceResourceSet choiceResourceSet) throws InvalidResourceSetException {
-        if(choiceResourceSet == null) {
+        if (choiceResourceSet == null) {
             throw new InvalidResourceSetException();
         }
         resources = choiceResourceSet.cleanClone();
     }
 
+    public int size() {
+        return resources.size();
+    }
+
     /**
      * getResourceSet returns a copy of resources
+     *
      * @return A copy of resources
      */
     public ChoiceResourceSet getResourceSet() {
@@ -46,9 +48,10 @@ public abstract class TransactionResourceSet implements Cloneable {
 
     /**
      * clone returns a copy of the object
+     *
      * @return A copy of the object
      */
-    public Object clone(){
+    public Object clone() {
         try {
             TransactionResourceSet cloneResourceSet = (TransactionResourceSet) super.clone();
             cloneResourceSet.resources = getResourceSet();

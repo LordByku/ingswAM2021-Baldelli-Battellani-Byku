@@ -5,5 +5,6 @@ package it.polimi.ingsw.model.gameZone;
  * trying to get used
  */
 public class EmptyDeckException extends RuntimeException {
-    public EmptyDeckException() {}
+    public EmptyDeckException() {
+    }
 }

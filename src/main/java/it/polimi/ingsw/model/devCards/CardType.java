@@ -16,11 +16,12 @@ public class CardType {
 
     /**
      * the constructor initializes a empty set for the level and colour of the set of levels
+     *
      * @param colour the colour of the set
      * @throws InvalidCardColourException colour is null
      */
     public CardType(CardColour colour) throws InvalidCardColourException {
-        if(colour == null) {
+        if (colour == null) {
             throw new InvalidCardColourException();
         }
         this.colour = colour;
@@ -29,11 +30,12 @@ public class CardType {
 
     /**
      * addLevel represents the action of adding levels to the set
+     *
      * @param cardLevel the level of the card to be added
      * @throws InvalidCardLevelException the cardLevel is null
      */
     public void addLevel(CardLevel cardLevel) throws InvalidCardLevelException {
-        if(cardLevel == null) {
+        if (cardLevel == null) {
             throw new InvalidCardLevelException();
         }
         levelSet.add(cardLevel);
@@ -48,16 +50,16 @@ public class CardType {
     }
 
     public String getCLIString() {
-        if(levelSet.size() == 3) {
+        if (levelSet.size() == 3) {
             return "|" + colour.getColour().escape() + "  " + BackGroundColor.RESET + "|";
         } else {
             StringBuilder result = new StringBuilder("|" + colour.getColour().escape());
             int space = 0;
-            for(CardLevel cardLevel: levelSet) {
+            for (CardLevel cardLevel : levelSet) {
                 result.append(cardLevel.getCLIString());
                 space++;
             }
-            if(space == 1) {
+            if (space == 1) {
                 result.append(" ");
             }
             result.append(BackGroundColor.RESET + "|");

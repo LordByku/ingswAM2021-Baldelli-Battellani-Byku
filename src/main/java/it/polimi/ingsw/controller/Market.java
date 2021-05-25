@@ -10,7 +10,6 @@ import it.polimi.ingsw.model.playerBoard.resourceLocations.Warehouse;
 import it.polimi.ingsw.model.resources.ChoiceResource;
 import it.polimi.ingsw.model.resources.ChoiceSet;
 import it.polimi.ingsw.model.resources.ConcreteResource;
-import it.polimi.ingsw.model.resources.Resource;
 import it.polimi.ingsw.model.resources.resourceSets.ChoiceResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ObtainableResourceSet;
@@ -31,7 +30,7 @@ public class Market extends CommandBuffer {
     protected Market(CommandType commandType, Person person) throws InvalidCommandException {
         super(commandType, person);
 
-        if(!person.isActivePlayer() || person.mainAction() || initDiscardsMissing() || initSelectsMissing()) {
+        if (!person.isActivePlayer() || person.mainAction() || initDiscardsMissing() || initSelectsMissing()) {
             throw new InvalidCommandException();
         }
 
@@ -50,12 +49,12 @@ public class Market extends CommandBuffer {
 
     @Override
     public void complete() throws CommandNotCompleteException {
-        if(!isReady()) {
+        if (!isReady()) {
             throw new CommandNotCompleteException();
         }
 
         MarbleMarket marbleMarket = Game.getInstance().getGameZone().getMarbleMarket();
-        if(rowColSel) {
+        if (rowColSel) {
             marbleMarket.pushRow(index);
         } else {
             marbleMarket.pushColumn(index);
@@ -65,11 +64,11 @@ public class Market extends CommandBuffer {
 
         person.getBoard().getFaithTrack().addFaithPoints(obtainedFaithPoints);
 
-        if(toDiscard.size() > 0) {
+        if (toDiscard.size() > 0) {
             ArrayList<Player> players = Game.getInstance().getPlayers();
-            for(Player player: players) {
-                if(!player.equals(person)) {
-                    if(player.getPlayerType() == PlayerType.PERSON) {
+            for (Player player : players) {
+                if (!player.equals(person)) {
+                    if (player.getPlayerType() == PlayerType.PERSON) {
                         ((Person) player).getBoard().getFaithTrack().addFaithPoints(toDiscard.size());
                     } else {
                         ((Computer) player).getFaithTrack().addFaithPoints(toDiscard.size());
@@ -91,7 +90,7 @@ public class Market extends CommandBuffer {
 
     @Override
     public void kill() {
-        if(isReady()) {
+        if (isReady()) {
             complete();
         } else {
             cancel();
@@ -102,7 +101,7 @@ public class Market extends CommandBuffer {
     public Consumer<GameStateSerializer> handleMessage(String command, JsonElement value) throws RuntimeException {
         switch (command) {
             case "selection": {
-                if(selectionLocked) {
+                if (selectionLocked) {
                     return null;
                 }
 
@@ -111,31 +110,31 @@ public class Market extends CommandBuffer {
                 int index = jsonObject.get("index").getAsInt();
                 setSelection(rowColSel, index);
 
-                if(obtainedResources != null && obtainedResources.isConcrete()) {
+                if (obtainedResources != null && obtainedResources.isConcrete()) {
                     toDiscard = obtainedResources.toConcrete();
                 }
 
                 return null;
             }
             case "conversion": {
-                if(selectionLocked || obtainedResources == null) {
+                if (selectionLocked || obtainedResources == null) {
                     return null;
                 }
 
                 JsonArray resourcesElement = value.getAsJsonArray();
                 ConcreteResource[] resources = Deserializer.getInstance().getConcreteResourceArray(resourcesElement);
-                if(resources != null) {
+                if (resources != null) {
                     convert(resources);
                 }
 
-                if(obtainedResources.isConcrete()) {
+                if (obtainedResources.isConcrete()) {
                     toDiscard = obtainedResources.toConcrete();
                 }
 
                 return null;
             }
             case "addToDepot": {
-                if(toDiscard == null) {
+                if (toDiscard == null) {
                     return null;
                 }
 
@@ -146,8 +145,8 @@ public class Market extends CommandBuffer {
                 JsonElement resourcesElement = jsonObject.get("resources");
                 ConcreteResourceSet resources = Deserializer.getInstance().getConcreteResourceSet(resourcesElement);
 
-                if(resources != null) {
-                    if(addToDepot(depotIndex, resources)) {
+                if (resources != null) {
+                    if (addToDepot(depotIndex, resources)) {
                         Person person = getPerson();
                         return (serializer) -> {
                             serializer.addWarehouse(person);
@@ -158,7 +157,7 @@ public class Market extends CommandBuffer {
                 return null;
             }
             case "removeFromDepot": {
-                if(toDiscard == null) {
+                if (toDiscard == null) {
                     return null;
                 }
 
@@ -169,8 +168,8 @@ public class Market extends CommandBuffer {
                 JsonElement resourcesElement = jsonObject.get("resources");
                 ConcreteResourceSet resources = Deserializer.getInstance().getConcreteResourceSet(resourcesElement);
 
-                if(resources != null) {
-                    if(removeFromDepot(depotIndex, resources)) {
+                if (resources != null) {
+                    if (removeFromDepot(depotIndex, resources)) {
                         Person person = getPerson();
                         return (serializer) -> {
                             serializer.addWarehouse(person);
@@ -181,7 +180,7 @@ public class Market extends CommandBuffer {
                 return null;
             }
             case "swapFromDepots": {
-                if(toDiscard == null) {
+                if (toDiscard == null) {
                     return null;
                 }
 
@@ -191,7 +190,7 @@ public class Market extends CommandBuffer {
                 int depotIndexA = jsonObject.get("depotIndexA").getAsInt();
                 int depotIndexB = jsonObject.get("depotIndexB").getAsInt();
 
-                if(swapFromDepots(depotIndexA, depotIndexB)) {
+                if (swapFromDepots(depotIndexA, depotIndexB)) {
                     Person person = getPerson();
                     return (serializer) -> {
                         serializer.addWarehouse(person);
@@ -201,13 +200,13 @@ public class Market extends CommandBuffer {
                 return null;
             }
             case "confirmWarehouse": {
-                if(isReady()) {
+                if (isReady()) {
                     complete();
                     ArrayList<Player> players = Game.getInstance().getPlayers();
                     return (serializer) -> {
                         serializer.addMarbleMarket();
-                        for(Player player: players) {
-                            if(player.getPlayerType() == PlayerType.PERSON) {
+                        for (Player player : players) {
+                            if (player.getPlayerType() == PlayerType.PERSON) {
                                 serializer.addFaithTrack((Person) player);
                             }
                         }
@@ -224,7 +223,7 @@ public class Market extends CommandBuffer {
 
     private boolean checkSelection(boolean rowColSel, int index) {
         MarbleMarket marbleMarket = Game.getInstance().getGameZone().getMarbleMarket();
-        if(rowColSel) {
+        if (rowColSel) {
             return index >= 0 && index < marbleMarket.getRows();
         } else {
             return index >= 0 && index < marbleMarket.getColumns();
@@ -232,13 +231,13 @@ public class Market extends CommandBuffer {
     }
 
     private void setSelection(boolean rowColSel, int index) {
-        if(checkSelection(rowColSel, index)) {
+        if (checkSelection(rowColSel, index)) {
             MarbleMarket marbleMarket = Game.getInstance().getGameZone().getMarbleMarket();
 
             Person person = getPerson();
             ChoiceSet conversionEffects = person.getBoard().getConversionEffectArea().getConversionEffects();
             ObtainableResourceSet obtained;
-            if(rowColSel) {
+            if (rowColSel) {
                 obtained = marbleMarket.selectRow(index, conversionEffects);
             } else {
                 obtained = marbleMarket.selectColumn(index, conversionEffects);
@@ -252,18 +251,18 @@ public class Market extends CommandBuffer {
     }
 
     private void convert(ConcreteResource[] resources) {
-        ArrayList<Resource> choiceResources = obtainedResources.getChoiceResources();
-        if(resources.length != choiceResources.size()) {
+        ArrayList<ChoiceResource> choiceResources = obtainedResources.getChoiceResources();
+        if (resources.length != choiceResources.size()) {
             return;
         }
-        for(int i = 0; i < resources.length; ++i) {
-            ChoiceResource choiceResource = (ChoiceResource) choiceResources.get(i);
-            if(!choiceResource.canChoose(resources[i])) {
+        for (int i = 0; i < resources.length; ++i) {
+            ChoiceResource choiceResource = choiceResources.get(i);
+            if (!choiceResource.canChoose(resources[i])) {
                 return;
             }
         }
-        for(int i = 0; i < resources.length; ++i) {
-            ChoiceResource choiceResource = (ChoiceResource) choiceResources.get(i);
+        for (int i = 0; i < resources.length; ++i) {
+            ChoiceResource choiceResource = choiceResources.get(i);
             choiceResource.makeChoice(resources[i]);
         }
     }
@@ -272,12 +271,12 @@ public class Market extends CommandBuffer {
         Person person = getPerson();
         Warehouse warehouse = person.getBoard().getWarehouse();
 
-        if(!toDiscard.contains(resources)) {
+        if (!toDiscard.contains(resources)) {
             return false;
         }
 
-        if(depotIndex >= 0 && depotIndex < warehouse.numberOfDepots()) {
-            if(warehouse.canAdd(depotIndex, resources)) {
+        if (depotIndex >= 0 && depotIndex < warehouse.numberOfDepots()) {
+            if (warehouse.canAdd(depotIndex, resources)) {
                 warehouse.addResources(depotIndex, resources);
                 toDiscard.difference(resources);
                 return true;
@@ -291,7 +290,7 @@ public class Market extends CommandBuffer {
         Person person = getPerson();
         Warehouse warehouse = person.getBoard().getWarehouse();
 
-        if(depotIndex >= 0 && depotIndex < warehouse.numberOfDepots()) {
+        if (depotIndex >= 0 && depotIndex < warehouse.numberOfDepots()) {
             if (warehouse.getDepotResources(depotIndex).contains(resources)) {
                 warehouse.removeResources(depotIndex, resources);
                 toDiscard.union(resources);
@@ -306,9 +305,9 @@ public class Market extends CommandBuffer {
         Person person = getPerson();
         Warehouse warehouse = person.getBoard().getWarehouse();
 
-        if(depotIndexA >= 0 && depotIndexA < warehouse.numberOfDepots() &&
-           depotIndexB >= 0 && depotIndexB < warehouse.numberOfDepots()) {
-            if(warehouse.canSwap(depotIndexA, depotIndexB)) {
+        if (depotIndexA >= 0 && depotIndexA < warehouse.numberOfDepots() &&
+                depotIndexB >= 0 && depotIndexB < warehouse.numberOfDepots()) {
+            if (warehouse.canSwap(depotIndexA, depotIndexB)) {
                 warehouse.swapResources(depotIndexA, depotIndexB);
                 return true;
             }

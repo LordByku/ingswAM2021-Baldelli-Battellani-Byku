@@ -5,5 +5,6 @@ package it.polimi.ingsw.model.leaderCards;
  * LeaderCardDepot is trying to get used
  */
 public class InvalidLeaderCardDepotException extends RuntimeException {
-    public InvalidLeaderCardDepotException() {}
+    public InvalidLeaderCardDepotException() {
+    }
 }

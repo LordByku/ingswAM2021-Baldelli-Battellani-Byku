@@ -14,7 +14,7 @@ public class DiscardLeader extends CommandBuffer {
     protected DiscardLeader(CommandType commandType, Person person) throws InvalidCommandException {
         super(commandType, person);
 
-        if(!person.isActivePlayer() || initDiscardsMissing() || initSelectsMissing()) {
+        if (!person.isActivePlayer() || initDiscardsMissing() || initSelectsMissing()) {
             throw new InvalidCommandException();
         }
 
@@ -28,7 +28,7 @@ public class DiscardLeader extends CommandBuffer {
 
     @Override
     public void complete() throws CommandNotCompleteException {
-        if(!isReady()) {
+        if (!isReady()) {
             throw new CommandNotCompleteException();
         }
 
@@ -51,12 +51,12 @@ public class DiscardLeader extends CommandBuffer {
 
     @Override
     public Consumer<GameStateSerializer> handleMessage(String command, JsonElement value) throws RuntimeException {
-        if(command.equals("index")) {
+        if (command.equals("index")) {
             int index = value.getAsInt();
             setIndex(index);
         }
 
-        if(isReady()) {
+        if (isReady()) {
             complete();
             Person person = getPerson();
             return (serializer) -> {
@@ -72,7 +72,7 @@ public class DiscardLeader extends CommandBuffer {
         Person person = getPerson();
         ArrayList<LeaderCard> leaderCards = person.getBoard().getLeaderCardArea().getLeaderCards();
 
-        if(index >= 0 && index < leaderCards.size()) {
+        if (index >= 0 && index < leaderCards.size()) {
             this.index = index;
         }
     }

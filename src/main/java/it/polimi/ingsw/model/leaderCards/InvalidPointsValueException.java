@@ -5,5 +5,6 @@ package it.polimi.ingsw.model.leaderCards;
  * amount of points is tring to get used
  */
 public class InvalidPointsValueException extends RuntimeException {
-    public InvalidPointsValueException(){}
+    public InvalidPointsValueException() {
+    }
 }

@@ -1,6 +1,9 @@
 package it.polimi.ingsw.model.resources.resourceSets;
 
-import it.polimi.ingsw.model.resources.*;
+import it.polimi.ingsw.model.resources.ChoiceResource;
+import it.polimi.ingsw.model.resources.InvalidResourceException;
+import it.polimi.ingsw.model.resources.NotConcreteException;
+import it.polimi.ingsw.model.resources.Resource;
 
 import java.util.ArrayList;
 
@@ -11,7 +14,7 @@ public class ChoiceResourceSet implements ResourceSet {
     /**
      * choiceResources is where ChoiceResources are stored
      */
-    private ArrayList<Resource> choiceResources;
+    private ArrayList<ChoiceResource> choiceResources;
     /**
      * concreteResources is where ConcreteResources are stored
      */
@@ -27,27 +30,29 @@ public class ChoiceResourceSet implements ResourceSet {
 
     /**
      * isConcrete checks if all resources contained in the set are concrete
+     *
      * @return True iff all resources are concrete
      */
     public boolean isConcrete() {
-        for(Resource resource : choiceResources)
-            if(!resource.isConcrete())
+        for (Resource resource : choiceResources)
+            if (!resource.isConcrete())
                 return false;
         return true;
     }
 
     /**
      * toConcrete() creates a new ConcreteResourceSet from the resources in this object
+     *
      * @return A ConcreteResourceSet that contains all resources in this object
      * @throws NotConcreteException There exist a non concrete resource,
-     * i.e. a ChoiceResource that has not been selected.
+     *                              i.e. a ChoiceResource that has not been selected.
      */
     public ConcreteResourceSet toConcrete() throws NotConcreteException {
-        if(!isConcrete()) {
+        if (!isConcrete()) {
             throw new NotConcreteException();
         }
         ConcreteResourceSet concreteResourceSet = (ConcreteResourceSet) concreteResources.clone();
-        for(Resource resource: choiceResources) {
+        for (Resource resource : choiceResources) {
             concreteResourceSet.addResource(resource.getResource());
         }
         return concreteResourceSet;
@@ -55,25 +60,27 @@ public class ChoiceResourceSet implements ResourceSet {
 
     /**
      * addResource inserts a new Resource
+     *
      * @param resource The Resource to add
      * @throws InvalidResourceException resource is null
      */
     public void addResource(Resource resource) throws InvalidResourceException {
-        if(resource == null) {
+        if (resource == null) {
             throw new InvalidResourceException();
         }
-        if(resource.isConcrete()) {
+        if (resource.isConcrete()) {
             concreteResources.addResource(resource.getResource());
         } else {
-            choiceResources.add(resource);
+            choiceResources.add((ChoiceResource) resource);
         }
     }
 
     /**
      * getResources returns a copy of the internal state of the object
+     *
      * @return An ArrayList of the Resources contained in this object
      */
-    public ArrayList<Resource> getChoiceResources() {
+    public ArrayList<ChoiceResource> getChoiceResources() {
         return new ArrayList<>(choiceResources);
     }
 
@@ -84,15 +91,16 @@ public class ChoiceResourceSet implements ResourceSet {
     /**
      * union adds to this ChoiceResourceSet all the resources contained in another
      * ChoiceResourceSet
+     *
      * @param other The ChoiceResourceSet to add resources from
      * @throws InvalidResourceSetException other is null
      */
     public void union(ChoiceResourceSet other) throws InvalidResourceSetException {
-        if(other == null) {
+        if (other == null) {
             throw new InvalidResourceSetException();
         }
 
-        ArrayList<Resource> otherChoiceResources = other.getChoiceResources();
+        ArrayList<ChoiceResource> otherChoiceResources = other.getChoiceResources();
         ConcreteResourceSet otherConcreteResources = other.getConcreteResources();
 
         choiceResources.addAll(otherChoiceResources);
@@ -100,7 +108,7 @@ public class ChoiceResourceSet implements ResourceSet {
     }
 
     public void union(ConcreteResourceSet other) throws InvalidResourceSetException {
-        if(other == null) {
+        if (other == null) {
             throw new InvalidResourceSetException();
         }
 
@@ -110,6 +118,7 @@ public class ChoiceResourceSet implements ResourceSet {
     /**
      * clone returns a copy of the object
      * Note that ChoiceResources in resources are not copied
+     *
      * @return A copy of the object
      */
     @Override
@@ -127,6 +136,7 @@ public class ChoiceResourceSet implements ResourceSet {
 
     /**
      * size returns the number of Resources in this ResourceSet
+     *
      * @return The number of Resources in this ResourceSet
      */
     @Override
@@ -136,6 +146,7 @@ public class ChoiceResourceSet implements ResourceSet {
 
     /**
      * cleanClone returns a clone where ChoiceResources are cloned too
+     *
      * @return A new ChoiceResourceSet where all Resources are cleanCloned
      */
     public ChoiceResourceSet cleanClone() {
@@ -143,8 +154,8 @@ public class ChoiceResourceSet implements ResourceSet {
 
         cloneResourceSet.choiceResources = new ArrayList<>();
 
-        for(Resource resource: choiceResources) {
-            cloneResourceSet.choiceResources.add(resource.cleanClone());
+        for (ChoiceResource choiceResource : choiceResources) {
+            cloneResourceSet.choiceResources.add(choiceResource.cleanClone());
         }
 
         return cloneResourceSet;
@@ -154,7 +165,7 @@ public class ChoiceResourceSet implements ResourceSet {
     public String getCLIString() {
         StringBuilder result = new StringBuilder(concreteResources.getCLIString());
 
-        for(Resource resource: choiceResources) {
+        for (Resource resource : choiceResources) {
             result.append(resource.getCLIString()).append(" ");
         }
 

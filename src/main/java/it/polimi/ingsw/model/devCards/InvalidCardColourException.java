@@ -5,5 +5,6 @@ package it.polimi.ingsw.model.devCards;
  * development card colour is trying to get used
  */
 public class InvalidCardColourException extends RuntimeException {
-    InvalidCardColourException() {}
+    InvalidCardColourException() {
+    }
 }

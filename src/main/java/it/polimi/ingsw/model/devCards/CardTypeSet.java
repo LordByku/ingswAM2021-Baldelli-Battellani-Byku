@@ -17,7 +17,7 @@ public class CardTypeSet implements LeaderCardRequirements {
     /**
      * cardTypes represents a hash map of card types and his quantity
      */
-    private HashMap<CardType,Integer> cardTypes;
+    private HashMap<CardType, Integer> cardTypes;
 
     /**
      * the constructor initializes a empty HashMap
@@ -28,16 +28,17 @@ public class CardTypeSet implements LeaderCardRequirements {
 
     /**
      * add inserts a given amount of a new CardType in this set
+     *
      * @param cardType The CardType to be added
      * @param quantity The quantity to be added
      * @throws InvalidCardTypeException cardType is null
      * @throws InvalidQuantityException quantity is not strictly positive
      */
     public void add(CardType cardType, int quantity) throws InvalidCardTypeException, InvalidQuantityException {
-        if(cardType == null) {
+        if (cardType == null) {
             throw new InvalidCardTypeException();
         }
-        if(quantity <= 0) {
+        if (quantity <= 0) {
             throw new InvalidQuantityException();
         }
 
@@ -47,6 +48,7 @@ public class CardTypeSet implements LeaderCardRequirements {
 
     /**
      * This method offers the option to add a single CardType
+     *
      * @param cardType The CardType to be added
      * @throws InvalidCardTypeException quantity is not strictly positive
      */
@@ -64,17 +66,17 @@ public class CardTypeSet implements LeaderCardRequirements {
     public boolean isSatisfied(Board board) throws InvalidBoardException {
         ArrayList<DevCard> cards = board.getDevelopmentCardArea().getCards();
 
-        for(Map.Entry<CardType, Integer> entry: cardTypes.entrySet()) {
+        for (Map.Entry<CardType, Integer> entry : cardTypes.entrySet()) {
             CardType cardType = entry.getKey();
 
             int satisfiedCount = 0;
-            for(DevCard card: cards) {
-                if(cardType.isSatisfied(card)) {
+            for (DevCard card : cards) {
+                if (cardType.isSatisfied(card)) {
                     satisfiedCount++;
                 }
             }
 
-            if(satisfiedCount < entry.getValue()) {
+            if (satisfiedCount < entry.getValue()) {
                 return false;
             }
         }
@@ -96,9 +98,9 @@ public class CardTypeSet implements LeaderCardRequirements {
 
     public String getCLIString() {
         StringBuilder result = new StringBuilder("( ");
-        for(Map.Entry entry: cardTypes.entrySet()) {
-            CardType cardType = (CardType) entry.getKey();
-            Integer count = (Integer) entry.getValue();
+        for (Map.Entry<CardType, Integer> entry : cardTypes.entrySet()) {
+            CardType cardType = entry.getKey();
+            Integer count = entry.getValue();
 
             result.append(count).append(cardType.getCLIString()).append(" ");
         }

@@ -5,5 +5,6 @@ package it.polimi.ingsw.model.game;
  * the same nickname is already present in the lobby
  */
 public class ExistingNicknameException extends Exception {
-    public ExistingNicknameException() {}
+    public ExistingNicknameException() {
+    }
 }

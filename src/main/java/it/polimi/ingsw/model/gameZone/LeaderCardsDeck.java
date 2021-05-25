@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.gameZone;
 
 import it.polimi.ingsw.model.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.playerBoard.Board;
-import it.polimi.ingsw.model.playerBoard.LeaderCardArea;
 import it.polimi.ingsw.parsing.LeaderCardsParser;
 
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ public class LeaderCardsDeck {
 
         LeaderCard leaderCard;
 
-        while((leaderCard = LeaderCardsParser.getInstance().nextCard()) != null) {
+        while ((leaderCard = LeaderCardsParser.getInstance().nextCard()) != null) {
             deck.add(leaderCard);
         }
 
@@ -40,6 +39,7 @@ public class LeaderCardsDeck {
 
     /**
      * size returns the current size of the deck
+     *
      * @return The size of the deck
      */
     public int size() {
@@ -48,11 +48,12 @@ public class LeaderCardsDeck {
 
     /**
      * removeTop removes and returns the LeaderCard on top of this deck
+     *
      * @return The removed LeaderCard
      * @throws EmptyDeckException This deck is empty
      */
     public LeaderCard removeTop() throws EmptyDeckException {
-        if(size() == 0) {
+        if (size() == 0) {
             throw new EmptyDeckException();
         }
         int lastIndex = size() - 1;
@@ -62,7 +63,7 @@ public class LeaderCardsDeck {
     }
 
     public void assignCards(Board board) {
-        for(int i = assigned; i < assigned + 4; ++i) {
+        for (int i = assigned; i < assigned + 4; ++i) {
             deck.get(i).assignToBoard(board);
         }
 

@@ -5,5 +5,6 @@ package it.polimi.ingsw.model.devCards;
  * adding a development card on top of a deck could not be completed
  */
 public class InvalidAddTopException extends RuntimeException {
-    public InvalidAddTopException() {}
+    public InvalidAddTopException() {
+    }
 }

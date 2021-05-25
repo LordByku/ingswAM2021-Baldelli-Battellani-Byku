@@ -16,7 +16,7 @@ public abstract class ServerState {
         JsonObject jsonMessage = new JsonObject();
         JsonArray playerOrder = new JsonArray();
 
-        if(Game.getInstance().getNumberOfPlayers() == 1) {
+        if (Game.getInstance().getNumberOfPlayers() == 1) {
             playerOrder.add(Game.getInstance().getSinglePlayer().getNickname());
         } else {
             for (Player player : Game.getInstance().getPlayers()) {

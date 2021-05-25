@@ -21,18 +21,19 @@ public class WhiteMarble extends Marble {
      * collect returns an empty ObtainableResourceSet if the given board has no ConversionEffects,
      * otherwise an ObtainableResourceSet containing a ChoiceResource where possible choices are
      * those of ConversionEffects
+     *
      * @param choiceSet The ChoiceSet of possible conversions for this operation
      * @return An empty ObtainableResourceSet or an ObtainableResourceSet containing a ChoiceResource
      * @throws InvalidChoiceSetException choiceSet is null
      */
     @Override
     public ObtainableResourceSet collect(ChoiceSet choiceSet) throws InvalidChoiceSetException {
-        if(choiceSet == null) {
+        if (choiceSet == null) {
             throw new InvalidChoiceSetException();
         }
         ChoiceResourceSet choiceResourceSet = new ChoiceResourceSet();
 
-        if(!choiceSet.empty()) {
+        if (!choiceSet.empty()) {
             choiceResourceSet.addResource(new ChoiceResource(choiceSet));
         }
 

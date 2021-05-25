@@ -1,8 +1,8 @@
 package it.polimi.ingsw.utility;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
+import it.polimi.ingsw.controller.CommandBuffer;
+import it.polimi.ingsw.model.game.Person;
 
 public class JsonUtil {
     private static JsonUtil instance;
@@ -15,7 +15,7 @@ public class JsonUtil {
     }
 
     public static JsonUtil getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new JsonUtil();
         }
         return instance;
@@ -27,5 +27,19 @@ public class JsonUtil {
 
     public JsonElement serialize(Object object) {
         return parser.parse(gson.toJson(object));
+    }
+
+    public JsonObject serializeCommandBuffer(CommandBuffer commandBuffer, Person person) {
+        JsonObject jsonObject = new JsonObject();
+
+        jsonObject.addProperty("player", person.getNickname());
+        if (commandBuffer == null) {
+            jsonObject.add("value", JsonNull.INSTANCE);
+        } else {
+            JsonObject commandObject = JsonUtil.getInstance().serialize(commandBuffer).getAsJsonObject();
+            jsonObject.add("value", commandObject);
+        }
+
+        return jsonObject;
     }
 }

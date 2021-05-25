@@ -12,15 +12,15 @@ public class ProductionDetails implements Cloneable {
     private final ObtainableResourceSet output;
 
     /**
-     * @param input the resources to be spent
+     * @param input  the resources to be spent
      * @param output the resources to be obtained
      */
-    public ProductionDetails(SpendableResourceSet input,ObtainableResourceSet output) throws InvalidResourceSetException {
-        if(input == null || output == null) {
+    public ProductionDetails(SpendableResourceSet input, ObtainableResourceSet output) throws InvalidResourceSetException {
+        if (input == null || output == null) {
             throw new InvalidResourceSetException();
         }
         this.input = input.clone();
-        this.output= output.clone();
+        this.output = output.clone();
     }
 
     /**

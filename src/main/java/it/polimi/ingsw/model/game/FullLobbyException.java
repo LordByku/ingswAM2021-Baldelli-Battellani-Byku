@@ -5,5 +5,6 @@ package it.polimi.ingsw.model.game;
  * is already full of players
  */
 public class FullLobbyException extends Exception {
-    public FullLobbyException() {}
+    public FullLobbyException() {
+    }
 }

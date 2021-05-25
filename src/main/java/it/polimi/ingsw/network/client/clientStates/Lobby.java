@@ -6,11 +6,11 @@ import com.google.gson.JsonObject;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.LoadCards;
 import it.polimi.ingsw.network.client.LocalConfig;
+import it.polimi.ingsw.parsing.Parser;
 import it.polimi.ingsw.utility.Deserializer;
 import it.polimi.ingsw.utility.JsonUtil;
-import it.polimi.ingsw.view.localModel.LocalModel;
-import it.polimi.ingsw.parsing.Parser;
 import it.polimi.ingsw.view.cli.CLI;
+import it.polimi.ingsw.view.localModel.LocalModel;
 
 import java.util.ArrayList;
 
@@ -28,14 +28,14 @@ public class Lobby extends ClientState {
         switch (status) {
             case "fatalError": {
                 String message = json.get("message").getAsString();
-                CLI.getInstance().serverError(message);
+                CLI.getInstance().error(message);
                 client.closeServerCommunication();
                 client.setState(new NicknameSelection());
                 break;
             }
             case "error": {
                 String message = json.get("message").getAsString();
-                CLI.getInstance().serverError(message);
+                CLI.getInstance().error(message);
                 break;
             }
             case "ok": {
@@ -58,7 +58,7 @@ public class Lobby extends ClientState {
                             nicknames.add(nickname);
                             if (isHost) {
                                 hostNickname = nickname;
-                                if(nickname.equals(client.getNickname())) {
+                                if (nickname.equals(client.getNickname())) {
                                     LocalConfig.getInstance().setHost();
                                 }
                             }
@@ -81,7 +81,7 @@ public class Lobby extends ClientState {
 
                         JsonArray jsonTurnOrder = message.getAsJsonArray("turnOrder");
                         ArrayList<String> turnOrder = new ArrayList<>();
-                        for(JsonElement jsonElement: jsonTurnOrder) {
+                        for (JsonElement jsonElement : jsonTurnOrder) {
                             turnOrder.add(jsonElement.getAsString());
                         }
 
@@ -98,12 +98,10 @@ public class Lobby extends ClientState {
                     case "update": {
                         JsonObject message = json.get("message").getAsJsonObject();
 
-                        System.out.println(message);
-
                         LocalModel model = Deserializer.getInstance().getLocalModel(message);
                         client.setModel(model);
 
-                        client.setState(new GameStarted(client));
+                        client.setState(new GameStarted());
                         break;
                     }
                     default: {
@@ -121,7 +119,7 @@ public class Lobby extends ClientState {
 
     @Override
     public void handleUserMessage(Client client, String line) {
-        if(LocalConfig.getInstance().isHost()) {
+        if (LocalConfig.getInstance().isHost()) {
             if (line.equals("")) {
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("command", "startGame");

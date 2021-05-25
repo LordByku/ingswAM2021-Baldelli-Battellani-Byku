@@ -5,5 +5,6 @@ package it.polimi.ingsw.parsing;
  * was not provided
  */
 public class NoConfigFileException extends RuntimeException {
-    public NoConfigFileException() {}
+    public NoConfigFileException() {
+    }
 }

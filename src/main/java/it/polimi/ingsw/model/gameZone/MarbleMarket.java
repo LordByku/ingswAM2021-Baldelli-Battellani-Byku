@@ -17,10 +17,6 @@ public class MarbleMarket {
      */
     private final Marble[][] marbles;
     /**
-     * freeMarble is the marble outside the current market
-     */
-    private Marble freeMarble;
-    /**
      * rows is the number of rows in the market
      */
     private final int rows;
@@ -28,6 +24,10 @@ public class MarbleMarket {
      * columns is the number of columns in the marker
      */
     private final int columns;
+    /**
+     * freeMarble is the marble outside the current market
+     */
+    private Marble freeMarble;
 
     /**
      * The constructor initializes rows and columns to 3 and 4 respectively
@@ -56,8 +56,8 @@ public class MarbleMarket {
         marbles = new Marble[rows][columns];
 
         int tmpIndex = 0;
-        for(int i = 0; i < rows; ++i) {
-            for(int j = 0; j < columns; ++j) {
+        for (int i = 0; i < rows; ++i) {
+            for (int j = 0; j < columns; ++j) {
                 marbles[i][j] = tmp.get(tmpIndex++);
             }
         }
@@ -67,21 +67,22 @@ public class MarbleMarket {
 
     /**
      * selectRow returns the ObtainableResourceSet obtained by selecting a given row of the market
-     * @param row The chosen row
+     *
+     * @param row       The chosen row
      * @param choiceSet The ChoiceSet of possible conversions for this operation
      * @return An ObtainableResourceSet representing all resources collected by selecting the given row
      * @throws InvalidMarbleMarketIndexException row is outside the range of marbles
-     * @throws InvalidChoiceSetException choiceSet is null
+     * @throws InvalidChoiceSetException         choiceSet is null
      */
     public ObtainableResourceSet selectRow(int row, ChoiceSet choiceSet)
             throws InvalidMarbleMarketIndexException, InvalidChoiceSetException {
-        if(row < 0 || row >= rows) {
+        if (row < 0 || row >= rows) {
             throw new InvalidMarbleMarketIndexException();
         }
 
         ObtainableResourceSet result = new ObtainableResourceSet();
 
-        for(int j = 0; j < columns; ++j) {
+        for (int j = 0; j < columns; ++j) {
             result = result.union(marbles[row][j].collect(choiceSet));
         }
 
@@ -90,21 +91,22 @@ public class MarbleMarket {
 
     /**
      * selectColumn returns the ObtainableResourceSet obtained by selecting a given column of the market
-     * @param column The chosen column
+     *
+     * @param column    The chosen column
      * @param choiceSet The ChoiceSet of possible conversions for this operation
      * @return An ObtainableResourceSet representing all resources collected by selecting the given column
      * @throws InvalidMarbleMarketIndexException column is outside the range of marbles
-     * @throws InvalidChoiceSetException choiceSet is null
+     * @throws InvalidChoiceSetException         choiceSet is null
      */
     public ObtainableResourceSet selectColumn(int column, ChoiceSet choiceSet)
             throws InvalidMarbleMarketIndexException, InvalidChoiceSetException {
-        if(column < 0 || column >= columns) {
+        if (column < 0 || column >= columns) {
             throw new InvalidMarbleMarketIndexException();
         }
 
         ObtainableResourceSet result = new ObtainableResourceSet();
 
-        for(int i = 0; i < rows; ++i) {
+        for (int i = 0; i < rows; ++i) {
             result = result.union(marbles[i][column].collect(choiceSet));
         }
 
@@ -113,14 +115,15 @@ public class MarbleMarket {
 
     /**
      * getMarketColour returns the MarbleColour of a given Marble in the market
-     * @param row The chosen row
+     *
+     * @param row    The chosen row
      * @param column The chosen column
      * @return The MarbleColour of the Marble in position row, column in marbles
      * @throws InvalidMarbleMarketIndexException row or column is outside the range of marbles
      */
     public MarbleColour getMarketColour(int row, int column) throws InvalidMarbleMarketIndexException {
-        if(row < 0 || row >= rows ||
-           column < 0 || column >= columns) {
+        if (row < 0 || row >= rows ||
+                column < 0 || column >= columns) {
             throw new InvalidMarbleMarketIndexException();
         }
 
@@ -129,6 +132,7 @@ public class MarbleMarket {
 
     /**
      * getFreeMarbleColour returns the MarbleColour of the free marble
+     *
      * @return The MarbleColour of freeMarble
      */
     public MarbleColour getFreeMarbleColour() {
@@ -137,15 +141,16 @@ public class MarbleMarket {
 
     /**
      * pushRow applies the operation of pushing the free marble into a given row
+     *
      * @param row The chosen row
      * @throws InvalidMarbleMarketIndexException row is outside the range of marbles
      */
     public void pushRow(int row) throws InvalidMarbleMarketIndexException {
-        if(row < 0 || row >= rows) {
+        if (row < 0 || row >= rows) {
             throw new InvalidMarbleMarketIndexException();
         }
         Marble newFreeMarble = marbles[row][0];
-        for(int j = 1; j < columns; ++j) {
+        for (int j = 1; j < columns; ++j) {
             marbles[row][j - 1] = marbles[row][j];
         }
         marbles[row][columns - 1] = freeMarble;
@@ -154,15 +159,16 @@ public class MarbleMarket {
 
     /**
      * pushColumn applies the operation of pushing the free marble into a given column
+     *
      * @param column The chosen column
      * @throws InvalidMarbleMarketIndexException column is outside the range of marbles
      */
     public void pushColumn(int column) throws InvalidMarbleMarketIndexException {
-        if(column < 0 || column >= columns) {
+        if (column < 0 || column >= columns) {
             throw new InvalidMarbleMarketIndexException();
         }
         Marble newFreeMarble = marbles[0][column];
-        for(int i = 1; i < rows; ++i) {
+        for (int i = 1; i < rows; ++i) {
             marbles[i - 1][column] = marbles[i][column];
         }
         marbles[rows - 1][column] = freeMarble;

@@ -7,7 +7,10 @@ import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.view.localModel.Player;
 
 public class CommandSelection extends CLIWindow {
+    private boolean endTurnRequested;
+
     public CommandSelection(Client client) {
+        endTurnRequested = false;
     }
 
     @Override
@@ -22,6 +25,7 @@ public class CommandSelection extends CLIWindow {
                         JsonObject message = new JsonObject();
                         message.addProperty("request", "endTurn");
                         client.write(message.toString());
+                        endTurnRequested = true;
                         return;
                     }
                     case 1: {
@@ -64,21 +68,33 @@ public class CommandSelection extends CLIWindow {
                     }
                 }
             }
-        } catch (NumberFormatException e) {}
-        render(client);
+        } catch (NumberFormatException e) {
+        }
+
+        CLI.getInstance().renderWindow(client);
     }
 
     @Override
     public void render(Client client) {
         Player self = client.getModel().getPlayer(client.getNickname());
-        if(self.hasInkwell()) {
+        if (self.hasInkwell()) {
             if (self.mainAction()) {
                 CLI.getInstance().endTurn();
             } else {
-                CLI.getInstance().startTurn();
+                CLI.getInstance().startTurn(client.getModel().getGameZone());
             }
         } else {
             CLI.getInstance().waitTurn();
         }
+    }
+
+    @Override
+    public boolean refreshOnUpdate(Client client) {
+        if (endTurnRequested) {
+            endTurnRequested = false;
+            return true;
+        }
+        Player self = client.getModel().getPlayer(client.getNickname());
+        return self.hasInkwell();
     }
 }

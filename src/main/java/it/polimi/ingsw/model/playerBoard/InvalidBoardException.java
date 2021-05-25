@@ -5,5 +5,6 @@ package it.polimi.ingsw.model.playerBoard;
  * is trying to get used
  */
 public class InvalidBoardException extends RuntimeException {
-    public InvalidBoardException() {}
+    public InvalidBoardException() {
+    }
 }

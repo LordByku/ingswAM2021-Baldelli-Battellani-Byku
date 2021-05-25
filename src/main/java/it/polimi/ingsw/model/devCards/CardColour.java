@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.devCards;
 
 import it.polimi.ingsw.view.cli.BackGroundColor;
-import it.polimi.ingsw.view.cli.TextColour;
 
 /**
  * CardColour represents all possible cards' colours

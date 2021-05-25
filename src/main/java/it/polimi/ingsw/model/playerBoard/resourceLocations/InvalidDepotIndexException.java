@@ -5,5 +5,6 @@ package it.polimi.ingsw.model.playerBoard.resourceLocations;
  * is trying to get used
  */
 public class InvalidDepotIndexException extends RuntimeException {
-    public InvalidDepotIndexException() {}
+    public InvalidDepotIndexException() {
+    }
 }

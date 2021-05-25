@@ -14,13 +14,14 @@ import it.polimi.ingsw.model.resources.InvalidResourceException;
 import it.polimi.ingsw.model.resources.resourceSets.ChoiceResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.view.localModel.Board;
-import it.polimi.ingsw.view.localModel.Player;
 import it.polimi.ingsw.parsing.LeaderCardsParser;
 import it.polimi.ingsw.utility.JsonUtil;
 import it.polimi.ingsw.utility.UserParser;
 import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.view.cli.Strings;
+import it.polimi.ingsw.view.localModel.Board;
+import it.polimi.ingsw.view.localModel.MarbleMarket;
+import it.polimi.ingsw.view.localModel.Player;
 
 import java.util.Arrays;
 
@@ -32,46 +33,46 @@ public class MarketWindow extends CommandWindow {
     public void handleUserMessage(Client client, String line) {
         String[] words = Strings.splitLine(line);
 
-        if(words.length > 0) {
+        if (words.length > 0) {
             try {
                 switch (words[0]) {
                     case "x": {
-                        if(words.length == 1) {
+                        if (words.length == 1) {
                             client.write(buildCancelMessage().toString());
                             return;
                         }
                         break;
                     }
                     case "row": {
-                        if(words.length == 2) {
+                        if (words.length == 2) {
                             sendSelectionCommand(client, words, true);
                             return;
                         }
                         break;
                     }
                     case "col": {
-                        if(words.length == 2) {
+                        if (words.length == 2) {
                             sendSelectionCommand(client, words, false);
                             return;
                         }
                         break;
                     }
                     case "add": {
-                        if(words.length >= 2) {
+                        if (words.length >= 2) {
                             sendDepotCommand(client, words, "addToDepot");
                             return;
                         }
                         break;
                     }
                     case "remove": {
-                        if(words.length >= 2) {
+                        if (words.length >= 2) {
                             sendDepotCommand(client, words, "removeFromDepot");
                             return;
                         }
                         break;
                     }
                     case "swap": {
-                        if(words.length == 3) {
+                        if (words.length == 3) {
                             int depotIndexA = Integer.parseInt(words[1]);
                             int depotIndexB = Integer.parseInt(words[2]);
                             JsonObject jsonObject = new JsonObject();
@@ -84,7 +85,7 @@ public class MarketWindow extends CommandWindow {
                         break;
                     }
                     case "confirm": {
-                        if(words.length == 1) {
+                        if (words.length == 1) {
                             JsonObject message = buildCommandMessage("confirmWarehouse", JsonNull.INSTANCE);
                             client.write(message.toString());
                             return;
@@ -102,9 +103,11 @@ public class MarketWindow extends CommandWindow {
                         return;
                     }
                 }
-            } catch (NumberFormatException | JsonSyntaxException | InvalidResourceException e) {}
+            } catch (NumberFormatException | JsonSyntaxException | InvalidResourceException e) {
+            }
         }
-        render(client);
+
+        CLI.getInstance().renderWindow(client);
     }
 
     private void sendDepotCommand(Client client, String[] words, String command) {
@@ -130,16 +133,18 @@ public class MarketWindow extends CommandWindow {
     public void render(Client client) {
         Player self = client.getModel().getPlayer(client.getNickname());
         Market commandBuffer = (Market) self.getCommandBuffer();
-        if(commandBuffer.getIndex() == -1) {
+        if (commandBuffer.getIndex() == -1) {
+            MarbleMarket marbleMarket = client.getModel().getGameZone().getMarbleMarket();
+            CLI.getInstance().marbleMarket(marbleMarket);
             CLI.getInstance().marbleMarketSelection();
         } else {
             Board board = self.getBoard();
             ChoiceResourceSet obtained = commandBuffer.getObtainedResources();
-            if(!obtained.isConcrete()) {
+            if (!obtained.isConcrete()) {
                 ChoiceSet choiceSet = new ChoiceSet();
-                for(Integer leaderCardId: board.getPlayedLeaderCards()) {
+                for (Integer leaderCardId : board.getPlayedLeaderCards()) {
                     LeaderCard leaderCard = LeaderCardsParser.getInstance().getCard(leaderCardId);
-                    if(leaderCard.isType(LeaderCardType.CONVERSION)) {
+                    if (leaderCard.isType(LeaderCardType.CONVERSION)) {
                         choiceSet.addChoice(((WhiteConversionLeaderCard) leaderCard).getType());
                     }
                 }

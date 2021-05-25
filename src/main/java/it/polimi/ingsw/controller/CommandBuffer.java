@@ -24,6 +24,36 @@ public abstract class CommandBuffer {
         completed = false;
     }
 
+    protected static boolean initDiscardsMissing() {
+        ArrayList<Player> players = Game.getInstance().getPlayers();
+
+        for (Player player : players) {
+            if (player.getPlayerType() == PlayerType.PERSON) {
+                Person person = (Person) player;
+                if (person.isConnected() && !person.initDiscarded()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    protected static boolean initSelectsMissing() {
+        ArrayList<Player> players = Game.getInstance().getPlayers();
+
+        for (Player player : players) {
+            if (player.getPlayerType() == PlayerType.PERSON) {
+                Person person = (Person) player;
+                if (person.isConnected() && !person.initSelected()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public Person getPerson() {
         return person;
     }
@@ -41,40 +71,14 @@ public abstract class CommandBuffer {
     }
 
     public abstract boolean isReady();
+
     public abstract void complete() throws CommandNotCompleteException;
+
     public abstract boolean cancel();
+
     public abstract void kill();
+
     public abstract Consumer<GameStateSerializer> handleMessage(String command, JsonElement value) throws RuntimeException;
-
-    protected static boolean initDiscardsMissing() {
-        ArrayList<Player> players = Game.getInstance().getPlayers();
-
-        for(Player player: players) {
-            if(player.getPlayerType() == PlayerType.PERSON) {
-                Person person = (Person) player;
-                if(person.isConnected() && !person.initDiscarded()) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    protected static boolean initSelectsMissing() {
-        ArrayList<Player> players = Game.getInstance().getPlayers();
-
-        for(Player player: players) {
-            if(player.getPlayerType() == PlayerType.PERSON) {
-                Person person = (Person) player;
-                if(person.isConnected() && !person.initSelected()) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
 
     protected ConcreteResourceSet checkResourcesToSpend(ConcreteResourceSet[] warehouseToSpend, ConcreteResourceSet strongboxToSpend) {
         Person person = getPerson();
@@ -83,22 +87,47 @@ public abstract class CommandBuffer {
 
         ConcreteResourceSet totalToSpend = new ConcreteResourceSet();
 
-        if(warehouseToSpend.length != warehouse.numberOfDepots()) {
+        if (warehouseToSpend.length != warehouse.numberOfDepots()) {
             return null;
         }
         for (int i = 0; i < warehouseToSpend.length; i++) {
             ConcreteResourceSet depotToSpend = warehouseToSpend[i];
-            if(!warehouse.getDepotResources(i).contains(depotToSpend)) {
+            if (!warehouse.getDepotResources(i).contains(depotToSpend)) {
                 return null;
             }
             totalToSpend.union(depotToSpend);
         }
 
-        if(!strongBox.containsResources(strongboxToSpend)) {
+        if (!strongBox.containsResources(strongboxToSpend)) {
             return null;
         }
         totalToSpend.union(strongboxToSpend);
 
+        return totalToSpend;
+    }
+
+    protected void updateResourcesToSpend(ConcreteResourceSet[] warehouseToSpend, ConcreteResourceSet strongboxToSpend,
+                                          Person person, ConcreteResourceSet[] currentWarehouseToSpend, ConcreteResourceSet currentStrongboxToSpend) {
+        Warehouse warehouse = person.getBoard().getWarehouse();
+        StrongBox strongBox = person.getBoard().getStrongBox();
+        for (int i = 0; i < warehouseToSpend.length; ++i) {
+            warehouse.removeResources(i, warehouseToSpend[i]);
+            currentWarehouseToSpend[i].union(warehouseToSpend[i]);
+        }
+        strongBox.removeResources(strongboxToSpend);
+        currentStrongboxToSpend.union(strongboxToSpend);
+    }
+
+    protected ConcreteResourceSet getCurrentTotalToSpend(ConcreteResourceSet[] warehouseToSpend, ConcreteResourceSet strongboxToSpend) {
+        ConcreteResourceSet totalToSpend = new ConcreteResourceSet();
+        if (warehouseToSpend != null) {
+            for (ConcreteResourceSet depotToSpend : warehouseToSpend) {
+                totalToSpend.union(depotToSpend);
+            }
+        }
+        if (strongboxToSpend != null) {
+            totalToSpend.union(strongboxToSpend);
+        }
         return totalToSpend;
     }
 }

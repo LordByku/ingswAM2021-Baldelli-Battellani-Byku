@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.resources.resourceSets;
 
+import it.polimi.ingsw.model.resources.ChoiceResource;
 import it.polimi.ingsw.model.resources.Resource;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public class SpendableResourceSet extends TransactionResourceSet {
 
     /**
      * This constructor calls the constructor for TransactionResourceSet which uses a ChoiceResourceSet
+     *
      * @param choiceResourceSet The ChoiceResourceSet to copy from
      * @throws InvalidResourceSetException choiceResourceSet is null
      */
@@ -29,12 +31,13 @@ public class SpendableResourceSet extends TransactionResourceSet {
     /**
      * union adds to this SpendableResourceSet all the resources
      * contained in another SpendableResourceSet
+     *
      * @param other The SpendableResourceSet to add resources from
      * @throws InvalidResourceSetException other is null, or this SpendableResourceSet
-     * has been converted but other has not, or vice versa
+     *                                     has been converted but other has not, or vice versa
      */
     public SpendableResourceSet union(SpendableResourceSet other) throws InvalidResourceSetException {
-        if(other == null) {
+        if (other == null) {
             throw new InvalidResourceSetException();
         }
         ChoiceResourceSet resourceSet = getResourceSet();
@@ -44,6 +47,7 @@ public class SpendableResourceSet extends TransactionResourceSet {
 
     /**
      * clone returns a copy of the object
+     *
      * @return A copy of the object
      */
     @Override
@@ -56,26 +60,29 @@ public class SpendableResourceSet extends TransactionResourceSet {
      * this SpendableResourceSet
      * Note that the check is made assuming that all ChoiceResources in a
      * SpendableResourceSet have a FullChoiceSet to choose from
+     *
      * @param concreteResourceSet The ConcreteResourceSet to check
      * @return True iff the ChoiceResourceSet in this SpendableResourceSet could be
      * converted to concreteResourceSet
      * @throws InvalidResourceSetException concreteResourceSet is null
      */
-    public boolean match(ConcreteResourceSet concreteResourceSet) throws InvalidResourceSetException {
-        if(concreteResourceSet == null) {
+    public boolean exactMatch(ConcreteResourceSet concreteResourceSet) throws InvalidResourceSetException {
+        return getResourceSet().size() == concreteResourceSet.size() && match(concreteResourceSet);
+    }
+
+    public boolean match(ConcreteResourceSet concreteResourceSet) {
+        if (concreteResourceSet == null) {
             throw new InvalidResourceSetException();
         }
 
-        if(getResourceSet().size() != concreteResourceSet.size()) {
-            return false;
-        }
+        ChoiceResourceSet toMatch = getResourceSet();
 
-        ArrayList<Resource> choiceResources = getResourceSet().getChoiceResources();
-        ConcreteResourceSet currentConcreteResourceSet = getResourceSet().getConcreteResources();
+        ArrayList<ChoiceResource> choiceResources = toMatch.getChoiceResources();
+        ConcreteResourceSet currentConcreteResourceSet = toMatch.getConcreteResources();
 
         // ChoiceResources in SpendableResourceSet always have a FullChoiceSet
-        for(Resource resource: choiceResources) {
-            if(resource.isConcrete()) {
+        for (Resource resource : choiceResources) {
+            if (resource.isConcrete()) {
                 currentConcreteResourceSet.addResource(resource.getResource());
             }
         }

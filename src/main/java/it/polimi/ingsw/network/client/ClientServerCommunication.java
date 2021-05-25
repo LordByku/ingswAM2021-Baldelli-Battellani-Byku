@@ -1,7 +1,5 @@
 package it.polimi.ingsw.network.client;
 
-import it.polimi.ingsw.network.client.Client;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,14 +14,15 @@ public class ClientServerCommunication implements Runnable {
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.client = client;
     }
+
     @Override
     public void run() {
         String line;
         try {
-            while((line = in.readLine()) != null) {
+            while ((line = in.readLine()) != null) {
                 client.handleServerMessage(line);
             }
-        } catch(SocketTimeoutException e) {
+        } catch (SocketTimeoutException e) {
             client.reconnect();
         } catch (IOException e) {
             return;

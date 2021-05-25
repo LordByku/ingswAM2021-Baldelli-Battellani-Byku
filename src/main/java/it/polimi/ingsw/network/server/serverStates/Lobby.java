@@ -12,10 +12,10 @@ public class Lobby extends ServerState {
         try {
             JsonObject clientMessage = JsonUtil.getInstance().parseLine(line).getAsJsonObject();
 
-            if(clientHandler.getPerson().isHost()){
+            if (clientHandler.getPerson().isHost()) {
                 if (clientMessage.get("command").getAsString().equals("startGame")) {
                     if (Game.getInstance().getNumberOfPlayers() >= 1) {
-                        if(Game.getInstance().getNumberOfPlayers() == 1) {
+                        if (Game.getInstance().getNumberOfPlayers() == 1) {
                             Game.getInstance().startSinglePlayer();
                         } else {
                             Game.getInstance().startMultiPlayer();

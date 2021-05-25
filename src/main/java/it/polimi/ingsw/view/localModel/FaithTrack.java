@@ -24,14 +24,14 @@ public class FaithTrack implements LocalModelElement, CLIPrintable {
         ArrayList<VaticanReportSection> vaticanReportSections = new ArrayList<>();
 
         VaticanReportSection vaticanReportSection;
-        while((vaticanReportSection = VRSParser.getInstance().getNextVRS()) != null) {
+        while ((vaticanReportSection = VRSParser.getInstance().getNextVRS()) != null) {
             vaticanReportSections.add(vaticanReportSection);
         }
 
         StringBuilder result = new StringBuilder();
-        for(int i = 0, checkPointIndex = 0; i <= faithTrackLength; ++i) {
+        for (int i = 0, checkPointIndex = 0; i <= faithTrackLength; ++i) {
             result.append(" ");
-            if(checkPointIndex < checkPoints.size() && checkPoints.get(checkPointIndex).getPosition() == i) {
+            if (checkPointIndex < checkPoints.size() && checkPoints.get(checkPointIndex).getPosition() == i) {
                 result.append(TextColour.YELLOW.escape()).append(Strings.format(checkPoints.get(checkPointIndex).getPoints(), 2)).append(TextColour.RESET);
                 checkPointIndex++;
             } else {
@@ -41,11 +41,11 @@ public class FaithTrack implements LocalModelElement, CLIPrintable {
 
         result.append(" \n");
 
-        for(int i = 0, vrsIndex = 0; i <= faithTrackLength; ++i) {
+        for (int i = 0, vrsIndex = 0; i <= faithTrackLength; ++i) {
             result.append("|");
 
-            if(vrsIndex < vaticanReportSections.size() && vaticanReportSections.get(vrsIndex).isInsideSection(i)) {
-                if(vaticanReportSections.get(vrsIndex).getPopeSpace() == i) {
+            if (vrsIndex < vaticanReportSections.size() && vaticanReportSections.get(vrsIndex).isInsideSection(i)) {
+                if (vaticanReportSections.get(vrsIndex).getPopeSpace() == i) {
                     result.append(BackGroundColor.RED.escape());
                     vrsIndex++;
                 } else {
@@ -53,13 +53,13 @@ public class FaithTrack implements LocalModelElement, CLIPrintable {
                 }
             }
 
-            if((computerPosition != null && computerPosition == i) || position == i) {
-                if(computerPosition != null && computerPosition == i) {
+            if ((computerPosition != null && computerPosition == i) || position == i) {
+                if (computerPosition != null && computerPosition == i) {
                     result.append(TextColour.GREY.escape()).append("\u25cf").append(TextColour.RESET);
                 } else {
                     result.append(" ");
                 }
-                if(position == i) {
+                if (position == i) {
                     result.append(TextColour.WHITE.escape()).append("\u25cf").append(TextColour.RESET);
                 } else {
                     result.append(" ");
@@ -74,11 +74,11 @@ public class FaithTrack implements LocalModelElement, CLIPrintable {
         result.append("|\n");
 
         boolean prevPopeSpace = false;
-        for(int i = 0, vrsIndex = 0; i <= faithTrackLength; ++i) {
+        for (int i = 0, vrsIndex = 0; i <= faithTrackLength; ++i) {
 
-            if(vrsIndex < vaticanReportSections.size() && vaticanReportSections.get(vrsIndex).getPopeSpace() == i) {
+            if (vrsIndex < vaticanReportSections.size() && vaticanReportSections.get(vrsIndex).getPopeSpace() == i) {
                 result.append("|");
-                if(receivedFavors.contains(vaticanReportSections.get(vrsIndex).getId())) {
+                if (receivedFavors.contains(vaticanReportSections.get(vrsIndex).getId())) {
                     result.append(TextColour.RED.escape()).append(Strings.format(vaticanReportSections.get(vrsIndex).getPoints(), 2)).append(TextColour.RESET);
                 } else {
                     result.append(TextColour.RED.escape()).append(" x").append(TextColour.RESET);
@@ -86,7 +86,7 @@ public class FaithTrack implements LocalModelElement, CLIPrintable {
                 vrsIndex++;
                 prevPopeSpace = true;
             } else {
-                if(prevPopeSpace) {
+                if (prevPopeSpace) {
                     result.append("|  ");
                 } else {
                     result.append("   ");
@@ -95,7 +95,7 @@ public class FaithTrack implements LocalModelElement, CLIPrintable {
             }
         }
 
-        if(prevPopeSpace) {
+        if (prevPopeSpace) {
             result.append("|");
         } else {
             result.append(" ");

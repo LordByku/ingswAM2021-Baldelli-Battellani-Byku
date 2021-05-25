@@ -15,17 +15,18 @@ public class ProductionLeaderCard extends LeaderCard {
 
     /**
      * The constructor sets the parameters of the leader cards.
-     * @param points victory points given by the leader card.
-     * @param requirements requirements needed to play the leader card.
+     *
+     * @param points            victory points given by the leader card.
+     * @param requirements      requirements needed to play the leader card.
      * @param productionDetails Production power of this card
-     * @throws InvalidPointsValueException points are less or equal to zero.
-     * @throws InvalidRequirementsException requirements is null.
+     * @throws InvalidPointsValueException       points are less or equal to zero.
+     * @throws InvalidRequirementsException      requirements is null.
      * @throws InvalidProductionDetailsException productionDetails is null
      */
     public ProductionLeaderCard(int points, LeaderCardRequirements requirements, ProductionDetails productionDetails, int id)
             throws InvalidPointsValueException, InvalidRequirementsException, InvalidProductionDetailsException, InvalidIdException {
         super(points, requirements, id, LeaderCardType.PRODUCTION);
-        if(productionDetails == null) {
+        if (productionDetails == null) {
             throw new InvalidProductionDetailsException();
         }
 
@@ -37,7 +38,7 @@ public class ProductionLeaderCard extends LeaderCard {
      */
     @Override
     public void play() {
-        if(isPlayable()) {
+        if (isPlayable()) {
             active = true;
             board.getProductionArea().addLeaderCardProduction(productionPower);
         }

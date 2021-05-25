@@ -1,7 +1,11 @@
 package it.polimi.ingsw.utility;
 
-import com.google.gson.*;
-import it.polimi.ingsw.controller.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
+import it.polimi.ingsw.controller.CommandBuffer;
+import it.polimi.ingsw.controller.CommandType;
 import it.polimi.ingsw.model.playerBoard.faithTrack.CheckPoint;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
@@ -16,7 +20,7 @@ public class Deserializer {
     }
 
     public static Deserializer getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new Deserializer();
         }
         return instance;
@@ -47,7 +51,7 @@ public class Deserializer {
     }
 
     public CommandBuffer getCommandBuffer(JsonElement jsonElement) {
-        if(jsonElement == JsonNull.INSTANCE) {
+        if (jsonElement == JsonNull.INSTANCE) {
             return null;
         }
         CommandType commandType = getCommandType(jsonElement.getAsJsonObject().get("commandType"));

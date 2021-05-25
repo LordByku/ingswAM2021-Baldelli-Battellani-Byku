@@ -5,5 +5,6 @@ package it.polimi.ingsw.model.leaderCards;
  * discounted resources is trying to get used
  */
 public class InvalidDiscountException extends RuntimeException {
-    public InvalidDiscountException() {}
+    public InvalidDiscountException() {
+    }
 }

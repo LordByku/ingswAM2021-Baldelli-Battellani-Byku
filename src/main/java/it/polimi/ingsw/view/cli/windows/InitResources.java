@@ -12,16 +12,16 @@ import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.view.cli.Strings;
 
 public class InitResources extends CommandWindow {
+    private final ConcreteResourceSet[] assignment;
     private int selectionsLeft;
     private int currentDepotIndex;
-    private final ConcreteResourceSet[] assignment;
 
     public InitResources(Client client) {
         selectionsLeft = LocalConfig.getInstance().getInitialResources(client.getNickname());
         System.out.println(selectionsLeft);
         currentDepotIndex = 0;
         assignment = new ConcreteResourceSet[LocalConfig.getInstance().getNumberOfDepots()];
-        for(int i = 0; i < assignment.length; ++i) {
+        for (int i = 0; i < assignment.length; ++i) {
             assignment[i] = new ConcreteResourceSet();
         }
     }
@@ -34,15 +34,15 @@ public class InitResources extends CommandWindow {
             assignment[currentDepotIndex].union(selection);
 
             selectionsLeft -= selection.size();
-            if(selectionsLeft > 0) {
+            if (selectionsLeft > 0) {
                 currentDepotIndex = (currentDepotIndex + 1) % assignment.length;
-                render(client);
+                CLI.getInstance().renderWindow(client);
             } else {
                 JsonObject message = buildCommandMessage("resources", JsonUtil.getInstance().serialize(assignment));
                 client.write(message.toString());
             }
         } catch (JsonSyntaxException | InvalidResourceException e) {
-            render(client);
+            CLI.getInstance().renderWindow(client);
         }
     }
 

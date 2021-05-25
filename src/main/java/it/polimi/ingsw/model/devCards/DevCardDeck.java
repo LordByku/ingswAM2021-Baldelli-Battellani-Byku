@@ -1,7 +1,5 @@
 package it.polimi.ingsw.model.devCards;
 
-import it.polimi.ingsw.view.cli.Strings;
-
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -20,9 +18,10 @@ public class DevCardDeck {
 
     /**
      * top() shows the card on the top of a deck of development card
+     *
      * @return the top of a deck without removing the card
      */
-    public DevCard top(){
+    public DevCard top() {
         return devCardStack.peek();
     }
 
@@ -36,15 +35,16 @@ public class DevCardDeck {
 
     /**
      * add represents the action to put a card on a top of a development card deck
+     *
      * @param devCard the card to be added
      * @throws InvalidDevCardException the devCard is null
-     * @throws InvalidAddTopException the card cannot be added to the top
+     * @throws InvalidAddTopException  the card cannot be added to the top
      */
     public void add(DevCard devCard) throws InvalidDevCardException, InvalidAddTopException {
-        if(devCard == null) {
+        if (devCard == null) {
             throw new InvalidDevCardException();
         }
-        if(!canAdd(devCard)) {
+        if (!canAdd(devCard)) {
             throw new InvalidAddTopException();
         }
         devCardStack.push(devCard.clone());
@@ -58,14 +58,14 @@ public class DevCardDeck {
     }
 
     public boolean isEmpty() {
-       return devCardStack.isEmpty();
+        return devCardStack.isEmpty();
     }
 
     /**
      * @return the sums of the development card's points
      */
     public int getPoints() {
-        int points=0;
+        int points = 0;
         for (DevCard devCard : devCardStack) {
             points += devCard.getPoints();
         }
@@ -76,34 +76,30 @@ public class DevCardDeck {
      * @return the card's level on the top
      */
     public CardLevel topLevel() {
-        if(isEmpty()) {
+        if (isEmpty()) {
             return null;
         }
         return top().getLevel();
     }
 
-    public String getCLIString(){
+    public String getCLIString() {
 
         char c;
-        int nl=0;
-        StringBuilder result= new StringBuilder("");
+        int nl = 0;
+        StringBuilder result = new StringBuilder();
 
         ArrayList<DevCard> devCards = this.getCards();
 
-        if (devCards.size()==0) {
+        if (devCards.size() == 0) {
             return "So empty right here";
         }
 
-        if(devCards.size()== 1) {
+        if (devCards.size() == 1) {
             result.append(devCards.get(0).getCLIString());
-        }
-
-        else if(devCards.size()== 2) {
+        } else if (devCards.size() == 2) {
             result.append(devCards.get(1).getCLIString()).append("\n");
             result.append(devCards.get(0).buildLastTwoRows(1));
-        }
-
-        else if (devCards.size()==3){
+        } else if (devCards.size() == 3) {
             result.append(devCards.get(2).getCLIString()).append("\n");
             result.append(devCards.get(1).buildLastTwoRows(1)).append("\n");
             result.append(devCards.get(0).buildLastTwoRows(2));

@@ -5,5 +5,6 @@ package it.polimi.ingsw.model.leaderCards;
  * invalid ConversionEffect is trying to get used
  */
 public class InvalidConversionEffectException extends RuntimeException {
-    public InvalidConversionEffectException() {}
+    public InvalidConversionEffectException() {
+    }
 }

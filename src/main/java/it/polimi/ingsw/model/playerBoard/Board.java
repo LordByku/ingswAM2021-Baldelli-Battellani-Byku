@@ -1,11 +1,11 @@
 package it.polimi.ingsw.model.playerBoard;
 
-import com.google.gson.Gson;
 import it.polimi.ingsw.model.playerBoard.faithTrack.FaithTrack;
-import it.polimi.ingsw.model.playerBoard.resourceLocations.*;
+import it.polimi.ingsw.model.playerBoard.resourceLocations.ResourceLocation;
+import it.polimi.ingsw.model.playerBoard.resourceLocations.StrongBox;
+import it.polimi.ingsw.model.playerBoard.resourceLocations.Warehouse;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.InvalidResourceSetException;
-import it.polimi.ingsw.parsing.BoardParser;
 
 /**
  * Board represents the board of each player
@@ -59,7 +59,8 @@ public class Board implements ResourceLocation, Scoring, Cloneable {
         warehouse = new Warehouse();
     }
 
-    public static void setLastTurn() {}
+    public static void setLastTurn() {
+    }
 
     public FaithTrack getFaithTrack() {
         return faithTrack;
@@ -96,6 +97,7 @@ public class Board implements ResourceLocation, Scoring, Cloneable {
     /**
      * containsResources checks whether a given ConcreteResourceSet
      * is contained in this Board
+     *
      * @param concreteResourceSet The ConcreteResourceSet to check
      * @return True iff this Board contains concreteResourceSet
      * @throws InvalidResourceSetException concreteResourceSet is null
@@ -108,6 +110,7 @@ public class Board implements ResourceLocation, Scoring, Cloneable {
 
     /**
      * getResources returns a copy of the resources contained in this Board
+     *
      * @return A ConcreteResourceSet representing the resources in this Board
      */
     @Override
@@ -119,6 +122,7 @@ public class Board implements ResourceLocation, Scoring, Cloneable {
 
     /**
      * clone returns a copy of the object
+     *
      * @return A copy of the object
      */
     public Board clone() {
@@ -133,6 +137,7 @@ public class Board implements ResourceLocation, Scoring, Cloneable {
     /**
      * getPoints returns the total points obtained by this board, not including
      * points awarded by resources
+     *
      * @return The points obtained by this board
      */
     @Override

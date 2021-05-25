@@ -5,5 +5,6 @@ package it.polimi.ingsw.model.gameZone;
  * in the MarbleMarket is trying to get accessed
  */
 public class InvalidMarbleMarketIndexException extends RuntimeException {
-    public InvalidMarbleMarketIndexException() {}
+    public InvalidMarbleMarketIndexException() {
+    }
 }

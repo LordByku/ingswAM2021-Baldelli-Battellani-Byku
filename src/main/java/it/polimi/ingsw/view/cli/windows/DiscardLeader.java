@@ -1,9 +1,8 @@
 package it.polimi.ingsw.view.cli.windows;
 
-import com.google.gson.JsonObject;
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.utility.JsonUtil;
 import it.polimi.ingsw.view.cli.CLI;
+import it.polimi.ingsw.view.localModel.Player;
 
 public class DiscardLeader extends CommandWindow {
     public DiscardLeader(Client client) {
@@ -11,18 +10,13 @@ public class DiscardLeader extends CommandWindow {
 
     @Override
     public void handleUserMessage(Client client, String line) {
-        try {
-            int index = Integer.parseInt(line);
-            JsonObject message = buildCommandMessage("index", JsonUtil.getInstance().serialize(index));
-            client.write(message.toString());
-            return;
-        } catch (NumberFormatException e) {}
-
-        render(client);
+        handleLeaderCard(client, line);
     }
 
     @Override
     public void render(Client client) {
+        Player self = client.getModel().getPlayer(client.getNickname());
+        CLI.getInstance().showLeaderCards(self.getBoard().getHandLeaderCards());
         CLI.getInstance().discardLeaderCard();
     }
 }

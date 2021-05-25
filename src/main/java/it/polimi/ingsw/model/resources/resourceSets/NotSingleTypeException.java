@@ -5,5 +5,6 @@ package it.polimi.ingsw.model.resources.resourceSets;
  * of at most one type was expected
  */
 public class NotSingleTypeException extends RuntimeException {
-    public NotSingleTypeException() {}
+    public NotSingleTypeException() {
+    }
 }

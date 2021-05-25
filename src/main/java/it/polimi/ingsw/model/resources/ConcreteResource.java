@@ -21,6 +21,7 @@ public enum ConcreteResource implements Resource {
 
     /**
      * getResource() returns the value of the ConcreteResource
+     *
      * @return The ConcreteResource
      */
     @Override
@@ -30,20 +31,12 @@ public enum ConcreteResource implements Resource {
 
     /**
      * isConcrete() always returns True for ConcreteResources
+     *
      * @return True
      */
     @Override
     public boolean isConcrete() {
         return true;
-    }
-
-    /**
-     * cleanClone simply return this value of the enum
-     * @return The value of this ConcreteResource
-     */
-    @Override
-    public Resource cleanClone() {
-        return this;
     }
 
     public TextColour getColour() {

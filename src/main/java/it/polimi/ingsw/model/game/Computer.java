@@ -9,13 +9,13 @@ import it.polimi.ingsw.model.playerBoard.faithTrack.FaithTrack;
  */
 public class Computer extends Player {
     /**
+     * faithTrack is the FaithTrack of the Computer
+     */
+    private final FaithTrack faithTrack;
+    /**
      * deck is the ActionTokenDeck of the Computer
      */
     private ActionTokenDeck deck;
-    /**
-     * faithTrack is the FaithTrack of the Computer
-     */
-    private FaithTrack faithTrack;
 
     /**
      * The constructor initializes deck to a new ActionTokenDeck
@@ -49,6 +49,7 @@ public class Computer extends Player {
 
     /**
      * getFaithTrack returns the FaithTrack of the Computer
+     *
      * @return The FaithTrack of the Computer
      */
     public FaithTrack getFaithTrack() {

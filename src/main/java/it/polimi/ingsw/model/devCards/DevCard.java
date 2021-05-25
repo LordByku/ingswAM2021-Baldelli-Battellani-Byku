@@ -16,9 +16,10 @@ import java.util.HashSet;
 
 public class DevCard implements Scoring, Cloneable {
     /**
-     * reqResources represents the set of resources required to buy the card
+     * usedIds is a container for the ids already used for development cards
      */
-    private ConcreteResourceSet reqResources;
+    private final static HashSet<Integer> usedIds = new HashSet<>();
+    protected static int width = 0;
     /**
      * colour represents the card's colour
      */
@@ -28,10 +29,6 @@ public class DevCard implements Scoring, Cloneable {
      */
     private final CardLevel level;
     /**
-     * productionPower represents the production details of the card
-     */
-    private ProductionDetails productionPower;
-    /**
      * points represents the card's points
      */
     private final int points;
@@ -40,11 +37,13 @@ public class DevCard implements Scoring, Cloneable {
      */
     private final int id;
     /**
-     * usedIds is a container for the ids already used for development cards
+     * reqResources represents the set of resources required to buy the card
      */
-    private final static HashSet<Integer> usedIds = new HashSet<>();
-
-    protected static int width = 0;
+    private ConcreteResourceSet reqResources;
+    /**
+     * productionPower represents the production details of the card
+     */
+    private ProductionDetails productionPower;
 
     /**
      * The constructor
@@ -106,7 +105,7 @@ public class DevCard implements Scoring, Cloneable {
      * @throws InvalidBoardException if the board is null
      */
     public void play(Board board, int deckIndex) throws InvalidBoardException {
-        if(board == null){
+        if (board == null) {
             throw new InvalidBoardException();
         }
         board.getDevelopmentCardArea().addDevCard(this, deckIndex);
@@ -175,12 +174,10 @@ public class DevCard implements Scoring, Cloneable {
         if (this.level == CardLevel.I) {
             first = " ";
             second = ".";
-        }
-        else if(this.level==CardLevel.II){
-            first = " " ;
+        } else if (this.level == CardLevel.II) {
+            first = " ";
             second = ":";
-        }
-        else{
+        } else {
             first = ".";
             second = ":";
         }
@@ -210,7 +207,7 @@ public class DevCard implements Scoring, Cloneable {
     }
 
     public StringBuilder buildLastTwoRows(int offset) {
-        StringBuilder result = new StringBuilder("");
+        StringBuilder result = new StringBuilder();
         for (int i = 0; i < offset; ++i) {
             result.append(" ");
         }

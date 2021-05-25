@@ -1,28 +1,33 @@
 package it.polimi.ingsw.network.client;
 
 import com.google.gson.JsonObject;
+import it.polimi.ingsw.controller.LocalController;
 import it.polimi.ingsw.network.client.clientStates.ClientState;
 import it.polimi.ingsw.network.client.clientStates.Lobby;
 import it.polimi.ingsw.network.client.clientStates.NicknameSelection;
-import it.polimi.ingsw.view.localModel.LocalModel;
 import it.polimi.ingsw.view.cli.CLI;
+import it.polimi.ingsw.view.localModel.LocalModel;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 public class Client {
     private final String hostname;
     private final int port;
+    private final int timerDelay = 10000;
     private ClientState clientState;
     private String nickname;
     private PrintWriter serverOut;
     private Socket socket;
     private LocalModel localModel;
-    private final int timerDelay = 10000;
     private Boolean singlePlayer;
+    private BlockingQueue<String> readBuffer;
+    private BlockingQueue<String> writeBuffer;
 
     public Client(String hostname, int port) {
         this.hostname = hostname;
@@ -32,7 +37,7 @@ public class Client {
     }
 
     public synchronized void handleServerMessage(String line) {
-        if(line.equals("ping")) {
+        if (line.equals("ping")) {
             write("pong");
         } else {
             clientState.handleServerMessage(this, line);
@@ -75,16 +80,24 @@ public class Client {
         this.clientState = clientState;
     }
 
-    public void setModel(LocalModel localModel) {
-        this.localModel = localModel;
-    }
-
     public LocalModel getModel() {
         return localModel;
     }
 
+    public void setModel(LocalModel localModel) {
+        this.localModel = localModel;
+    }
+
     public void write(String message) {
-        serverOut.println(message);
+        if (singlePlayer) {
+            try {
+                writeBuffer.put(message);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } else {
+            serverOut.println(message);
+        }
     }
 
     public void openServerCommunication() throws IOException {
@@ -104,7 +117,7 @@ public class Client {
     }
 
     public void reconnect() {
-        if(!socket.isClosed()) {
+        if (!socket.isClosed()) {
             closeServerCommunication();
         }
 
@@ -129,5 +142,16 @@ public class Client {
         jsonObject.addProperty("nickname", getNickname());
         write(jsonObject.toString());
         setState(new Lobby());
+    }
+
+    public void startLocalController() {
+        readBuffer = new ArrayBlockingQueue<>(1);
+        writeBuffer = new ArrayBlockingQueue<>(1);
+
+        Thread localClientCommunication = new Thread(new LocalClientCommunication(this, readBuffer));
+        localClientCommunication.start();
+
+        Thread controller = new Thread(new LocalController(this, writeBuffer, readBuffer));
+        controller.start();
     }
 }

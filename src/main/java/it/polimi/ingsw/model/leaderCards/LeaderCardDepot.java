@@ -12,16 +12,17 @@ public class LeaderCardDepot extends Depot {
     /**
      * The type of resource storable into the depot.
      */
-    private ConcreteResource type;
+    private final ConcreteResource type;
 
     /**
      * Constructor sets the type of resources that can be stored and calls the Depot constructor with 2 slots.
+     *
      * @param type of resources that can be stored.
      * @throws InvalidResourceException type is null.
      */
     public LeaderCardDepot(ConcreteResource type, int depotSize) throws InvalidResourceException {
         super(depotSize);
-        if(type == null){
+        if (type == null) {
             throw new InvalidResourceException();
         }
         this.type = type;
@@ -29,6 +30,7 @@ public class LeaderCardDepot extends Depot {
 
     /**
      * getResourceType returns the type of resource that can be stored in this Depot
+     *
      * @return The type of ConcreteResource that can be stored in this Depot
      */
     @Override

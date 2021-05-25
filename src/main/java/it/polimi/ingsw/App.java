@@ -12,14 +12,14 @@ public class App {
     }
 
     public static void main(String[] args) {
-        if(args.length < 1) {
+        if (args.length < 1) {
             printUsage();
             return;
         }
 
         String mode = args[0];
-        if(mode.equals("server")) {
-            if(args.length != 2) {
+        if (mode.equals("server")) {
+            if (args.length != 2) {
                 printUsage();
                 return;
             }
@@ -29,8 +29,8 @@ public class App {
             Server server = new Server(port);
 
             server.start();
-        } else if(mode.equals("client")) {
-            if(args.length != 3) {
+        } else if (mode.equals("client")) {
+            if (args.length != 3) {
                 printUsage();
                 return;
             }

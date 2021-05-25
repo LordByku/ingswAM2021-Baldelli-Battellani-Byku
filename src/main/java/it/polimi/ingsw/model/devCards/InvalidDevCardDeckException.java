@@ -5,5 +5,6 @@ package it.polimi.ingsw.model.devCards;
  * development card deck is trying to get used
  */
 public class InvalidDevCardDeckException extends RuntimeException {
-    public InvalidDevCardDeckException(){}
+    public InvalidDevCardDeckException() {
+    }
 }

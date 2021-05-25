@@ -5,7 +5,8 @@ import com.google.gson.JsonObject;
 import it.polimi.ingsw.controller.CommandBuffer;
 import it.polimi.ingsw.controller.CommandType;
 import it.polimi.ingsw.controller.InvalidCommandException;
-import it.polimi.ingsw.model.game.*;
+import it.polimi.ingsw.model.game.Game;
+import it.polimi.ingsw.model.game.Person;
 import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.network.server.GameStateSerializer;
 import it.polimi.ingsw.utility.Deserializer;
@@ -29,7 +30,8 @@ public class GameStarted extends ServerState {
                 try {
                     clientHandler.setBuffer(commandType.getCommandBuffer(clientHandler.getPerson()));
                     System.out.println("New buffer successfully created");
-                    clientHandler.broadcast("command", clientHandler.serializeCommandBuffer());
+                    JsonObject commandObject = JsonUtil.getInstance().serializeCommandBuffer(clientHandler.getCommandBuffer(), clientHandler.getPerson());
+                    clientHandler.broadcast("command", commandObject);
                 } catch (InvalidCommandException e) {
                     clientHandler.error("Invalid request");
                 }
@@ -38,9 +40,10 @@ public class GameStarted extends ServerState {
             }
             case "cancel": {
                 // client cancels the current command buffer
-                if(commandBuffer != null && !commandBuffer.isCompleted() && commandBuffer.cancel()) {
+                if (commandBuffer != null && !commandBuffer.isCompleted() && commandBuffer.cancel()) {
                     clientHandler.setBuffer(null);
-                    clientHandler.broadcast("command", clientHandler.serializeCommandBuffer());
+                    JsonObject commandObject = JsonUtil.getInstance().serializeCommandBuffer(clientHandler.getCommandBuffer(), clientHandler.getPerson());
+                    clientHandler.broadcast("command", commandObject);
                 } else {
                     clientHandler.error("Invalid request");
                 }
@@ -49,17 +52,18 @@ public class GameStarted extends ServerState {
             }
             case "action": {
                 // client executes an action on the current command buffer
-                if(commandBuffer != null && !commandBuffer.isCompleted()) {
+                if (commandBuffer != null && !commandBuffer.isCompleted()) {
                     String command = json.get("command").getAsString();
                     JsonElement value = json.get("value");
 
                     Consumer<GameStateSerializer> lambda = commandBuffer.handleMessage(command, value);
 
-                    if(lambda != null) {
+                    if (lambda != null) {
                         clientHandler.updateGameState(lambda);
                     }
 
-                    clientHandler.broadcast("command", clientHandler.serializeCommandBuffer());
+                    JsonObject commandObject = JsonUtil.getInstance().serializeCommandBuffer(clientHandler.getCommandBuffer(), clientHandler.getPerson());
+                    clientHandler.broadcast("command", commandObject);
                 } else {
                     clientHandler.error("Invalid request");
                 }
@@ -69,7 +73,17 @@ public class GameStarted extends ServerState {
             case "endTurn": {
                 // client ends the turn
                 Person person = clientHandler.getPerson();
-                if(person.isActivePlayer() && person.mainAction()) {
+                if (person.isActivePlayer() && person.mainAction()) {
+                    if (Game.getInstance().getNumberOfPlayers() == 1) {
+                        Consumer<GameStateSerializer> lambda = (serializer) -> {
+                            serializer.addCardMarket();
+                            serializer.addFaithTrack(person);
+                            serializer.addFlippedActionToken();
+                        };
+
+                        clientHandler.updateGameState(lambda);
+                    }
+
                     clientHandler.endTurn();
                 } else {
                     clientHandler.error("Invalid request");

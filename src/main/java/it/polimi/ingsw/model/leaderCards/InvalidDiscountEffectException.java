@@ -5,5 +5,6 @@ package it.polimi.ingsw.model.leaderCards;
  * DiscountEffect is trying to get used
  */
 public class InvalidDiscountEffectException extends RuntimeException {
-    public InvalidDiscountEffectException() {}
+    public InvalidDiscountEffectException() {
+    }
 }
