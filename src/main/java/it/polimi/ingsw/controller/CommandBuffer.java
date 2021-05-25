@@ -70,13 +70,19 @@ public abstract class CommandBuffer {
         completed = true;
     }
 
+    public Consumer<GameStateSerializer> kill() {
+        if (isReady()) {
+            return complete();
+        } else {
+            return cancel();
+        }
+    }
+
     public abstract boolean isReady();
 
-    public abstract void complete() throws CommandNotCompleteException;
+    public abstract Consumer<GameStateSerializer> complete() throws CommandNotCompleteException;
 
-    public abstract boolean cancel();
-
-    public abstract void kill();
+    public abstract Consumer<GameStateSerializer> cancel();
 
     public abstract Consumer<GameStateSerializer> handleMessage(String command, JsonElement value) throws RuntimeException;
 

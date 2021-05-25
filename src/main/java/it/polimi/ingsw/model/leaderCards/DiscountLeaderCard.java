@@ -19,6 +19,8 @@ public class DiscountLeaderCard extends LeaderCard {
      */
     private final int discount;
 
+    private final DiscountEffect discountEffect;
+
     /**
      * The constructor sets the parameters of the leader cards.
      *
@@ -43,6 +45,7 @@ public class DiscountLeaderCard extends LeaderCard {
 
         this.type = type;
         this.discount = discount;
+        discountEffect = new DiscountEffect(type);
     }
 
     /**
@@ -52,12 +55,16 @@ public class DiscountLeaderCard extends LeaderCard {
     public void play() {
         if (isPlayable()) {
             active = true;
-            board.getDiscountArea().addDiscountEffect(new DiscountEffect(this.type));
+            board.getDiscountArea().addDiscountEffect(discountEffect);
         }
     }
 
     @Override
     public String getEffectString() {
         return "???? -1" + type.getCLIString();
+    }
+
+    public DiscountEffect getDiscountEffect() {
+        return discountEffect;
     }
 }

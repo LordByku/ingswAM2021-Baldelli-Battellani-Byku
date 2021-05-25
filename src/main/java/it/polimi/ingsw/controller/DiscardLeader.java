@@ -27,7 +27,7 @@ public class DiscardLeader extends CommandBuffer {
     }
 
     @Override
-    public void complete() throws CommandNotCompleteException {
+    public Consumer<GameStateSerializer> complete() throws CommandNotCompleteException {
         if (!isReady()) {
             throw new CommandNotCompleteException();
         }
@@ -37,16 +37,17 @@ public class DiscardLeader extends CommandBuffer {
         leaderCards.get(index).play();
 
         setCompleted();
+
+        return (serializer) -> {
+            serializer.addFaithTrack(person);
+            serializer.addHandLeaderCards(person);
+        };
     }
 
     @Override
-    public boolean cancel() {
-        return true;
-    }
-
-    @Override
-    public void kill() {
-
+    public Consumer<GameStateSerializer> cancel() {
+        return (serializer) -> {
+        };
     }
 
     @Override
@@ -57,12 +58,7 @@ public class DiscardLeader extends CommandBuffer {
         }
 
         if (isReady()) {
-            complete();
-            Person person = getPerson();
-            return (serializer) -> {
-                serializer.addFaithTrack(person);
-                serializer.addHandLeaderCards(person);
-            };
+            return complete();
         } else {
             return null;
         }

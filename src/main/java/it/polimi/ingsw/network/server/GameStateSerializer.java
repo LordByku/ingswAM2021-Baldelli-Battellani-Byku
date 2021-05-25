@@ -1,6 +1,8 @@
 package it.polimi.ingsw.network.server;
 
 import com.google.gson.*;
+import it.polimi.ingsw.model.devCards.CardColour;
+import it.polimi.ingsw.model.devCards.CardLevel;
 import it.polimi.ingsw.model.devCards.DevCard;
 import it.polimi.ingsw.model.devCards.DevCardDeck;
 import it.polimi.ingsw.model.game.Game;
@@ -8,6 +10,7 @@ import it.polimi.ingsw.model.game.Person;
 import it.polimi.ingsw.model.game.Player;
 import it.polimi.ingsw.model.game.PlayerType;
 import it.polimi.ingsw.model.game.actionTokens.ActionTokenDeck;
+import it.polimi.ingsw.model.gameZone.CardMarket;
 import it.polimi.ingsw.model.gameZone.MarbleMarket;
 import it.polimi.ingsw.model.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.playerBoard.faithTrack.PopeFavor;
@@ -187,35 +190,32 @@ public class GameStateSerializer {
     }
 
     public JsonObject cardMarket() {
-        JsonObject cardMarket = new JsonObject();
+        JsonObject marketObject = new JsonObject();
         JsonArray table = new JsonArray();
-        JsonArray cardRows1 = new JsonArray();
-        JsonArray cardRows2 = new JsonArray();
-        JsonArray cardRows3 = new JsonArray();
-        for (int i = 0; i < 4; i++) {
-            JsonObject cardDeck = new JsonObject();
-            cardDeck.addProperty("topCard", gson.toJson(Game.getInstance().getGameZone().getCardMarket().top(0, i).getId()));
-            cardDeck.addProperty("quantity", gson.toJson(Game.getInstance().getGameZone().getCardMarket().size(0, i)));
-            cardRows1.add(cardDeck);
-        }
-        for (int i = 0; i < 4; i++) {
-            JsonObject cardDeck = new JsonObject();
-            cardDeck.addProperty("topCard", gson.toJson(Game.getInstance().getGameZone().getCardMarket().top(1, i).getId()));
-            cardDeck.addProperty("quantity", gson.toJson(Game.getInstance().getGameZone().getCardMarket().size(1, i)));
-            cardRows2.add(cardDeck);
-        }
-        for (int i = 0; i < 4; i++) {
-            JsonObject cardDeck = new JsonObject();
-            cardDeck.addProperty("topCard", gson.toJson(Game.getInstance().getGameZone().getCardMarket().top(2, i).getId()));
-            cardDeck.addProperty("quantity", gson.toJson(Game.getInstance().getGameZone().getCardMarket().size(2, i)));
-            cardRows3.add(cardDeck);
-        }
-        table.add(cardRows1);
-        table.add(cardRows2);
-        table.add(cardRows3);
 
-        cardMarket.add("market", table);
-        return cardMarket;
+        CardMarket cardMarket = Game.getInstance().getGameZone().getCardMarket();
+
+        for(int i = 0; i < CardLevel.values().length; ++i) {
+            JsonArray row = new JsonArray();
+
+            for(int j = 0; j < CardColour.values().length; ++j) {
+                JsonObject deck = new JsonObject();
+
+                if(cardMarket.size(i, j) == 0) {
+                    deck.add("topCard", JsonNull.INSTANCE);
+                } else {
+                    deck.addProperty("topCard", gson.toJson(cardMarket.top(i, j).getId()));
+                }
+                deck.addProperty("quantity", gson.toJson(cardMarket.size(i, j)));
+
+                row.add(deck);
+            }
+
+            table.add(row);
+        }
+
+        marketObject.add("market", table);
+        return marketObject;
     }
 
     public JsonObject gameZone() {

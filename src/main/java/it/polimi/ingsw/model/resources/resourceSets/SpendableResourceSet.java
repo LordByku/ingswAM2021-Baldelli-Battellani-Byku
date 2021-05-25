@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.resources.resourceSets;
 
 import it.polimi.ingsw.model.resources.ChoiceResource;
+import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.Resource;
 
 import java.util.ArrayList;
@@ -80,13 +81,22 @@ public class SpendableResourceSet extends TransactionResourceSet {
         ArrayList<ChoiceResource> choiceResources = toMatch.getChoiceResources();
         ConcreteResourceSet currentConcreteResourceSet = toMatch.getConcreteResources();
 
+        int choices = 0;
         // ChoiceResources in SpendableResourceSet always have a FullChoiceSet
         for (Resource resource : choiceResources) {
             if (resource.isConcrete()) {
                 currentConcreteResourceSet.addResource(resource.getResource());
+            } else {
+                choices++;
             }
         }
 
-        return concreteResourceSet.contains(currentConcreteResourceSet);
+        for (ConcreteResource resource : ConcreteResource.values()) {
+            if (concreteResourceSet.getCount(resource) > currentConcreteResourceSet.getCount(resource)) {
+                choices -= concreteResourceSet.getCount(resource) - currentConcreteResourceSet.getCount(resource);
+            }
+        }
+
+        return choices >= 0;
     }
 }

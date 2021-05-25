@@ -16,9 +16,9 @@ import it.polimi.ingsw.model.resources.resourceSets.ChoiceResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ObtainableResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.SpendableResourceSet;
-import it.polimi.ingsw.network.server.GameStateSerializer;
-import it.polimi.ingsw.parsing.BoardParser;
 import it.polimi.ingsw.utility.Deserializer;
+import it.polimi.ingsw.parsing.BoardParser;
+import it.polimi.ingsw.network.server.GameStateSerializer;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -51,7 +51,7 @@ public class Production extends CommandBuffer {
     }
 
     @Override
-    public void complete() throws CommandNotCompleteException {
+    public Consumer<GameStateSerializer> complete() throws CommandNotCompleteException {
         if (!isReady()) {
             throw new CommandNotCompleteException();
         }
@@ -67,23 +67,33 @@ public class Production extends CommandBuffer {
 
         person.mainActionDone();
         setCompleted();
+
+        return (serializer) -> {
+            serializer.addWarehouse(person);
+            serializer.addStrongbox(person);
+            serializer.addFaithTrack(person);
+        };
     }
 
     @Override
-    public boolean cancel() {
+    public Consumer<GameStateSerializer> cancel() {
         Person person = getPerson();
         Warehouse warehouse = person.getBoard().getWarehouse();
         StrongBox strongBox = person.getBoard().getStrongBox();
-        for (int i = 0; i < warehouseToSpend.length; ++i) {
-            warehouse.addResources(i, warehouseToSpend[i]);
+
+        if (warehouseToSpend != null) {
+            for (int i = 0; i < warehouseToSpend.length; ++i) {
+                warehouse.addResources(i, warehouseToSpend[i]);
+            }
         }
-        strongBox.addResources(strongboxToSpend);
-        return true;
-    }
+        if (strongboxToSpend != null) {
+            strongBox.addResources(strongboxToSpend);
+        }
 
-    @Override
-    public void kill() {
-
+        return (serializer) -> {
+            serializer.addWarehouse(person);
+            serializer.addStrongbox(person);
+        };
     }
 
     @Override
@@ -135,13 +145,7 @@ public class Production extends CommandBuffer {
 
     private Consumer<GameStateSerializer> checkCompletion() {
         if (isReady()) {
-            complete();
-            Person person = getPerson();
-            return (serializer) -> {
-                serializer.addWarehouse(person);
-                serializer.addStrongbox(person);
-                serializer.addFaithTrack(person);
-            };
+            return complete();
         } else {
             Person person = getPerson();
             return (serializer) -> {

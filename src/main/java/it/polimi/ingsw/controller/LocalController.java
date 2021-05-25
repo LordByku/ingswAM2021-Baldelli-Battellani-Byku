@@ -6,10 +6,10 @@ import it.polimi.ingsw.model.game.Game;
 import it.polimi.ingsw.model.game.GameEndedException;
 import it.polimi.ingsw.model.game.GameNotStartedException;
 import it.polimi.ingsw.model.game.Person;
-import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.network.server.GameStateSerializer;
 import it.polimi.ingsw.utility.Deserializer;
 import it.polimi.ingsw.utility.JsonUtil;
+import it.polimi.ingsw.network.client.Client;
+import it.polimi.ingsw.network.server.GameStateSerializer;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.function.Consumer;
@@ -50,8 +50,12 @@ public class LocalController implements Runnable {
             }
             case "cancel": {
                 // client cancels the current command buffer
-                if (commandBuffer != null && !commandBuffer.isCompleted() && commandBuffer.cancel()) {
+                Consumer<GameStateSerializer> lambda;
+                if (commandBuffer != null && !commandBuffer.isCompleted() && (lambda = commandBuffer.cancel()) != null) {
                     commandBuffer = null;
+
+                    updateGameState(lambda);
+
                     JsonObject commandObject = JsonUtil.getInstance().serializeCommandBuffer(commandBuffer, person);
                     ok("command", commandObject);
                 } else {

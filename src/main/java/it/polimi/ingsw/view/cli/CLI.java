@@ -150,8 +150,13 @@ public class CLI {
         System.out.println("Insert the index of the leader card you want to play or press [x] to go back:");
     }
 
-    public void purchaseDevCard() {
-        System.out.println("Insert the indices of row and column of the card you want to buy followed by the index of the deck you want to place the card in: [row] [column] [deck]");
+    public void purchaseSelectRowAndCol() {
+        System.out.println("Insert row and column of the card you want to buy from the card market:");
+        System.out.println("[x] Back");
+    }
+
+    public void purchaseSelectDeckIndex() {
+        System.out.println("Insert the index of the deck you want to place the card in:");
         System.out.println("[x] Back");
     }
 
@@ -222,7 +227,7 @@ public class CLI {
 
     public void showWarehouse(ArrayList<ConcreteResourceSet> warehouse, ArrayList<Integer> playedLeaderCards) {
         ArrayList<Integer> depotSizes = LocalConfig.getInstance().getDepotSizes();
-        int maxDepotSize = 2;
+        int maxDepotSize = 0;
         for (int depotSize : depotSizes) {
             maxDepotSize = Math.max(2, depotSize);
         }

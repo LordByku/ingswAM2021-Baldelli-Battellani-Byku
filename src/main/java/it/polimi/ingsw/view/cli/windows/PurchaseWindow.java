@@ -1,14 +1,18 @@
 package it.polimi.ingsw.view.cli.windows;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 import it.polimi.ingsw.controller.Purchase;
+import it.polimi.ingsw.model.leaderCards.DiscountLeaderCard;
+import it.polimi.ingsw.model.leaderCards.LeaderCard;
+import it.polimi.ingsw.model.leaderCards.LeaderCardType;
 import it.polimi.ingsw.model.resources.InvalidResourceException;
 import it.polimi.ingsw.model.resources.resourceSets.ChoiceResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.network.client.LocalConfig;
 import it.polimi.ingsw.parsing.DevCardsParser;
+import it.polimi.ingsw.parsing.LeaderCardsParser;
 import it.polimi.ingsw.utility.JsonUtil;
 import it.polimi.ingsw.utility.UserParser;
 import it.polimi.ingsw.view.cli.CLI;
@@ -22,7 +26,8 @@ public class PurchaseWindow extends CommandWindow {
     private final ConcreteResourceSet strongbox;
 
     public PurchaseWindow(Client client) {
-        warehouse = new ConcreteResourceSet[LocalConfig.getInstance().getNumberOfDepots()];
+        Player self = client.getModel().getPlayer(client.getNickname());
+        warehouse = new ConcreteResourceSet[self.getBoard().getWarehouse().size()];
         for (int i = 0; i < warehouse.length; ++i) {
             warehouse[i] = new ConcreteResourceSet();
         }
@@ -65,16 +70,20 @@ public class PurchaseWindow extends CommandWindow {
                         return;
                     }
                     default: {
-                        if (words.length == 3) {
+                        if (words.length == 2) {
                             int row = Integer.parseInt(words[0]);
                             int col = Integer.parseInt(words[1]);
-                            int deckIndex = Integer.parseInt(words[2]);
 
                             JsonObject jsonObject = new JsonObject();
                             jsonObject.addProperty("row", row);
                             jsonObject.addProperty("column", col);
-                            jsonObject.addProperty("deckIndex", deckIndex);
-                            JsonObject message = buildCommandMessage("selection", jsonObject);
+                            JsonObject message = buildCommandMessage("cardSelection", jsonObject);
+                            client.write(message.toString());
+                            return;
+                        } else {
+                            int deckIndex = Integer.parseInt(line);
+
+                            JsonObject message = buildCommandMessage("deckSelection", new JsonPrimitive(deckIndex));
                             client.write(message.toString());
                             return;
                         }
@@ -99,21 +108,34 @@ public class PurchaseWindow extends CommandWindow {
     public void render(Client client) {
         Player self = client.getModel().getPlayer(client.getNickname());
         Purchase commandBuffer = (Purchase) self.getCommandBuffer();
-        if (commandBuffer.getDeckIndex() == -1) {
-            CLI.getInstance().purchaseDevCard();
+        if (commandBuffer.getMarketRow() == -1 || commandBuffer.getMarketCol() == -1) {
+            CLI.getInstance().purchaseSelectRowAndCol();
         } else {
-            int row = commandBuffer.getMarketRow();
-            int col = commandBuffer.getMarketCol();
-            int devCardID = client.getModel().getGameZone().getCardMarket().getDevCard(row, col);
-            ConcreteResourceSet requirements = DevCardsParser.getInstance().getCard(devCardID).getReqResources();
-            ChoiceResourceSet toSpend = new ChoiceResourceSet();
-            toSpend.union(requirements);
+            if (commandBuffer.getDeckIndex() == -1) {
+                CLI.getInstance().purchaseSelectDeckIndex();
+            } else {
+                int row = commandBuffer.getMarketRow();
+                int col = commandBuffer.getMarketCol();
+                int devCardID = client.getModel().getGameZone().getCardMarket().getDevCard(row, col);
+                ConcreteResourceSet requirements = DevCardsParser.getInstance().getCard(devCardID).getReqResources();
 
-            ConcreteResourceSet currentSelection = commandBuffer.getCurrentTotalToSpend();
+                for (int leaderCardID : self.getBoard().getPlayedLeaderCards()) {
+                    LeaderCard leaderCard = LeaderCardsParser.getInstance().getCard(leaderCardID);
+                    if (leaderCard.isType(LeaderCardType.DISCOUNT)) {
+                        DiscountLeaderCard discountLeaderCard = (DiscountLeaderCard) leaderCard;
+                        requirements = discountLeaderCard.getDiscountEffect().applyDiscount(requirements);
+                    }
+                }
 
-            CLI.getInstance().showWarehouse(self.getBoard().getWarehouse(), self.getBoard().getPlayedLeaderCards());
-            CLI.getInstance().showStrongbox(self.getBoard().getStrongBox());
-            CLI.getInstance().spendResources(toSpend, currentSelection);
+                ChoiceResourceSet toSpend = new ChoiceResourceSet();
+                toSpend.union(requirements);
+
+                ConcreteResourceSet currentSelection = commandBuffer.getCurrentTotalToSpend();
+
+                CLI.getInstance().showWarehouse(self.getBoard().getWarehouse(), self.getBoard().getPlayedLeaderCards());
+                CLI.getInstance().showStrongbox(self.getBoard().getStrongBox());
+                CLI.getInstance().spendResources(toSpend, currentSelection);
+            }
         }
     }
 }

@@ -27,22 +27,24 @@ public class PlayLeader extends CommandBuffer {
     }
 
     @Override
-    public void complete() throws CommandNotCompleteException {
+    public Consumer<GameStateSerializer> complete() throws CommandNotCompleteException {
         Person person = getPerson();
         ArrayList<LeaderCard> leaderCards = person.getBoard().getLeaderCardArea().getLeaderCards();
         leaderCards.get(index).play();
 
         setCompleted();
+
+        return (serializer) -> {
+            serializer.addHandLeaderCards(person);
+            serializer.addPlayedLeaderCards(person);
+            serializer.addWarehouse(person);
+        };
     }
 
     @Override
-    public boolean cancel() {
-        return true;
-    }
-
-    @Override
-    public void kill() {
-
+    public Consumer<GameStateSerializer> cancel() {
+        return (serializer) -> {
+        };
     }
 
     @Override
@@ -53,12 +55,7 @@ public class PlayLeader extends CommandBuffer {
         }
 
         if (isReady()) {
-            complete();
-            Person person = getPerson();
-            return (serializer) -> {
-                serializer.addHandLeaderCards(person);
-                serializer.addPlayedLeaderCards(person);
-            };
+            return complete();
         } else {
             return null;
         }

@@ -13,8 +13,8 @@ import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ChoiceResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ObtainableResourceSet;
-import it.polimi.ingsw.network.server.GameStateSerializer;
 import it.polimi.ingsw.utility.Deserializer;
+import it.polimi.ingsw.network.server.GameStateSerializer;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;
@@ -48,7 +48,7 @@ public class Market extends CommandBuffer {
     }
 
     @Override
-    public void complete() throws CommandNotCompleteException {
+    public Consumer<GameStateSerializer> complete() throws CommandNotCompleteException {
         if (!isReady()) {
             throw new CommandNotCompleteException();
         }
@@ -81,19 +81,25 @@ public class Market extends CommandBuffer {
 
         person.mainActionDone();
         setCompleted();
+
+        ArrayList<Player> players = Game.getInstance().getPlayers();
+        return (serializer) -> {
+            serializer.addMarbleMarket();
+            for (Player player : players) {
+                if (player.getPlayerType() == PlayerType.PERSON) {
+                    serializer.addFaithTrack((Person) player);
+                }
+            }
+        };
     }
 
     @Override
-    public boolean cancel() {
-        return !selectionLocked;
-    }
-
-    @Override
-    public void kill() {
-        if (isReady()) {
-            complete();
+    public Consumer<GameStateSerializer> cancel() {
+        if (selectionLocked) {
+            return null;
         } else {
-            cancel();
+            return (serializer) -> {
+            };
         }
     }
 
@@ -201,16 +207,7 @@ public class Market extends CommandBuffer {
             }
             case "confirmWarehouse": {
                 if (isReady()) {
-                    complete();
-                    ArrayList<Player> players = Game.getInstance().getPlayers();
-                    return (serializer) -> {
-                        serializer.addMarbleMarket();
-                        for (Player player : players) {
-                            if (player.getPlayerType() == PlayerType.PERSON) {
-                                serializer.addFaithTrack((Person) player);
-                            }
-                        }
-                    };
+                    return complete();
                 } else {
                     return null;
                 }

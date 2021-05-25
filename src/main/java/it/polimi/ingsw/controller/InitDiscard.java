@@ -4,9 +4,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import it.polimi.ingsw.model.game.Person;
 import it.polimi.ingsw.model.leaderCards.LeaderCard;
-import it.polimi.ingsw.network.server.GameStateSerializer;
-import it.polimi.ingsw.parsing.InitGameParser;
 import it.polimi.ingsw.utility.Deserializer;
+import it.polimi.ingsw.parsing.InitGameParser;
+import it.polimi.ingsw.network.server.GameStateSerializer;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -31,7 +31,7 @@ public class InitDiscard extends CommandBuffer {
     }
 
     @Override
-    public void complete() throws CommandNotCompleteException {
+    public Consumer<GameStateSerializer> complete() throws CommandNotCompleteException {
         if (!isReady()) {
             throw new CommandNotCompleteException();
         }
@@ -51,16 +51,16 @@ public class InitDiscard extends CommandBuffer {
         person.initDiscardDone();
 
         setCompleted();
+
+        return (serializer) -> {
+            serializer.addHandLeaderCards(person);
+        };
     }
 
     @Override
-    public boolean cancel() {
-        return true;
-    }
-
-    @Override
-    public void kill() {
-
+    public Consumer<GameStateSerializer> cancel() {
+        return (serializer) -> {
+        };
     }
 
     @Override
@@ -74,11 +74,7 @@ public class InitDiscard extends CommandBuffer {
         }
 
         if (isReady()) {
-            complete();
-            Person person = getPerson();
-            return (serializer) -> {
-                serializer.addHandLeaderCards(person);
-            };
+            return complete();
         } else {
             return null;
         }

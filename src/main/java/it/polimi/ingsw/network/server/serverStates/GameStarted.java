@@ -40,8 +40,12 @@ public class GameStarted extends ServerState {
             }
             case "cancel": {
                 // client cancels the current command buffer
-                if (commandBuffer != null && !commandBuffer.isCompleted() && commandBuffer.cancel()) {
+                Consumer<GameStateSerializer> lambda;
+                if (commandBuffer != null && !commandBuffer.isCompleted() && (lambda = commandBuffer.cancel()) != null) {
                     clientHandler.setBuffer(null);
+
+                    clientHandler.updateGameState(lambda);
+
                     JsonObject commandObject = JsonUtil.getInstance().serializeCommandBuffer(clientHandler.getCommandBuffer(), clientHandler.getPerson());
                     clientHandler.broadcast("command", commandObject);
                 } else {

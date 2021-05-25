@@ -7,9 +7,9 @@ import it.polimi.ingsw.model.game.Person;
 import it.polimi.ingsw.model.playerBoard.resourceLocations.Warehouse;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
-import it.polimi.ingsw.network.server.GameStateSerializer;
-import it.polimi.ingsw.parsing.InitGameParser;
 import it.polimi.ingsw.utility.Deserializer;
+import it.polimi.ingsw.parsing.InitGameParser;
+import it.polimi.ingsw.network.server.GameStateSerializer;
 
 import java.util.HashSet;
 import java.util.function.Consumer;
@@ -33,7 +33,7 @@ public class InitResources extends CommandBuffer {
     }
 
     @Override
-    public void complete() throws InvalidCommandException {
+    public Consumer<GameStateSerializer> complete() throws InvalidCommandException {
         if (!isReady()) {
             throw new CommandNotCompleteException();
         }
@@ -48,16 +48,16 @@ public class InitResources extends CommandBuffer {
         person.initSelectDone();
 
         setCompleted();
+
+        return (serializer) -> {
+            serializer.addWarehouse(person);
+        };
     }
 
     @Override
-    public boolean cancel() {
-        return true;
-    }
-
-    @Override
-    public void kill() {
-
+    public Consumer<GameStateSerializer> cancel() {
+        return (serializer) -> {
+        };
     }
 
     @Override
@@ -71,11 +71,7 @@ public class InitResources extends CommandBuffer {
         }
 
         if (isReady()) {
-            complete();
-            Person person = getPerson();
-            return (serializer) -> {
-                serializer.addWarehouse(person);
-            };
+            return complete();
         } else {
             return null;
         }

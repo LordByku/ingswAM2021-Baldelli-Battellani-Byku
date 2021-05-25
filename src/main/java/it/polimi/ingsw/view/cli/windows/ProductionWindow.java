@@ -10,7 +10,6 @@ import it.polimi.ingsw.model.resources.InvalidResourceException;
 import it.polimi.ingsw.model.resources.resourceSets.ChoiceResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.network.client.LocalConfig;
 import it.polimi.ingsw.utility.JsonUtil;
 import it.polimi.ingsw.utility.UserParser;
 import it.polimi.ingsw.view.cli.CLI;
@@ -26,7 +25,8 @@ public class ProductionWindow extends CommandWindow {
     private final ConcreteResourceSet strongbox;
 
     public ProductionWindow(Client client) {
-        warehouse = new ConcreteResourceSet[LocalConfig.getInstance().getNumberOfDepots()];
+        Player self = client.getModel().getPlayer(client.getNickname());
+        warehouse = new ConcreteResourceSet[self.getBoard().getWarehouse().size()];
         for (int i = 0; i < warehouse.length; ++i) {
             warehouse[i] = new ConcreteResourceSet();
         }
@@ -115,7 +115,8 @@ public class ProductionWindow extends CommandWindow {
                 CLI.getInstance().spendResources(toSpend, currentSelection);
             } else {
                 ChoiceResourceSet toObtain = new ChoiceResourceSet();
-                for (ProductionDetails productionDetails : map.values()) {
+                for (int toActivate : commandBuffer.getProductionsToActivate()) {
+                    ProductionDetails productionDetails = map.get(toActivate);
                     toObtain.union(productionDetails.getOutput().getResourceSet());
                 }
                 CLI.getInstance().choiceResourceSelection(toObtain.getChoiceResources().size());
