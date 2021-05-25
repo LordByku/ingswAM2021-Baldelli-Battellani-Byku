@@ -5,7 +5,6 @@ import it.polimi.ingsw.model.playerBoard.ProductionArea;
 import it.polimi.ingsw.model.resources.ChoiceResource;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.FullChoiceSet;
-import it.polimi.ingsw.model.resources.Resource;
 import it.polimi.ingsw.model.resources.resourceSets.ChoiceResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ObtainableResourceSet;
@@ -31,14 +30,14 @@ public class ProductionAreaTest {
         ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
 
         concreteResourceSet.addResource(ConcreteResource.COIN);
-        assertFalse(spendableResourceSet.match(concreteResourceSet));
+        assertFalse(spendableResourceSet.exactMatch(concreteResourceSet));
 
         concreteResourceSet.addResource(ConcreteResource.COIN);
-        assertTrue(spendableResourceSet.match(concreteResourceSet));
+        assertTrue(spendableResourceSet.exactMatch(concreteResourceSet));
 
         concreteResourceSet.removeResource(ConcreteResource.COIN);
         concreteResourceSet.addResource(ConcreteResource.STONE);
-        assertTrue(spendableResourceSet.match(concreteResourceSet));
+        assertTrue(spendableResourceSet.exactMatch(concreteResourceSet));
 
         ChoiceResourceSet obtained = obtainableResourceSet.getResourceSet();
         assertFalse(obtained.isConcrete());
@@ -122,19 +121,19 @@ public class ProductionAreaTest {
 
         ConcreteResourceSet toMatch = new ConcreteResourceSet();
         toMatch.addResource(ConcreteResource.COIN);
-        assertTrue(productions.get(1).getInput().match(toMatch));
-        assertTrue(productions.get(2).getInput().match(toMatch));
-        assertFalse(productions.get(3).getInput().match(toMatch));
+        assertTrue(productions.get(1).getInput().exactMatch(toMatch));
+        assertTrue(productions.get(2).getInput().exactMatch(toMatch));
+        assertFalse(productions.get(3).getInput().exactMatch(toMatch));
 
         toMatch.addResource(ConcreteResource.STONE);
-        assertFalse(productions.get(1).getInput().match(toMatch));
-        assertFalse(productions.get(2).getInput().match(toMatch));
-        assertTrue(productions.get(3).getInput().match(toMatch));
+        assertFalse(productions.get(1).getInput().exactMatch(toMatch));
+        assertFalse(productions.get(2).getInput().exactMatch(toMatch));
+        assertTrue(productions.get(3).getInput().exactMatch(toMatch));
 
         toMatch.removeResource(ConcreteResource.COIN);
-        assertFalse(productions.get(1).getInput().match(toMatch));
-        assertFalse(productions.get(2).getInput().match(toMatch));
-        assertFalse(productions.get(3).getInput().match(toMatch));
+        assertFalse(productions.get(1).getInput().exactMatch(toMatch));
+        assertFalse(productions.get(2).getInput().exactMatch(toMatch));
+        assertFalse(productions.get(3).getInput().exactMatch(toMatch));
 
         ObtainableResourceSet result = productions.get(1).getOutput().union(productions.get(2).getOutput()).union(productions.get(3).getOutput());
         ConcreteResourceSet obtained = result.getResourceSet().toConcrete();
@@ -160,19 +159,19 @@ public class ProductionAreaTest {
 
         toMatch = new ConcreteResourceSet();
         toMatch.addResource(ConcreteResource.COIN);
-        assertFalse(productions.get(1).getInput().match(toMatch));
-        assertTrue(productions.get(2).getInput().match(toMatch));
-        assertFalse(productions.get(3).getInput().match(toMatch));
+        assertFalse(productions.get(1).getInput().exactMatch(toMatch));
+        assertTrue(productions.get(2).getInput().exactMatch(toMatch));
+        assertFalse(productions.get(3).getInput().exactMatch(toMatch));
 
         toMatch.addResource(ConcreteResource.STONE);
-        assertFalse(productions.get(1).getInput().match(toMatch));
-        assertFalse(productions.get(2).getInput().match(toMatch));
-        assertTrue(productions.get(3).getInput().match(toMatch));
+        assertFalse(productions.get(1).getInput().exactMatch(toMatch));
+        assertFalse(productions.get(2).getInput().exactMatch(toMatch));
+        assertTrue(productions.get(3).getInput().exactMatch(toMatch));
 
         toMatch.removeResource(ConcreteResource.COIN);
-        assertTrue(productions.get(1).getInput().match(toMatch));
-        assertFalse(productions.get(2).getInput().match(toMatch));
-        assertFalse(productions.get(3).getInput().match(toMatch));
+        assertTrue(productions.get(1).getInput().exactMatch(toMatch));
+        assertFalse(productions.get(2).getInput().exactMatch(toMatch));
+        assertFalse(productions.get(3).getInput().exactMatch(toMatch));
 
         result = productions.get(1).getOutput().union(productions.get(2).getOutput()).union(productions.get(3).getOutput());
         obtained = result.getResourceSet().toConcrete();
@@ -229,15 +228,15 @@ public class ProductionAreaTest {
 
         ConcreteResourceSet toMatch = new ConcreteResourceSet();
         toMatch.addResource(ConcreteResource.COIN);
-        assertTrue(productions.get(1).getInput().match(toMatch));
-        assertTrue(productions.get(2).getInput().match(toMatch));
-        assertFalse(productions.get(3).getInput().match(toMatch));
+        assertTrue(productions.get(1).getInput().exactMatch(toMatch));
+        assertTrue(productions.get(2).getInput().exactMatch(toMatch));
+        assertFalse(productions.get(3).getInput().exactMatch(toMatch));
 
         toMatch.removeResource(ConcreteResource.COIN);
         toMatch.addResource(ConcreteResource.STONE);
-        assertFalse(productions.get(1).getInput().match(toMatch));
-        assertFalse(productions.get(2).getInput().match(toMatch));
-        assertTrue(productions.get(3).getInput().match(toMatch));
+        assertFalse(productions.get(1).getInput().exactMatch(toMatch));
+        assertFalse(productions.get(2).getInput().exactMatch(toMatch));
+        assertTrue(productions.get(3).getInput().exactMatch(toMatch));
 
         ObtainableResourceSet result = productions.get(1).getOutput().union(productions.get(2).getOutput()).union(productions.get(3).getOutput());
         assertEquals(2, result.getFaithPoints());

@@ -7,10 +7,9 @@ import it.polimi.ingsw.model.devCards.DevCard;
 import it.polimi.ingsw.model.game.Game;
 import it.polimi.ingsw.model.game.Person;
 import it.polimi.ingsw.model.gameZone.CardMarket;
-import it.polimi.ingsw.model.playerBoard.resourceLocations.StrongBox;
-import it.polimi.ingsw.model.playerBoard.resourceLocations.Warehouse;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.network.server.GameStateSerializer;
+import it.polimi.ingsw.parsing.BoardParser;
 import it.polimi.ingsw.utility.Deserializer;
 
 import java.util.function.Consumer;
@@ -37,7 +36,17 @@ public class Purchase extends CommandBuffer {
 
     @Override
     public boolean isReady() {
-        return warehouseToSpend != null && strongboxToSpend != null;
+        if (warehouseToSpend == null || strongboxToSpend == null) {
+            return false;
+        }
+
+        ConcreteResourceSet totalToSpend = getCurrentTotalToSpend();
+
+        CardMarket cardMarket = Game.getInstance().getGameZone().getCardMarket();
+        DevCard devCard = cardMarket.top(marketRow, marketCol);
+        ConcreteResourceSet requirements = devCard.getReqResources();
+
+        return totalToSpend.contains(requirements);
     }
 
     @Override
@@ -47,18 +56,11 @@ public class Purchase extends CommandBuffer {
         }
 
         Person person = getPerson();
-        Warehouse warehouse = person.getBoard().getWarehouse();
-        StrongBox strongBox = person.getBoard().getStrongBox();
 
         CardMarket cardMarket = Game.getInstance().getGameZone().getCardMarket();
         DevCard devCard = cardMarket.removeTop(marketRow, marketCol);
 
         devCard.play(person.getBoard(), deckIndex);
-
-        for (int i = 0; i < warehouseToSpend.length; ++i) {
-            warehouse.removeResources(i, warehouseToSpend[i]);
-        }
-        strongBox.removeResources(strongboxToSpend);
 
         person.mainActionDone();
         setCompleted();
@@ -112,7 +114,11 @@ public class Purchase extends CommandBuffer {
                         serializer.addStrongbox(person);
                     };
                 } else {
-                    return null;
+                    Person person = getPerson();
+                    return (serializer) -> {
+                        serializer.addWarehouse(person);
+                        serializer.addStrongbox(person);
+                    };
                 }
             }
             default: {
@@ -131,6 +137,11 @@ public class Purchase extends CommandBuffer {
             this.marketRow = marketRow;
             this.marketCol = marketCol;
             this.deckIndex = deckIndex;
+            warehouseToSpend = new ConcreteResourceSet[BoardParser.getInstance().getDepotSizes().size()];
+            for (int i = 0; i < warehouseToSpend.length; ++i) {
+                warehouseToSpend[i] = new ConcreteResourceSet();
+            }
+            strongboxToSpend = new ConcreteResourceSet();
         }
     }
 
@@ -144,9 +155,11 @@ public class Purchase extends CommandBuffer {
         DevCard devCard = cardMarket.top(marketRow, marketCol);
         ConcreteResourceSet requirements = devCard.getReqResources();
 
-        if (requirements.contains(totalToSpend) && totalToSpend.contains(requirements)) {
-            this.warehouseToSpend = warehouseToSpend;
-            this.strongboxToSpend = strongboxToSpend;
+        totalToSpend.union(getCurrentTotalToSpend());
+
+        if (requirements.contains(totalToSpend)) {
+            Person person = getPerson();
+            updateResourcesToSpend(warehouseToSpend, strongboxToSpend, person, this.warehouseToSpend, this.strongboxToSpend);
         }
     }
 
@@ -160,5 +173,9 @@ public class Purchase extends CommandBuffer {
 
     public int getDeckIndex() {
         return deckIndex;
+    }
+
+    public ConcreteResourceSet getCurrentTotalToSpend() {
+        return getCurrentTotalToSpend(warehouseToSpend, strongboxToSpend);
     }
 }

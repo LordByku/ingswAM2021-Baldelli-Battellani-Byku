@@ -66,16 +66,16 @@ public class SpendableResourceSet extends TransactionResourceSet {
      * converted to concreteResourceSet
      * @throws InvalidResourceSetException concreteResourceSet is null
      */
-    public boolean match(ConcreteResourceSet concreteResourceSet) throws InvalidResourceSetException {
+    public boolean exactMatch(ConcreteResourceSet concreteResourceSet) throws InvalidResourceSetException {
+        return getResourceSet().size() == concreteResourceSet.size() && match(concreteResourceSet);
+    }
+
+    public boolean match(ConcreteResourceSet concreteResourceSet) {
         if (concreteResourceSet == null) {
             throw new InvalidResourceSetException();
         }
 
         ChoiceResourceSet toMatch = getResourceSet();
-
-        if (toMatch.size() != concreteResourceSet.size()) {
-            return false;
-        }
 
         ArrayList<ChoiceResource> choiceResources = toMatch.getChoiceResources();
         ConcreteResourceSet currentConcreteResourceSet = toMatch.getConcreteResources();

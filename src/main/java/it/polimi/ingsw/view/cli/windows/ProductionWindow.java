@@ -55,7 +55,8 @@ public class ProductionWindow extends CommandWindow {
                                 ConcreteResourceSet toAdd = UserParser.getInstance().readUserResources(Arrays.copyOfRange(words, 2, words.length));
                                 warehouse[depotIndex].union(toAdd);
 
-                                if (sendSpendResourcesCommand(client)) return;
+                                sendSpendResourcesCommand(client);
+                                return;
                             }
                         }
                         break;
@@ -64,8 +65,8 @@ public class ProductionWindow extends CommandWindow {
                         ConcreteResourceSet toAdd = UserParser.getInstance().readUserResources(Arrays.copyOfRange(words, 1, words.length));
                         strongbox.union(toAdd);
 
-                        if (sendSpendResourcesCommand(client)) return;
-                        break;
+                        sendSpendResourcesCommand(client);
+                        return;
                     }
                     default: {
                         try {
@@ -107,11 +108,7 @@ public class ProductionWindow extends CommandWindow {
                     ProductionDetails productionDetails = map.get(toActivate);
                     toSpend.union(productionDetails.getInput().getResourceSet());
                 }
-                ConcreteResourceSet currentSelection = new ConcreteResourceSet();
-                for (ConcreteResourceSet depot : warehouse) {
-                    currentSelection.union(depot);
-                }
-                currentSelection.union(strongbox);
+                ConcreteResourceSet currentSelection = commandBuffer.getCurrentTotalToSpend();
 
                 CLI.getInstance().showWarehouse(self.getBoard().getWarehouse(), self.getBoard().getPlayedLeaderCards());
                 CLI.getInstance().showStrongbox(self.getBoard().getStrongBox());
@@ -126,33 +123,11 @@ public class ProductionWindow extends CommandWindow {
         }
     }
 
-    private boolean sendSpendResourcesCommand(Client client) {
-        ConcreteResourceSet total = new ConcreteResourceSet();
-        for (ConcreteResourceSet depot : warehouse) {
-            total.union(depot);
-        }
-        total.union(strongbox);
-
-        Player self = client.getModel().getPlayer(client.getNickname());
-        Production commandBuffer = (Production) self.getCommandBuffer();
-
-        Board board = self.getBoard();
-        HashMap<Integer, ProductionDetails> map = board.activeProductionDetails();
-
-        ChoiceResourceSet toSpend = new ChoiceResourceSet();
-        for (int toActivate : commandBuffer.getProductionsToActivate()) {
-            ProductionDetails productionDetails = map.get(toActivate);
-            toSpend.union(productionDetails.getInput().getResourceSet());
-        }
-
-        if (total.size() >= toSpend.size()) {
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.add("warehouse", JsonUtil.getInstance().serialize(warehouse));
-            jsonObject.add("strongbox", JsonUtil.getInstance().serialize(strongbox));
-            JsonObject message = buildCommandMessage("spendResources", jsonObject);
-            client.write(message.toString());
-            return true;
-        }
-        return false;
+    private void sendSpendResourcesCommand(Client client) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.add("warehouse", JsonUtil.getInstance().serialize(warehouse));
+        jsonObject.add("strongbox", JsonUtil.getInstance().serialize(strongbox));
+        JsonObject message = buildCommandMessage("spendResources", jsonObject);
+        client.write(message.toString());
     }
 }

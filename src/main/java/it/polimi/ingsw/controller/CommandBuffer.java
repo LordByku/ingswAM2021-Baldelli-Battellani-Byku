@@ -105,4 +105,29 @@ public abstract class CommandBuffer {
 
         return totalToSpend;
     }
+
+    protected void updateResourcesToSpend(ConcreteResourceSet[] warehouseToSpend, ConcreteResourceSet strongboxToSpend,
+                                          Person person, ConcreteResourceSet[] currentWarehouseToSpend, ConcreteResourceSet currentStrongboxToSpend) {
+        Warehouse warehouse = person.getBoard().getWarehouse();
+        StrongBox strongBox = person.getBoard().getStrongBox();
+        for (int i = 0; i < warehouseToSpend.length; ++i) {
+            warehouse.removeResources(i, warehouseToSpend[i]);
+            currentWarehouseToSpend[i].union(warehouseToSpend[i]);
+        }
+        strongBox.removeResources(strongboxToSpend);
+        currentStrongboxToSpend.union(strongboxToSpend);
+    }
+
+    protected ConcreteResourceSet getCurrentTotalToSpend(ConcreteResourceSet[] warehouseToSpend, ConcreteResourceSet strongboxToSpend) {
+        ConcreteResourceSet totalToSpend = new ConcreteResourceSet();
+        if (warehouseToSpend != null) {
+            for (ConcreteResourceSet depotToSpend : warehouseToSpend) {
+                totalToSpend.union(depotToSpend);
+            }
+        }
+        if (strongboxToSpend != null) {
+            totalToSpend.union(strongboxToSpend);
+        }
+        return totalToSpend;
+    }
 }

@@ -51,7 +51,8 @@ public class PurchaseWindow extends CommandWindow {
                                 ConcreteResourceSet toAdd = UserParser.getInstance().readUserResources(Arrays.copyOfRange(words, 2, words.length));
                                 warehouse[depotIndex].union(toAdd);
 
-                                if (sendSpendResourcesCommand(client)) return;
+                                sendSpendResourcesCommand(client);
+                                return;
                             }
                         }
                         break;
@@ -60,8 +61,8 @@ public class PurchaseWindow extends CommandWindow {
                         ConcreteResourceSet toAdd = UserParser.getInstance().readUserResources(Arrays.copyOfRange(words, 1, words.length));
                         strongbox.union(toAdd);
 
-                        if (sendSpendResourcesCommand(client)) return;
-                        break;
+                        sendSpendResourcesCommand(client);
+                        return;
                     }
                     default: {
                         if (words.length == 3) {
@@ -86,29 +87,12 @@ public class PurchaseWindow extends CommandWindow {
         CLI.getInstance().renderWindow(client);
     }
 
-    private boolean sendSpendResourcesCommand(Client client) {
-        ConcreteResourceSet total = new ConcreteResourceSet();
-        for (ConcreteResourceSet depot : warehouse) {
-            total.union(depot);
-        }
-        total.union(strongbox);
-
-        Player self = client.getModel().getPlayer(client.getNickname());
-        Purchase commandBuffer = (Purchase) self.getCommandBuffer();
-        int row = commandBuffer.getMarketRow();
-        int col = commandBuffer.getMarketCol();
-        int devCardID = client.getModel().getGameZone().getCardMarket().getDevCard(row, col);
-        ConcreteResourceSet toSpend = DevCardsParser.getInstance().getCard(devCardID).getReqResources();
-
-        if (total.size() >= toSpend.size()) {
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.add("warehouse", JsonUtil.getInstance().serialize(warehouse));
-            jsonObject.add("strongbox", JsonUtil.getInstance().serialize(strongbox));
-            JsonObject message = buildCommandMessage("spendResources", jsonObject);
-            client.write(message.toString());
-            return true;
-        }
-        return false;
+    private void sendSpendResourcesCommand(Client client) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.add("warehouse", JsonUtil.getInstance().serialize(warehouse));
+        jsonObject.add("strongbox", JsonUtil.getInstance().serialize(strongbox));
+        JsonObject message = buildCommandMessage("spendResources", jsonObject);
+        client.write(message.toString());
     }
 
     @Override
@@ -122,13 +106,10 @@ public class PurchaseWindow extends CommandWindow {
             int col = commandBuffer.getMarketCol();
             int devCardID = client.getModel().getGameZone().getCardMarket().getDevCard(row, col);
             ConcreteResourceSet requirements = DevCardsParser.getInstance().getCard(devCardID).getReqResources();
-            ConcreteResourceSet currentSelection = new ConcreteResourceSet();
-            for (ConcreteResourceSet depot : warehouse) {
-                currentSelection.union(depot);
-            }
-            currentSelection.union(strongbox);
             ChoiceResourceSet toSpend = new ChoiceResourceSet();
             toSpend.union(requirements);
+
+            ConcreteResourceSet currentSelection = commandBuffer.getCurrentTotalToSpend();
 
             CLI.getInstance().showWarehouse(self.getBoard().getWarehouse(), self.getBoard().getPlayedLeaderCards());
             CLI.getInstance().showStrongbox(self.getBoard().getStrongBox());

@@ -17,6 +17,7 @@ import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ObtainableResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.SpendableResourceSet;
 import it.polimi.ingsw.network.server.GameStateSerializer;
+import it.polimi.ingsw.parsing.BoardParser;
 import it.polimi.ingsw.utility.Deserializer;
 
 import java.util.ArrayList;
@@ -56,14 +57,8 @@ public class Production extends CommandBuffer {
         }
 
         Person person = getPerson();
-        Warehouse warehouse = person.getBoard().getWarehouse();
         StrongBox strongBox = person.getBoard().getStrongBox();
         FaithTrack faithTrack = person.getBoard().getFaithTrack();
-
-        for (int i = 0; i < warehouseToSpend.length; ++i) {
-            warehouse.removeResources(i, warehouseToSpend[i]);
-        }
-        strongBox.removeResources(strongboxToSpend);
 
         strongBox.addResources(obtainedResources.toConcrete());
         faithTrack.addFaithPoints(obtainedFaithPoints);
@@ -76,6 +71,13 @@ public class Production extends CommandBuffer {
 
     @Override
     public boolean cancel() {
+        Person person = getPerson();
+        Warehouse warehouse = person.getBoard().getWarehouse();
+        StrongBox strongBox = person.getBoard().getStrongBox();
+        for (int i = 0; i < warehouseToSpend.length; ++i) {
+            warehouse.addResources(i, warehouseToSpend[i]);
+        }
+        strongBox.addResources(strongboxToSpend);
         return true;
     }
 
@@ -141,7 +143,11 @@ public class Production extends CommandBuffer {
                 serializer.addFaithTrack(person);
             };
         } else {
-            return null;
+            Person person = getPerson();
+            return (serializer) -> {
+                serializer.addWarehouse(person);
+                serializer.addStrongbox(person);
+            };
         }
     }
 
@@ -162,14 +168,18 @@ public class Production extends CommandBuffer {
         }
 
         this.productionsToActivate = productionsToActivate;
-        warehouseToSpend = null;
-        strongboxToSpend = null;
+        warehouseToSpend = new ConcreteResourceSet[BoardParser.getInstance().getDepotSizes().size()];
+        for (int i = 0; i < warehouseToSpend.length; ++i) {
+            warehouseToSpend[i] = new ConcreteResourceSet();
+        }
+        strongboxToSpend = new ConcreteResourceSet();
         obtainedResources = null;
         obtainedFaithPoints = -1;
     }
 
     private void setResourcesToSpend(ConcreteResourceSet[] warehouseToSpend, ConcreteResourceSet strongboxToSpend) {
         ConcreteResourceSet totalToSpend = checkResourcesToSpend(warehouseToSpend, strongboxToSpend);
+
         if (totalToSpend == null) {
             return;
         }
@@ -186,11 +196,15 @@ public class Production extends CommandBuffer {
             obtained = obtained.union(productionDetails.getOutput());
         }
 
+        totalToSpend.union(getCurrentTotalToSpend());
+
         if (toSpend.match(totalToSpend)) {
-            this.warehouseToSpend = warehouseToSpend;
-            this.strongboxToSpend = strongboxToSpend;
-            this.obtainedResources = obtained.getResourceSet();
-            this.obtainedFaithPoints = obtained.getFaithPoints();
+            updateResourcesToSpend(warehouseToSpend, strongboxToSpend, person, this.warehouseToSpend, this.strongboxToSpend);
+
+            if (toSpend.exactMatch(totalToSpend)) {
+                this.obtainedResources = obtained.getResourceSet();
+                this.obtainedFaithPoints = obtained.getFaithPoints();
+            }
         }
     }
 
@@ -211,5 +225,9 @@ public class Production extends CommandBuffer {
 
     public ChoiceResourceSet getObtainedResources() {
         return obtainedResources;
+    }
+
+    public ConcreteResourceSet getCurrentTotalToSpend() {
+        return getCurrentTotalToSpend(warehouseToSpend, strongboxToSpend);
     }
 }

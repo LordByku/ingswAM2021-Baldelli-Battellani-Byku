@@ -190,20 +190,20 @@ public class SpendableResourceSetTest {
 
         ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
         concreteResourceSet.addResource(ConcreteResource.COIN, 2);
-        assertFalse(spendableResourceSet.match(concreteResourceSet));
+        assertFalse(spendableResourceSet.exactMatch(concreteResourceSet));
 
         concreteResourceSet.addResource(ConcreteResource.COIN);
-        assertFalse(spendableResourceSet.match(concreteResourceSet));
+        assertFalse(spendableResourceSet.exactMatch(concreteResourceSet));
 
         concreteResourceSet.addResource(ConcreteResource.COIN);
-        assertTrue(spendableResourceSet.match(concreteResourceSet));
+        assertTrue(spendableResourceSet.exactMatch(concreteResourceSet));
 
         concreteResourceSet.addResource(ConcreteResource.COIN);
-        assertFalse(spendableResourceSet.match(concreteResourceSet));
+        assertFalse(spendableResourceSet.exactMatch(concreteResourceSet));
 
         concreteResourceSet = new ConcreteResourceSet();
         concreteResourceSet.addResource(ConcreteResource.COIN, 2);
         concreteResourceSet.addResource(ConcreteResource.STONE, 2);
-        assertTrue(spendableResourceSet.match(concreteResourceSet));
+        assertTrue(spendableResourceSet.exactMatch(concreteResourceSet));
     }
 }
