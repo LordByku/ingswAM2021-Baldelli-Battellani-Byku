@@ -18,10 +18,13 @@ public class ViewDevCardDeck extends CLIViewWindow {
         if (line.equals("x")) {
             CLI.getInstance().setViewWindow(new ViewPlayerBoard(board));
         } else {
-            int selection = Integer.parseInt(line);
-            ArrayList<ArrayList<Integer>> devCards = board.getDevCards();
-            if (selection >= 0 && selection < devCards.size()) {
-                CLI.getInstance().showDevCardDeck(devCards.get(selection));
+            try {
+                int selection = Integer.parseInt(line);
+                ArrayList<ArrayList<Integer>> devCards = board.getDevCards();
+                if (selection >= 0 && selection < devCards.size()) {
+                    CLI.getInstance().showDevCardDeck(devCards.get(selection));
+                }
+            } catch (NumberFormatException e) {
             }
         }
 

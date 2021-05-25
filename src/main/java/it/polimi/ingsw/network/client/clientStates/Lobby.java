@@ -28,14 +28,14 @@ public class Lobby extends ClientState {
         switch (status) {
             case "fatalError": {
                 String message = json.get("message").getAsString();
-                CLI.getInstance().serverError(message);
+                CLI.getInstance().error(message);
                 client.closeServerCommunication();
                 client.setState(new NicknameSelection());
                 break;
             }
             case "error": {
                 String message = json.get("message").getAsString();
-                CLI.getInstance().serverError(message);
+                CLI.getInstance().error(message);
                 break;
             }
             case "ok": {

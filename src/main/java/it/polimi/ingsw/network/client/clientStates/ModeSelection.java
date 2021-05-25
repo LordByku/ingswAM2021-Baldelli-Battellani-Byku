@@ -43,6 +43,8 @@ public class ModeSelection extends ClientState {
                     Game.getInstance().addPlayer(client.getNickname());
                     Game.getInstance().startSinglePlayer();
 
+                    client.setSinglePlayer(true);
+
                     ArrayList<String> turnOrder = new ArrayList<>();
                     turnOrder.add(client.getNickname());
                     LocalConfig.getInstance().setTurnOrder(turnOrder);
@@ -54,10 +56,9 @@ public class ModeSelection extends ClientState {
                     GameStateSerializer serializer = new GameStateSerializer(client.getNickname());
                     client.setModel(Deserializer.getInstance().getLocalModel(serializer.gameState()));
 
-                    ArrayList<Integer> leaderCardsIDs = client.getModel().getPlayer(client.getNickname()).getBoard().getHandLeaderCards();
-                    CLI.getInstance().showLeaderCards(leaderCardsIDs);
+                    client.setState(new GameStarted());
 
-                    // TODO
+                    client.startLocalController();
                     break;
                 }
                 default: {

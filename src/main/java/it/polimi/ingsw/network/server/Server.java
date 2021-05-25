@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.server;
 
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.network.server.serverStates.GameStarted;
+import it.polimi.ingsw.utility.JsonUtil;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -99,7 +100,8 @@ public class Server {
     public void sendAllCommandBuffers(ClientHandler sendingClientHandler) {
         synchronized (clientHandlers) {
             for (ClientHandler clientHandler : clientHandlers) {
-                sendingClientHandler.ok("command", clientHandler.serializeCommandBuffer());
+                JsonObject commandObject = JsonUtil.getInstance().serializeCommandBuffer(clientHandler.getCommandBuffer(), clientHandler.getPerson());
+                sendingClientHandler.ok("command", commandObject);
             }
         }
     }

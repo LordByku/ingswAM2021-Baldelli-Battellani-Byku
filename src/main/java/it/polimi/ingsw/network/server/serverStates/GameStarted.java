@@ -30,7 +30,8 @@ public class GameStarted extends ServerState {
                 try {
                     clientHandler.setBuffer(commandType.getCommandBuffer(clientHandler.getPerson()));
                     System.out.println("New buffer successfully created");
-                    clientHandler.broadcast("command", clientHandler.serializeCommandBuffer());
+                    JsonObject commandObject = JsonUtil.getInstance().serializeCommandBuffer(clientHandler.getCommandBuffer(), clientHandler.getPerson());
+                    clientHandler.broadcast("command", commandObject);
                 } catch (InvalidCommandException e) {
                     clientHandler.error("Invalid request");
                 }
@@ -41,7 +42,8 @@ public class GameStarted extends ServerState {
                 // client cancels the current command buffer
                 if (commandBuffer != null && !commandBuffer.isCompleted() && commandBuffer.cancel()) {
                     clientHandler.setBuffer(null);
-                    clientHandler.broadcast("command", clientHandler.serializeCommandBuffer());
+                    JsonObject commandObject = JsonUtil.getInstance().serializeCommandBuffer(clientHandler.getCommandBuffer(), clientHandler.getPerson());
+                    clientHandler.broadcast("command", commandObject);
                 } else {
                     clientHandler.error("Invalid request");
                 }
@@ -60,7 +62,8 @@ public class GameStarted extends ServerState {
                         clientHandler.updateGameState(lambda);
                     }
 
-                    clientHandler.broadcast("command", clientHandler.serializeCommandBuffer());
+                    JsonObject commandObject = JsonUtil.getInstance().serializeCommandBuffer(clientHandler.getCommandBuffer(), clientHandler.getPerson());
+                    clientHandler.broadcast("command", commandObject);
                 } else {
                     clientHandler.error("Invalid request");
                 }

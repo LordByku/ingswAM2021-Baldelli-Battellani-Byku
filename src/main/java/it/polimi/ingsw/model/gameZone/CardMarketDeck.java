@@ -33,7 +33,6 @@ public class CardMarketDeck {
      * Constructor creates a new stack and initialize attributes.
      */
     public CardMarketDeck(CardColour colour, CardLevel level) {
-
         this.colour = colour;
         this.level = level;
 

@@ -33,7 +33,7 @@ public class CLI {
         cliViewWindow = null;
     }
 
-    public static CLI getInstance() {
+    public synchronized static CLI getInstance() {
         if (instance == null) {
             instance = new CLI();
         }
@@ -119,8 +119,8 @@ public class CLI {
         System.out.println("Connecting to server...");
     }
 
-    public void serverError(String message) {
-        System.out.println(TextColour.RED.escape() + "Server error: " + message + TextColour.RESET);
+    public void error(String message) {
+        System.out.println(TextColour.RED.escape() + "Error: " + message + TextColour.RESET);
     }
 
     public void loadGame() {

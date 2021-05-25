@@ -24,7 +24,7 @@ public class GameStarted extends ClientState {
         switch (status) {
             case "error": {
                 String message = json.get("message").getAsString();
-                CLI.getInstance().serverError(message);
+                CLI.getInstance().error(message);
                 CLI.getInstance().refreshWindow(client);
                 CLI.getInstance().renderWindow(client);
                 break;

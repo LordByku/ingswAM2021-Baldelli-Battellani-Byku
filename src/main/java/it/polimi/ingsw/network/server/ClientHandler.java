@@ -1,6 +1,5 @@
 package it.polimi.ingsw.network.server;
 
-import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.controller.CommandBuffer;
 import it.polimi.ingsw.model.game.*;
@@ -212,24 +211,10 @@ public class ClientHandler implements Runnable {
             };
             updateGameState(lambda);
 
-            broadcast("command", serializeCommandBuffer());
+            broadcast("command", JsonUtil.getInstance().serializeCommandBuffer(commandBuffer, person));
         } catch (GameEndedException | GameNotStartedException e) {
             e.printStackTrace();
         }
-    }
-
-    public JsonObject serializeCommandBuffer() {
-        JsonObject jsonObject = new JsonObject();
-
-        jsonObject.addProperty("player", person.getNickname());
-        if (commandBuffer == null) {
-            jsonObject.add("value", JsonNull.INSTANCE);
-        } else {
-            JsonObject commandObject = JsonUtil.getInstance().serialize(commandBuffer).getAsJsonObject();
-            jsonObject.add("value", commandObject);
-        }
-
-        return jsonObject;
     }
 }
 

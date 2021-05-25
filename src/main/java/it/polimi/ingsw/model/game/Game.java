@@ -219,20 +219,6 @@ public class Game {
         return gameStarted;
     }
 
-    public Person getActivePlayer() {
-        synchronized (players) {
-            for (Player player : players) {
-                if (player.getPlayerType() == PlayerType.PERSON) {
-                    Person person = (Person) player;
-                    if (person.isActivePlayer()) {
-                        return person;
-                    }
-                }
-            }
-            return null;
-        }
-    }
-
     public int getPlayerIndex(Person person) {
         synchronized (players) {
             return players.indexOf(person);
