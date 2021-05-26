@@ -21,6 +21,8 @@ public class GameStarted extends ClientState {
 
     @Override
     public void handleServerMessage(Client client, String line) {
+        System.out.println("client received " + line);
+
         JsonObject json = JsonUtil.getInstance().parseLine(line).getAsJsonObject();
         String status = json.get("status").getAsString();
 
@@ -34,6 +36,11 @@ public class GameStarted extends ClientState {
                 String type = json.get("type").getAsString();
 
                 switch (type) {
+                    case "endGame": {
+                        JsonObject message = json.getAsJsonObject("message");
+                        viewInterface.onEndGame(client, message);
+                        break;
+                    }
                     case "command": {
                         JsonObject message = json.getAsJsonObject("message");
                         String player = message.get("player").getAsString();

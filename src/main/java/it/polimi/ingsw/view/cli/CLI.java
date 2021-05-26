@@ -1,5 +1,8 @@
 package it.polimi.ingsw.view.cli;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import it.polimi.ingsw.controller.CommandBuffer;
 import it.polimi.ingsw.model.devCards.DevCard;
 import it.polimi.ingsw.model.devCards.DevCardDeck;
@@ -18,6 +21,7 @@ import it.polimi.ingsw.parsing.DevCardsParser;
 import it.polimi.ingsw.parsing.LeaderCardsParser;
 import it.polimi.ingsw.view.ViewInterface;
 import it.polimi.ingsw.view.cli.windows.CLIWindow;
+import it.polimi.ingsw.view.cli.windows.EndGameWindow;
 import it.polimi.ingsw.view.cli.windows.viewWindows.CLIViewWindow;
 import it.polimi.ingsw.view.cli.windows.viewWindows.ViewModel;
 import it.polimi.ingsw.view.localModel.*;
@@ -347,6 +351,82 @@ public class CLI implements ViewInterface {
         System.out.println(model.getCLIString());
     }
 
+    public static void endGame(JsonObject endGameMessage) {
+        JsonArray results = endGameMessage.getAsJsonArray("results");
+        int maxPoints = -1, maxResources = -1;
+        ArrayList<String> winner = new ArrayList<>();
+
+        for(JsonElement jsonElement: results) {
+            JsonObject playerObject = jsonElement.getAsJsonObject();
+            String player = playerObject.get("player").getAsString();
+            int basePoints = playerObject.get("basePoints").getAsInt();
+            int resources = playerObject.get("resources").getAsInt();
+
+            int totalPoints = basePoints + resources / 5;
+            if(totalPoints >= maxPoints) {
+                if(totalPoints > maxPoints || resources > maxResources) {
+                    winner.clear();
+                    winner.add(player);
+                } else if(resources == maxResources) {
+                    winner.add(player);
+                }
+            }
+        }
+
+        results();
+        for(JsonElement jsonElement: results) {
+            JsonObject playerObject = jsonElement.getAsJsonObject();
+            String player = playerObject.get("player").getAsString();
+            int basePoints = playerObject.get("basePoints").getAsInt();
+            int resources = playerObject.get("resources").getAsInt();
+
+            int totalPoints = basePoints + resources / 5;
+
+            playerResults(player, totalPoints);
+        }
+
+        if(endGameMessage.has("computerWin")) {
+            singlePlayerWinner(endGameMessage.get("computerWin").getAsBoolean());
+        } else {
+            multiPlayerWinner(winner);
+        }
+    }
+
+    public static void results() {
+        System.out.println();
+        System.out.println("Game has finished");
+        System.out.println("Results:");
+    }
+
+    public static void playerResults(String nickname, int points) {
+        System.out.println(nickname + " : " + points + " points");
+    }
+
+    public static void singlePlayerWinner(boolean computerWin) {
+        System.out.println();
+        if(computerWin) {
+            System.out.println(TextColour.GREEN.escape() + "Lorenzo il Magnifico has won" + TextColour.RESET);
+        } else {
+            System.out.println(TextColour.GREEN.escape() + "You have won" + TextColour.RESET);
+        }
+    }
+
+    public static void multiPlayerWinner(ArrayList<String> winner) {
+        System.out.println();
+        StringBuilder stringBuilder = new StringBuilder();
+        for(int i = 0; i < winner.size(); ++i) {
+            if(i > 0) {
+                stringBuilder.append(", ");
+            }
+            stringBuilder.append(winner.get(i));
+        }
+        if(winner.size() == 1) {
+            System.out.println(TextColour.GREEN.escape() + "The winner is " + winner.get(0) + TextColour.RESET);
+        } else {
+            System.out.println(TextColour.GREEN.escape() + "The winners are " + stringBuilder.toString() + " (Tie)" + TextColour.RESET);
+        }
+    }
+
     @Override
     public void onError(Client client, String message) {
         error(message);
@@ -388,5 +468,11 @@ public class CLI implements ViewInterface {
     @Override
     public void onUnexpected(Client client) {
         unexpected();
+    }
+
+    @Override
+    public void onEndGame(Client client, JsonObject endGameMessage) {
+        cliWindow = new EndGameWindow(endGameMessage);
+        getActiveWindow().render(client);
     }
 }

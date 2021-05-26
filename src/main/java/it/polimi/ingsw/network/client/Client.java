@@ -25,7 +25,7 @@ public class Client {
     private PrintWriter serverOut;
     private Socket socket;
     private LocalModel localModel;
-    private Boolean singlePlayer;
+    private boolean singlePlayer;
     private BlockingQueue<String> readBuffer;
     private BlockingQueue<String> writeBuffer;
 
@@ -33,7 +33,7 @@ public class Client {
         this.hostname = hostname;
         this.port = port;
         nickname = null;
-        singlePlayer = null;
+        singlePlayer = false;
     }
 
     public synchronized void handleServerMessage(String line) {
@@ -102,8 +102,8 @@ public class Client {
 
     public void openServerCommunication() throws IOException {
         socket = new Socket(hostname, port);
-        serverOut = new PrintWriter(socket.getOutputStream(), true);
         socket.setSoTimeout(2 * timerDelay);
+        serverOut = new PrintWriter(socket.getOutputStream(), true);
         (new Thread(new ClientServerCommunication(this, socket))).start();
     }
 

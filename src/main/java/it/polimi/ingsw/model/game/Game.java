@@ -16,7 +16,7 @@ public class Game {
     private int numberOfPlayers;
     private volatile boolean gameStarted;
     private volatile boolean gameEnded;
-    private boolean isLastTurn;
+    private volatile boolean isLastTurn;
     private int currentPlayer;
 
     private Game() {
@@ -141,7 +141,7 @@ public class Game {
         }
     }
 
-    protected void setLastTurn() throws GameNotStartedException, GameEndedException {
+    public void setLastTurn() throws GameNotStartedException, GameEndedException {
         if (!gameStarted) {
             throw new GameNotStartedException();
         }
@@ -169,7 +169,9 @@ public class Game {
     }
 
     public int getNumberOfPlayers() {
-        return numberOfPlayers;
+        synchronized (players) {
+            return numberOfPlayers;
+        }
     }
 
     public ArrayList<Player> getPlayers() {
@@ -184,7 +186,6 @@ public class Game {
 
     public void endGame() {
         gameEnded = true;
-        // TODO: compute points
     }
 
     public void removePlayer(String nickname) throws GameAlreadyStartedException {
@@ -237,5 +238,9 @@ public class Game {
             }
             return true;
         }
+    }
+
+    public boolean hasGameEnded() {
+        return gameEnded;
     }
 }

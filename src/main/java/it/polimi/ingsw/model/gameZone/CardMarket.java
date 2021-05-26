@@ -86,4 +86,19 @@ public class CardMarket {
             }
         }
     }
+
+    public boolean hasEmptyColour() {
+        for(int i = 0; i < CardColour.values().length; ++i) {
+            boolean allEmpty = true;
+            for(int j = 0; j < CardLevel.values().length; ++j) {
+                if(size(j, i) > 0) {
+                    allEmpty = false;
+                }
+            }
+            if(allEmpty) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

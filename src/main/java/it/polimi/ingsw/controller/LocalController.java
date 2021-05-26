@@ -1,16 +1,15 @@
 package it.polimi.ingsw.controller;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import it.polimi.ingsw.model.game.Game;
-import it.polimi.ingsw.model.game.GameEndedException;
-import it.polimi.ingsw.model.game.GameNotStartedException;
-import it.polimi.ingsw.model.game.Person;
+import it.polimi.ingsw.model.game.*;
 import it.polimi.ingsw.utility.Deserializer;
 import it.polimi.ingsw.utility.JsonUtil;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.server.GameStateSerializer;
 
+import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.function.Consumer;
 
@@ -27,7 +26,30 @@ public class LocalController implements Runnable {
         this.writeBuffer = writeBuffer;
     }
 
+    public void sendEndGameMessage() {
+        JsonObject endGameMessage = new JsonObject();
+
+        JsonArray jsonArray = new JsonArray();
+        Person person = Game.getInstance().getSinglePlayer();
+        JsonObject playerObject = new JsonObject();
+        playerObject.addProperty("player", person.getNickname());
+        playerObject.addProperty("basePoints", person.getBoard().getPoints());
+        playerObject.addProperty("resources", person.getBoard().getResources().size());
+
+        jsonArray.add(playerObject);
+
+        endGameMessage.add("results", jsonArray);
+        endGameMessage.addProperty("computerWin", Game.getInstance().getComputer().hasWon());
+
+        ok("endGame", endGameMessage);
+    }
+
     public void handleUserMessage(String message) {
+        if(Game.getInstance().hasGameEnded()) {
+            sendEndGameMessage();
+            return;
+        }
+
         JsonObject json = JsonUtil.getInstance().parseLine(message).getAsJsonObject();
         String request = json.get("request").getAsString();
 
@@ -87,21 +109,21 @@ public class LocalController implements Runnable {
             case "endTurn": {
                 // client ends the turn
                 if (person.isActivePlayer() && person.mainAction()) {
-                    try {
-                        person.endTurn();
-                    } catch (GameEndedException | GameNotStartedException e) {
-                        e.printStackTrace();
+                    person.endTurn();
+
+                    if(Game.getInstance().hasGameEnded()) {
+                        sendEndGameMessage();
+                    } else {
+                        Consumer<GameStateSerializer> lambda = (serializer) -> {
+                            serializer.addCardMarket();
+                            serializer.addFaithTrack(person);
+                            serializer.addFlippedActionToken();
+                        };
+
+                        updateGameState(lambda);
+
+                        ok("command", JsonUtil.getInstance().serializeCommandBuffer(commandBuffer, person));
                     }
-
-                    Consumer<GameStateSerializer> lambda = (serializer) -> {
-                        serializer.addCardMarket();
-                        serializer.addFaithTrack(person);
-                        serializer.addFlippedActionToken();
-                    };
-
-                    updateGameState(lambda);
-
-                    ok("command", JsonUtil.getInstance().serializeCommandBuffer(commandBuffer, person));
                 } else {
                     error("Invalid request");
                 }

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.playerBoard;
 
 import it.polimi.ingsw.model.devCards.*;
+import it.polimi.ingsw.model.game.Game;
 import it.polimi.ingsw.parsing.BoardParser;
 
 import java.util.ArrayList;
@@ -73,6 +74,15 @@ public class DevelopmentCardArea implements Scoring {
         }
 
         decks.get(deckIndex).add(devCard);
+
+        int cards = 0;
+        for(DevCardDeck deck: decks) {
+            cards += deck.getCards().size();
+        }
+
+        if(cards == 7) {
+            Game.getInstance().setLastTurn();
+        }
     }
 
     /**

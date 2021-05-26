@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import com.google.gson.JsonObject;
 import it.polimi.ingsw.controller.CommandBuffer;
 import it.polimi.ingsw.network.client.Client;
 
@@ -13,4 +14,6 @@ public interface ViewInterface {
     void onUserInput(Client client, String line);
 
     void onUnexpected(Client client);
+
+    void onEndGame(Client client, JsonObject endGameMessage);
 }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.playerBoard.faithTrack;
 
+import it.polimi.ingsw.model.game.Game;
 import it.polimi.ingsw.model.playerBoard.Board;
 import it.polimi.ingsw.model.playerBoard.Scoring;
 import it.polimi.ingsw.model.resources.resourceSets.InvalidQuantityException;
@@ -54,7 +55,7 @@ public class FaithTrack implements Scoring {
      * calls setLastTurn of Board
      */
     private void notifyEndOfTrack() {
-        Board.setLastTurn();
+        Game.getInstance().setLastTurn();
     }
 
     /**

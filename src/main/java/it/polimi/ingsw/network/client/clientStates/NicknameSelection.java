@@ -15,8 +15,12 @@ public class NicknameSelection extends ClientState {
 
     @Override
     public void handleUserMessage(Client client, String line) {
-        String nickname = line;
-        client.setNickname(nickname);
-        client.setState(new ModeSelection());
+        if (!line.equals("")) {
+            String nickname = line;
+            client.setNickname(nickname);
+            client.setState(new ModeSelection());
+        } else {
+            CLI.selectNickname();
+        }
     }
 }

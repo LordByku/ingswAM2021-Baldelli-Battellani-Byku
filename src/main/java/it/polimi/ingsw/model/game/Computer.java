@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.game;
 
+import it.polimi.ingsw.model.devCards.CardColour;
 import it.polimi.ingsw.model.game.actionTokens.ActionTokenDeck;
+import it.polimi.ingsw.model.gameZone.CardMarket;
 import it.polimi.ingsw.model.playerBoard.faithTrack.FaithTrack;
 
 /**
@@ -40,11 +42,7 @@ public class Computer extends Player {
      */
     @Override
     public void endTurn() {
-        try {
-            Game.getInstance().handleTurnOrder();
-        } catch (GameNotStartedException | GameEndedException e) {
-            e.printStackTrace();
-        }
+        Game.getInstance().handleTurnOrder();
     }
 
     /**
@@ -54,5 +52,10 @@ public class Computer extends Player {
      */
     public FaithTrack getFaithTrack() {
         return faithTrack;
+    }
+
+    public boolean hasWon() {
+        CardMarket cardMarket = Game.getInstance().getGameZone().getCardMarket();
+        return faithTrack.getMarkerPosition() == faithTrack.getFinalPosition() || cardMarket.hasEmptyColour();
     }
 }

@@ -1,6 +1,11 @@
 package it.polimi.ingsw.network.server;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import it.polimi.ingsw.model.game.Game;
+import it.polimi.ingsw.model.game.Person;
+import it.polimi.ingsw.model.game.Player;
+import it.polimi.ingsw.model.game.PlayerType;
 import it.polimi.ingsw.network.server.serverStates.GameStarted;
 import it.polimi.ingsw.utility.JsonUtil;
 
@@ -33,7 +38,7 @@ public class Server {
 
         System.out.println("Server ready");
 
-        while (true) {
+        while (!Game.getInstance().hasGameEnded()) {
             try {
                 Socket socket = serverSocket.accept();
                 ClientHandler clientHandler = new ClientHandler(socket, this);
@@ -65,6 +70,15 @@ public class Server {
                 clientHandler.sendGameState();
                 clientHandler.setState(new GameStarted());
                 sendAllCommandBuffers(clientHandler);
+            }
+        }
+    }
+
+    public void endGame() {
+        synchronized (clientHandlers) {
+            JsonObject endGameMessage = buildEndGameMessage();
+            for(ClientHandler clientHandler: clientHandlers) {
+                clientHandler.ok("endGame", endGameMessage);
             }
         }
     }
@@ -104,5 +118,30 @@ public class Server {
                 sendingClientHandler.ok("command", commandObject);
             }
         }
+    }
+
+    public JsonObject buildEndGameMessage() {
+        JsonObject message = new JsonObject();
+
+        JsonArray jsonArray = new JsonArray();
+        ArrayList<Player> players = Game.getInstance().getPlayers();
+        for(Player player: players) {
+            if(player.getPlayerType() == PlayerType.PERSON) {
+                Person person = (Person) player;
+                JsonObject playerObject = new JsonObject();
+                playerObject.addProperty("player", person.getNickname());
+                playerObject.addProperty("basePoints", person.getBoard().getPoints());
+                playerObject.addProperty("resources", person.getBoard().getResources().size());
+
+                jsonArray.add(playerObject);
+            }
+        }
+
+        message.add("results", jsonArray);
+        if(Game.getInstance().getNumberOfPlayers() == 1) {
+            message.addProperty("computerWin", Game.getInstance().getComputer().hasWon());
+        }
+
+        return message;
     }
 }

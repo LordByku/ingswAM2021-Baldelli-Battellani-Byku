@@ -9,13 +9,17 @@ import it.polimi.ingsw.network.client.LocalConfig;
 import it.polimi.ingsw.parsing.Parser;
 import it.polimi.ingsw.utility.Deserializer;
 import it.polimi.ingsw.utility.JsonUtil;
+import it.polimi.ingsw.view.ViewInterface;
 import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.view.localModel.LocalModel;
 
 import java.util.ArrayList;
 
 public class Lobby extends ClientState {
+    private final ViewInterface viewInterface;
+
     public Lobby() {
+        viewInterface = new CLI();
         CLI.connecting();
     }
 
@@ -42,6 +46,11 @@ public class Lobby extends ClientState {
                 String type = json.get("type").getAsString();
 
                 switch (type) {
+                    case "endGame": {
+                        JsonObject message = json.getAsJsonObject("message");
+                        viewInterface.onEndGame(client, message);
+                        break;
+                    }
                     case "playerList": {
                         JsonObject message = json.get("message").getAsJsonObject();
 
@@ -101,7 +110,7 @@ public class Lobby extends ClientState {
                         LocalModel model = Deserializer.getInstance().getLocalModel(message);
                         client.setModel(model);
 
-                        client.setState(new GameStarted(new CLI()));
+                        client.setState(new GameStarted(viewInterface));
                         break;
                     }
                     default: {

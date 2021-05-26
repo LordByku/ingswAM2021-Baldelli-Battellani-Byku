@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.server;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.controller.CommandBuffer;
 import it.polimi.ingsw.model.game.*;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.Consumer;
@@ -86,11 +88,16 @@ public class ClientHandler implements Runnable {
                 broadcast("playerList", GameStateSerializer.getJsonPlayerList());
             }
         } catch (GameAlreadyStartedException e) {
-            person.disconnect();
-            if (commandBuffer != null) {
-                commandBuffer.kill();
+            if(!Game.getInstance().hasGameEnded()) {
+                person.disconnect();
+                if (commandBuffer != null) {
+                    Consumer<GameStateSerializer> lambda = commandBuffer.kill();
+                    if (lambda != null) {
+                        updateGameState(lambda);
+                    }
+                }
+                endTurn();
             }
-            endTurn();
         }
     }
 
@@ -105,8 +112,6 @@ public class ClientHandler implements Runnable {
                     handlePing();
                 }
             }, timerDelay);
-        } else {
-            System.out.println("Pong not received");
         }
     }
 
@@ -126,15 +131,8 @@ public class ClientHandler implements Runnable {
         Thread serverClientCommunication = new Thread(new ServerClientCommunication(this, in));
         serverClientCommunication.start();
 
-        ponged = false;
-        timer = new Timer();
-        ping();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                handlePing();
-            }
-        }, timerDelay);
+        ponged = true;
+        handlePing();
 
         try {
             serverClientCommunication.join();
@@ -149,16 +147,12 @@ public class ClientHandler implements Runnable {
 
     public void handleClientMessage(String line) {
         System.out.println(this + " received " + line);
-        switch (line) {
-            case "ping": {
-                out.println("pong");
-                break;
-            }
-            case "pong": {
-                ponged = true;
-                break;
-            }
-            default: {
+        if ("pong".equals(line)) {
+            ponged = true;
+        } else {
+            if(Game.getInstance().hasGameEnded()) {
+                ok("endGame", server.buildEndGameMessage());
+            } else {
                 serverState.handleClientMessage(this, line);
             }
         }
@@ -175,6 +169,10 @@ public class ClientHandler implements Runnable {
 
     public void startGame() {
         server.startGame();
+    }
+
+    public void endGame() {
+        server.endGame();
     }
 
     public void updateGameState(Consumer<GameStateSerializer> lambda) {
@@ -198,10 +196,12 @@ public class ClientHandler implements Runnable {
     }
 
     public void endTurn() {
-        try {
-            if (person.isActivePlayer()) {
-                person.endTurn();
-            }
+        if (person.isActivePlayer()) {
+            person.endTurn();
+        }
+        if(Game.getInstance().hasGameEnded()) {
+            endGame();
+        } else {
             Consumer<GameStateSerializer> lambda = (serializer) -> {
                 for (Player player : Game.getInstance().getPlayers()) {
                     if (player.getPlayerType() == PlayerType.PERSON) {
@@ -212,8 +212,6 @@ public class ClientHandler implements Runnable {
             updateGameState(lambda);
 
             broadcast("command", JsonUtil.getInstance().serializeCommandBuffer(commandBuffer, person));
-        } catch (GameEndedException | GameNotStartedException e) {
-            e.printStackTrace();
         }
     }
 }

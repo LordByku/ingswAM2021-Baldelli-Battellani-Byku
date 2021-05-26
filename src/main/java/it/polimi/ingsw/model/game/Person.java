@@ -72,11 +72,7 @@ public class Person extends Player {
         if (isConnected) {
             isActivePlayer = true;
         } else {
-            try {
-                endTurn();
-            } catch (GameEndedException | GameNotStartedException e) {
-                e.printStackTrace();
-            }
+            endTurn();
         }
     }
 
