@@ -62,8 +62,9 @@ public class CardMarket {
             throw new InvalidCardMarketIndexException();
         }
         DevCard card = decks[levelRow][colourColumn].removeTop();
-        if (Game.getInstance().getNumberOfPlayers() == 1 && levelRow == CardLevel.values().length - 1 && decks[levelRow][colourColumn].isEmpty())
+        if (Game.getInstance().getNumberOfPlayers() == 1 && hasEmptyColour()) {
             Game.getInstance().endGame();
+        }
 
         return card;
     }

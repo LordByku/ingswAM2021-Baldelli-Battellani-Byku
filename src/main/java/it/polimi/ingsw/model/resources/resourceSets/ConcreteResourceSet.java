@@ -193,6 +193,10 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
         return true;
     }
 
+    public boolean containsResources(ChoiceResourceSet other) {
+        return size() >= other.size() && contains(other.getConcreteResources());
+    }
+
     /**
      * isSatisfied implements the method of the LeaderCardRequirements interface
      * It checks whether a given board contains all the resources indicated

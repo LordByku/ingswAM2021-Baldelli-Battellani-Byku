@@ -8,8 +8,8 @@ public class ClientUserCommunication implements Runnable {
     private final BufferedReader stdin;
     private final Client client;
 
-    public ClientUserCommunication(Client client) {
-        stdin = new BufferedReader(new InputStreamReader(System.in));
+    public ClientUserCommunication(Client client, BufferedReader stdin) {
+        this.stdin = stdin;
         this.client = client;
     }
 
@@ -21,7 +21,6 @@ public class ClientUserCommunication implements Runnable {
                 client.handleUserMessage(line);
             }
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

@@ -97,9 +97,19 @@ public class ClientHandler implements Runnable {
                 endTurn();
             }
         }
+        if (!socket.isClosed()) {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public synchronized void handlePing() {
+        if(timer != null) {
+            timer.cancel();
+        }
         if (ponged) {
             ponged = false;
             timer = new Timer();
@@ -134,12 +144,12 @@ public class ClientHandler implements Runnable {
 
         try {
             serverClientCommunication.join();
-            if (!socket.isClosed()) {
-                socket.close();
-            }
+            timer.cancel();
             System.out.println("ServerClientCommunication closed");
-        } catch (InterruptedException | IOException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
+        } finally {
+            server.checkTermination();
         }
     }
 
@@ -197,8 +207,14 @@ public class ClientHandler implements Runnable {
         if (person.isActivePlayer()) {
             person.endTurn();
         }
-        if(Game.getInstance().hasGameEnded()) {
-            endGame();
+
+        if (Game.getInstance().getNumberOfPlayers() == 1) {
+            Consumer<GameStateSerializer> lambda = (serializer) -> {
+                serializer.addCardMarket();
+                serializer.addFaithTrack(person);
+                serializer.addFlippedActionToken();
+            };
+            updateGameState(lambda);
         } else {
             Consumer<GameStateSerializer> lambda = (serializer) -> {
                 for (Player player : Game.getInstance().getPlayers()) {
@@ -208,7 +224,11 @@ public class ClientHandler implements Runnable {
                 }
             };
             updateGameState(lambda);
+        }
 
+        if(Game.getInstance().hasGameEnded()) {
+            endGame();
+        } else {
             broadcast("command", JsonUtil.getInstance().serializeCommandBuffer(commandBuffer, person));
         }
     }

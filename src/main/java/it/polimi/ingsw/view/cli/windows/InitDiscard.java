@@ -25,7 +25,7 @@ public class InitDiscard extends CommandWindow {
         } catch (NumberFormatException e) {
         }
 
-        CLI.renderWindow(client);
+        CLI.renderGameWindow(client);
     }
 
     @Override

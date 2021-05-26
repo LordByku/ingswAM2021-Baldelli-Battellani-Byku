@@ -9,7 +9,6 @@ import it.polimi.ingsw.utility.JsonUtil;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.server.GameStateSerializer;
 
-import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.function.Consumer;
 
@@ -111,17 +110,17 @@ public class LocalController implements Runnable {
                 if (person.isActivePlayer() && person.mainAction()) {
                     person.endTurn();
 
+                    Consumer<GameStateSerializer> lambda = (serializer) -> {
+                        serializer.addCardMarket();
+                        serializer.addFaithTrack(person);
+                        serializer.addFlippedActionToken();
+                    };
+
+                    updateGameState(lambda);
+
                     if(Game.getInstance().hasGameEnded()) {
                         sendEndGameMessage();
                     } else {
-                        Consumer<GameStateSerializer> lambda = (serializer) -> {
-                            serializer.addCardMarket();
-                            serializer.addFaithTrack(person);
-                            serializer.addFlippedActionToken();
-                        };
-
-                        updateGameState(lambda);
-
                         ok("command", JsonUtil.getInstance().serializeCommandBuffer(commandBuffer, person));
                     }
                 } else {
@@ -174,11 +173,10 @@ public class LocalController implements Runnable {
         ok("command", commandObject);
 
         try {
-            while (true) {
+            while (!Thread.interrupted()) {
                 handleUserMessage(readBuffer.take());
             }
         } catch (InterruptedException e) {
-            e.printStackTrace();
         }
     }
 }

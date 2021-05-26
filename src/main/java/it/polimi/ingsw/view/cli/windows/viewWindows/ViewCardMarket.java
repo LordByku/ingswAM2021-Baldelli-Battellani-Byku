@@ -30,7 +30,7 @@ public class ViewCardMarket extends CLIViewWindow {
             }
         }
 
-        CLI.renderWindow(client);
+        CLI.renderGameWindow(client);
     }
 
     @Override

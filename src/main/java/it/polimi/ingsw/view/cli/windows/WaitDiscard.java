@@ -9,7 +9,7 @@ public class WaitDiscard extends CLIWindow {
 
     @Override
     public void handleUserMessage(Client client, String line) {
-        CLI.renderWindow(client);
+        CLI.renderGameWindow(client);
     }
 
     @Override

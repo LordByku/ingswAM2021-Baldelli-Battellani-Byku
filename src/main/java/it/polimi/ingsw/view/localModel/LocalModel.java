@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class LocalModel implements LocalModelElement, CLIPrintable {
     private GameZone gameZone;
     private ArrayList<Player> players;
+    private boolean endGame;
 
     public Player getPlayer(String nickname) {
         for (Player player : players) {
@@ -37,6 +38,14 @@ public class LocalModel implements LocalModelElement, CLIPrintable {
 
     public GameZone getGameZone() {
         return gameZone;
+    }
+
+    public void setEndGame() {
+        endGame = true;
+    }
+
+    public boolean getEndGame() {
+        return endGame;
     }
 
     public boolean allInitDiscard() {

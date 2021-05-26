@@ -13,11 +13,16 @@ public class EndGameWindow extends CLIWindow {
 
     @Override
     public void handleUserMessage(Client client, String line) {
-        CLI.renderWindow(client);
+        if(line.equals("x")) {
+            client.exit();
+            return;
+        }
+        CLI.renderGameWindow(client);
     }
 
     @Override
     public void render(Client client) {
+        CLI.actionToken(client.getModel());
         CLI.endGame(endGameMessage);
     }
 }

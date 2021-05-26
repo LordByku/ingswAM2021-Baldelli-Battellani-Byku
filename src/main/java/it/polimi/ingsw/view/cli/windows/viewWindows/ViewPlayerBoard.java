@@ -49,7 +49,7 @@ public class ViewPlayerBoard extends CLIViewWindow {
             }
         }
 
-        CLI.renderWindow(client);
+        CLI.renderGameWindow(client);
     }
 
     @Override

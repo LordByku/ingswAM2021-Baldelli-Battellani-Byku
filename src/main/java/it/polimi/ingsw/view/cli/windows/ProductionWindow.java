@@ -90,7 +90,7 @@ public class ProductionWindow extends CommandWindow {
             }
         }
 
-        CLI.renderWindow(client);
+        CLI.renderGameWindow(client);
     }
 
     @Override
@@ -100,6 +100,8 @@ public class ProductionWindow extends CommandWindow {
         Board board = self.getBoard();
         HashMap<Integer, ProductionDetails> map = board.activeProductionDetails();
         if (commandBuffer.getProductionsToActivate() == null) {
+            CLI.showWarehouse(board.getWarehouse(), board.getPlayedLeaderCards());
+            CLI.showStrongbox(board.getStrongBox());
             CLI.activateProductionSelection(map);
         } else {
             if (commandBuffer.getObtainedResources() == null) {

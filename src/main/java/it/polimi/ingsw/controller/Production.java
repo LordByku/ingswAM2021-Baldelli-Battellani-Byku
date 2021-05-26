@@ -179,14 +179,22 @@ public class Production extends CommandBuffer {
             set.add(productionIndex);
         }
 
-        this.productionsToActivate = productionsToActivate;
-        warehouseToSpend = new ConcreteResourceSet[BoardParser.getInstance().getDepotSizes().size()];
-        for (int i = 0; i < warehouseToSpend.length; ++i) {
-            warehouseToSpend[i] = new ConcreteResourceSet();
+        SpendableResourceSet toSpend = new SpendableResourceSet();
+        for (int productionIndex : productionsToActivate) {
+            ProductionDetails productionDetails = productionArea.getProduction(productionIndex);
+            toSpend = toSpend.union(productionDetails.getInput());
         }
-        strongboxToSpend = new ConcreteResourceSet();
-        obtainedResources = null;
-        obtainedFaithPoints = -1;
+
+        if(person.getBoard().getResources().containsResources(toSpend.getResourceSet())) {
+            this.productionsToActivate = productionsToActivate;
+            warehouseToSpend = new ConcreteResourceSet[BoardParser.getInstance().getDepotSizes().size()];
+            for (int i = 0; i < warehouseToSpend.length; ++i) {
+                warehouseToSpend[i] = new ConcreteResourceSet();
+            }
+            strongboxToSpend = new ConcreteResourceSet();
+            obtainedResources = null;
+            obtainedFaithPoints = -1;
+        }
     }
 
     private void setResourcesToSpend(ConcreteResourceSet[] warehouseToSpend, ConcreteResourceSet strongboxToSpend) {

@@ -93,7 +93,7 @@ public class PurchaseWindow extends CommandWindow {
             }
         }
 
-        CLI.renderWindow(client);
+        CLI.renderGameWindow(client);
     }
 
     private void sendSpendResourcesCommand(Client client) {

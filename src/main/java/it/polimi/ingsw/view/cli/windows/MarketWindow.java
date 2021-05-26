@@ -107,7 +107,7 @@ public class MarketWindow extends CommandWindow {
             }
         }
 
-        CLI.renderWindow(client);
+        CLI.renderGameWindow(client);
     }
 
     private void sendDepotCommand(Client client, String[] words, String command) {

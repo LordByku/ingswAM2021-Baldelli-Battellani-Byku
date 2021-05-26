@@ -14,11 +14,10 @@ public class LocalClientCommunication implements Runnable {
     @Override
     public void run() {
         try {
-            while (true) {
+            while (!Thread.interrupted()) {
                 client.handleServerMessage(readBuffer.take());
             }
         } catch (InterruptedException e) {
-            e.printStackTrace();
         }
     }
 }

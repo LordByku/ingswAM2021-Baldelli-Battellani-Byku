@@ -9,7 +9,7 @@ public class WaitResources extends CLIWindow {
 
     @Override
     public void handleUserMessage(Client client, String line) {
-        CLI.renderWindow(client);
+        CLI.renderGameWindow(client);
     }
 
     @Override

@@ -11,18 +11,14 @@ import it.polimi.ingsw.view.cli.windows.CLIWindow;
 import it.polimi.ingsw.view.cli.windows.viewWindows.ViewModel;
 
 public class GameStarted extends ClientState {
-    private boolean pendingUpdate;
     private final ViewInterface viewInterface;
 
     public GameStarted(ViewInterface viewInterface) {
-        pendingUpdate = false;
         this.viewInterface = viewInterface;
     }
 
     @Override
     public void handleServerMessage(Client client, String line) {
-        System.out.println("client received " + line);
-
         JsonObject json = JsonUtil.getInstance().parseLine(line).getAsJsonObject();
         String status = json.get("status").getAsString();
 

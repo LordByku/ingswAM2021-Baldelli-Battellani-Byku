@@ -7,19 +7,23 @@ import it.polimi.ingsw.network.client.LocalConfig;
 import it.polimi.ingsw.network.server.GameStateSerializer;
 import it.polimi.ingsw.parsing.Parser;
 import it.polimi.ingsw.utility.Deserializer;
+import it.polimi.ingsw.view.ViewInterface;
 import it.polimi.ingsw.view.cli.CLI;
 
+import javax.swing.text.View;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class ModeSelection extends ClientState {
-    public ModeSelection() {
-        CLI.selectMode();
+    private final ViewInterface viewInterface;
+
+    public ModeSelection(ViewInterface viewInterface) {
+        this.viewInterface = viewInterface;
     }
 
     @Override
     public void handleServerMessage(Client client, String line) {
-        CLI.unexpected();
+        viewInterface.onUnexpected(client);
     }
 
     @Override
@@ -32,13 +36,14 @@ public class ModeSelection extends ClientState {
                     try {
                         client.connectToServer();
                     } catch (IOException e) {
+                        // TODO: use view interface
                         CLI.connectionError();
                         CLI.selectMode();
                     }
                     break;
                 }
                 case 1: {
-                    CLI.loadGame();
+                    viewInterface.loadGame(client);
 
                     Game.getInstance().addPlayer(client.getNickname());
                     Game.getInstance().startSinglePlayer();
@@ -56,17 +61,17 @@ public class ModeSelection extends ClientState {
                     GameStateSerializer serializer = new GameStateSerializer(client.getNickname());
                     client.setModel(Deserializer.getInstance().getLocalModel(serializer.gameState()));
 
-                    client.setState(new GameStarted(new CLI()));
+                    client.setState(new GameStarted(viewInterface));
 
                     client.startLocalController();
                     break;
                 }
                 default: {
-                    CLI.selectMode();
+                    viewInterface.selectMode(client);
                 }
             }
         } catch (NumberFormatException | InvalidNicknameException | ExistingNicknameException | GameAlreadyStartedException | FullLobbyException e) {
-            CLI.selectMode();
+            viewInterface.selectMode(client);
         }
     }
 }

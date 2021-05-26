@@ -36,7 +36,7 @@ public class ViewModel extends CLIViewWindow {
             } catch (NumberFormatException e) {
             }
         }
-        CLI.renderWindow(client);
+        CLI.renderGameWindow(client);
     }
 
     @Override

@@ -78,16 +78,6 @@ public class GameStarted extends ServerState {
                 // client ends the turn
                 Person person = clientHandler.getPerson();
                 if (person.isActivePlayer() && person.mainAction()) {
-                    if (Game.getInstance().getNumberOfPlayers() == 1) {
-                        Consumer<GameStateSerializer> lambda = (serializer) -> {
-                            serializer.addCardMarket();
-                            serializer.addFaithTrack(person);
-                            serializer.addFlippedActionToken();
-                        };
-
-                        clientHandler.updateGameState(lambda);
-                    }
-
                     clientHandler.endTurn();
                 } else {
                     clientHandler.error("Invalid request");

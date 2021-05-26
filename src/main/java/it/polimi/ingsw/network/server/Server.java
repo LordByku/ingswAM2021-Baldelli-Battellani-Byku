@@ -20,15 +20,27 @@ import java.util.function.Consumer;
 public class Server {
     private final int port;
     private final ArrayList<ClientHandler> clientHandlers;
+    private ServerSocket serverSocket;
 
     public Server(int port) {
         this.port = port;
         clientHandlers = new ArrayList<>();
     }
 
+    protected void checkTermination() {
+        try {
+            synchronized (clientHandlers) {
+                if (Game.getInstance().hasGameEnded() && clientHandlers.isEmpty()) {
+                    serverSocket.close();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void start() {
         ExecutorService executor = Executors.newCachedThreadPool();
-        ServerSocket serverSocket;
         try {
             serverSocket = new ServerSocket(port);
         } catch (IOException e) {
@@ -47,7 +59,6 @@ public class Server {
                 }
                 executor.submit(clientHandler);
             } catch (IOException e) {
-                e.printStackTrace();
                 break;
             }
         }

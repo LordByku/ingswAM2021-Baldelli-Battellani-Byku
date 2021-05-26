@@ -18,8 +18,9 @@ import java.util.ArrayList;
 public class Lobby extends ClientState {
     private final ViewInterface viewInterface;
 
-    public Lobby() {
-        viewInterface = new CLI();
+    public Lobby(ViewInterface viewInterface) {
+        this.viewInterface = viewInterface;
+        // TODO: use view interface
         CLI.connecting();
     }
 
@@ -32,14 +33,14 @@ public class Lobby extends ClientState {
         switch (status) {
             case "fatalError": {
                 String message = json.get("message").getAsString();
-                CLI.error(message);
+                viewInterface.onError(client, message);
                 client.closeServerCommunication();
-                client.setState(new NicknameSelection());
+                client.setState(new NicknameSelection(viewInterface));
                 break;
             }
             case "error": {
                 String message = json.get("message").getAsString();
-                CLI.error(message);
+                viewInterface.onError(client, message);
                 break;
             }
             case "ok": {
@@ -73,18 +74,12 @@ public class Lobby extends ClientState {
                             }
                         }
 
-                        CLI.playerList(nicknames, hostNickname);
-                        // TODO improve ?
-                        if (LocalConfig.getInstance().isHost()) {
-                            CLI.host();
-                        } else {
-                            CLI.waitStart();
-                        }
+                        viewInterface.updatePlayerList(client, nicknames, hostNickname);
 
                         break;
                     }
                     case "config": {
-                        CLI.loadGame();
+                        viewInterface.loadGame(client);
 
                         JsonObject message = json.getAsJsonObject("message");
 
@@ -114,31 +109,20 @@ public class Lobby extends ClientState {
                         break;
                     }
                     default: {
-                        CLI.unexpected();
+                        viewInterface.onUnexpected(client);
                     }
                 }
 
                 break;
             }
             default: {
-                CLI.unexpected();
+                viewInterface.onUnexpected(client);
             }
         }
     }
 
     @Override
     public void handleUserMessage(Client client, String line) {
-        if (LocalConfig.getInstance().isHost()) {
-            if (line.equals("")) {
-                JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("command", "startGame");
-
-                client.write(jsonObject.toString());
-            } else {
-                CLI.host();
-            }
-        } else {
-            CLI.waitStart();
-        }
+        viewInterface.startGame(client, line);
     }
 }

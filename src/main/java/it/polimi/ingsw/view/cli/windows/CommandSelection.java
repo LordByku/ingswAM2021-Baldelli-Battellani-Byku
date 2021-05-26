@@ -71,7 +71,7 @@ public class CommandSelection extends CLIWindow {
         } catch (NumberFormatException e) {
         }
 
-        CLI.renderWindow(client);
+        CLI.renderGameWindow(client);
     }
 
     @Override
@@ -81,7 +81,8 @@ public class CommandSelection extends CLIWindow {
             if (self.mainAction()) {
                 CLI.endTurn();
             } else {
-                CLI.startTurn(client.getModel().getGameZone());
+                CLI.actionToken(client.getModel());
+                CLI.startTurn();
             }
         } else {
             CLI.waitTurn();

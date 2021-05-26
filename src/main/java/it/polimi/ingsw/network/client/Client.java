@@ -5,10 +5,14 @@ import it.polimi.ingsw.controller.LocalController;
 import it.polimi.ingsw.network.client.clientStates.ClientState;
 import it.polimi.ingsw.network.client.clientStates.Lobby;
 import it.polimi.ingsw.network.client.clientStates.NicknameSelection;
+import it.polimi.ingsw.view.ViewInterface;
 import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.view.localModel.LocalModel;
 
+import javax.swing.text.View;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Timer;
@@ -28,12 +32,19 @@ public class Client {
     private boolean singlePlayer;
     private BlockingQueue<String> readBuffer;
     private BlockingQueue<String> writeBuffer;
+    private Thread clientUserCommunication;
+    private Thread localController;
+    private Thread localClientCommunication;
+    private final ViewInterface viewInterface;
+    private final BufferedReader stdin;
 
     public Client(String hostname, int port) {
         this.hostname = hostname;
         this.port = port;
         nickname = null;
         singlePlayer = false;
+        viewInterface = new CLI();
+        stdin = new BufferedReader(new InputStreamReader(System.in));
     }
 
     public synchronized void handleServerMessage(String line) {
@@ -49,12 +60,13 @@ public class Client {
     }
 
     public void start() {
-        CLI.welcome();
-        clientState = new NicknameSelection();
-        Thread thread = new Thread(new ClientUserCommunication(this));
-        thread.start();
+        clientState = new NicknameSelection(viewInterface);
+        clientUserCommunication = new Thread(new ClientUserCommunication(this, stdin));
+        clientUserCommunication.start();
+        viewInterface.init(this);
+
         try {
-            thread.join();
+            clientUserCommunication.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -122,8 +134,15 @@ public class Client {
         }
 
         try {
-            connectToServer();
+            if(!getModel().getEndGame()) {
+                connectToServer();
+            } else {
+                // TODO: use view interface
+                CLI.closing();
+                exit();
+            }
         } catch (IOException e) {
+            // TODO: use view interface
             CLI.connectionError();
             CLI.reconnecting(timerDelay);
             Timer timer = new Timer();
@@ -141,17 +160,47 @@ public class Client {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("nickname", getNickname());
         write(jsonObject.toString());
-        setState(new Lobby());
+        setState(new Lobby(viewInterface));
     }
 
     public void startLocalController() {
         readBuffer = new ArrayBlockingQueue<>(1);
         writeBuffer = new ArrayBlockingQueue<>(1);
 
-        Thread localClientCommunication = new Thread(new LocalClientCommunication(this, readBuffer));
+        localClientCommunication = new Thread(new LocalClientCommunication(this, readBuffer));
         localClientCommunication.start();
 
-        Thread controller = new Thread(new LocalController(this, writeBuffer, readBuffer));
-        controller.start();
+        localController = new Thread(new LocalController(this, writeBuffer, readBuffer));
+        localController.start();
+    }
+
+    public void exit() {
+        if (socket != null && !socket.isClosed()) {
+            closeServerCommunication();
+        }
+        try {
+            // TODO
+            stdin.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(localClientCommunication != null) {
+            localClientCommunication.interrupt();
+        }
+        if(localController != null) {
+            localController.interrupt();
+        }
+
+        int count = Thread.activeCount();
+        System.out.println("currently active threads = " + count);
+
+        Thread th[] = new Thread[count];
+        // returns the number of threads put into the array
+        Thread.enumerate(th);
+
+        // prints active threads
+        for (int i = 0; i < count; i++) {
+            System.out.println(i + ": " + th[i]);
+        }
     }
 }

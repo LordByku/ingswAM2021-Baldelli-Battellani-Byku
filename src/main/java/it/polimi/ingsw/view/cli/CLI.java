@@ -22,6 +22,8 @@ import it.polimi.ingsw.parsing.LeaderCardsParser;
 import it.polimi.ingsw.view.ViewInterface;
 import it.polimi.ingsw.view.cli.windows.CLIWindow;
 import it.polimi.ingsw.view.cli.windows.EndGameWindow;
+import it.polimi.ingsw.view.cli.windows.InitWindow;
+import it.polimi.ingsw.view.cli.windows.LobbyWindow;
 import it.polimi.ingsw.view.cli.windows.viewWindows.CLIViewWindow;
 import it.polimi.ingsw.view.cli.windows.viewWindows.ViewModel;
 import it.polimi.ingsw.view.localModel.*;
@@ -39,6 +41,10 @@ public class CLI implements ViewInterface {
         pendingUpdate = false;
         cliWindow = null;
         cliViewWindow = null;
+    }
+
+    public static void selectNickname() {
+        System.out.println("Insert your nickname to continue:");
     }
 
     public CLIViewWindow getViewWindow() {
@@ -60,7 +66,7 @@ public class CLI implements ViewInterface {
         cliWindow = CLIWindow.refresh(client);
     }
 
-    public static void renderWindow(Client client) {
+    public static void renderGameWindow(Client client) {
         if (getActiveWindow() != null) {
             System.out.println();
             getActiveWindow().render(client);
@@ -74,10 +80,6 @@ public class CLI implements ViewInterface {
 
     public static void welcome() {
         System.out.println("---- Masters of Renaissance ----");
-    }
-
-    public static void selectNickname() {
-        System.out.println("Insert your nickname to continue:");
     }
 
     public static void selectMode() {
@@ -187,12 +189,17 @@ public class CLI implements ViewInterface {
         System.out.println("Waiting for other players to complete their turn...");
     }
 
-    public static void startTurn(GameZone gameZone) {
-        ActionToken actionToken = gameZone.getActionToken();
-        if (actionToken != null) {
-            System.out.println(actionToken.getCLIString());
-            gameZone.resetActionToken();
+    public static void actionToken(LocalModel model) {
+        if(model != null){
+            ActionToken actionToken = model.getGameZone().getActionToken();
+            if (actionToken != null) {
+                System.out.println(actionToken.getCLIString());
+                model.getGameZone().resetActionToken();
+            }
         }
+    }
+
+    public static void startTurn() {
         System.out.println("[0] Collect resources from market");
         System.out.println("[1] Purchase development card");
         System.out.println("[2] Activate production effects");
@@ -393,7 +400,6 @@ public class CLI implements ViewInterface {
     }
 
     public static void results() {
-        System.out.println();
         System.out.println("Game has finished");
         System.out.println("Results:");
     }
@@ -409,6 +415,7 @@ public class CLI implements ViewInterface {
         } else {
             System.out.println(TextColour.GREEN.escape() + "You have won" + TextColour.RESET);
         }
+        System.out.println("[x] Exit");
     }
 
     public static void multiPlayerWinner(ArrayList<String> winner) {
@@ -427,11 +434,15 @@ public class CLI implements ViewInterface {
         }
     }
 
+    public static void closing() {
+        System.out.println("Lost connection with server, closing client...");
+    }
+
     @Override
     public void onError(Client client, String message) {
         error(message);
         refreshWindow(client);
-        renderWindow(client);
+        renderGameWindow(client);
     }
 
     @Override
@@ -439,7 +450,7 @@ public class CLI implements ViewInterface {
         if (pendingUpdate || player.equals(client.getNickname())) {
             pendingUpdate = false;
             refreshWindow(client);
-            renderWindow(client);
+            renderGameWindow(client);
         }
     }
 
@@ -459,7 +470,7 @@ public class CLI implements ViewInterface {
             } else {
                 setViewWindow(null);
             }
-            renderWindow(client);
+            renderGameWindow(client);
             return;
         }
         getActiveWindow().handleUserMessage(client, line);
@@ -472,7 +483,37 @@ public class CLI implements ViewInterface {
 
     @Override
     public void onEndGame(Client client, JsonObject endGameMessage) {
+        client.getModel().setEndGame();
         cliWindow = new EndGameWindow(endGameMessage);
-        getActiveWindow().render(client);
+        renderGameWindow(client);
+    }
+
+    @Override
+    public void init(Client client) {
+        CLI.welcome();
+        cliWindow = new InitWindow();
+        cliWindow.render(client);
+    }
+
+    @Override
+    public void selectMode(Client client) {
+        cliWindow.render(client);
+    }
+
+    @Override
+    public void loadGame(Client client) {
+        CLI.loadGame();
+    }
+
+    @Override
+    public void updatePlayerList(Client client, ArrayList<String> nicknames, String hostNickname) {
+        CLI.playerList(nicknames, hostNickname);
+        cliWindow = new LobbyWindow();
+        cliWindow.render(client);
+    }
+
+    @Override
+    public void startGame(Client client, String line) {
+        cliWindow.handleUserMessage(client, line);
     }
 }

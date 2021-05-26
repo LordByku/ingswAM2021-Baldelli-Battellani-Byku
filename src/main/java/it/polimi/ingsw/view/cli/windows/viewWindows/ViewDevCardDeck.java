@@ -28,7 +28,7 @@ public class ViewDevCardDeck extends CLIViewWindow {
             }
         }
 
-        CLI.renderWindow(client);
+        CLI.renderGameWindow(client);
     }
 
     @Override
