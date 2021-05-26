@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.playerBoard;
 
 import it.polimi.ingsw.model.leaderCards.DiscountEffect;
 import it.polimi.ingsw.model.leaderCards.InvalidDiscountEffectException;
+import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.InvalidResourceSetException;
 
@@ -49,9 +50,10 @@ public class DiscountArea {
         if (concreteResourceSet == null) {
             throw new InvalidResourceSetException();
         }
+        ConcreteResourceSet result = (ConcreteResourceSet) concreteResourceSet.clone();
         for (DiscountEffect discountEffect : discountEffects) {
-            concreteResourceSet = discountEffect.applyDiscount(concreteResourceSet);
+            result = discountEffect.applyDiscount(result);
         }
-        return concreteResourceSet;
+        return result;
     }
 }

@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.devCards;
 import it.polimi.ingsw.model.playerBoard.Board;
 import it.polimi.ingsw.model.playerBoard.InvalidBoardException;
 import it.polimi.ingsw.model.playerBoard.Scoring;
+import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.InvalidResourceSetException;
 import it.polimi.ingsw.view.cli.BackGroundColor;
@@ -94,7 +95,8 @@ public class DevCard implements Scoring, Cloneable {
         if (board == null) {
             throw new InvalidBoardException();
         }
-        return board.containsResources(reqResources) && board.getDevelopmentCardArea().getTopLevel(deckIndex) == level.prev();
+        ConcreteResourceSet discounted = board.getDiscountArea().applyDiscount(reqResources);
+        return board.containsResources(discounted) && board.getDevelopmentCardArea().getTopLevel(deckIndex) == level.prev();
     }
 
     /**

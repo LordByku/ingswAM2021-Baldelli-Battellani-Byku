@@ -273,8 +273,9 @@ public class GameStateSerializer {
     public JsonArray playedLeaderCards(Person person) {
         JsonArray playedLeaderCards = new JsonArray();
         for (LeaderCard card : person.getBoard().getLeaderCardArea().getLeaderCards()) {
-            if (card.isActive())
+            if (card.isActive()) {
                 playedLeaderCards.add(card.getId());
+            }
         }
         return playedLeaderCards;
     }
@@ -283,12 +284,12 @@ public class GameStateSerializer {
         JsonArray handLeaderCards = new JsonArray();
         String nick = person.getNickname();
         for (LeaderCard card : person.getBoard().getLeaderCardArea().getLeaderCards()) {
-            if (nickname.equals(nick)) {
-                if (!card.isActive()) {
+            if (!card.isActive()) {
+                if (nickname.equals(nick)) {
                     handLeaderCards.add(card.getId());
+                } else {
+                    handLeaderCards.add(JsonNull.INSTANCE);
                 }
-            } else {
-                handLeaderCards.add(JsonNull.INSTANCE);
             }
         }
         return handLeaderCards;

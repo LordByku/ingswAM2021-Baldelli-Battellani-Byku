@@ -36,10 +36,11 @@ public class DiscountEffect implements Cloneable {
         if (set == null) {
             throw new InvalidResourceSetException();
         }
-        if (set.getCount(type) > 0) {
-            set.removeResource(type);
+        ConcreteResourceSet result = (ConcreteResourceSet) set.clone();
+        if (result.getCount(type) > 0) {
+            result.removeResource(type);
         }
-        return set;
+        return result;
     }
 
     /**

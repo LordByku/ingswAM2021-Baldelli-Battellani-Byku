@@ -4,7 +4,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.model.devCards.ProductionDetails;
+import it.polimi.ingsw.model.game.Game;
 import it.polimi.ingsw.model.game.Person;
+import it.polimi.ingsw.model.game.Player;
+import it.polimi.ingsw.model.game.PlayerType;
 import it.polimi.ingsw.model.playerBoard.ProductionArea;
 import it.polimi.ingsw.model.playerBoard.faithTrack.FaithTrack;
 import it.polimi.ingsw.model.playerBoard.faithTrack.VRSObserver;
@@ -68,10 +71,15 @@ public class Production extends CommandBuffer {
         person.mainActionDone();
         setCompleted();
 
+        ArrayList<Player> players = Game.getInstance().getPlayers();
         return (serializer) -> {
             serializer.addWarehouse(person);
             serializer.addStrongbox(person);
-            serializer.addFaithTrack(person);
+            for (Player player : players) {
+                if (player.getPlayerType() == PlayerType.PERSON) {
+                    serializer.addFaithTrack((Person) player);
+                }
+            }
         };
     }
 
