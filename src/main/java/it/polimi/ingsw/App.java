@@ -5,6 +5,7 @@ import it.polimi.ingsw.network.server.Server;
 
 public class App {
     private static void printUsage() {
+
         System.out.println("To launch client:");
         System.out.println("App client <hostname> <port>");
         System.out.println("To launch server:");

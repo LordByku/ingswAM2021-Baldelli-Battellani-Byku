@@ -14,6 +14,7 @@ public class GUI implements ViewInterface {
     private GUIWindow guiWindow;
 
     public GUI() {
+        guiWindow = new InitWindow();
     }
 
     @Override
