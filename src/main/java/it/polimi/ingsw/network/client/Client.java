@@ -62,6 +62,7 @@ public class Client {
     public void start() {
         clientState = new NicknameSelection(viewInterface);
         clientUserCommunication = new Thread(new ClientUserCommunication(this, stdin));
+        clientUserCommunication.setDaemon(true);
         clientUserCommunication.start();
         viewInterface.init(this);
 
@@ -136,10 +137,6 @@ public class Client {
         try {
             if(!getModel().getEndGame()) {
                 connectToServer();
-            } else {
-                // TODO: use view interface
-                CLI.closing();
-                exit();
             }
         } catch (IOException e) {
             // TODO: use view interface
@@ -168,9 +165,11 @@ public class Client {
         writeBuffer = new ArrayBlockingQueue<>(1);
 
         localClientCommunication = new Thread(new LocalClientCommunication(this, readBuffer));
+        localClientCommunication.setDaemon(true);
         localClientCommunication.start();
 
         localController = new Thread(new LocalController(this, writeBuffer, readBuffer));
+        localController.setDaemon(true);
         localController.start();
     }
 
@@ -178,29 +177,7 @@ public class Client {
         if (socket != null && !socket.isClosed()) {
             closeServerCommunication();
         }
-        try {
-            // TODO
-            stdin.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if(localClientCommunication != null) {
-            localClientCommunication.interrupt();
-        }
-        if(localController != null) {
-            localController.interrupt();
-        }
 
-        int count = Thread.activeCount();
-        System.out.println("currently active threads = " + count);
-
-        Thread th[] = new Thread[count];
-        // returns the number of threads put into the array
-        Thread.enumerate(th);
-
-        // prints active threads
-        for (int i = 0; i < count; i++) {
-            System.out.println(i + ": " + th[i]);
-        }
+        clientUserCommunication.interrupt();
     }
 }
