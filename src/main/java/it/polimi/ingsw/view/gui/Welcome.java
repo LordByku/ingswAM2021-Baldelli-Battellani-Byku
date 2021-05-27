@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.network.client.Client;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -11,17 +13,19 @@ public class Welcome {
     private JButton playOnlineButton;
     private JTextField insertYourNicknameTextField;
 
-    public Welcome() {
+    public Welcome(Client client) {
         playOnlineButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                insertYourNicknameTextField.setText("Suca Ema");
+                client.handleUserMessage(insertYourNicknameTextField.getText());
+                client.handleUserMessage("0");
             }
         });
         playOfflineButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                insertYourNicknameTextField.setText("Ema Suca");
+                client.handleUserMessage(insertYourNicknameTextField.getText());
+                client.handleUserMessage("1");
             }
         });
     }

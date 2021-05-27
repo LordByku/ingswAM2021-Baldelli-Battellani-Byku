@@ -1,8 +1,6 @@
 package it.polimi.ingsw.view.cli.windows;
 
-import com.google.gson.JsonObject;
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.network.client.LocalConfig;
 import it.polimi.ingsw.view.cli.CLI;
 
 public class InitWindow extends CLIWindow {

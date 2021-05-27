@@ -496,7 +496,7 @@ public class CLI implements ViewInterface {
     }
 
     @Override
-    public void selectMode(Client client) {
+    public void welcome(Client client) {
         cliWindow.render(client);
     }
 

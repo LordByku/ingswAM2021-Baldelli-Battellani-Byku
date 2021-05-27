@@ -4,13 +4,12 @@ import com.google.gson.JsonObject;
 import it.polimi.ingsw.controller.LocalController;
 import it.polimi.ingsw.network.client.clientStates.ClientState;
 import it.polimi.ingsw.network.client.clientStates.Lobby;
-import it.polimi.ingsw.network.client.clientStates.NicknameSelection;
+import it.polimi.ingsw.network.client.clientStates.Welcome;
 import it.polimi.ingsw.view.ViewInterface;
 import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.view.gui.GUI;
 import it.polimi.ingsw.view.localModel.LocalModel;
 
-import javax.swing.text.View;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -36,16 +35,17 @@ public class Client {
     private Thread clientUserCommunication;
     private Thread localController;
     private Thread localClientCommunication;
-    private final ViewInterface viewInterface;
+    private ViewInterface viewInterface;
     private final BufferedReader stdin;
+    private final boolean guiSelection;
 
-    public Client(String hostname, int port) {
+    public Client(String hostname, int port, boolean guiSelection) {
         this.hostname = hostname;
         this.port = port;
         nickname = null;
         singlePlayer = false;
-        viewInterface = new GUI();
         stdin = new BufferedReader(new InputStreamReader(System.in));
+        this.guiSelection = guiSelection;
     }
 
     public synchronized void handleServerMessage(String line) {
@@ -61,7 +61,12 @@ public class Client {
     }
 
     public void start() {
-        clientState = new NicknameSelection(viewInterface);
+        if(guiSelection) {
+            viewInterface = new GUI(this);
+        } else {
+            viewInterface = new CLI();
+        }
+        clientState = new Welcome(viewInterface);
         clientUserCommunication = new Thread(new ClientUserCommunication(this, stdin));
         clientUserCommunication.start();
         viewInterface.init(this);

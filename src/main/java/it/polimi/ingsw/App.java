@@ -39,7 +39,8 @@ public class App {
             String hostname = args[1];
             int port = Integer.parseInt(args[2]);
 
-            Client client = new Client(hostname, port);
+            // TODO: guiSelection
+            Client client = new Client(hostname, port, true);
 
             client.start();
         } else {

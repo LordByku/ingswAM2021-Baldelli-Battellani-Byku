@@ -21,7 +21,7 @@ public interface ViewInterface {
 
     void init(Client client);
 
-    void selectMode(Client client);
+    void welcome(Client client);
 
     void loadGame(Client client);
 

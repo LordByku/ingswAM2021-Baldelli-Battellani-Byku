@@ -35,7 +35,8 @@ public class Lobby extends ClientState {
                 String message = json.get("message").getAsString();
                 viewInterface.onError(client, message);
                 client.closeServerCommunication();
-                client.setState(new NicknameSelection(viewInterface));
+                client.setNickname(null);
+                client.setState(new Welcome(viewInterface));
                 break;
             }
             case "error": {

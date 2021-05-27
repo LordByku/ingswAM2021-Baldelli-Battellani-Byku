@@ -11,10 +11,15 @@ import javax.swing.*;
 import java.util.ArrayList;
 
 public class GUI implements ViewInterface {
+    private final JFrame frame;
+    private final Client client;
     private GUIWindow guiWindow;
 
-    public GUI() {
-        guiWindow = new InitWindow();
+    public GUI(Client client) {
+        this.client = client;
+        frame = new JFrame("Masters of Renaissance");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        guiWindow = new InitWindow(client, frame);
     }
 
     @Override
@@ -52,7 +57,7 @@ public class GUI implements ViewInterface {
     }
 
     @Override
-    public void selectMode(Client client) {
+    public void welcome(Client client) {
 
     }
 
@@ -63,7 +68,7 @@ public class GUI implements ViewInterface {
 
     @Override
     public void updatePlayerList(Client client, ArrayList<String> nicknames, String hostNickname) {
-
+        // TODO: player lobby
     }
 
     @Override
