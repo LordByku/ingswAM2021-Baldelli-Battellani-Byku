@@ -1,15 +1,10 @@
 package it.polimi.ingsw.view.gui.windows;
 
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.view.gui.Welcome;
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
+import it.polimi.ingsw.view.gui.forms.Welcome;
 
 public class InitWindow extends GUIWindow {
-    public InitWindow(Client client, JFrame frame) {
-        frame.setContentPane(new Welcome(client).getPanel());
-        frame.pack();
-        frame.setVisible(true);
+    public InitWindow(Client client) {
+        super(new Welcome(client).getPanel());
     }
 }

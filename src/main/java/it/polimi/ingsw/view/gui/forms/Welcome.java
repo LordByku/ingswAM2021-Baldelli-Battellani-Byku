@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view.gui;
+package it.polimi.ingsw.view.gui.forms;
 
 import it.polimi.ingsw.network.client.Client;
 
@@ -30,7 +30,7 @@ public class Welcome {
         });
     }
 
-    public Container getPanel() {
+    public JPanel getPanel() {
         return panel;
     }
 }

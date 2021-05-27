@@ -6,6 +6,7 @@ import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.view.ViewInterface;
 import it.polimi.ingsw.view.gui.windows.GUIWindow;
 import it.polimi.ingsw.view.gui.windows.InitWindow;
+import it.polimi.ingsw.view.gui.windows.LobbyWindow;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -19,12 +20,11 @@ public class GUI implements ViewInterface {
         this.client = client;
         frame = new JFrame("Masters of Renaissance");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        guiWindow = new InitWindow(client, frame);
     }
 
     @Override
     public void onError(Client client, String message) {
-
+        // TODO: handle server error
     }
 
     @Override
@@ -54,6 +54,8 @@ public class GUI implements ViewInterface {
 
     @Override
     public void init(Client client) {
+        guiWindow = new InitWindow(client);
+        guiWindow.setActive(true, frame);
     }
 
     @Override
@@ -68,11 +70,13 @@ public class GUI implements ViewInterface {
 
     @Override
     public void updatePlayerList(Client client, ArrayList<String> nicknames, String hostNickname) {
-        // TODO: player lobby
+        guiWindow.setActive(false, frame);
+        guiWindow = new LobbyWindow(client, nicknames, hostNickname);
+        guiWindow.setActive(true, frame);
     }
 
     @Override
     public void startGame(Client client, String line) {
-
+        // TODO: handle start game input
     }
 }
