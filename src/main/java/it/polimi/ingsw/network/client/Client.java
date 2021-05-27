@@ -7,6 +7,7 @@ import it.polimi.ingsw.network.client.clientStates.Lobby;
 import it.polimi.ingsw.network.client.clientStates.NicknameSelection;
 import it.polimi.ingsw.view.ViewInterface;
 import it.polimi.ingsw.view.cli.CLI;
+import it.polimi.ingsw.view.gui.GUI;
 import it.polimi.ingsw.view.localModel.LocalModel;
 
 import javax.swing.text.View;
@@ -43,7 +44,7 @@ public class Client {
         this.port = port;
         nickname = null;
         singlePlayer = false;
-        viewInterface = new CLI();
+        viewInterface = new GUI();
         stdin = new BufferedReader(new InputStreamReader(System.in));
     }
 
@@ -62,7 +63,6 @@ public class Client {
     public void start() {
         clientState = new NicknameSelection(viewInterface);
         clientUserCommunication = new Thread(new ClientUserCommunication(this, stdin));
-        clientUserCommunication.setDaemon(true);
         clientUserCommunication.start();
         viewInterface.init(this);
 
