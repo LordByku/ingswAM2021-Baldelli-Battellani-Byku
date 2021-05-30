@@ -20,8 +20,8 @@ public class Lobby extends ClientState {
 
     public Lobby(ViewInterface viewInterface) {
         this.viewInterface = viewInterface;
-        // TODO: use view interface
-        CLI.connecting();
+
+        viewInterface.startConnection();
     }
 
     @Override

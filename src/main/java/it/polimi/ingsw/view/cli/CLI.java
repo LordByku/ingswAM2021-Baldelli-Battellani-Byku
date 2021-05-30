@@ -43,10 +43,6 @@ public class CLI implements ViewInterface {
         cliViewWindow = null;
     }
 
-    public static void selectNickname() {
-        System.out.println("Insert your nickname to continue:");
-    }
-
     public CLIViewWindow getViewWindow() {
         return cliViewWindow;
     }
@@ -80,6 +76,10 @@ public class CLI implements ViewInterface {
 
     public static void welcome() {
         System.out.println("---- Masters of Renaissance ----");
+    }
+
+    public static void selectNickname() {
+        System.out.println("Insert your nickname to continue:");
     }
 
     public static void selectMode() {
@@ -434,10 +434,6 @@ public class CLI implements ViewInterface {
         }
     }
 
-    public static void closing() {
-        System.out.println("Lost connection with server, closing client...");
-    }
-
     @Override
     public void onError(Client client, String message) {
         error(message);
@@ -515,5 +511,18 @@ public class CLI implements ViewInterface {
     @Override
     public void startGame(Client client, String line) {
         cliWindow.handleUserMessage(client, line);
+    }
+
+    @Override
+    public void startConnection() {
+        CLI.connecting();
+    }
+
+    @Override
+    public void connectionFailed(Client client, int timerDelay) {
+        CLI.connectionError();
+        if(timerDelay > 0) {
+            CLI.reconnecting(timerDelay);
+        }
     }
 }

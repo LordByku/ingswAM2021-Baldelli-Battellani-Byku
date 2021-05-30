@@ -8,7 +8,6 @@ import it.polimi.ingsw.network.server.GameStateSerializer;
 import it.polimi.ingsw.parsing.Parser;
 import it.polimi.ingsw.utility.Deserializer;
 import it.polimi.ingsw.view.ViewInterface;
-import it.polimi.ingsw.view.cli.CLI;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,8 +38,7 @@ public class Welcome extends ClientState {
                         try {
                             client.connectToServer();
                         } catch (IOException e) {
-                            // TODO: use view interface
-                            CLI.connectionError();
+                            viewInterface.connectionFailed(client, 0);
                             viewInterface.welcome(client);
                         }
                         break;

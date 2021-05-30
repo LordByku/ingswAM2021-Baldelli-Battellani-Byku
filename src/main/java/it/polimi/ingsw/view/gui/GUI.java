@@ -4,9 +4,9 @@ import com.google.gson.JsonObject;
 import it.polimi.ingsw.controller.CommandBuffer;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.view.ViewInterface;
+import it.polimi.ingsw.view.gui.windows.Lobby;
+import it.polimi.ingsw.view.gui.windows.Welcome;
 import it.polimi.ingsw.view.gui.windows.GUIWindow;
-import it.polimi.ingsw.view.gui.windows.InitWindow;
-import it.polimi.ingsw.view.gui.windows.LobbyWindow;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -54,7 +54,7 @@ public class GUI implements ViewInterface {
 
     @Override
     public void init(Client client) {
-        guiWindow = new InitWindow(client);
+        guiWindow = new Welcome(client);
         guiWindow.setActive(true, frame);
     }
 
@@ -71,12 +71,26 @@ public class GUI implements ViewInterface {
     @Override
     public void updatePlayerList(Client client, ArrayList<String> nicknames, String hostNickname) {
         guiWindow.setActive(false, frame);
-        guiWindow = new LobbyWindow(client, nicknames, hostNickname);
+        guiWindow = new Lobby(client, nicknames, hostNickname);
         guiWindow.setActive(true, frame);
     }
 
     @Override
     public void startGame(Client client, String line) {
         // TODO: handle start game input
+    }
+
+    @Override
+    public void startConnection() {
+        ((Welcome) guiWindow).startConnection();
+    }
+
+    @Override
+    public void connectionFailed(Client client, int timerDelay) {
+        if(timerDelay > 0) {
+            // TODO: handle reconnection
+        } else {
+            ((Welcome) guiWindow).connectionFailed();
+        }
     }
 }

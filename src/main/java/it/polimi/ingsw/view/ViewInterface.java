@@ -28,4 +28,8 @@ public interface ViewInterface {
     void updatePlayerList(Client client, ArrayList<String> nicknames, String hostNickname);
 
     void startGame(Client client, String line);
+
+    void startConnection();
+
+    void connectionFailed(Client client, int timerDelay);
 }

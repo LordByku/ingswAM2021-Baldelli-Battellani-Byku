@@ -1,16 +1,14 @@
-package it.polimi.ingsw.view.gui.forms;
+package it.polimi.ingsw.view.gui.windows;
 
 import it.polimi.ingsw.network.client.Client;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import javax.swing.table.*;
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-public class Lobby {
+public class Lobby extends GUIWindow {
     private JTable player;
     private JButton startGameButton;
     private JPanel panel;
@@ -34,7 +32,8 @@ public class Lobby {
         });
     }
 
-    public JPanel getPanel() {
+    @Override
+    protected JPanel getPanel() {
         return panel;
     }
 }

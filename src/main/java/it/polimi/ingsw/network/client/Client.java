@@ -144,9 +144,7 @@ public class Client {
                 connectToServer();
             }
         } catch (IOException e) {
-            // TODO: use view interface
-            CLI.connectionError();
-            CLI.reconnecting(timerDelay);
+            viewInterface.connectionFailed(this, timerDelay);
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
