@@ -10,7 +10,6 @@ import java.util.HashSet;
  * happens the Vatican Report
  */
 public class VaticanReportSection {
-
     /**
      * usedIds is a container for the ids already used for VaticanReportSections
      */

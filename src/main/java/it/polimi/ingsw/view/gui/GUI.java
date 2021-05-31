@@ -74,7 +74,7 @@ public class GUI implements ViewInterface {
 
     @Override
     public void loadGame() {
-        // guiWindow = new Board ...
+        // TODO: guiWindow = new Board ...
     }
 
     @Override

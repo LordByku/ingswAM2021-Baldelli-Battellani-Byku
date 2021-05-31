@@ -6,7 +6,7 @@ public class CheckPoint implements Scoring {
     private final int position;
     private final int points;
 
-    CheckPoint(int position, int points) {
+    public CheckPoint(int position, int points) {
         this.position = position;
         this.points = points;
     }

@@ -2,7 +2,9 @@ package it.polimi.ingsw.model.gameZone;
 
 import it.polimi.ingsw.model.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.playerBoard.Board;
+import it.polimi.ingsw.parsing.InitGameParser;
 import it.polimi.ingsw.parsing.LeaderCardsParser;
+import it.polimi.ingsw.parsing.Parser;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -63,10 +65,12 @@ public class LeaderCardsDeck {
     }
 
     public void assignCards(Board board) {
-        for (int i = assigned; i < assigned + 4; ++i) {
+        int toAssign = InitGameParser.getInstance().getLeaderCardsToAssign();
+
+        for (int i = assigned; i < assigned + toAssign; ++i) {
             deck.get(i).assignToBoard(board);
         }
 
-        assigned += 4;
+        assigned += toAssign;
     }
 }
