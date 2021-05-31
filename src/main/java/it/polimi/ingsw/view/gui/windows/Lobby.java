@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.windows;
 
 import it.polimi.ingsw.network.client.Client;
+import it.polimi.ingsw.network.client.LocalConfig;
 
 import javax.swing.*;
 import javax.swing.table.*;
@@ -25,10 +26,17 @@ public class Lobby extends GUIWindow {
                 model.addRow(new String[]{nickname, ""});
             }
         }
+
+        startGameButton.setEnabled(LocalConfig.getInstance().isHost());
+
         startGameButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                // TODO: start game
+                try {
+                    buffer.put("");
+                } catch (InterruptedException interruptedException) {
+                    interruptedException.printStackTrace();
+                }
             }
         });
     }
@@ -53,6 +61,13 @@ public class Lobby extends GUIWindow {
 
         setActive(true, frame);
 
+        startGameButton.setEnabled(LocalConfig.getInstance().isHost());
+
         return this;
+    }
+
+    @Override
+    public void onError(String message) {
+
     }
 }

@@ -35,4 +35,6 @@ public interface ViewInterface {
     void terminate();
 
     void join();
+
+    void loadResources();
 }

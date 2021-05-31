@@ -93,8 +93,7 @@ public class Lobby extends ClientState {
                         Parser.getInstance().setConfig(config);
                         LocalConfig.getInstance().setConfig(config);
 
-                        LoadCards.getInstance().leaderCardWidth();
-                        LoadCards.getInstance().devCardsWidth();
+                        viewInterface.loadResources();
                         break;
                     }
                     case "update": {

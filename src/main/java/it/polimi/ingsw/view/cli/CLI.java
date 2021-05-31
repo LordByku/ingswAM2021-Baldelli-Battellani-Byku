@@ -17,6 +17,7 @@ import it.polimi.ingsw.model.resources.resourceSets.ChoiceResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.CLIClientUserCommunication;
+import it.polimi.ingsw.network.client.LoadCards;
 import it.polimi.ingsw.network.client.LocalConfig;
 import it.polimi.ingsw.parsing.DevCardsParser;
 import it.polimi.ingsw.parsing.LeaderCardsParser;
@@ -547,5 +548,11 @@ public class CLI implements ViewInterface {
             clientUserCommunication.join();
         } catch (InterruptedException e) {
         }
+    }
+
+    @Override
+    public void loadResources() {
+        LoadCards.getInstance().leaderCardWidth();
+        LoadCards.getInstance().devCardsWidth();
     }
 }

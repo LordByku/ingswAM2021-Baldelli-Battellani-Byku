@@ -23,5 +23,7 @@ public abstract class GUIWindow {
         guiWindow.setActive(true, frame);
         return guiWindow;
     }
+
+    public abstract void onError(String message);
 }
 

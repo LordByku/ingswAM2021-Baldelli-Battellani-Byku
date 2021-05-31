@@ -5,7 +5,6 @@ import it.polimi.ingsw.controller.CommandBuffer;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.GUIClientUserCommunication;
 import it.polimi.ingsw.view.ViewInterface;
-import it.polimi.ingsw.view.gui.windows.Lobby;
 import it.polimi.ingsw.view.gui.windows.Welcome;
 import it.polimi.ingsw.view.gui.windows.GUIWindow;
 
@@ -17,9 +16,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class GUI implements ViewInterface {
     private final JFrame frame;
     private final Client client;
-    private GUIWindow guiWindow;
     private final BlockingQueue<String> buffer;
     private final Thread clientUserCommunication;
+    private GUIWindow guiWindow;
 
     public GUI(Client client) {
         this.client = client;
@@ -34,7 +33,7 @@ public class GUI implements ViewInterface {
 
     @Override
     public void onError(String message) {
-        // TODO: handle server error
+        guiWindow.onError(message);
     }
 
     @Override
@@ -75,7 +74,7 @@ public class GUI implements ViewInterface {
 
     @Override
     public void loadGame() {
-
+        // guiWindow = new Board ...
     }
 
     @Override
@@ -85,7 +84,10 @@ public class GUI implements ViewInterface {
 
     @Override
     public void startGame(String line) {
-        // TODO: handle start game input
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("command", "startGame");
+
+        client.write(jsonObject.toString());
     }
 
     @Override
@@ -109,6 +111,11 @@ public class GUI implements ViewInterface {
 
     @Override
     public void join() {
+
+    }
+
+    @Override
+    public void loadResources() {
 
     }
 }

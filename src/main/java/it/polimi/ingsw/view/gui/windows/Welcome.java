@@ -13,12 +13,14 @@ public class Welcome extends GUIWindow {
     private JButton playOnlineButton;
     private JTextField insertYourNicknameTextField;
     private JLabel connectionLabel;
+    private JLabel errorLabel;
 
     public Welcome(Client client, BlockingQueue<String> buffer) {
         playOnlineButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                connectionLabel.setVisible(false);
+                errorLabel.setText(" ");
+                connectionLabel.setText(" ");
                 try {
                     buffer.put(insertYourNicknameTextField.getText());
                     buffer.put("0");
@@ -30,7 +32,8 @@ public class Welcome extends GUIWindow {
         playOfflineButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                connectionLabel.setVisible(false);
+                errorLabel.setText(" ");
+                connectionLabel.setText(" ");
                 try {
                     buffer.put(insertYourNicknameTextField.getText());
                     buffer.put("1");
@@ -46,13 +49,17 @@ public class Welcome extends GUIWindow {
         return panel;
     }
 
+    @Override
+    public void onError(String message) {
+        connectionLabel.setText(" ");
+        errorLabel.setText(message);
+    }
+
     public void startConnection() {
         connectionLabel.setText("Connecting to server...");
-        connectionLabel.setVisible(true);
     }
 
     public void connectionFailed() {
         connectionLabel.setText("There was an error connecting to the server");
-        connectionLabel.setVisible(true);
     }
 }
