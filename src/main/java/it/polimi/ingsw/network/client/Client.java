@@ -10,9 +10,7 @@ import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.view.gui.GUI;
 import it.polimi.ingsw.view.localModel.LocalModel;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Timer;
@@ -32,11 +30,9 @@ public class Client {
     private boolean singlePlayer;
     private BlockingQueue<String> readBuffer;
     private BlockingQueue<String> writeBuffer;
-    private Thread clientUserCommunication;
     private Thread localController;
     private Thread localClientCommunication;
     private ViewInterface viewInterface;
-    private final BufferedReader stdin;
     private final boolean guiSelection;
 
     public Client(String hostname, int port, boolean guiSelection) {
@@ -44,7 +40,6 @@ public class Client {
         this.port = port;
         nickname = null;
         singlePlayer = false;
-        stdin = new BufferedReader(new InputStreamReader(System.in));
         this.guiSelection = guiSelection;
     }
 
@@ -64,18 +59,11 @@ public class Client {
         if(guiSelection) {
             viewInterface = new GUI(this);
         } else {
-            viewInterface = new CLI();
+            viewInterface = new CLI(this);
         }
         clientState = new Welcome(viewInterface);
-        clientUserCommunication = new Thread(new ClientUserCommunication(this, stdin));
-        clientUserCommunication.start();
-        viewInterface.init(this);
-
-        try {
-            clientUserCommunication.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        viewInterface.init();
+        viewInterface.join();
     }
 
     public String getNickname() {
@@ -119,6 +107,7 @@ public class Client {
     }
 
     public void openServerCommunication() throws IOException {
+        viewInterface.startConnection();
         socket = new Socket(hostname, port);
         socket.setSoTimeout(2 * timerDelay);
         serverOut = new PrintWriter(socket.getOutputStream(), true);
@@ -144,7 +133,7 @@ public class Client {
                 connectToServer();
             }
         } catch (IOException e) {
-            viewInterface.connectionFailed(this, timerDelay);
+            viewInterface.connectionFailed(timerDelay);
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
@@ -181,6 +170,6 @@ public class Client {
             closeServerCommunication();
         }
 
-        clientUserCommunication.interrupt();
+        viewInterface.terminate();
     }
 }

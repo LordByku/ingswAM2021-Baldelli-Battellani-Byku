@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.controller.CommandBuffer;
 import it.polimi.ingsw.network.client.Client;
+import it.polimi.ingsw.network.client.GUIClientUserCommunication;
 import it.polimi.ingsw.view.ViewInterface;
 import it.polimi.ingsw.view.gui.windows.Lobby;
 import it.polimi.ingsw.view.gui.windows.Welcome;
@@ -10,73 +11,80 @@ import it.polimi.ingsw.view.gui.windows.GUIWindow;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class GUI implements ViewInterface {
     private final JFrame frame;
     private final Client client;
     private GUIWindow guiWindow;
+    private final BlockingQueue<String> buffer;
+    private final Thread clientUserCommunication;
 
     public GUI(Client client) {
         this.client = client;
         frame = new JFrame("Masters of Renaissance");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        buffer = new LinkedBlockingQueue<>();
+        clientUserCommunication = new Thread(new GUIClientUserCommunication(client, buffer));
+        clientUserCommunication.setDaemon(true);
+        clientUserCommunication.start();
     }
 
     @Override
-    public void onError(Client client, String message) {
+    public void onError(String message) {
         // TODO: handle server error
     }
 
     @Override
-    public void onCommand(Client client, String player, CommandBuffer commandBuffer) {
+    public void onCommand(String player, CommandBuffer commandBuffer) {
 
     }
 
     @Override
-    public void onUpdate(Client client) {
+    public void onUpdate() {
 
     }
 
     @Override
-    public void onUserInput(Client client, String line) {
+    public void onUserInput(String line) {
 
     }
 
     @Override
-    public void onUnexpected(Client client) {
+    public void onUnexpected() {
 
     }
 
     @Override
-    public void onEndGame(Client client, JsonObject endGameMessage) {
+    public void onEndGame(JsonObject endGameMessage) {
 
     }
 
     @Override
-    public void init(Client client) {
-        guiWindow = new Welcome(client);
+    public void init() {
+        guiWindow = new Welcome(client, buffer);
         guiWindow.setActive(true, frame);
     }
 
     @Override
-    public void welcome(Client client) {
+    public void welcome() {
 
     }
 
     @Override
-    public void loadGame(Client client) {
+    public void loadGame() {
 
     }
 
     @Override
-    public void updatePlayerList(Client client, ArrayList<String> nicknames, String hostNickname) {
-        guiWindow.setActive(false, frame);
-        guiWindow = new Lobby(client, nicknames, hostNickname);
-        guiWindow.setActive(true, frame);
+    public void updatePlayerList(ArrayList<String> nicknames, String hostNickname) {
+        guiWindow = guiWindow.refreshPlayerList(client, frame, buffer, nicknames, hostNickname);
     }
 
     @Override
-    public void startGame(Client client, String line) {
+    public void startGame(String line) {
         // TODO: handle start game input
     }
 
@@ -86,11 +94,21 @@ public class GUI implements ViewInterface {
     }
 
     @Override
-    public void connectionFailed(Client client, int timerDelay) {
+    public void connectionFailed(int timerDelay) {
         if(timerDelay > 0) {
             // TODO: handle reconnection
         } else {
             ((Welcome) guiWindow).connectionFailed();
         }
+    }
+
+    @Override
+    public void terminate() {
+
+    }
+
+    @Override
+    public void join() {
+
     }
 }

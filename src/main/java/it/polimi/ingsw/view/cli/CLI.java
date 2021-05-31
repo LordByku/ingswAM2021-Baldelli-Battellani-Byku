@@ -16,6 +16,7 @@ import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ChoiceResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.network.client.Client;
+import it.polimi.ingsw.network.client.CLIClientUserCommunication;
 import it.polimi.ingsw.network.client.LocalConfig;
 import it.polimi.ingsw.parsing.DevCardsParser;
 import it.polimi.ingsw.parsing.LeaderCardsParser;
@@ -28,6 +29,8 @@ import it.polimi.ingsw.view.cli.windows.viewWindows.CLIViewWindow;
 import it.polimi.ingsw.view.cli.windows.viewWindows.ViewModel;
 import it.polimi.ingsw.view.localModel.*;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,11 +39,18 @@ public class CLI implements ViewInterface {
     private static CLIWindow cliWindow;
     private static CLIViewWindow cliViewWindow;
     private boolean pendingUpdate;
+    private final Client client;
+    private final Thread clientUserCommunication;
 
-    public CLI() {
+    public CLI(Client client) {
+        this.client = client;
         pendingUpdate = false;
         cliWindow = null;
         cliViewWindow = null;
+
+        BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+        clientUserCommunication = new Thread(new CLIClientUserCommunication(client, stdin));
+        clientUserCommunication.start();
     }
 
     public CLIViewWindow getViewWindow() {
@@ -74,7 +84,7 @@ public class CLI implements ViewInterface {
         }
     }
 
-    public static void welcome() {
+    public static void title() {
         System.out.println("---- Masters of Renaissance ----");
     }
 
@@ -126,7 +136,7 @@ public class CLI implements ViewInterface {
         System.out.println(TextColour.RED.escape() + "Error: " + message + TextColour.RESET);
     }
 
-    public static void loadGame() {
+    public static void loadingGame() {
         System.out.println("Game is loading...");
     }
 
@@ -435,14 +445,14 @@ public class CLI implements ViewInterface {
     }
 
     @Override
-    public void onError(Client client, String message) {
+    public void onError(String message) {
         error(message);
         refreshWindow(client);
         renderGameWindow(client);
     }
 
     @Override
-    public void onCommand(Client client, String player, CommandBuffer commandBuffer) {
+    public void onCommand(String player, CommandBuffer commandBuffer) {
         if (pendingUpdate || player.equals(client.getNickname())) {
             pendingUpdate = false;
             refreshWindow(client);
@@ -451,7 +461,7 @@ public class CLI implements ViewInterface {
     }
 
     @Override
-    public void onUpdate(Client client) {
+    public void onUpdate() {
         CLIWindow currentWindow = getActiveWindow();
         if (currentWindow == null || currentWindow.refreshOnUpdate(client)) {
             pendingUpdate = true;
@@ -459,7 +469,7 @@ public class CLI implements ViewInterface {
     }
 
     @Override
-    public void onUserInput(Client client, String line) {
+    public void onUserInput(String line) {
         if (line.equals("v")) {
             if (getViewWindow() == null) {
                 setViewWindow(new ViewModel());
@@ -473,43 +483,43 @@ public class CLI implements ViewInterface {
     }
 
     @Override
-    public void onUnexpected(Client client) {
+    public void onUnexpected() {
         unexpected();
     }
 
     @Override
-    public void onEndGame(Client client, JsonObject endGameMessage) {
+    public void onEndGame(JsonObject endGameMessage) {
         client.getModel().setEndGame();
         cliWindow = new EndGameWindow(endGameMessage);
         renderGameWindow(client);
     }
 
     @Override
-    public void init(Client client) {
-        CLI.welcome();
+    public void init() {
+        CLI.title();
         cliWindow = new InitWindow();
         cliWindow.render(client);
     }
 
     @Override
-    public void welcome(Client client) {
+    public void welcome() {
         cliWindow.render(client);
     }
 
     @Override
-    public void loadGame(Client client) {
-        CLI.loadGame();
+    public void loadGame() {
+        CLI.loadingGame();
     }
 
     @Override
-    public void updatePlayerList(Client client, ArrayList<String> nicknames, String hostNickname) {
+    public void updatePlayerList(ArrayList<String> nicknames, String hostNickname) {
         CLI.playerList(nicknames, hostNickname);
         cliWindow = new LobbyWindow();
         cliWindow.render(client);
     }
 
     @Override
-    public void startGame(Client client, String line) {
+    public void startGame(String line) {
         cliWindow.handleUserMessage(client, line);
     }
 
@@ -519,10 +529,23 @@ public class CLI implements ViewInterface {
     }
 
     @Override
-    public void connectionFailed(Client client, int timerDelay) {
+    public void connectionFailed(int timerDelay) {
         CLI.connectionError();
         if(timerDelay > 0) {
             CLI.reconnecting(timerDelay);
+        }
+    }
+
+    @Override
+    public void terminate() {
+        clientUserCommunication.interrupt();
+    }
+
+    @Override
+    public void join() {
+        try {
+            clientUserCommunication.join();
+        } catch (InterruptedException e) {
         }
     }
 }

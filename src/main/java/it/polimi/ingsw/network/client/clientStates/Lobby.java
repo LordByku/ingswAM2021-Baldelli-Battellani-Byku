@@ -10,7 +10,6 @@ import it.polimi.ingsw.parsing.Parser;
 import it.polimi.ingsw.utility.Deserializer;
 import it.polimi.ingsw.utility.JsonUtil;
 import it.polimi.ingsw.view.ViewInterface;
-import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.view.localModel.LocalModel;
 
 import java.util.ArrayList;
@@ -20,8 +19,6 @@ public class Lobby extends ClientState {
 
     public Lobby(ViewInterface viewInterface) {
         this.viewInterface = viewInterface;
-
-        viewInterface.startConnection();
     }
 
     @Override
@@ -33,7 +30,7 @@ public class Lobby extends ClientState {
         switch (status) {
             case "fatalError": {
                 String message = json.get("message").getAsString();
-                viewInterface.onError(client, message);
+                viewInterface.onError(message);
                 client.closeServerCommunication();
                 client.setNickname(null);
                 client.setState(new Welcome(viewInterface));
@@ -41,7 +38,7 @@ public class Lobby extends ClientState {
             }
             case "error": {
                 String message = json.get("message").getAsString();
-                viewInterface.onError(client, message);
+                viewInterface.onError(message);
                 break;
             }
             case "ok": {
@@ -50,7 +47,7 @@ public class Lobby extends ClientState {
                 switch (type) {
                     case "endGame": {
                         JsonObject message = json.getAsJsonObject("message");
-                        viewInterface.onEndGame(client, message);
+                        viewInterface.onEndGame(message);
                         break;
                     }
                     case "playerList": {
@@ -75,12 +72,12 @@ public class Lobby extends ClientState {
                             }
                         }
 
-                        viewInterface.updatePlayerList(client, nicknames, hostNickname);
+                        viewInterface.updatePlayerList(nicknames, hostNickname);
 
                         break;
                     }
                     case "config": {
-                        viewInterface.loadGame(client);
+                        viewInterface.loadGame();
 
                         JsonObject message = json.getAsJsonObject("message");
 
@@ -110,20 +107,20 @@ public class Lobby extends ClientState {
                         break;
                     }
                     default: {
-                        viewInterface.onUnexpected(client);
+                        viewInterface.onUnexpected();
                     }
                 }
 
                 break;
             }
             default: {
-                viewInterface.onUnexpected(client);
+                viewInterface.onUnexpected();
             }
         }
     }
 
     @Override
     public void handleUserMessage(Client client, String line) {
-        viewInterface.startGame(client, line);
+        viewInterface.startGame(line);
     }
 }

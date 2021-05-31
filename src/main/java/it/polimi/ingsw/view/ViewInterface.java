@@ -2,34 +2,37 @@ package it.polimi.ingsw.view;
 
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.controller.CommandBuffer;
-import it.polimi.ingsw.network.client.Client;
 
 import java.util.ArrayList;
 
 public interface ViewInterface {
-    void onError(Client client, String message);
+    void onError(String message);
 
-    void onCommand(Client client, String player, CommandBuffer commandBuffer);
+    void onCommand(String player, CommandBuffer commandBuffer);
 
-    void onUpdate(Client client);
+    void onUpdate();
 
-    void onUserInput(Client client, String line);
+    void onUserInput(String line);
 
-    void onUnexpected(Client client);
+    void onUnexpected();
 
-    void onEndGame(Client client, JsonObject endGameMessage);
+    void onEndGame(JsonObject endGameMessage);
 
-    void init(Client client);
+    void init();
 
-    void welcome(Client client);
+    void welcome();
 
-    void loadGame(Client client);
+    void loadGame();
 
-    void updatePlayerList(Client client, ArrayList<String> nicknames, String hostNickname);
+    void updatePlayerList(ArrayList<String> nicknames, String hostNickname);
 
-    void startGame(Client client, String line);
+    void startGame(String line);
 
     void startConnection();
 
-    void connectionFailed(Client client, int timerDelay);
+    void connectionFailed(int timerDelay);
+
+    void terminate();
+
+    void join();
 }

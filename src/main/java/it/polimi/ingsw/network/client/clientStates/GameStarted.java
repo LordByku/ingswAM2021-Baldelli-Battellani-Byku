@@ -6,9 +6,6 @@ import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.utility.Deserializer;
 import it.polimi.ingsw.utility.JsonUtil;
 import it.polimi.ingsw.view.ViewInterface;
-import it.polimi.ingsw.view.cli.CLI;
-import it.polimi.ingsw.view.cli.windows.CLIWindow;
-import it.polimi.ingsw.view.cli.windows.viewWindows.ViewModel;
 
 public class GameStarted extends ClientState {
     private final ViewInterface viewInterface;
@@ -25,7 +22,7 @@ public class GameStarted extends ClientState {
         switch (status) {
             case "error": {
                 String message = json.get("message").getAsString();
-                viewInterface.onError(client, message);
+                viewInterface.onError(message);
                 break;
             }
             case "ok": {
@@ -34,7 +31,7 @@ public class GameStarted extends ClientState {
                 switch (type) {
                     case "endGame": {
                         JsonObject message = json.getAsJsonObject("message");
-                        viewInterface.onEndGame(client, message);
+                        viewInterface.onEndGame(message);
                         break;
                     }
                     case "command": {
@@ -44,30 +41,30 @@ public class GameStarted extends ClientState {
 
                         client.getModel().getPlayer(player).setCommandBuffer(commandBuffer);
 
-                        viewInterface.onCommand(client, player, commandBuffer);
+                        viewInterface.onCommand(player, commandBuffer);
                         break;
                     }
                     case "update": {
                         JsonObject message = json.getAsJsonObject("message");
                         client.getModel().updateModel(message);
 
-                        viewInterface.onUpdate(client);
+                        viewInterface.onUpdate();
                         break;
                     }
                     default: {
-                        viewInterface.onUnexpected(client);
+                        viewInterface.onUnexpected();
                     }
                 }
                 break;
             }
             default: {
-                viewInterface.onUnexpected(client);
+                viewInterface.onUnexpected();
             }
         }
     }
 
     @Override
     public void handleUserMessage(Client client, String line) {
-        viewInterface.onUserInput(client, line);
+        viewInterface.onUserInput(line);
     }
 }

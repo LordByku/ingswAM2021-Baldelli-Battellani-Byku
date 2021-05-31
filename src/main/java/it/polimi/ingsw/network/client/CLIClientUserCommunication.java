@@ -3,11 +3,11 @@ package it.polimi.ingsw.network.client;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-public class ClientUserCommunication implements Runnable {
+public class CLIClientUserCommunication implements Runnable {
     private final BufferedReader stdin;
     private final Client client;
 
-    public ClientUserCommunication(Client client, BufferedReader stdin) {
+    public CLIClientUserCommunication(Client client, BufferedReader stdin) {
         this.stdin = stdin;
         this.client = client;
     }

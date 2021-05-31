@@ -21,14 +21,14 @@ public class Welcome extends ClientState {
 
     @Override
     public void handleServerMessage(Client client, String line) {
-        viewInterface.onUnexpected(client);
+        viewInterface.onUnexpected();
     }
 
     @Override
     public void handleUserMessage(Client client, String line) {
         if(client.getNickname() == null) {
             client.setNickname(line);
-            viewInterface.welcome(client);
+            viewInterface.welcome();
         } else {
             try {
                 int mode = Integer.parseInt(line);
@@ -38,13 +38,13 @@ public class Welcome extends ClientState {
                         try {
                             client.connectToServer();
                         } catch (IOException e) {
-                            viewInterface.connectionFailed(client, 0);
-                            viewInterface.welcome(client);
+                            viewInterface.connectionFailed(0);
+                            viewInterface.welcome();
                         }
                         break;
                     }
                     case 1: {
-                        viewInterface.loadGame(client);
+                        viewInterface.loadGame();
 
                         Game.getInstance().addPlayer(client.getNickname());
                         Game.getInstance().startSinglePlayer();
@@ -68,11 +68,11 @@ public class Welcome extends ClientState {
                         break;
                     }
                     default: {
-                        viewInterface.welcome(client);
+                        viewInterface.welcome();
                     }
                 }
             } catch (NumberFormatException | InvalidNicknameException | ExistingNicknameException | GameAlreadyStartedException | FullLobbyException e) {
-                viewInterface.welcome(client);
+                viewInterface.welcome();
             }
         }
     }

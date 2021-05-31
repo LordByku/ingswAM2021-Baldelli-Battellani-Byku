@@ -5,6 +5,7 @@ import it.polimi.ingsw.network.client.Client;
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.concurrent.BlockingQueue;
 
 public class Welcome extends GUIWindow {
     private JPanel panel;
@@ -13,22 +14,29 @@ public class Welcome extends GUIWindow {
     private JTextField insertYourNicknameTextField;
     private JLabel connectionLabel;
 
-    public Welcome(Client client) {
+    public Welcome(Client client, BlockingQueue<String> buffer) {
         playOnlineButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                // TODO: fix visibility
                 connectionLabel.setVisible(false);
-                client.handleUserMessage(insertYourNicknameTextField.getText());
-                client.handleUserMessage("0");
+                try {
+                    buffer.put(insertYourNicknameTextField.getText());
+                    buffer.put("0");
+                } catch (InterruptedException interruptedException) {
+                    interruptedException.printStackTrace();
+                }
             }
         });
         playOfflineButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 connectionLabel.setVisible(false);
-                client.handleUserMessage(insertYourNicknameTextField.getText());
-                client.handleUserMessage("1");
+                try {
+                    buffer.put(insertYourNicknameTextField.getText());
+                    buffer.put("1");
+                } catch (InterruptedException interruptedException) {
+                    interruptedException.printStackTrace();
+                }
             }
         });
     }
