@@ -29,10 +29,10 @@ public class Lobby extends ClientState {
 
         switch (status) {
             case "fatalError": {
-                String message = json.get("message").getAsString();
-                viewInterface.onError(message);
-                client.closeServerCommunication();
                 client.setNickname(null);
+                client.closeServerCommunication();
+                String message = json.get("message").getAsString();
+                viewInterface.onFatalError(message);
                 client.setState(new Welcome(viewInterface));
                 break;
             }

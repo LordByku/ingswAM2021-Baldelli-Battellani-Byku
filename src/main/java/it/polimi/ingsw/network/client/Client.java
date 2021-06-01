@@ -109,7 +109,7 @@ public class Client {
     public void openServerCommunication() throws IOException {
         viewInterface.startConnection();
         socket = new Socket(hostname, port);
-        socket.setSoTimeout(2 * timerDelay);
+        socket.setSoTimeout(3 * timerDelay);
         serverOut = new PrintWriter(socket.getOutputStream(), true);
         (new Thread(new ClientServerCommunication(this, socket))).start();
     }

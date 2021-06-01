@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import it.polimi.ingsw.model.playerBoard.faithTrack.VaticanReportSection;
+import it.polimi.ingsw.editor.model.simplifiedModel.VaticanReportSection;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -19,6 +19,10 @@ public class Config {
     private String outFilename;
     private final FaithTrackEditor faithTrackEditor;
     private final InitGameEditor initGameEditor;
+    private final BoardEditor boardEditor;
+    private final DevCardsEditor devCardsEditor;
+
+    public static final int MAXPLAYERS = 4;
 
     public Config() throws FileNotFoundException {
         gson = new Gson();
@@ -32,6 +36,10 @@ public class Config {
         }
 
         initGameEditor = gson.fromJson(json.getAsJsonObject("initGame"), InitGameEditor.class);
+
+        boardEditor = new BoardEditor(json.getAsJsonObject("board"));
+
+        devCardsEditor = new DevCardsEditor(json.getAsJsonArray("developmentCards"));
     }
 
     public static void setPath(String path) {
@@ -65,5 +73,13 @@ public class Config {
 
     public InitGameEditor getInitGameEditor() {
         return initGameEditor;
+    }
+
+    public BoardEditor getBoardEditor() {
+        return boardEditor;
+    }
+
+    public DevCardsEditor getDevCardsEditor() {
+        return devCardsEditor;
     }
 }

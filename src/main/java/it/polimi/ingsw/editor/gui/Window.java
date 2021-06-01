@@ -1,17 +1,15 @@
 package it.polimi.ingsw.editor.gui;
 
-import it.polimi.ingsw.editor.gui.components.FaithTrackPanelHandler;
-import it.polimi.ingsw.editor.gui.components.TextFieldDocumentListener;
+import it.polimi.ingsw.editor.gui.components.*;
+import it.polimi.ingsw.editor.gui.components.panelHandlers.*;
+import it.polimi.ingsw.editor.model.BoardEditor;
 import it.polimi.ingsw.editor.model.Config;
+import it.polimi.ingsw.editor.model.FaithTrackEditor;
 import it.polimi.ingsw.editor.model.InitGameEditor;
-import it.polimi.ingsw.model.playerBoard.faithTrack.CheckPoint;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import java.awt.*;
 import java.awt.event.MouseAdapter;
-import java.util.ArrayList;
+import java.awt.event.MouseEvent;
 
 public class Window {
     private JFormattedTextField leaderCardsToAssignTextField;
@@ -27,10 +25,50 @@ public class Window {
     private JFormattedTextField faithTrackLengthTextField;
     private JPanel checkPointsPanel;
     private JPanel panel;
+    private JPanel VRSPanel;
+    private JFormattedTextField developmentCardSlotsTextField;
+    private JPanel defaultProductionInPanel;
+    private JPanel defaultProductionOutPanel;
+    private JPanel depotsPanel;
+    private JComboBox devCardSelectionBox;
+    private JRadioButton IRadioButton;
+    private JRadioButton IIRadioButton;
+    private JRadioButton IIIRadioButton;
+    private JRadioButton GREENRadioButton;
+    private JRadioButton BLUERadioButton;
+    private JRadioButton YELLOWRadioButton;
+    private JRadioButton PURPLERadioButton;
+    private JFormattedTextField devCardPointsTextField;
+    private JPanel devCardRequirementPanel;
+    private JPanel devCardProductionInPanel;
+    private JPanel devCardProductionOutPanel;
+    private JPanel devCardPanel;
+    private JButton removeDevCardButton;
 
     public Window(JFrame frame) {
-        FaithTrackPanelHandler checkPointsPanelHandler = new FaithTrackPanelHandler(frame, checkPointsPanel, faithTrackLengthTextField);
+        FaithTrackEditor faithTrackEditor = Config.getInstance().getFaithTrackEditor();
+        faithTrackLengthTextField.setValue(faithTrackEditor.getFinalPosition());
+        faithTrackLengthTextField.getDocument().addDocumentListener(new TextFieldDocumentListener(
+                faithTrackLengthTextField, faithTrackEditor::setFinalPosition
+        ));
+
+        CheckPointsPanelHandler checkPointsPanelHandler = new CheckPointsPanelHandler(frame, checkPointsPanel);
         checkPointsPanelHandler.build();
+
+        VRSPanelHandler vrsPanelHandler = new VRSPanelHandler(frame, VRSPanel);
+        vrsPanelHandler.build();
+
+        BoardEditor boardEditor = Config.getInstance().getBoardEditor();
+        SpendablePanelHandler productionInPanelHandler = new SpendablePanelHandler(frame, defaultProductionInPanel, boardEditor.getDefaultProductionIn());
+        productionInPanelHandler.build();
+        ObtainablePanelHandler productionOutPanelHandler = new ObtainablePanelHandler(frame, defaultProductionOutPanel, boardEditor.getDefaultProductionOut());
+        productionOutPanelHandler.build();
+        DepotsPanelHandler depotsPanelHandler = new DepotsPanelHandler(frame, depotsPanel);
+        depotsPanelHandler.build();
+        developmentCardSlotsTextField.setValue(boardEditor.getDevelopmentCardSlots());
+        developmentCardSlotsTextField.getDocument().addDocumentListener(new TextFieldDocumentListener(
+                developmentCardSlotsTextField, boardEditor::setDevelopmentCardSlots
+        ));
 
         InitGameEditor initGameEditor = Config.getInstance().getInitGameEditor();
         leaderCardsToAssignTextField.setValue(initGameEditor.getLeaderCardsToAssign());
@@ -43,7 +81,6 @@ public class Window {
         initResources2.setValue(initGameEditor.getResources(1));
         initResources3.setValue(initGameEditor.getResources(2));
         initResources4.setValue(initGameEditor.getResources(3));
-
         leaderCardsToAssignTextField.getDocument().addDocumentListener(new TextFieldDocumentListener(
                 leaderCardsToAssignTextField, initGameEditor::setLeaderCardsToAssign
         ));
@@ -75,8 +112,21 @@ public class Window {
                 initResources4, (value) -> initGameEditor.setResources(3, value)
         ));
 
+        ButtonGroup levelGroup = new ButtonGroup();
+        levelGroup.add(IRadioButton);
+        levelGroup.add(IIRadioButton);
+        levelGroup.add(IIIRadioButton);
+
+        ButtonGroup colourGroup = new ButtonGroup();
+        colourGroup.add(GREENRadioButton);
+        colourGroup.add(BLUERadioButton);
+        colourGroup.add(YELLOWRadioButton);
+        colourGroup.add(PURPLERadioButton);
+
+        DevCardPanelHandler devCardPanelHandler = new DevCardPanelHandler(frame, devCardPanel, devCardRequirementPanel, devCardProductionInPanel, devCardProductionOutPanel, devCardSelectionBox, devCardPointsTextField, removeDevCardButton, levelGroup, colourGroup);
+        devCardPanelHandler.build();
+
         frame.setContentPane(panel);
-        frame.pack();
         frame.setVisible(true);
     }
 }
