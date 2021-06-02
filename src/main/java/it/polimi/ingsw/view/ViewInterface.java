@@ -38,5 +38,5 @@ public interface ViewInterface {
 
     void join();
 
-    void loadResources();
+    void loadGameInterface();
 }

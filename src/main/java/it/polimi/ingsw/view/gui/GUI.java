@@ -5,6 +5,7 @@ import it.polimi.ingsw.controller.CommandBuffer;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.GUIClientUserCommunication;
 import it.polimi.ingsw.view.ViewInterface;
+import it.polimi.ingsw.view.gui.windows.BoardView;
 import it.polimi.ingsw.view.gui.windows.Welcome;
 import it.polimi.ingsw.view.gui.windows.GUIWindow;
 
@@ -120,7 +121,9 @@ public class GUI implements ViewInterface {
     }
 
     @Override
-    public void loadResources() {
-
+    public void loadGameInterface() {
+        guiWindow.setActive(false, frame);
+        guiWindow = new BoardView(client, buffer);
+        guiWindow.setActive(true, frame);
     }
 }

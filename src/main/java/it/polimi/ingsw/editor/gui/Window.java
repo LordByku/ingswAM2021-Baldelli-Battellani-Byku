@@ -123,7 +123,9 @@ public class Window {
         colourGroup.add(YELLOWRadioButton);
         colourGroup.add(PURPLERadioButton);
 
-        DevCardPanelHandler devCardPanelHandler = new DevCardPanelHandler(frame, devCardPanel, devCardRequirementPanel, devCardProductionInPanel, devCardProductionOutPanel, devCardSelectionBox, devCardPointsTextField, removeDevCardButton, levelGroup, colourGroup);
+        DevCardPanelHandler devCardPanelHandler = new DevCardPanelHandler(frame, devCardPanel,
+                devCardRequirementPanel, devCardProductionInPanel, devCardProductionOutPanel,
+                devCardSelectionBox, devCardPointsTextField, removeDevCardButton, levelGroup, colourGroup);
         devCardPanelHandler.build();
 
         frame.setContentPane(panel);

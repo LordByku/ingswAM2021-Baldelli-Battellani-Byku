@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.network.client.LoadCards;
 import it.polimi.ingsw.network.client.LocalConfig;
 import it.polimi.ingsw.parsing.Parser;
 import it.polimi.ingsw.utility.Deserializer;
@@ -93,7 +92,7 @@ public class Lobby extends ClientState {
                         Parser.getInstance().setConfig(config);
                         LocalConfig.getInstance().setConfig(config);
 
-                        viewInterface.loadResources();
+                        viewInterface.loadGameInterface();
                         break;
                     }
                     case "update": {

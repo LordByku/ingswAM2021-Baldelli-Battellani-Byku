@@ -558,7 +558,7 @@ public class CLI implements ViewInterface {
     }
 
     @Override
-    public void loadResources() {
+    public void loadGameInterface() {
         LoadCards.getInstance().leaderCardWidth();
         LoadCards.getInstance().devCardsWidth();
     }
