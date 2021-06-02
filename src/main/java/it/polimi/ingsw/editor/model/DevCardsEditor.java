@@ -21,7 +21,7 @@ public class DevCardsEditor {
 
         devCards = new ArrayList<>();
         for (JsonElement jsonElement: jsonArray) {
-            JsonObject cardObject = (JsonObject) jsonElement;
+            JsonObject cardObject = jsonElement.getAsJsonObject();
             CardColour cardColour = gson.fromJson(cardObject.get("colour"), CardColour.class);
             CardLevel cardLevel = gson.fromJson(cardObject.get("level"), CardLevel.class);
             int points = cardObject.get("points").getAsInt();

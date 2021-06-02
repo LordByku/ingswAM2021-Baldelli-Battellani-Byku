@@ -45,7 +45,7 @@ public class DiscountLeaderCard extends LeaderCard {
 
         this.type = type;
         this.discount = discount;
-        discountEffect = new DiscountEffect(type);
+        discountEffect = new DiscountEffect(type, discount);
     }
 
     /**
@@ -61,7 +61,7 @@ public class DiscountLeaderCard extends LeaderCard {
 
     @Override
     public String getEffectString() {
-        return "???? -1" + type.getCLIString();
+        return "???? -" + discount + type.getCLIString();
     }
 
     public DiscountEffect getDiscountEffect() {

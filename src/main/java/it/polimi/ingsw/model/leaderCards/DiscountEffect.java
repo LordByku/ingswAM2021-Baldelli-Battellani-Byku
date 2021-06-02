@@ -14,15 +14,18 @@ public class DiscountEffect implements Cloneable {
      */
     private final ConcreteResource type;
 
+    private final int quantity;
+
     /**
      * @param type of ConcreteResource to convert the white marble into.
      * @throws InvalidResourceException type is null.
      */
-    public DiscountEffect(ConcreteResource type) throws InvalidResourceException {
+    public DiscountEffect(ConcreteResource type, int quantity) throws InvalidResourceException {
         if (type == null) {
             throw new InvalidResourceException();
         }
         this.type = type;
+        this.quantity = quantity;
     }
 
     /**
@@ -37,8 +40,10 @@ public class DiscountEffect implements Cloneable {
             throw new InvalidResourceSetException();
         }
         ConcreteResourceSet result = (ConcreteResourceSet) set.clone();
-        if (result.getCount(type) > 0) {
-            result.removeResource(type);
+
+        int count = result.getCount(type);
+        if (count > 0) {
+            result.removeResource(type, Math.min(count, quantity));
         }
         return result;
     }

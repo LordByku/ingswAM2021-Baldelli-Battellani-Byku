@@ -105,12 +105,9 @@ public class DevCardPanelHandler extends PanelHandler {
         for(CardLevel cardLevel: CardLevel.values()) {
             JRadioButton button = (JRadioButton) levelButtons.nextElement();
             clearListeners(button);
-            button.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    devCard.setLevel(cardLevel);
-                }
-            });
+            button.addMouseListener(new ButtonClickEvent((e) -> {
+                devCard.setLevel(cardLevel);
+            }));
 
             levelGroup.setSelected(button.getModel(), devCard.getLevel() == cardLevel);
         }
@@ -119,12 +116,9 @@ public class DevCardPanelHandler extends PanelHandler {
         for(CardColour cardColour: CardColour.values()) {
             JRadioButton button = (JRadioButton) colourButtons.nextElement();
             clearListeners(button);
-            button.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    devCard.setColour(cardColour);
-                }
-            });
+            button.addMouseListener(new ButtonClickEvent((e) -> {
+                devCard.setColour(cardColour);
+            }));
 
             colourGroup.setSelected(button.getModel(), devCard.getColour() == cardColour);
         }
@@ -139,12 +133,5 @@ public class DevCardPanelHandler extends PanelHandler {
         obtainablePanelHandler.build();
 
         frame.setVisible(true);
-    }
-
-    private void clearListeners(AbstractButton button) {
-        ActionListener[] listeners = button.getActionListeners();
-        for(ActionListener listener: listeners) {
-            button.removeActionListener(listener);
-        }
     }
 }

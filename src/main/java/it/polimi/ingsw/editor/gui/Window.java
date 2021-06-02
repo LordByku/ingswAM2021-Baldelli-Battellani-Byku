@@ -1,5 +1,6 @@
 package it.polimi.ingsw.editor.gui;
 
+import it.polimi.ingsw.editor.EditorApp;
 import it.polimi.ingsw.editor.gui.components.*;
 import it.polimi.ingsw.editor.gui.components.panelHandlers.*;
 import it.polimi.ingsw.editor.model.BoardEditor;
@@ -10,6 +11,8 @@ import it.polimi.ingsw.editor.model.InitGameEditor;
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class Window {
     private JFormattedTextField leaderCardsToAssignTextField;
@@ -44,8 +47,58 @@ public class Window {
     private JPanel devCardProductionOutPanel;
     private JPanel devCardPanel;
     private JButton removeDevCardButton;
+    private JComboBox leaderCardSelectionBox;
+    private JButton removeLeaderCardButton;
+    private JRadioButton resourcesRadioButton;
+    private JRadioButton devCardsRadioButton;
+    private JFormattedTextField leaderCardPointsTextField;
+    private JRadioButton developmentCardDiscountRadioButton;
+    private JRadioButton productionPowerRadioButton;
+    private JRadioButton whiteMarbleConversionRadioButton;
+    private JRadioButton extraDepotRadioButton;
+    private JPanel leaderCardRequirementsPanel;
+    private JPanel leaderCardEffectPanel;
+    private JPanel leaderCardPanel;
+    private JButton loadDefaultConfigButton;
+    private JButton loadCustomConfigButton;
+    private JButton saveCurrentConfigButton;
+    private JFormattedTextField saveConfigTextField;
+    private JFormattedTextField loadCustomConfigTextField;
 
     public Window(JFrame frame) {
+        loadDefaultConfigButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Config.setDefaultPath();
+                Config.reload();
+                EditorApp.setWindow(new Window(frame));
+            }
+        });
+
+        loadCustomConfigButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    Config.setPath(loadCustomConfigTextField.getText());
+                    Config.reload();
+                    EditorApp.setWindow(new Window(frame));
+                } catch (FileNotFoundException fileNotFoundException) {
+                    // TODO: handle invalid filename
+                }
+            }
+        });
+
+        saveCurrentConfigButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    Config.getInstance().save(saveConfigTextField.getText());
+                } catch (IOException ioException) {
+                    // TODO: handle error
+                }
+            }
+        });
+
         FaithTrackEditor faithTrackEditor = Config.getInstance().getFaithTrackEditor();
         faithTrackLengthTextField.setValue(faithTrackEditor.getFinalPosition());
         faithTrackLengthTextField.getDocument().addDocumentListener(new TextFieldDocumentListener(
@@ -127,6 +180,21 @@ public class Window {
                 devCardRequirementPanel, devCardProductionInPanel, devCardProductionOutPanel,
                 devCardSelectionBox, devCardPointsTextField, removeDevCardButton, levelGroup, colourGroup);
         devCardPanelHandler.build();
+
+        ButtonGroup requirementsGroup = new ButtonGroup();
+        requirementsGroup.add(resourcesRadioButton);
+        requirementsGroup.add(devCardsRadioButton);
+
+        ButtonGroup effectGroup = new ButtonGroup();
+        effectGroup.add(developmentCardDiscountRadioButton);
+        effectGroup.add(extraDepotRadioButton);
+        effectGroup.add(whiteMarbleConversionRadioButton);
+        effectGroup.add(productionPowerRadioButton);
+
+        LeaderCardPanelHandler leaderCardPanelHandler = new LeaderCardPanelHandler(frame, leaderCardPanel,
+                leaderCardRequirementsPanel, leaderCardEffectPanel, leaderCardSelectionBox,
+                leaderCardPointsTextField, removeLeaderCardButton, requirementsGroup, effectGroup);
+        leaderCardPanelHandler.build();
 
         frame.setContentPane(panel);
         frame.setVisible(true);

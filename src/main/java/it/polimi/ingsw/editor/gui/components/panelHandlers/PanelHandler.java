@@ -5,6 +5,10 @@ import it.polimi.ingsw.editor.gui.components.TextFieldDocumentListener;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.MouseListener;
 import java.util.function.Consumer;
 
 public abstract class PanelHandler {
@@ -58,5 +62,40 @@ public abstract class PanelHandler {
         container.add(label, gbc);
 
         outerPanel.add(container);
+    }
+
+    protected void addCheckBox(String text, boolean isSelected, JPanel outerPanel, ButtonClickEvent buttonClickEvent) {
+        JPanel container = new JPanel(new GridBagLayout());
+
+        JCheckBox checkBox = new JCheckBox();
+        checkBox.setText(text);
+        checkBox.setSelected(isSelected);
+        checkBox.addMouseListener(buttonClickEvent);
+
+        container.add(checkBox, gbc);
+
+        outerPanel.add(container);
+    }
+
+    protected void addRadioButton(String text, boolean isSelected, ButtonGroup buttonGroup,
+                                  JPanel outerPanel, ButtonClickEvent buttonClickEvent) {
+        JPanel container = new JPanel(new GridBagLayout());
+
+        JRadioButton button = new JRadioButton();
+        button.setText(text);
+        button.setSelected(isSelected);
+        button.addMouseListener(buttonClickEvent);
+        buttonGroup.add(button);
+
+        container.add(button, gbc);
+
+        outerPanel.add(container);
+    }
+
+    protected void clearListeners(AbstractButton button) {
+        MouseListener[] listeners = button.getMouseListeners();
+        for(MouseListener listener: listeners) {
+            button.removeMouseListener(listener);
+        }
     }
 }

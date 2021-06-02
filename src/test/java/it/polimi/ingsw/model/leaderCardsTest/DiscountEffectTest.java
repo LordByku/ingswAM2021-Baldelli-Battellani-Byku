@@ -20,7 +20,7 @@ public class DiscountEffectTest {
         concreteResourceSetDiscounted.addResource(ConcreteResource.STONE);
         concreteResourceSetDiscounted.addResource(ConcreteResource.SHIELD);
 
-        DiscountEffect discountEffect = new DiscountEffect(ConcreteResource.STONE);
+        DiscountEffect discountEffect = new DiscountEffect(ConcreteResource.STONE, 1);
         assertNotEquals(concreteResourceSet, concreteResourceSetDiscounted);
         assertEquals(concreteResourceSet, discountEffect.applyDiscount(concreteResourceSet));
 

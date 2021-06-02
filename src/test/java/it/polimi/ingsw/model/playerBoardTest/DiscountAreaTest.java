@@ -14,8 +14,8 @@ public class DiscountAreaTest {
     public void applyDiscountTest() {
         DiscountArea discountArea = new DiscountArea();
 
-        discountArea.addDiscountEffect(new DiscountEffect(ConcreteResource.COIN));
-        discountArea.addDiscountEffect(new DiscountEffect(ConcreteResource.STONE));
+        discountArea.addDiscountEffect(new DiscountEffect(ConcreteResource.COIN, 1));
+        discountArea.addDiscountEffect(new DiscountEffect(ConcreteResource.STONE, 1));
 
         ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
 
@@ -42,8 +42,8 @@ public class DiscountAreaTest {
             assertTrue(true);
         }
 
-        discountArea.addDiscountEffect(new DiscountEffect(ConcreteResource.COIN));
-        discountArea.addDiscountEffect(new DiscountEffect(ConcreteResource.STONE));
+        discountArea.addDiscountEffect(new DiscountEffect(ConcreteResource.COIN, 1));
+        discountArea.addDiscountEffect(new DiscountEffect(ConcreteResource.STONE, 1));
 
         ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
         ConcreteResourceSet discounted = discountArea.applyDiscount(concreteResourceSet);
