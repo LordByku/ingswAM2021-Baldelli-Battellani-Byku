@@ -5,7 +5,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.model.devCards.ProductionDetails;
 import it.polimi.ingsw.model.playerBoard.faithTrack.CheckPoint;
+import it.polimi.ingsw.model.playerBoard.faithTrack.VaticanReportSection;
 import it.polimi.ingsw.parsing.Parser;
+import it.polimi.ingsw.parsing.VRSParser;
 import it.polimi.ingsw.utility.Deserializer;
 
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ public class LocalConfig {
 
     public void setConfig(JsonObject config) {
         this.config = config;
+        Parser.getInstance().setConfig(config);
     }
 
     public void setHost() {
@@ -83,5 +86,16 @@ public class LocalConfig {
 
     public ProductionDetails getDefaultProductionPower() {
         return Parser.getInstance().parseProductionDetails(config.getAsJsonObject("board").getAsJsonObject("defaultProductionPower"));
+    }
+
+    public ArrayList<VaticanReportSection> getVaticanReportSections(){
+        ArrayList<VaticanReportSection> vrsArray = new ArrayList<>();
+
+        VaticanReportSection vrs =  VRSParser.getInstance().getNextVRS();
+        while(vrs!=null){
+            vrsArray.add(vrs);
+            vrs =  VRSParser.getInstance().getNextVRS();
+        }
+        return  vrsArray;
     }
 }
