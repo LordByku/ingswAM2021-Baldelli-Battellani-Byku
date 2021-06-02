@@ -71,6 +71,11 @@ public abstract class CommandBuffer {
     }
 
     public Consumer<GameStateSerializer> kill() {
+        if(completed) {
+            return (serializer) -> {
+            };
+        }
+
         if (isReady()) {
             return complete();
         } else {

@@ -6,6 +6,8 @@ import it.polimi.ingsw.controller.CommandBuffer;
 import java.util.ArrayList;
 
 public interface ViewInterface {
+    void onFatalError(String message);
+
     void onError(String message);
 
     void onCommand(String player, CommandBuffer commandBuffer);

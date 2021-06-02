@@ -122,7 +122,7 @@ public class Parser {
             String resourceString = jsonResource.get("resource").getAsString();
             int quantity = jsonResource.get("quantity").getAsInt();
 
-            if (resourceString.equals("FAITH POINTS")) {
+            if (resourceString.equals("FAITHPOINTS")) {
                 faithPoints += quantity;
             } else {
                 addResources(choiceResourceSet, resourceString, quantity);

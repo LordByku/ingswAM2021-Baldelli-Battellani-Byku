@@ -446,6 +446,13 @@ public class CLI implements ViewInterface {
     }
 
     @Override
+    public void onFatalError(String message) {
+        error(message);
+        cliWindow = new InitWindow();
+        cliWindow.render(client);
+    }
+
+    @Override
     public void onError(String message) {
         error(message);
         refreshWindow(client);

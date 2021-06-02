@@ -9,10 +9,8 @@ import java.util.ArrayList;
 public class EditorApp {
     public static void main(String[] args) {
         JFrame frame = new JFrame("Parameters Editor");
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        ArrayList<CheckPoint> checkPoints = new ArrayList<>();
-        int faithTrackLength = 24;
 
         Window window = new Window(frame);
     }

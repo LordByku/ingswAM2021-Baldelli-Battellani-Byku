@@ -32,6 +32,11 @@ public class GUI implements ViewInterface {
     }
 
     @Override
+    public void onFatalError(String message) {
+        guiWindow.onError(message);
+    }
+
+    @Override
     public void onError(String message) {
         guiWindow.onError(message);
     }
