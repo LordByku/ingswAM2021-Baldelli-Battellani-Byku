@@ -3,11 +3,12 @@ package it.polimi.ingsw.controller;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import it.polimi.ingsw.model.game.*;
-import it.polimi.ingsw.utility.Deserializer;
-import it.polimi.ingsw.utility.JsonUtil;
+import it.polimi.ingsw.model.game.Game;
+import it.polimi.ingsw.model.game.Person;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.server.GameStateSerializer;
+import it.polimi.ingsw.utility.Deserializer;
+import it.polimi.ingsw.utility.JsonUtil;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.function.Consumer;

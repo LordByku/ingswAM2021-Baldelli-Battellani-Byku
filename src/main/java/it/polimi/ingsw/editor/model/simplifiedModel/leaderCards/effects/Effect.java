@@ -1,7 +1,5 @@
 package it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.effects;
 
-import com.google.gson.JsonObject;
-
 public abstract class Effect {
     private final EffectType effectType;
 

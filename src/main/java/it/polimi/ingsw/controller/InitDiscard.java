@@ -4,9 +4,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import it.polimi.ingsw.model.game.Person;
 import it.polimi.ingsw.model.leaderCards.LeaderCard;
-import it.polimi.ingsw.utility.Deserializer;
-import it.polimi.ingsw.parsing.InitGameParser;
 import it.polimi.ingsw.network.server.GameStateSerializer;
+import it.polimi.ingsw.parsing.InitGameParser;
+import it.polimi.ingsw.utility.Deserializer;
 
 import java.util.ArrayList;
 import java.util.HashSet;

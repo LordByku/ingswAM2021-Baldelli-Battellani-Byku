@@ -4,10 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import it.polimi.ingsw.editor.model.simplifiedModel.DevCard;
 import it.polimi.ingsw.editor.model.resources.ConcreteResourceSet;
 import it.polimi.ingsw.editor.model.resources.ObtainableResourceSet;
 import it.polimi.ingsw.editor.model.resources.SpendableResourceSet;
+import it.polimi.ingsw.editor.model.simplifiedModel.DevCard;
 import it.polimi.ingsw.model.devCards.CardColour;
 import it.polimi.ingsw.model.devCards.CardLevel;
 

@@ -6,8 +6,6 @@ import it.polimi.ingsw.editor.model.resources.SpendableResourceSet;
 import it.polimi.ingsw.model.devCards.CardColour;
 import it.polimi.ingsw.model.devCards.CardLevel;
 
-import java.util.ResourceBundle;
-
 public class DevCard {
     private CardColour colour;
     private CardLevel level;

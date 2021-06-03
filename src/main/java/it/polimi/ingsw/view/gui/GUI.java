@@ -5,11 +5,13 @@ import it.polimi.ingsw.controller.CommandBuffer;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.GUIClientUserCommunication;
 import it.polimi.ingsw.view.ViewInterface;
+import it.polimi.ingsw.view.gui.images.resources.ResourceImageType;
 import it.polimi.ingsw.view.gui.windows.BoardView;
-import it.polimi.ingsw.view.gui.windows.Welcome;
 import it.polimi.ingsw.view.gui.windows.GUIWindow;
+import it.polimi.ingsw.view.gui.windows.Welcome;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -80,7 +82,12 @@ public class GUI implements ViewInterface {
 
     @Override
     public void loadGame() {
-        // TODO: guiWindow = new Board ...
+        try {
+            for(ResourceImageType resourceImageType: ResourceImageType.values()) {
+                resourceImageType.loadImage();
+            }
+        } catch (IOException e) {
+        }
     }
 
     @Override

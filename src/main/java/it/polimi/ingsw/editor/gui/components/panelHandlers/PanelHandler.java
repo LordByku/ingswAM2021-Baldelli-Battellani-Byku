@@ -5,9 +5,6 @@ import it.polimi.ingsw.editor.gui.components.TextFieldDocumentListener;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.MouseListener;
 import java.util.function.Consumer;
 
@@ -95,7 +92,9 @@ public abstract class PanelHandler {
     protected void clearListeners(AbstractButton button) {
         MouseListener[] listeners = button.getMouseListeners();
         for(MouseListener listener: listeners) {
-            button.removeMouseListener(listener);
+            if(listener instanceof ButtonClickEvent) {
+                button.removeMouseListener(listener);
+            }
         }
     }
 }

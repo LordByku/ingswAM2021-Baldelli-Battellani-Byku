@@ -19,9 +19,9 @@ import it.polimi.ingsw.model.resources.resourceSets.ChoiceResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ObtainableResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.SpendableResourceSet;
-import it.polimi.ingsw.utility.Deserializer;
-import it.polimi.ingsw.parsing.BoardParser;
 import it.polimi.ingsw.network.server.GameStateSerializer;
+import it.polimi.ingsw.parsing.BoardParser;
+import it.polimi.ingsw.utility.Deserializer;
 
 import java.util.ArrayList;
 import java.util.HashSet;

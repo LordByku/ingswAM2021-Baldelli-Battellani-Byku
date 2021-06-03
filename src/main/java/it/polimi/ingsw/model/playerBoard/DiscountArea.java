@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.playerBoard;
 
 import it.polimi.ingsw.model.leaderCards.DiscountEffect;
 import it.polimi.ingsw.model.leaderCards.InvalidDiscountEffectException;
-import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.InvalidResourceSetException;
 

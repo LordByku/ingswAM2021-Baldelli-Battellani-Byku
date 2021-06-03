@@ -7,9 +7,9 @@ import it.polimi.ingsw.model.game.Person;
 import it.polimi.ingsw.model.playerBoard.resourceLocations.Warehouse;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
-import it.polimi.ingsw.utility.Deserializer;
-import it.polimi.ingsw.parsing.InitGameParser;
 import it.polimi.ingsw.network.server.GameStateSerializer;
+import it.polimi.ingsw.parsing.InitGameParser;
+import it.polimi.ingsw.utility.Deserializer;
 
 import java.util.HashSet;
 import java.util.function.Consumer;

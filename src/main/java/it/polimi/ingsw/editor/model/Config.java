@@ -6,23 +6,15 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import it.polimi.ingsw.editor.model.simplifiedModel.VaticanReportSection;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 public class Config {
-    private static final String defaultPath = "src/main/resources/config.json";
+    private static final String defaultConfig = "config.json";
     private static FileReader reader;
-    static {
-        try {
-            reader = new FileReader(defaultPath);
-        } catch (FileNotFoundException e) {
-        }
-    }
 
     private static Config instance;
-    private static String path = defaultPath;
     private final Gson gson;
     private final JsonObject json;
     private final FaithTrackEditor faithTrackEditor;
@@ -34,6 +26,10 @@ public class Config {
     public static final int MAXPLAYERS = 4;
 
     public Config() {
+        if(reader == null) {
+            setDefaultPath();
+        }
+
         gson = new Gson();
         JsonParser parser = new JsonParser();
         json = (JsonObject) parser.parse(reader);
@@ -53,16 +49,35 @@ public class Config {
     }
 
     public static void setDefaultPath() {
-        path = defaultPath;
-        try {
-            reader = new FileReader(path);
-        } catch (FileNotFoundException e) {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        URL resource = classLoader.getResource(defaultConfig);
+        if (resource == null) {
+            try {
+                throw new FileNotFoundException();
+            } catch (FileNotFoundException e) {
+            }
+        } else {
+            try {
+                File file = new File(resource.toURI());
+                reader = new FileReader(file);
+            } catch (URISyntaxException | FileNotFoundException e) {
+            }
         }
     }
 
     public static void setPath(String filename) throws FileNotFoundException {
-        Config.path = "src/main/resources/custom/" + filename + ".json";
-        reader = new FileReader(path);
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        URL resource = classLoader.getResource("custom/" + filename);
+        if (resource == null) {
+            throw new FileNotFoundException();
+        } else {
+            try {
+                File file = new File(resource.toURI());
+                reader = new FileReader(file);
+            } catch (URISyntaxException e) {
+                throw new FileNotFoundException();
+            }
+        }
     }
 
     public static Config getInstance() {
@@ -77,6 +92,8 @@ public class Config {
     }
 
     public void save(String outFilename) throws IOException {
+        JsonObject out = new JsonObject();
+        faithTrackEditor.write(out);
         // TODO: write json
         FileWriter writer = new FileWriter("src/main/resources/custom/" + outFilename + ".json");
         writer.write(json.toString());

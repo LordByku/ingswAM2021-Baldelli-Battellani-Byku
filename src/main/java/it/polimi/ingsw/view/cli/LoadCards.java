@@ -1,4 +1,4 @@
-package it.polimi.ingsw.network.client;
+package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.model.devCards.DevCard;
 import it.polimi.ingsw.model.leaderCards.LeaderCard;

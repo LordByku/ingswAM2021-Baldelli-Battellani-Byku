@@ -9,8 +9,8 @@ import it.polimi.ingsw.model.devCards.CardColour;
 import it.polimi.ingsw.model.devCards.CardLevel;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Enumeration;
 

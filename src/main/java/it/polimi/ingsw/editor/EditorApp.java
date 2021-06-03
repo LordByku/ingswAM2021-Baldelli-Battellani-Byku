@@ -1,10 +1,8 @@
 package it.polimi.ingsw.editor;
 
 import it.polimi.ingsw.editor.gui.Window;
-import it.polimi.ingsw.model.playerBoard.faithTrack.CheckPoint;
 
 import javax.swing.*;
-import java.util.ArrayList;
 
 public class EditorApp {
     private static Window window;

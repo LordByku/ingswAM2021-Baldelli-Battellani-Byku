@@ -3,7 +3,6 @@ package it.polimi.ingsw.model.devCards;
 import it.polimi.ingsw.model.playerBoard.Board;
 import it.polimi.ingsw.model.playerBoard.InvalidBoardException;
 import it.polimi.ingsw.model.playerBoard.Scoring;
-import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.InvalidResourceSetException;
 import it.polimi.ingsw.view.cli.BackGroundColor;

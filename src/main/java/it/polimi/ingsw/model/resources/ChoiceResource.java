@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.resources;
 
+import it.polimi.ingsw.view.gui.images.resources.ResourceImageType;
+
 /**
  * ChoiceResource represents a resource that can be spent or obtained,
  * but the player has the choice to select such resource
@@ -99,6 +101,15 @@ public class ChoiceResource implements Resource {
             return "?";
         } else {
             return finalChoice.getCLIString();
+        }
+    }
+
+    @Override
+    public ResourceImageType getResourceImageType() {
+        if(finalChoice == null) {
+            return ResourceImageType.CHOICE;
+        } else {
+            return finalChoice.getResourceImageType();
         }
     }
 }

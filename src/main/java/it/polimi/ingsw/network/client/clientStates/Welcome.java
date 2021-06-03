@@ -2,7 +2,6 @@ package it.polimi.ingsw.network.client.clientStates;
 
 import it.polimi.ingsw.model.game.*;
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.network.client.LoadCards;
 import it.polimi.ingsw.network.client.LocalConfig;
 import it.polimi.ingsw.network.server.GameStateSerializer;
 import it.polimi.ingsw.parsing.Parser;
@@ -56,12 +55,10 @@ public class Welcome extends ClientState {
                         LocalConfig.getInstance().setTurnOrder(turnOrder);
                         LocalConfig.getInstance().setConfig(Parser.getInstance().getConfig());
 
-                        LoadCards.getInstance().leaderCardWidth();
-                        LoadCards.getInstance().devCardsWidth();
-
                         GameStateSerializer serializer = new GameStateSerializer(client.getNickname());
                         client.setModel(Deserializer.getInstance().getLocalModel(serializer.gameState()));
 
+                        viewInterface.loadGameInterface();
                         client.setState(new GameStarted(viewInterface));
 
                         client.startLocalController();

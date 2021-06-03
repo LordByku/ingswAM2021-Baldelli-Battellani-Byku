@@ -3,8 +3,6 @@ package it.polimi.ingsw.editor.gui.components.panelHandlers;
 import it.polimi.ingsw.editor.gui.components.ButtonClickEvent;
 import it.polimi.ingsw.editor.model.Config;
 import it.polimi.ingsw.editor.model.LeaderCardsEditor;
-import it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.LeaderCard;
-import it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.requirements.CardSet;
 import it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.requirements.CardSetRequirements;
 import it.polimi.ingsw.model.devCards.CardColour;
 import it.polimi.ingsw.model.devCards.CardLevel;

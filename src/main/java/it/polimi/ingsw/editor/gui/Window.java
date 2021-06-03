@@ -1,7 +1,7 @@
 package it.polimi.ingsw.editor.gui;
 
 import it.polimi.ingsw.editor.EditorApp;
-import it.polimi.ingsw.editor.gui.components.*;
+import it.polimi.ingsw.editor.gui.components.TextFieldDocumentListener;
 import it.polimi.ingsw.editor.gui.components.panelHandlers.*;
 import it.polimi.ingsw.editor.model.BoardEditor;
 import it.polimi.ingsw.editor.model.Config;

@@ -1,13 +1,12 @@
 package it.polimi.ingsw.editor.model;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.editor.model.simplifiedModel.VaticanReportSection;
 import it.polimi.ingsw.model.playerBoard.faithTrack.CheckPoint;
+import it.polimi.ingsw.utility.JsonUtil;
 
 import java.util.ArrayList;
-import java.util.Vector;
 
 public class FaithTrackEditor {
     private int finalPosition;
@@ -80,5 +79,36 @@ public class FaithTrackEditor {
 
     public ArrayList<CheckPoint> getCheckPoints() {
         return checkPoints;
+    }
+
+    public JsonObject buildFaithTrack() {
+        JsonObject out = new JsonObject();
+        JsonArray checkPointsArray = new JsonArray();
+        for(CheckPoint checkPoint: checkPoints) {
+            checkPointsArray.add(JsonUtil.getInstance().serialize(checkPoint));
+        }
+        out.addProperty("finalPosition", finalPosition);
+        out.add("checkPoints", checkPointsArray);
+        return out;
+    }
+
+    public JsonArray buildVaticanReportSections() {
+        JsonArray vrsArray = new JsonArray();
+        for(VaticanReportSection vaticanReportSection: vaticanReportSections) {
+            vrsArray.add(JsonUtil.getInstance().serialize(vaticanReportSection));
+        }
+        return vrsArray;
+    }
+
+    public void write(JsonObject out) {
+        if(!out.has("board")) {
+            JsonObject board = new JsonObject();
+            board.add("faithTrack", buildFaithTrack());
+            out.add("board", board);
+        } else {
+            out.getAsJsonObject("board").add("faithTrack", buildFaithTrack());
+        }
+
+        out.add("vaticanReportSections", buildVaticanReportSections());
     }
 }

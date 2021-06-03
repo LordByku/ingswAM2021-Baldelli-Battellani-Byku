@@ -206,32 +206,32 @@ public class ClientHandler implements Runnable {
     public void endTurn() {
         if (person.isActivePlayer()) {
             person.endTurn();
+        }
 
-            if (Game.getInstance().getNumberOfPlayers() == 1) {
-                Consumer<GameStateSerializer> lambda = (serializer) -> {
-                    serializer.addCardMarket();
-                    serializer.addFaithTrack(person);
-                    serializer.addFlippedActionToken();
-                };
-                updateGameState(lambda);
-            } else {
-                Consumer<GameStateSerializer> lambda = (serializer) -> {
-                    for (Player player : Game.getInstance().getPlayers()) {
-                        if (player.getPlayerType() == PlayerType.PERSON) {
-                            serializer.addPlayerDetails((Person) player);
-                        }
+        if (Game.getInstance().getNumberOfPlayers() == 1) {
+            Consumer<GameStateSerializer> lambda = (serializer) -> {
+                serializer.addCardMarket();
+                serializer.addFaithTrack(person);
+                serializer.addFlippedActionToken();
+            };
+            updateGameState(lambda);
+        } else {
+            Consumer<GameStateSerializer> lambda = (serializer) -> {
+                for (Player player : Game.getInstance().getPlayers()) {
+                    if (player.getPlayerType() == PlayerType.PERSON) {
+                        serializer.addPlayerDetails((Person) player);
                     }
-                };
-                updateGameState(lambda);
-            }
+                }
+            };
+            updateGameState(lambda);
+        }
 
-            commandBuffer = null;
+        commandBuffer = null;
 
-            if(Game.getInstance().hasGameEnded()) {
-                endGame();
-            } else {
-                broadcast("command", JsonUtil.getInstance().serializeCommandBuffer(commandBuffer, person));
-            }
+        if(Game.getInstance().hasGameEnded()) {
+            endGame();
+        } else {
+            broadcast("command", JsonUtil.getInstance().serializeCommandBuffer(commandBuffer, person));
         }
     }
 }

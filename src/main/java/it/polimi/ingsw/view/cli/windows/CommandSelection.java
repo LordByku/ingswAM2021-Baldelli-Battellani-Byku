@@ -8,9 +8,12 @@ import it.polimi.ingsw.view.localModel.Player;
 
 public class CommandSelection extends CLIWindow {
     private boolean endTurnRequested;
+    private boolean turnStarted;
 
     public CommandSelection(Client client) {
         endTurnRequested = false;
+        Player self = client.getModel().getPlayer(client.getNickname());
+        turnStarted = self.hasInkwell();
     }
 
     @Override
@@ -96,6 +99,16 @@ public class CommandSelection extends CLIWindow {
             return true;
         }
         Player self = client.getModel().getPlayer(client.getNickname());
-        return self.hasInkwell();
+        if(self.hasInkwell()) {
+            if(turnStarted) {
+                return false;
+            } else {
+                turnStarted = true;
+                return true;
+            }
+        } else {
+            turnStarted = false;
+            return false;
+        }
     }
 }

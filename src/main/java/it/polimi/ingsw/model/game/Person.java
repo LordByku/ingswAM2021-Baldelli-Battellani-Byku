@@ -129,9 +129,13 @@ public class Person extends Player {
 
     public void reconnect() {
         if (Game.getInstance().allDisconnected()) {
-            isActivePlayer = true;
+            isConnected = true;
+            while(!isActivePlayer) {
+                Game.getInstance().handleTurnOrder();
+            }
+        } else {
+            isConnected = true;
         }
-        isConnected = true;
     }
 
     public void mainActionDone() {

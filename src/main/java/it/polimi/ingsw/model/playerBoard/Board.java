@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.playerBoard.faithTrack.FaithTrack;
 import it.polimi.ingsw.model.playerBoard.resourceLocations.ResourceLocation;
 import it.polimi.ingsw.model.playerBoard.resourceLocations.StrongBox;
 import it.polimi.ingsw.model.playerBoard.resourceLocations.Warehouse;
-import it.polimi.ingsw.model.resources.resourceSets.ChoiceResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.InvalidResourceSetException;
 

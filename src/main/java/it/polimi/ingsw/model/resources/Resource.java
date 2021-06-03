@@ -1,9 +1,12 @@
 package it.polimi.ingsw.model.resources;
 
+import it.polimi.ingsw.view.cli.CLIPrintable;
+import it.polimi.ingsw.view.gui.images.resources.ResourceImageType;
+
 /**
  * Resource is the interface for resources, including ChoiceResources
  */
-public interface Resource {
+public interface Resource extends CLIPrintable {
     /**
      * getResource returns what this Resource represents
      *
@@ -19,5 +22,8 @@ public interface Resource {
      */
     boolean isConcrete();
 
+    @Override
     String getCLIString();
+
+    ResourceImageType getResourceImageType();
 }

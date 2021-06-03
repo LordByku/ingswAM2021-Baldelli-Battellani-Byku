@@ -4,7 +4,7 @@ import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.LocalConfig;
 
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;

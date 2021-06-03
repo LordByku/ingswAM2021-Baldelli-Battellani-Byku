@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.playerBoard.faithTrack;
 
 import it.polimi.ingsw.model.game.Game;
-import it.polimi.ingsw.model.playerBoard.Board;
 import it.polimi.ingsw.model.playerBoard.Scoring;
 import it.polimi.ingsw.model.resources.resourceSets.InvalidQuantityException;
 import it.polimi.ingsw.parsing.BoardParser;

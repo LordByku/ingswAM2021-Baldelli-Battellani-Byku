@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.playerBoard.Board;
 import it.polimi.ingsw.parsing.InitGameParser;
 import it.polimi.ingsw.parsing.LeaderCardsParser;
-import it.polimi.ingsw.parsing.Parser;
 
 import java.util.ArrayList;
 import java.util.Collections;

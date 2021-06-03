@@ -2,7 +2,6 @@ package it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.requirements;
 
 import it.polimi.ingsw.model.devCards.CardLevel;
 
-import java.util.Arrays;
 import java.util.HashSet;
 
 public class CardSet {

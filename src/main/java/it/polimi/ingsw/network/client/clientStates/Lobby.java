@@ -91,8 +91,6 @@ public class Lobby extends ClientState {
                         JsonObject config = message.getAsJsonObject("config");
                         Parser.getInstance().setConfig(config);
                         LocalConfig.getInstance().setConfig(config);
-
-                        viewInterface.loadGameInterface();
                         break;
                     }
                     case "update": {
@@ -101,6 +99,7 @@ public class Lobby extends ClientState {
                         LocalModel model = Deserializer.getInstance().getLocalModel(message);
                         client.setModel(model);
 
+                        viewInterface.loadGameInterface();
                         client.setState(new GameStarted(viewInterface));
                         break;
                     }

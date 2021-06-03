@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import it.polimi.ingsw.controller.CommandBuffer;
 import it.polimi.ingsw.controller.CommandType;
 import it.polimi.ingsw.controller.InvalidCommandException;
-import it.polimi.ingsw.model.game.Game;
 import it.polimi.ingsw.model.game.Person;
 import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.network.server.GameStateSerializer;
