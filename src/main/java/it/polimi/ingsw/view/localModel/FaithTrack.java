@@ -108,4 +108,8 @@ public class FaithTrack implements LocalModelElement, CLIPrintable {
     public void updateModel(JsonObject jsonObject) {
 
     }
+
+    public int getPosition() {
+        return position;
+    }
 }
