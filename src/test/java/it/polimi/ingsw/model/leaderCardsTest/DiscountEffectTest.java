@@ -22,7 +22,7 @@ public class DiscountEffectTest {
 
         DiscountEffect discountEffect = new DiscountEffect(ConcreteResource.STONE, 1);
         assertNotEquals(concreteResourceSet, concreteResourceSetDiscounted);
-        assertEquals(concreteResourceSet, discountEffect.applyDiscount(concreteResourceSet));
+        assertNotEquals(concreteResourceSet, discountEffect.applyDiscount(concreteResourceSet));
 
         try {
             discountEffect.applyDiscount(null);

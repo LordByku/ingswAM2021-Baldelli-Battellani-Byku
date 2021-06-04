@@ -5,7 +5,6 @@ import it.polimi.ingsw.editor.gui.components.TextFieldDocumentListener;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseListener;
 import java.util.function.Consumer;
 
 public abstract class PanelHandler {
@@ -61,13 +60,15 @@ public abstract class PanelHandler {
         outerPanel.add(container);
     }
 
-    protected void addCheckBox(String text, boolean isSelected, JPanel outerPanel, ButtonClickEvent buttonClickEvent) {
+    protected void addCheckBox(String text, boolean isSelected, ButtonGroup checkBoxesButtonGroup, JPanel outerPanel, ButtonClickEvent buttonClickEvent) {
         JPanel container = new JPanel(new GridBagLayout());
 
         JCheckBox checkBox = new JCheckBox();
         checkBox.setText(text);
-        checkBox.setSelected(isSelected);
         checkBox.addMouseListener(buttonClickEvent);
+
+        checkBoxesButtonGroup.add(checkBox);
+        checkBoxesButtonGroup.setSelected(checkBox.getModel(), isSelected);
 
         container.add(checkBox, gbc);
 
@@ -87,14 +88,5 @@ public abstract class PanelHandler {
         container.add(button, gbc);
 
         outerPanel.add(container);
-    }
-
-    protected void clearListeners(AbstractButton button) {
-        MouseListener[] listeners = button.getMouseListeners();
-        for(MouseListener listener: listeners) {
-            if(listener instanceof ButtonClickEvent) {
-                button.removeMouseListener(listener);
-            }
-        }
     }
 }

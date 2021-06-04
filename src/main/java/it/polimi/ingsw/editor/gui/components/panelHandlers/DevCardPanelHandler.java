@@ -9,8 +9,6 @@ import it.polimi.ingsw.model.devCards.CardColour;
 import it.polimi.ingsw.model.devCards.CardLevel;
 
 import javax.swing.*;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
@@ -44,7 +42,45 @@ public class DevCardPanelHandler extends PanelHandler {
 
     @Override
     public void build() {
-        int selection = 0;
+        int selection = devCardsEditor.getCurrentSelection();
+
+        devCardSelectionBox.addActionListener(e -> {
+            int newSelection = devCardSelectionBox.getSelectedIndex();
+            if(newSelection == devCardsEditor.getDevCards().size()) {
+                devCardsEditor.addNewCard();
+                buildComboBox(newSelection);
+            } else if(newSelection != -1) {
+                devCardsEditor.setCurrentSelection(newSelection);
+                loadCard(newSelection);
+            }
+        });
+
+        removeDevCardButton.addMouseListener(new ButtonClickEvent((e) -> {
+            devCardsEditor.removeCard(devCardsEditor.getCurrentSelection());
+            int newSelection = 0;
+            devCardsEditor.setCurrentSelection(newSelection);
+            buildComboBox(newSelection);
+            loadCard(newSelection);
+        }));
+
+        devCardPointsTextField.getDocument().addDocumentListener(new TextFieldDocumentListener(devCardPointsTextField, (value) -> {
+            devCardsEditor.getDevCards().get(devCardsEditor.getCurrentSelection()).setPoints(value);
+        }));
+
+        Enumeration<AbstractButton> levelButtons = levelGroup.getElements();
+        for(CardLevel cardLevel: CardLevel.values()) {
+            levelButtons.nextElement().addMouseListener(new ButtonClickEvent((e) -> {
+                devCardsEditor.getDevCards().get(devCardsEditor.getCurrentSelection()).setLevel(cardLevel);
+            }));
+        }
+
+
+        Enumeration<AbstractButton> colourButtons = colourGroup.getElements();
+        for(CardColour cardColour: CardColour.values()) {
+            colourButtons.nextElement().addMouseListener(new ButtonClickEvent((e) -> {
+                devCardsEditor.getDevCards().get(devCardsEditor.getCurrentSelection()).setColour(cardColour);
+            }));
+        }
 
         buildComboBox(selection);
         loadCard(selection);
@@ -52,10 +88,6 @@ public class DevCardPanelHandler extends PanelHandler {
 
     private void buildComboBox(int selection) {
         devCardSelectionBox.removeAllItems();
-        ActionListener[] listeners = devCardSelectionBox.getActionListeners();
-        for(ActionListener listener: listeners) {
-            devCardSelectionBox.removeActionListener(listener);
-        }
 
         ArrayList<DevCard> devCards = devCardsEditor.getDevCards();
         for (int i = 0; i < devCards.size(); i++) {
@@ -64,63 +96,21 @@ public class DevCardPanelHandler extends PanelHandler {
         devCardSelectionBox.addItem("Add new card");
 
         devCardSelectionBox.setSelectedIndex(selection);
-
-        devCardSelectionBox.addActionListener(e -> {
-            int newSelection = devCardSelectionBox.getSelectedIndex();
-            if(newSelection == devCards.size()) {
-                devCardsEditor.addNewCard();
-                buildComboBox(newSelection);
-            } else if(newSelection != -1) {
-                loadCard(newSelection);
-            }
-        });
     }
 
     private void loadCard(int selection) {
         DevCard devCard = devCardsEditor.getDevCards().get(selection);
 
-        MouseListener[] mouseListeners = removeDevCardButton.getMouseListeners();
-        for(MouseListener mouseListener: mouseListeners) {
-            if(mouseListener instanceof ButtonClickEvent) { // TODO: no instanceof ?
-                removeDevCardButton.removeMouseListener(mouseListener);
-            }
-        }
-        removeDevCardButton.addMouseListener(new ButtonClickEvent((e) -> {
-            devCardsEditor.removeCard(selection);
-            int newSelection = 0;
-            buildComboBox(newSelection);
-            loadCard(newSelection);
-        }));
-
-        ActionListener[] listeners = devCardPointsTextField.getActionListeners();
-        for(ActionListener listener: listeners) {
-            devCardPointsTextField.removeActionListener(listener);
-        }
         devCardPointsTextField.setValue(devCard.getPoints());
-        devCardPointsTextField.getDocument().addDocumentListener(new TextFieldDocumentListener(
-                devCardPointsTextField, devCard::setPoints
-        ));
 
         Enumeration<AbstractButton> levelButtons = levelGroup.getElements();
         for(CardLevel cardLevel: CardLevel.values()) {
-            JRadioButton button = (JRadioButton) levelButtons.nextElement();
-            clearListeners(button);
-            button.addMouseListener(new ButtonClickEvent((e) -> {
-                devCard.setLevel(cardLevel);
-            }));
-
-            levelGroup.setSelected(button.getModel(), devCard.getLevel() == cardLevel);
+            levelGroup.setSelected(levelButtons.nextElement().getModel(), devCard.getLevel() == cardLevel);
         }
 
         Enumeration<AbstractButton> colourButtons = colourGroup.getElements();
         for(CardColour cardColour: CardColour.values()) {
-            JRadioButton button = (JRadioButton) colourButtons.nextElement();
-            clearListeners(button);
-            button.addMouseListener(new ButtonClickEvent((e) -> {
-                devCard.setColour(cardColour);
-            }));
-
-            colourGroup.setSelected(button.getModel(), devCard.getColour() == cardColour);
+            colourGroup.setSelected(colourButtons.nextElement().getModel(), devCard.getColour() == cardColour);
         }
 
         ConcretePanelHandler concretePanelHandler = new ConcretePanelHandler(frame, devCardRequirementPanel, devCard.getRequirements());

@@ -12,8 +12,6 @@ import it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.requirements.Req
 import it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.requirements.ResourcesRequirements;
 
 import javax.swing.*;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
@@ -44,7 +42,54 @@ public class LeaderCardPanelHandler extends PanelHandler {
 
     @Override
     public void build() {
-        int selection = 0;
+        int selection = leaderCardsEditor.getCurrentSelection();
+
+        leaderCardSelectionBox.addActionListener(e -> {
+            int newSelection = leaderCardSelectionBox.getSelectedIndex();
+            if(newSelection == leaderCardsEditor.getLeaderCards().size()) {
+                leaderCardsEditor.addNewCard();
+                buildComboBox(newSelection);
+            } else if(newSelection != -1) {
+                leaderCardsEditor.setCurrentSelection(newSelection);
+                loadCard(newSelection);
+            }
+        });
+
+        removeLeaderCardButton.addMouseListener(new ButtonClickEvent((e) -> {
+            leaderCardsEditor.removeCard(leaderCardsEditor.getCurrentSelection());
+            int newSelection = 0;
+            leaderCardsEditor.setCurrentSelection(newSelection);
+            buildComboBox(newSelection);
+            loadCard(newSelection);
+        }));
+
+        leaderCardPointsTextField.getDocument().addDocumentListener(new TextFieldDocumentListener(leaderCardPointsTextField, (value) -> {
+            leaderCardsEditor.getLeaderCards().get(leaderCardsEditor.getCurrentSelection()).setPoints(value);
+        }));
+
+        Enumeration<AbstractButton> requirementsButton = requirementsGroup.getElements();
+        for(RequirementType requirementType: RequirementType.values()) {
+            requirementsButton.nextElement().addMouseListener(new ButtonClickEvent((e) -> {
+                int currentSelection = leaderCardsEditor.getCurrentSelection();
+                LeaderCard leaderCard = leaderCardsEditor.getLeaderCards().get(currentSelection);
+                if(leaderCard.getRequirements().getRequirementType() != requirementType) {
+                    leaderCard.setRequirements(Requirements.build(requirementType));
+                    loadCard(currentSelection);
+                }
+            }));
+        }
+
+        Enumeration<AbstractButton> effectButton = effectGroup.getElements();
+        for(EffectType effectType: EffectType.values()) {
+            effectButton.nextElement().addMouseListener(new ButtonClickEvent((e) -> {
+                int currentSelection = leaderCardsEditor.getCurrentSelection();
+                LeaderCard leaderCard = leaderCardsEditor.getLeaderCards().get(currentSelection);
+                if(leaderCard.getEffect().getEffectType() != effectType) {
+                    leaderCard.setEffect(Effect.build(effectType));
+                    loadCard(currentSelection);
+                }
+            }));
+        }
 
         buildComboBox(selection);
         loadCard(selection);
@@ -52,10 +97,6 @@ public class LeaderCardPanelHandler extends PanelHandler {
 
     private void buildComboBox(int selection) {
         leaderCardSelectionBox.removeAllItems();
-        ActionListener[] listeners = leaderCardSelectionBox.getActionListeners();
-        for(ActionListener listener: listeners) {
-            leaderCardSelectionBox.removeActionListener(listener);
-        }
 
         ArrayList<LeaderCard> leaderCards = leaderCardsEditor.getLeaderCards();
         for (int i = 0; i < leaderCards.size(); i++) {
@@ -64,69 +105,21 @@ public class LeaderCardPanelHandler extends PanelHandler {
         leaderCardSelectionBox.addItem("Add new card");
 
         leaderCardSelectionBox.setSelectedIndex(selection);
-
-        leaderCardSelectionBox.addActionListener(e -> {
-            int newSelection = leaderCardSelectionBox.getSelectedIndex();
-            if(newSelection == leaderCards.size()) {
-                leaderCardsEditor.addNewCard();
-                buildComboBox(newSelection);
-            } else if(newSelection != -1) {
-                loadCard(newSelection);
-            }
-        });
     }
 
     private void loadCard(int selection) {
         LeaderCard leaderCard = leaderCardsEditor.getLeaderCards().get(selection);
 
-        MouseListener[] mouseListeners = removeLeaderCardButton.getMouseListeners();
-        for(MouseListener mouseListener: mouseListeners) {
-            if(mouseListener instanceof ButtonClickEvent) { // TODO: no instanceof ?
-                removeLeaderCardButton.removeMouseListener(mouseListener);
-            }
-        }
-        removeLeaderCardButton.addMouseListener(new ButtonClickEvent((e) -> {
-            leaderCardsEditor.removeCard(selection);
-            int newSelection = 0;
-            buildComboBox(newSelection);
-            loadCard(newSelection);
-        }));
-
-        ActionListener[] listeners = leaderCardPointsTextField.getActionListeners();
-        for(ActionListener listener: listeners) {
-            leaderCardPointsTextField.removeActionListener(listener);
-        }
         leaderCardPointsTextField.setValue(leaderCard.getPoints());
-        leaderCardPointsTextField.getDocument().addDocumentListener(new TextFieldDocumentListener(
-                leaderCardPointsTextField, leaderCard::setPoints
-        ));
 
         Enumeration<AbstractButton> requirementsButton = requirementsGroup.getElements();
         for(RequirementType requirementType: RequirementType.values()) {
-            JRadioButton button = (JRadioButton) requirementsButton.nextElement();
-            clearListeners(button);
-            button.addMouseListener(new ButtonClickEvent((e) -> {
-                if(leaderCard.getRequirements().getRequirementType() != requirementType) {
-                    leaderCard.setRequirements(Requirements.build(requirementType));
-                    loadCard(selection);
-                }
-            }));
-
-            requirementsGroup.setSelected(button.getModel(), leaderCard.getRequirements().getRequirementType() == requirementType);
+            requirementsGroup.setSelected(requirementsButton.nextElement().getModel(), leaderCard.getRequirements().getRequirementType() == requirementType);
         }
 
         Enumeration<AbstractButton> effectButton = effectGroup.getElements();
         for(EffectType effectType: EffectType.values()) {
-            JRadioButton button = (JRadioButton) effectButton.nextElement();
-            clearListeners(button);
-            button.addMouseListener(new ButtonClickEvent((e) -> {
-                if(leaderCard.getEffect().getEffectType() != effectType) {
-                    leaderCard.setEffect(Effect.build(effectType));
-                    loadCard(selection);
-                }
-            }));
-
-            effectGroup.setSelected(button.getModel(), leaderCard.getEffect().getEffectType() == effectType);
+            effectGroup.setSelected(effectButton.nextElement().getModel(), leaderCard.getEffect().getEffectType() == effectType);
         }
 
         switch (leaderCard.getRequirements().getRequirementType()) {

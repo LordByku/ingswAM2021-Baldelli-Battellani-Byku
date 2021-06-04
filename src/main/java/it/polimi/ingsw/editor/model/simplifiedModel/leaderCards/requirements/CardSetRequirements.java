@@ -5,14 +5,14 @@ import it.polimi.ingsw.model.devCards.CardColour;
 import java.util.Arrays;
 
 public class CardSetRequirements extends Requirements {
-    private final CardSet[] cardSet;
+    private final CardSet[] cardSets;
 
     public CardSetRequirements() {
         super(RequirementType.cardSet);
         int colours = CardColour.values().length;
-        cardSet = new CardSet[colours];
+        cardSets = new CardSet[colours];
         for (int i = 0; i < colours; i++) {
-            cardSet[i] = new CardSet();
+            cardSets[i] = new CardSet(CardColour.values()[i]);
         }
     }
 
@@ -21,6 +21,10 @@ public class CardSetRequirements extends Requirements {
     }
 
     public CardSet getCardSet(CardColour colour) {
-        return cardSet[colourIndex(colour)];
+        return cardSets[colourIndex(colour)];
+    }
+
+    public void setCardSet(CardSet cardSet) {
+        cardSets[colourIndex(cardSet.getCardColour())] = cardSet;
     }
 }

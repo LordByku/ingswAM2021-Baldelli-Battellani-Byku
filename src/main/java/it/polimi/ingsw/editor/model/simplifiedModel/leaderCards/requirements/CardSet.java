@@ -1,24 +1,29 @@
 package it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.requirements;
 
+import it.polimi.ingsw.model.devCards.CardColour;
 import it.polimi.ingsw.model.devCards.CardLevel;
 
-import java.util.HashSet;
-
 public class CardSet {
-    private final HashSet<CardLevel> levels;
+    private CardColour cardColour;
     private int quantity;
+    private CardLevel cardLevel;
 
-    public CardSet() {
-        levels = new HashSet<>();
+    public CardSet(CardColour cardColour) {
+        this.cardColour = cardColour;
         quantity = 0;
+        cardLevel = null;
     }
 
-    public void toggle(CardLevel level) {
-        if(levels.contains(level)) {
-            levels.remove(level);
-        } else {
-            levels.add(level);
-        }
+    public CardColour getCardColour() {
+        return cardColour;
+    }
+
+    public void setCardColour(CardColour cardColour) {
+        this.cardColour = cardColour;
+    }
+
+    public CardLevel getCardLevel() {
+        return cardLevel;
     }
 
     public int getQuantity() {
@@ -29,7 +34,11 @@ public class CardSet {
         this.quantity = quantity;
     }
 
-    public boolean isActive(CardLevel level) {
-        return levels.contains(level);
+    public void toggle(CardLevel cardLevel) {
+        if(this.cardLevel == cardLevel) {
+            this.cardLevel = null;
+        } else {
+            this.cardLevel = cardLevel;
+        }
     }
 }

@@ -56,24 +56,16 @@ public class DevCardTest {
     public void playTest () {
         Board board1 = new Board();
         //Board board2 = new Board();
-        CardType cardType1 = new CardType(CardColour.BLUE);
+        CardTypeDetails cardTypeDetails1 = new CardTypeDetails(CardColour.BLUE, 1, CardLevel.I);
 
-        cardType1.addLevel(CardLevel.I);
-        cardType1.addLevel(CardLevel.II);
-
-        CardType cardType2 = new CardType(CardColour.YELLOW);
-        CardType cardType3 = new CardType(CardColour.PURPLE) ;
-
-        cardType2.addLevel(CardLevel.III);
-        cardType2.addLevel(CardLevel.I);
+        CardTypeDetails cardTypeDetails2 = new CardTypeDetails(CardColour.YELLOW, 1, CardLevel.I);
 
         CardTypeSet cardTypeSet1 = new CardTypeSet();
         CardTypeSet cardTypeSet2 = new CardTypeSet();
 
-        cardTypeSet1.add(cardType1);
-        cardTypeSet1.add(cardType2);
+        cardTypeSet1.add(cardTypeDetails1);
+        cardTypeSet1.add(cardTypeDetails2);
 
-        cardTypeSet2.add(cardType3);
 
         DevCard devCard1;
         DevCard devCard2;

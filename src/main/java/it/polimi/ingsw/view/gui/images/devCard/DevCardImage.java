@@ -1,8 +1,6 @@
 package it.polimi.ingsw.view.gui.images.devCard;
 
 import it.polimi.ingsw.model.devCards.DevCard;
-import it.polimi.ingsw.view.gui.images.resources.ResourceImage;
-import it.polimi.ingsw.view.gui.images.resources.ResourceImageType;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

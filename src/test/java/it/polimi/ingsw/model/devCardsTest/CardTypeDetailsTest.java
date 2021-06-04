@@ -10,26 +10,23 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class CardTypeTest {
+public class CardTypeDetailsTest {
     @Test
     public void constructor (){
-        CardType cardType ;
+        CardTypeDetails cardTypeDetails;
 
-        cardType = new CardType(CardColour.BLUE);
-        assertNotNull(cardType);
-        cardType.addLevel(CardLevel.I);
-        cardType.addLevel(CardLevel.II);
-        assertNotNull(cardType);
+        cardTypeDetails = new CardTypeDetails(CardColour.BLUE, 1, CardLevel.I);
+        assertNotNull(cardTypeDetails);
 
         try{
-            cardType = new CardType(null);
+            cardTypeDetails = new CardTypeDetails(null, 1);
         }catch(InvalidCardColourException e){
-            assertNotNull(cardType);
+            assertNotNull(cardTypeDetails);
         }
         try{
-            cardType.addLevel(null);
+            cardTypeDetails = new CardTypeDetails(CardColour.PURPLE, 0);
         }catch(InvalidCardLevelException e) {
-            assertNotNull(cardType);
+            assertNotNull(cardTypeDetails);
         }
     }
     @Test
@@ -38,9 +35,7 @@ public class CardTypeTest {
         DevCard devCard2;
         DevCard devCard3;
         DevCard devCard4;
-        CardType cardType = new CardType(CardColour.BLUE);
-        cardType.addLevel(CardLevel.I);
-        cardType.addLevel(CardLevel.II);
+        CardTypeDetails cardTypeDetails = new CardTypeDetails(CardColour.BLUE, 1);
         ConcreteResourceSet concreteResourceSet1 = new ConcreteResourceSet();
         concreteResourceSet1.addResource(ConcreteResource.COIN, 2);
         ConcreteResourceSet concreteResourceSet2 = new ConcreteResourceSet();
@@ -60,18 +55,17 @@ public class CardTypeTest {
         devCard4 = new DevCard(concreteResourceSet1,CardColour.BLUE,CardLevel.III,details1,1, 1022);
 
 
-        assertTrue(cardType.isSatisfied(devCard1));
-        assertFalse(cardType.isSatisfied(devCard2));
-        assertFalse(cardType.isSatisfied(devCard3));
-        assertFalse(cardType.isSatisfied(devCard4));
+        assertTrue(cardTypeDetails.isSatisfied(devCard1));
+        assertFalse(cardTypeDetails.isSatisfied(devCard2));
+        assertFalse(cardTypeDetails.isSatisfied(devCard3));
+        assertTrue(cardTypeDetails.isSatisfied(devCard4));
 
-        CardType cardType2 = new CardType(CardColour.PURPLE);
-        assertFalse(cardType2.isSatisfied(devCard3));
-        assertFalse(cardType2.isSatisfied(devCard2));
-        assertFalse(cardType2.isSatisfied(devCard4));
+        CardTypeDetails cardTypeDetails2 = new CardTypeDetails(CardColour.PURPLE, 1);
+        assertTrue(cardTypeDetails2.isSatisfied(devCard3));
+        assertFalse(cardTypeDetails2.isSatisfied(devCard2));
+        assertFalse(cardTypeDetails2.isSatisfied(devCard4));
 
-        cardType.addLevel(CardLevel.III);
-        assertTrue(cardType.isSatisfied(devCard4));
+        assertTrue(cardTypeDetails.isSatisfied(devCard4));
 
     }
 }

@@ -2,7 +2,6 @@ package it.polimi.ingsw.view.gui.images.leaderCard;
 
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
-import it.polimi.ingsw.view.gui.images.devCard.DevCardImage;
 import it.polimi.ingsw.view.gui.images.resources.ResourceImage;
 
 import javax.swing.*;

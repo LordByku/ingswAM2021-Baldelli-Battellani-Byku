@@ -3,13 +3,11 @@ package it.polimi.ingsw.model.devCards;
 import it.polimi.ingsw.model.leaderCards.LeaderCardRequirements;
 import it.polimi.ingsw.model.playerBoard.Board;
 import it.polimi.ingsw.model.playerBoard.InvalidBoardException;
-import it.polimi.ingsw.model.resources.resourceSets.InvalidQuantityException;
 import it.polimi.ingsw.view.gui.images.leaderCard.CardTypeRequirementsPanel;
 
 import javax.swing.*;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * CardTypeset represents a set of CardTypes
@@ -19,43 +17,17 @@ public class CardTypeSet implements LeaderCardRequirements {
     /**
      * cardTypes represents a hash map of card types and his quantity
      */
-    private HashMap<CardType, Integer> cardTypes;
+    private TreeMap<CardColour, CardTypeDetails> cardTypes;
 
     /**
      * the constructor initializes a empty HashMap
      */
     public CardTypeSet() {
-        cardTypes = new HashMap<>();
+        cardTypes = new TreeMap<>();
     }
 
-    /**
-     * add inserts a given amount of a new CardType in this set
-     *
-     * @param cardType The CardType to be added
-     * @param quantity The quantity to be added
-     * @throws InvalidCardTypeException cardType is null
-     * @throws InvalidQuantityException quantity is not strictly positive
-     */
-    public void add(CardType cardType, int quantity) throws InvalidCardTypeException, InvalidQuantityException {
-        if (cardType == null) {
-            throw new InvalidCardTypeException();
-        }
-        if (quantity <= 0) {
-            throw new InvalidQuantityException();
-        }
-
-        int count = cardTypes.getOrDefault(cardType, 0);
-        cardTypes.put(cardType, count + quantity);
-    }
-
-    /**
-     * This method offers the option to add a single CardType
-     *
-     * @param cardType The CardType to be added
-     * @throws InvalidCardTypeException quantity is not strictly positive
-     */
-    public void add(CardType cardType) throws InvalidCardTypeException {
-        add(cardType, 1);
+    public void add(CardTypeDetails cardTypeDetails) {
+        cardTypes.put(cardTypeDetails.getCardColour(), cardTypeDetails);
     }
 
     /**
@@ -68,17 +40,15 @@ public class CardTypeSet implements LeaderCardRequirements {
     public boolean isSatisfied(Board board) throws InvalidBoardException {
         ArrayList<DevCard> cards = board.getDevelopmentCardArea().getCards();
 
-        for (Map.Entry<CardType, Integer> entry : cardTypes.entrySet()) {
-            CardType cardType = entry.getKey();
-
+        for (CardTypeDetails cardTypeDetails : cardTypes.values()) {
             int satisfiedCount = 0;
             for (DevCard card : cards) {
-                if (cardType.isSatisfied(card)) {
+                if (cardTypeDetails.isSatisfied(card)) {
                     satisfiedCount++;
                 }
             }
 
-            if (satisfiedCount < entry.getValue()) {
+            if (satisfiedCount < cardTypeDetails.getQuantity()) {
                 return false;
             }
         }
@@ -90,7 +60,7 @@ public class CardTypeSet implements LeaderCardRequirements {
     public Object clone() {
         try {
             CardTypeSet cloneSet = (CardTypeSet) super.clone();
-            cloneSet.cardTypes = (HashMap<CardType, Integer>) cardTypes.clone();
+            cloneSet.cardTypes = (TreeMap<CardColour, CardTypeDetails>) cardTypes.clone();
             return cloneSet;
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
@@ -99,14 +69,10 @@ public class CardTypeSet implements LeaderCardRequirements {
     }
 
     public String getCLIString() {
-        StringBuilder result = new StringBuilder("( ");
-        for (Map.Entry<CardType, Integer> entry : cardTypes.entrySet()) {
-            CardType cardType = entry.getKey();
-            Integer count = entry.getValue();
-
-            result.append(count).append(cardType.getCLIString()).append(" ");
+        StringBuilder result = new StringBuilder();
+        for (CardTypeDetails cardTypeDetails: cardTypes.values()) {
+            result.append(cardTypeDetails.getCLIString()).append(" ");
         }
-        result.append(")");
         return result.toString();
     }
 

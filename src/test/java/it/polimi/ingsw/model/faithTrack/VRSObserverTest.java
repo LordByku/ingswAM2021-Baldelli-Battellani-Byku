@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.faithTrack;
 
+import it.polimi.ingsw.model.game.GameNotStartedException;
 import it.polimi.ingsw.model.playerBoard.faithTrack.*;
 import org.junit.Test;
 
@@ -82,7 +83,9 @@ public class VRSObserverTest {
         assertNotSame(6 + vaticanReportSection2.getPoints()+vaticanReportSection.getPoints(),faithTrack1.getPoints());
         faithTrack1.addFaithPoints(5);
         faithTrack3.addFaithPoints(6);
-        faithTrack2.addFaithPoints(20);
+        try {
+            faithTrack2.addFaithPoints(20);
+        } catch (GameNotStartedException e) {}
         VRSObserver.getInstance().updateVRS();
         assertSame(16 + vaticanReportSection2.getPoints()+vaticanReportSection.getPoints(),faithTrack3.getPoints());
         assertSame(12 + vaticanReportSection2.getPoints(),faithTrack1.getPoints());

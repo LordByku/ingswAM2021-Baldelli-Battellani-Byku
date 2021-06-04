@@ -1,7 +1,9 @@
 package it.polimi.ingsw.parsing;
 
 import com.google.gson.*;
-import it.polimi.ingsw.model.devCards.*;
+import it.polimi.ingsw.model.devCards.CardTypeDetails;
+import it.polimi.ingsw.model.devCards.CardTypeSet;
+import it.polimi.ingsw.model.devCards.ProductionDetails;
 import it.polimi.ingsw.model.resources.ChoiceResource;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.FullChoiceSet;
@@ -69,16 +71,8 @@ public class Parser {
         CardTypeSet cardTypeSet = new CardTypeSet();
 
         for (JsonElement jsonElementCardType : jsonArray) {
-            JsonObject jsonCardType = (JsonObject) jsonElementCardType;
-
-            CardType cardType = new CardType(gson.fromJson(jsonCardType.get("colour").getAsString(), CardColour.class));
-            for (JsonElement jsonElementLevel : jsonCardType.getAsJsonArray("levelSet")) {
-                cardType.addLevel(gson.fromJson(jsonElementLevel.getAsString(), CardLevel.class));
-            }
-
-            int quantity = jsonCardType.get("quantity").getAsInt();
-
-            cardTypeSet.add(cardType, quantity);
+            CardTypeDetails cardTypeDetails = gson.fromJson(jsonElementCardType, CardTypeDetails.class);
+            cardTypeSet.add(cardTypeDetails);
         }
 
         return cardTypeSet;

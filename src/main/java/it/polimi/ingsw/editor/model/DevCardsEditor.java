@@ -15,10 +15,12 @@ import java.util.ArrayList;
 
 public class DevCardsEditor {
     private final ArrayList<DevCard> devCards;
+    private int currentSelection;
 
     public DevCardsEditor(JsonArray jsonArray) {
         Gson gson = new Gson();
 
+        currentSelection = 0;
         devCards = new ArrayList<>();
         for (JsonElement jsonElement: jsonArray) {
             JsonObject cardObject = jsonElement.getAsJsonObject();
@@ -38,6 +40,14 @@ public class DevCardsEditor {
 
     public ArrayList<DevCard> getDevCards() {
         return devCards;
+    }
+
+    public int getCurrentSelection() {
+        return currentSelection;
+    }
+
+    public void setCurrentSelection(int currentSelection) {
+        this.currentSelection = currentSelection;
     }
 
     public void addNewCard() {

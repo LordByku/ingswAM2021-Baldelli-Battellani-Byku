@@ -16,10 +16,12 @@ import java.util.ArrayList;
 
 public class LeaderCardsEditor {
     private final ArrayList<LeaderCard> leaderCards;
+    private int currentSelection;
 
     public LeaderCardsEditor(JsonArray jsonArray) {
         Gson gson = new Gson();
 
+        currentSelection = 0;
         leaderCards = new ArrayList<>();
         for(JsonElement jsonElement: jsonArray) {
             JsonObject cardObject = jsonElement.getAsJsonObject();
@@ -37,6 +39,14 @@ public class LeaderCardsEditor {
 
     public ArrayList<LeaderCard> getLeaderCards() {
         return leaderCards;
+    }
+
+    public int getCurrentSelection() {
+        return currentSelection;
+    }
+
+    public void setCurrentSelection(int currentSelection) {
+        this.currentSelection = currentSelection;
     }
 
     public void addNewCard() {

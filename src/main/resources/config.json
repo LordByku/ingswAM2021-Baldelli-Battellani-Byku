@@ -1605,21 +1605,11 @@
       "requirementsType": "cardSet",
       "requirements": [
         {
-          "colour": "YELLOW",
-          "levelSet": [
-            "I",
-            "II",
-            "III"
-          ],
+          "cardColour": "YELLOW",
           "quantity": 1
         },
         {
-          "colour": "GREEN",
-          "levelSet": [
-            "I",
-            "II",
-            "III"
-          ],
+          "cardColour": "GREEN",
           "quantity": 1
         }
       ],
@@ -1634,21 +1624,11 @@
       "requirementsType": "cardSet",
       "requirements": [
         {
-          "colour": "BLUE",
-          "levelSet": [
-            "I",
-            "II",
-            "III"
-          ],
+          "cardColour": "BLUE",
           "quantity": 1
         },
         {
-          "colour": "PURPLE",
-          "levelSet": [
-            "I",
-            "II",
-            "III"
-          ],
+          "cardColour": "PURPLE",
           "quantity": 1
         }
       ],
@@ -1663,21 +1643,11 @@
       "requirementsType": "cardSet",
       "requirements": [
         {
-          "colour": "BLUE",
-          "levelSet": [
-            "I",
-            "II",
-            "III"
-          ],
+          "cardColour": "BLUE",
           "quantity": 1
         },
         {
-          "colour": "GREEN",
-          "levelSet": [
-            "I",
-            "II",
-            "III"
-          ],
+          "cardColour": "GREEN",
           "quantity": 1
         }
       ],
@@ -1692,21 +1662,11 @@
       "requirementsType": "cardSet",
       "requirements": [
         {
-          "colour": "YELLOW",
-          "levelSet": [
-            "I",
-            "II",
-            "III"
-          ],
+          "cardColour": "YELLOW",
           "quantity": 1
         },
         {
-          "colour": "PURPLE",
-          "levelSet": [
-            "I",
-            "II",
-            "III"
-          ],
+          "cardColour": "PURPLE",
           "quantity": 1
         }
       ],
@@ -1781,21 +1741,11 @@
       "requirementsType": "cardSet",
       "requirements": [
         {
-          "colour": "YELLOW",
-          "levelSet": [
-            "I",
-            "II",
-            "III"
-          ],
+          "cardColour": "YELLOW",
           "quantity": 2
         },
         {
-          "colour": "BLUE",
-          "levelSet": [
-            "I",
-            "II",
-            "III"
-          ],
+          "cardColour": "BLUE",
           "quantity": 1
         }
       ],
@@ -1809,21 +1759,11 @@
       "requirementsType": "cardSet",
       "requirements": [
         {
-          "colour": "GREEN",
-          "levelSet": [
-            "I",
-            "II",
-            "III"
-          ],
+          "cardColour": "GREEN",
           "quantity": 2
         },
         {
-          "colour": "PURPLE",
-          "levelSet": [
-            "I",
-            "II",
-            "III"
-          ],
+          "cardColour": "PURPLE",
           "quantity": 1
         }
       ],
@@ -1837,21 +1777,11 @@
       "requirementsType": "cardSet",
       "requirements": [
         {
-          "colour": "BLUE",
-          "levelSet": [
-            "I",
-            "II",
-            "III"
-          ],
+          "cardColour": "BLUE",
           "quantity": 2
         },
         {
-          "colour": "YELLOW",
-          "levelSet": [
-            "I",
-            "II",
-            "III"
-          ],
+          "cardColour": "YELLOW",
           "quantity": 1
         }
       ],
@@ -1865,21 +1795,11 @@
       "requirementsType": "cardSet",
       "requirements": [
         {
-          "colour": "PURPLE",
-          "levelSet": [
-            "I",
-            "II",
-            "III"
-          ],
+          "cardColour": "PURPLE",
           "quantity": 2
         },
         {
-          "colour": "GREEN",
-          "levelSet": [
-            "I",
-            "II",
-            "III"
-          ],
+          "cardColour": "GREEN",
           "quantity": 1
         }
       ],
@@ -1893,11 +1813,9 @@
       "requirementsType": "cardSet",
       "requirements": [
         {
-          "colour": "YELLOW",
-          "levelSet": [
-            "II"
-          ],
-          "quantity": 1
+          "cardColour": "YELLOW",
+          "quantity": 1,
+          "cardLevel": "II"
         }
       ],
       "effect": {
@@ -1927,11 +1845,9 @@
       "requirementsType": "cardSet",
       "requirements": [
         {
-          "colour": "BLUE",
-          "levelSet": [
-            "II"
-          ],
-          "quantity": 1
+          "cardColour": "BLUE",
+          "quantity": 1,
+          "cardLevel": "II"
         }
       ],
       "effect": {
@@ -1961,11 +1877,9 @@
       "requirementsType": "cardSet",
       "requirements": [
         {
-          "colour": "PURPLE",
-          "levelSet": [
-            "II"
-          ],
-          "quantity": 1
+          "cardColour": "PURPLE",
+          "quantity": 1,
+          "cardLevel": "II"
         }
       ],
       "effect": {
@@ -1995,11 +1909,9 @@
       "requirementsType": "cardSet",
       "requirements": [
         {
-          "colour": "GREEN",
-          "levelSet": [
-            "II"
-          ],
-          "quantity": 1
+          "cardColour": "GREEN",
+          "quantity": 1,
+          "cardLevel": "II"
         }
       ],
       "effect": {

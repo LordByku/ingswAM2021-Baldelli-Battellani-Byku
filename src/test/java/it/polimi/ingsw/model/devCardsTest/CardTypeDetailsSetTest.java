@@ -11,30 +11,24 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class CardTypeSetTest {
+public class CardTypeDetailsSetTest {
     @Test
     public void isSatisfiedTest(){
 
         Board board1 = new Board();
         Board board2 = new Board();
-        CardType cardType1 = new CardType(CardColour.BLUE);
+        CardTypeDetails cardTypeDetails1 = new CardTypeDetails(CardColour.BLUE, 1, CardLevel.I);
 
-        cardType1.addLevel(CardLevel.I);
-        cardType1.addLevel(CardLevel.II);
-
-        CardType cardType2 = new CardType(CardColour.YELLOW);
-        CardType cardType3 = new CardType(CardColour.PURPLE) ;
-
-        cardType2.addLevel(CardLevel.III);
-        cardType2.addLevel(CardLevel.I);
+        CardTypeDetails cardTypeDetails2 = new CardTypeDetails(CardColour.YELLOW, 1, CardLevel.II);
+        CardTypeDetails cardTypeDetails3 = new CardTypeDetails(CardColour.PURPLE, 1, CardLevel.III) ;
 
         CardTypeSet cardTypeSet1 = new CardTypeSet();
         CardTypeSet cardTypeSet2 = new CardTypeSet();
 
-        cardTypeSet1.add(cardType1);
-        cardTypeSet1.add(cardType2);
+        cardTypeSet1.add(cardTypeDetails1);
+        cardTypeSet1.add(cardTypeDetails2);
 
-        cardTypeSet2.add(cardType3);
+        cardTypeSet2.add(cardTypeDetails3);
 
         DevCard devCard1;
         DevCard devCard2;
@@ -76,15 +70,14 @@ public class CardTypeSetTest {
         board2.getDevelopmentCardArea().addDevCard(devCard1,0);
         board2.getDevelopmentCardArea().addDevCard(devCard3,0);
 
-
-        assertTrue(cardTypeSet1.isSatisfied(board1));
+        assertFalse(cardTypeSet1.isSatisfied(board1));
 
         assertFalse(cardTypeSet1.isSatisfied(board2));
 
         board2.getDevelopmentCardArea().addDevCard(devCard2,1);
         board2.getDevelopmentCardArea().addDevCard(devCard4,0);
 
-        assertTrue(cardTypeSet1.isSatisfied(board2));
+        assertFalse(cardTypeSet1.isSatisfied(board2));
 
         assertFalse(cardTypeSet2.isSatisfied(board1));
 

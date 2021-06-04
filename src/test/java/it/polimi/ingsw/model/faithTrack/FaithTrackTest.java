@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.faithTrack;
 
+import it.polimi.ingsw.model.game.GameNotStartedException;
 import it.polimi.ingsw.model.playerBoard.faithTrack.FaithTrack;
 import it.polimi.ingsw.model.playerBoard.faithTrack.InvalidPopeFavorException;
 import it.polimi.ingsw.model.playerBoard.faithTrack.PopeFavor;
@@ -24,10 +25,12 @@ public class FaithTrackTest {
         faithTrack.addFaithPoints(10);
         assertEquals(21,faithTrack.getMarkerPosition());
 
-        faithTrack.addFaithPoints(20);
+        try {
+            faithTrack.addFaithPoints(20);
+        } catch (GameNotStartedException e) {
+        }
         assertEquals(24,faithTrack.getMarkerPosition());
         assertNotEquals(41,faithTrack.getMarkerPosition());
-
     }
     @Test
     public void receivePopeFavorTest(){

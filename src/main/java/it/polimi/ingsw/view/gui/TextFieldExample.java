@@ -10,7 +10,6 @@ import it.polimi.ingsw.model.resources.resourceSets.ChoiceResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ObtainableResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.SpendableResourceSet;
-import it.polimi.ingsw.parsing.DevCardsParser;
 import it.polimi.ingsw.parsing.LeaderCardsParser;
 import it.polimi.ingsw.view.gui.images.devCard.DevCardImage;
 import it.polimi.ingsw.view.gui.images.leaderCard.LeaderCardImage;
@@ -54,10 +53,8 @@ public class TextFieldExample {
 
         CardTypeSet cardTypeSet = new CardTypeSet();
         for(CardColour cardColour: CardColour.values()) {
-            CardType cardType = new CardType(cardColour);
-            cardType.addLevel(CardLevel.III);
-            cardType.addLevel(CardLevel.II);
-            cardTypeSet.add(cardType, 56);
+            CardTypeDetails cardTypeDetails = new CardTypeDetails(cardColour, 56, CardLevel.II);
+            cardTypeSet.add(cardTypeDetails);
         }
 
         LeaderCard resourcesLeaderCard = new WhiteConversionLeaderCard(10, requirements, ConcreteResource.COIN, 3000);
@@ -66,12 +63,12 @@ public class TextFieldExample {
         try {
             for(int i = 0; i < 16; i += 5) {
                 LeaderCardImage leaderCardImage = new LeaderCardImage("" + i, 100 + i * 10, LeaderCardsParser.getInstance().getCard(i));
-                //topPanel.add(leaderCardImage);
+                topPanel.add(leaderCardImage);
             }
 
             for(int i = 0; i < 4; ++ i) {
                 LeaderCardImage leaderCardImage = new LeaderCardImage("" + i, 100 + i * 50, resourcesLeaderCard);
-                topPanel.add(leaderCardImage);
+                //topPanel.add(leaderCardImage);
             }
 
             for(int i = 0; i < 4; ++i) {
