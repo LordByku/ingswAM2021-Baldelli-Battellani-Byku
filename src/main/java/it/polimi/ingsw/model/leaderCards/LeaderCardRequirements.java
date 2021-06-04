@@ -3,6 +3,8 @@ package it.polimi.ingsw.model.leaderCards;
 import it.polimi.ingsw.model.playerBoard.Board;
 import it.polimi.ingsw.model.playerBoard.InvalidBoardException;
 
+import javax.swing.*;
+
 /**
  * LeaderCardRequirements represents the requirements needed to play a LeaderCard
  */
@@ -26,4 +28,6 @@ public interface LeaderCardRequirements extends Cloneable {
     Object clone();
 
     String getCLIString();
+
+    JPanel getRequirementsPanel(int leaderCardWidth, int leaderCardHeight);
 }

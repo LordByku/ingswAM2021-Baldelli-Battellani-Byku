@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.devCards;
 
 import it.polimi.ingsw.view.cli.BackGroundColor;
 
-import java.util.HashSet;
+import java.util.TreeSet;
 
 public class CardType {
     /**
@@ -12,7 +12,7 @@ public class CardType {
     /**
      * levelSet represents the set of level of one kind of colour expressed by the card type
      */
-    private final HashSet<CardLevel> levelSet;
+    private final TreeSet<CardLevel> levelSet;
 
     /**
      * the constructor initializes a empty set for the level and colour of the set of levels
@@ -25,7 +25,7 @@ public class CardType {
             throw new InvalidCardColourException();
         }
         this.colour = colour;
-        this.levelSet = new HashSet<>();
+        this.levelSet = new TreeSet<>();
     }
 
     /**
@@ -47,6 +47,14 @@ public class CardType {
      */
     public boolean isSatisfied(DevCard devCard) {
         return devCard.getColour() == colour && levelSet.contains(devCard.getLevel());
+    }
+
+    public CardColour getColour() {
+        return colour;
+    }
+
+    public TreeSet<CardLevel> getLevelSet() {
+        return levelSet;
     }
 
     public String getCLIString() {

@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ChoiceResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ObtainableResourceSet;
+import it.polimi.ingsw.view.gui.images.resources.ResourceImage;
 import it.polimi.ingsw.view.gui.images.resources.ResourceImageType;
 
 import javax.swing.*;
@@ -23,18 +24,18 @@ public class ProductionOutPanel {
         for(ConcreteResource concreteResource: ConcreteResource.values()) {
             int count = concreteResourceSet.getCount(concreteResource);
             if(count > 0) {
-                resourcePanels.add(DevCardImage.getResourcePanel(count, concreteResource.getResourceImageType(), devCardHeight / 25));
+                resourcePanels.add(ResourceImage.getResourcePanel(count, concreteResource.getResourceImageType(), devCardHeight / 25));
             }
         }
 
         int count = choiceResourceSet.getChoiceResources().size();
         if(count > 0) {
-            resourcePanels.add(DevCardImage.getResourcePanel(count, ResourceImageType.CHOICE, devCardHeight / 25));
+            resourcePanels.add(ResourceImage.getResourcePanel(count, ResourceImageType.CHOICE, devCardHeight / 25));
         }
 
         int faithPoints = obtainableResourceSet.getFaithPoints();
         if(faithPoints > 0) {
-            resourcePanels.add(DevCardImage.getResourcePanel(faithPoints, ResourceImageType.FAITHPOINT, devCardHeight / 25));
+            resourcePanels.add(ResourceImage.getResourcePanel(faithPoints, ResourceImageType.FAITHPOINT, devCardHeight / 25));
         }
 
         panel = new JPanel();

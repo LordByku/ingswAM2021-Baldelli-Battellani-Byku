@@ -6,7 +6,9 @@ import it.polimi.ingsw.model.playerBoard.InvalidBoardException;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.InvalidResourceException;
 import it.polimi.ingsw.model.resources.NotEnoughResourcesException;
+import it.polimi.ingsw.view.gui.images.leaderCard.ResourcesRequirementsPanel;
 
+import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -277,5 +279,10 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
         }
 
         return result.toString();
+    }
+
+    @Override
+    public JPanel getRequirementsPanel(int leaderCardWidth, int leaderCardHeight) {
+        return new ResourcesRequirementsPanel(this, leaderCardWidth, leaderCardHeight).getPanel();
     }
 }

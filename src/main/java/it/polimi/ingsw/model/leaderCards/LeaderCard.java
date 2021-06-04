@@ -132,6 +132,10 @@ public abstract class LeaderCard implements Scoring {
         return points;
     }
 
+    public LeaderCardRequirements getRequirements() {
+        return requirements;
+    }
+
     public abstract String getEffectString();
 
     public void addCLISupport() {

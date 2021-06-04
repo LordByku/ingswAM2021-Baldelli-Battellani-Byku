@@ -4,7 +4,9 @@ import it.polimi.ingsw.model.leaderCards.LeaderCardRequirements;
 import it.polimi.ingsw.model.playerBoard.Board;
 import it.polimi.ingsw.model.playerBoard.InvalidBoardException;
 import it.polimi.ingsw.model.resources.resourceSets.InvalidQuantityException;
+import it.polimi.ingsw.view.gui.images.leaderCard.CardTypeRequirementsPanel;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -106,5 +108,10 @@ public class CardTypeSet implements LeaderCardRequirements {
         }
         result.append(")");
         return result.toString();
+    }
+
+    @Override
+    public JPanel getRequirementsPanel(int leaderCardWidth, int leaderCardHeight) {
+        return new CardTypeRequirementsPanel(cardTypes, leaderCardWidth, leaderCardHeight).getPanel();
     }
 }

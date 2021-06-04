@@ -51,17 +51,10 @@ public class Config {
     public static void setDefaultPath() {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         URL resource = classLoader.getResource(defaultConfig);
-        if (resource == null) {
-            try {
-                throw new FileNotFoundException();
-            } catch (FileNotFoundException e) {
-            }
-        } else {
-            try {
-                File file = new File(resource.toURI());
-                reader = new FileReader(file);
-            } catch (URISyntaxException | FileNotFoundException e) {
-            }
+        try {
+            File file = new File(resource.toURI());
+            reader = new FileReader(file);
+        } catch (URISyntaxException | FileNotFoundException e) {
         }
     }
 
@@ -95,9 +88,18 @@ public class Config {
         JsonObject out = new JsonObject();
         faithTrackEditor.write(out);
         // TODO: write json
-        FileWriter writer = new FileWriter("src/main/resources/custom/" + outFilename + ".json");
-        writer.write(json.toString());
+
+        String path = "src/main/resources/custom";
+        File directory = new File(path);
+
+        if(!directory.exists()) {
+            directory.mkdir();
+        }
+
+        FileWriter writer = new FileWriter(path + "/" + outFilename + ".json");
+        writer.write(out.toString());
         writer.flush();
+        writer.close();
     }
 
     public FaithTrackEditor getFaithTrackEditor() {

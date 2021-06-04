@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.gui;
 
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.controller.CommandBuffer;
+import it.polimi.ingsw.model.devCards.CardColour;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.GUIClientUserCommunication;
 import it.polimi.ingsw.view.ViewInterface;
@@ -85,6 +86,9 @@ public class GUI implements ViewInterface {
         try {
             for(ResourceImageType resourceImageType: ResourceImageType.values()) {
                 resourceImageType.loadImage();
+            }
+            for(CardColour cardColour: CardColour.values()) {
+                cardColour.loadImage();
             }
         } catch (IOException e) {
         }

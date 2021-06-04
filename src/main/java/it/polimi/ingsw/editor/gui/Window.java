@@ -64,6 +64,7 @@ public class Window {
     private JButton saveCurrentConfigButton;
     private JFormattedTextField saveConfigTextField;
     private JFormattedTextField loadCustomConfigTextField;
+    private JLabel fileErrorLabel;
 
     public Window(JFrame frame) {
         loadDefaultConfigButton.addMouseListener(new MouseAdapter() {
@@ -83,7 +84,7 @@ public class Window {
                     Config.reload();
                     EditorApp.setWindow(new Window(frame));
                 } catch (FileNotFoundException fileNotFoundException) {
-                    // TODO: handle invalid filename
+                    fileErrorLabel.setText("File not found");
                 }
             }
         });
@@ -94,7 +95,7 @@ public class Window {
                 try {
                     Config.getInstance().save(saveConfigTextField.getText());
                 } catch (IOException ioException) {
-                    // TODO: handle error
+                    fileErrorLabel.setText("An error occurred while saving the file");
                 }
             }
         });
