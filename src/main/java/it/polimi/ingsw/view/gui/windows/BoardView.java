@@ -1,9 +1,14 @@
 package it.polimi.ingsw.view.gui.windows;
 
 
+import it.polimi.ingsw.editor.model.resources.ObtainableResource;
+import it.polimi.ingsw.editor.model.resources.SpendableResource;
 import it.polimi.ingsw.model.devCards.ProductionDetails;
 import it.polimi.ingsw.model.playerBoard.faithTrack.CheckPoint;
 import it.polimi.ingsw.model.playerBoard.faithTrack.VaticanReportSection;
+import it.polimi.ingsw.model.resources.resourceSets.ChoiceResourceSet;
+import it.polimi.ingsw.model.resources.resourceSets.ObtainableResourceSet;
+import it.polimi.ingsw.model.resources.resourceSets.SpendableResourceSet;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.LocalConfig;
 
@@ -67,46 +72,75 @@ public class BoardView extends GUIWindow {
     public void loadBoard(){
 
     }
+    //  TODO: Handle pope favor discoveries - Handle single player - Handle end of track
 
     public void loadFaithTrack(Client client){
         int size = LocalConfig.getInstance().getFaithTrackFinalPosition() + 1;
         ArrayList <CheckPoint> checkPoints = LocalConfig.getInstance().getFaithTrackCheckPoints();
         ArrayList<VaticanReportSection> vaticanReportSections = LocalConfig.getInstance().getVaticanReportSections();
-
+        int numOfPlayers= nicknames.size();
         GridBagConstraints c = new GridBagConstraints();
 
         JPanel[][] panels = new JPanel[3][size];
 
         Dimension cellSizeD = new Dimension(30, 30);
 
-        Image cross = Toolkit.getDefaultToolkit().getImage("src/main/resources/Punchboard/croce.png");
+        //To add the right cross path.
+        Image redCross = Toolkit.getDefaultToolkit().getImage("src/main/resources/Punchboard/calamaio.png");
+        Image blackCross = Toolkit.getDefaultToolkit().getImage("src/main/resources/Punchboard/croce.png");
         //ImageIcon crossIcon = new ImageIcon(cross);
-        int currPosition = 0;
-        if(client.getModel()!=null)
-            currPosition = client.getModel().getPlayer(client.getNickname()).getBoard().getFaithTrack().getPosition();
+        int currPosition;
+        currPosition = client.getModel().getPlayer(client.getNickname()).getBoard().getFaithTrack().getPosition();
 
-        for(int i=0; i<size; i++){
+
+        Integer lolloPosition = client.getModel().getPlayer(client.getNickname()).getBoard().getFaithTrack().getComputerPosition();
+
+
+        for(int i=0; i<size; i++) {
             JLabel position = new JLabel();
             position.setForeground(Color.GRAY);
             position.setPreferredSize(cellSizeD);
             position.setHorizontalAlignment(0);
-            panels[1][i] = new JPanel();
+            GridBagConstraints labelC = new GridBagConstraints();
+            panels[1][i] = new JPanel(new GridBagLayout());
             panels[1][i].setVisible(true);
             panels[1][i].setBorder(new LineBorder(Color.BLACK));
             panels[1][i].setBackground(Color.decode("#fffcf0"));
-            if(currPosition==i){
-                position.setIcon(new ImageIcon(cross.getScaledInstance(30,30, Image.SCALE_SMOOTH)));
-
+            if (lolloPosition == null){
+                if (currPosition == i) {
+                    position.setIcon(new ImageIcon(redCross.getScaledInstance(30, 30, Image.SCALE_SMOOTH)));
+                }else{
+                    position.setText(Integer.toString(i));
+                }
             }
-            else{
-                position.setText(Integer.toString(i));
+            else {
+                if (currPosition!=i && lolloPosition==i) {
+                    position.setIcon(new ImageIcon(blackCross.getScaledInstance(30, 30, Image.SCALE_SMOOTH)));
+                }
+                else if(currPosition==i && lolloPosition != i){
+                    position.setIcon(new ImageIcon(redCross.getScaledInstance(30, 30, Image.SCALE_SMOOTH)));
+                }
+                else if(currPosition==i){
+                    JLabel magnificoPosition = new JLabel();
+                    magnificoPosition.setIcon(new ImageIcon(blackCross.getScaledInstance(20,20, Image.SCALE_SMOOTH)));
+                    position.setIcon(new ImageIcon(redCross.getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
+                    labelC.gridx=0;
+                    labelC.gridy=0;
+                    labelC.insets =new Insets(0,5,0,0);
+                    panels[1][i].add(magnificoPosition, labelC);
+                    labelC.insets =new Insets(0,0,0,5);
+                }
+                else {
+                    position.setText(Integer.toString(i));
+                }
             }
-            panels[1][i].add(position);
+            labelC.gridx=0;
+            labelC.gridy=0;
+            panels[1][i].add(position,labelC);
             c.fill = GridBagConstraints.BOTH;
             c.gridx=i;
             c.gridy=1;
             c.weightx = 1.0/(size);
-            //c.insets = new Insets(10,10,10,10);
             faithTrack.add(panels[1][i], c);
         }
         for (CheckPoint checkPoint : checkPoints) {
@@ -122,22 +156,16 @@ public class BoardView extends GUIWindow {
             c.gridx=j;
             c.gridy=0;
             c.weightx = 1.0/(size);
-            //c.insets = new Insets(0, 0, 20, 0);
             faithTrack.add(panels[2][j],c);
         }
+
+
         for(VaticanReportSection vaticanReportSection: vaticanReportSections){
 
             int initPos = vaticanReportSection.getFirstSpace();
             int finalPos = vaticanReportSection.getPopeSpace();
             int vrsSize = finalPos - initPos + 1;
 
-            int numOfPlayers = nicknames.size();
-            Integer[] playerPosition = new Integer[nicknames.size()];
-            for(int i=0; i< numOfPlayers; i++){
-                playerPosition[i] = client.getModel().getPlayer(nicknames.get(i)).getBoard().getFaithTrack().getPosition();
-            }
-
-            //TODO: Handle pope favor discoveries;
 
             panels[1][finalPos].setBackground(Color.decode("#bc5e00"));
             JLabel number = (JLabel) panels[1][finalPos].getComponent(0);
@@ -145,11 +173,32 @@ public class BoardView extends GUIWindow {
             panels[0][initPos] = new JPanel();
             panels[0][initPos].setVisible(true);
             panels[0][initPos].setBorder(new LineBorder(Color.BLACK));
-            Dimension d = panels[1][0].getSize();
-            //panels[0][initPos].setPreferredSize(new Dimension((int)d.getWidth()*vrsSize, (int)d.getHeight()));
             panels[0][initPos].setBackground(Color.RED);
             String points = Integer.toString(vaticanReportSection.getPoints());
             JLabel popeFavor = new JLabel(points);
+
+            int myIndex;
+            for(myIndex=0; myIndex<numOfPlayers && !nicknames.get(myIndex).equals(client.getNickname()); myIndex++) ;
+            boolean activated = false;
+            Integer[] positions = new Integer[numOfPlayers];
+
+            for (int i = 0; i < numOfPlayers; i++) {
+                positions[i] = client.getModel().getPlayer(nicknames.get(i)).getBoard().getFaithTrack().getPosition();
+                if(positions[i]>=finalPos)
+                    activated=true;
+            }
+            if(lolloPosition!=null && lolloPosition>=finalPos)
+                activated=true;
+
+            if(activated && positions[myIndex]<initPos){
+                popeFavor = new JLabel("X");
+                popeFavor.setForeground(Color.RED);
+                panels[0][initPos].setBackground(Color.WHITE);
+            }
+            else if((activated && positions[myIndex]>=initPos)){
+                panels[0][initPos].setBackground(Color.GREEN);
+            }
+
             popeFavor.setVisible(true);
             panels[0][initPos].add(popeFavor);
             c.fill = GridBagConstraints.HORIZONTAL;
@@ -162,11 +211,11 @@ public class BoardView extends GUIWindow {
         }
     }
     public void loadDevCardsArea(){
-        devCardsArea.setLayout(new GridLayout());
+
         ProductionDetails defaultProductionPower = LocalConfig.getInstance().getDefaultProductionPower();
+        SpendableResourceSet input = defaultProductionPower.getInput();
+        ObtainableResourceSet output = defaultProductionPower.getOutput();
         JPanel defProdPower = new JPanel();
-        //int inputSize = defaultProductionPower.getInput();
-        int outputSize;
 
         
 

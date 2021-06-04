@@ -109,6 +109,14 @@ public class FaithTrack implements LocalModelElement, CLIPrintable {
 
     }
 
+    public ArrayList<Integer> getReceivedFavors() {
+        return receivedFavors;
+    }
+
+    public Integer getComputerPosition() {
+        return computerPosition;
+    }
+
     public int getPosition() {
         return position;
     }

@@ -85,9 +85,9 @@ public class Person extends Player {
      */
     @Override
     public void endTurn() throws GameEndedException, GameNotStartedException {
-        isActivePlayer = false;
-        mainAction = false;
         if (!Game.getInstance().allDisconnected()) {
+            isActivePlayer = false;
+            mainAction = false;
             Game.getInstance().handleTurnOrder();
         }
     }
