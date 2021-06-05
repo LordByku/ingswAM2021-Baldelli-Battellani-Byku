@@ -3,6 +3,10 @@ package it.polimi.ingsw.model.leaderCards;
 import it.polimi.ingsw.model.devCards.InvalidIdException;
 import it.polimi.ingsw.model.devCards.InvalidProductionDetailsException;
 import it.polimi.ingsw.model.devCards.ProductionDetails;
+import it.polimi.ingsw.view.gui.images.leaderCard.LeaderCardImage;
+import it.polimi.ingsw.view.gui.images.leaderCard.ProductionLeaderCardImage;
+
+import java.io.IOException;
 
 /**
  * ProductionLeaderCard represents all LeaderCards with a production power.
@@ -44,12 +48,21 @@ public class ProductionLeaderCard extends LeaderCard {
         }
     }
 
+    public ProductionDetails getProductionPower() {
+        return productionPower;
+    }
+
     @Override
     public String getEffectString() {
         return productionPower.getCLIString();
     }
 
-    public ProductionDetails getProductionPower() {
-        return productionPower;
+    @Override
+    public LeaderCardImage getLeaderCardImage(int width) {
+        try {
+            return new ProductionLeaderCardImage(this, width);
+        } catch (IOException e) {
+            return null;
+        }
     }
 }

@@ -1,6 +1,8 @@
 package it.polimi.ingsw.view.gui.images.devCard;
 
 import it.polimi.ingsw.model.devCards.DevCard;
+import it.polimi.ingsw.view.gui.images.resources.ProductionInPanel;
+import it.polimi.ingsw.view.gui.images.resources.ProductionOutPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -35,9 +37,11 @@ public class DevCardImage extends JPanel {
 
         this.add(points);
 
-        this.add(new ProductionInPanel(devCard.getProductionPower().getInput(), width, height).getPanel());
+        Rectangle productionInBorder = new Rectangle(width / 9, height * 16 / 31, width * 3 / 10, height * 3 / 11);
+        this.add(new ProductionInPanel(devCard.getProductionPower().getInput(), productionInBorder, height / 25).getPanel());
 
-        this.add(new ProductionOutPanel(devCard.getProductionPower().getOutput(), width, height).getPanel());
+        Rectangle productionOutBorder = new Rectangle(width * 16 / 31, height * 16 / 31, width * 7 / 20, height * 3 / 11);
+        this.add(new ProductionOutPanel(devCard.getProductionPower().getOutput(), productionOutBorder, height / 25).getPanel());
     }
 
     @Override

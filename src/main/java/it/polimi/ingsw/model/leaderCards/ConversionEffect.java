@@ -8,7 +8,6 @@ import it.polimi.ingsw.model.resources.InvalidResourceException;
  * ConversionEffect represents leaderCards' conversion power, which allows to convert a white marble into a ConcreteResource.
  */
 public class ConversionEffect {
-
     /**
      * The resource to convert the white marble into.
      */
@@ -34,4 +33,18 @@ public class ConversionEffect {
         return resource;
     }
 
+    public String getFilename() {
+        switch (resource) {
+            case COIN:
+                return "11";
+            case STONE:
+                return "10";
+            case SHIELD:
+                return "9";
+            case SERVANT:
+                return "8";
+            default:
+                return null;
+        }
+    }
 }

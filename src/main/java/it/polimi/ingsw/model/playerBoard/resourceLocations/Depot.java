@@ -42,6 +42,10 @@ public class Depot implements ConcreteResourceLocation {
         return resources.getResourceType();
     }
 
+    public int getSlots() {
+        return slots;
+    }
+
     /**
      * addResources adds a given ConcreteResourceSet to this Depot
      *

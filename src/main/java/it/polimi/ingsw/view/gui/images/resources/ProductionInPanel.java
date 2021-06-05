@@ -1,46 +1,41 @@
-package it.polimi.ingsw.view.gui.images.devCard;
+package it.polimi.ingsw.view.gui.images.resources;
 
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ChoiceResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
-import it.polimi.ingsw.model.resources.resourceSets.ObtainableResourceSet;
-import it.polimi.ingsw.view.gui.images.resources.ResourceImage;
-import it.polimi.ingsw.view.gui.images.resources.ResourceImageType;
+import it.polimi.ingsw.model.resources.resourceSets.SpendableResourceSet;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class ProductionOutPanel {
+public class ProductionInPanel {
     private final JPanel panel;
 
-    public ProductionOutPanel(ObtainableResourceSet obtainableResourceSet, int devCardWidth, int devCardHeight) {
+    public ProductionInPanel(SpendableResourceSet spendableResourceSet, Rectangle bounds, int font) {
         ArrayList<JPanel> resourcePanels = new ArrayList<>();
 
-        ChoiceResourceSet choiceResourceSet = obtainableResourceSet.getResourceSet();
+        ChoiceResourceSet choiceResourceSet = spendableResourceSet.getResourceSet();
 
         ConcreteResourceSet concreteResourceSet = choiceResourceSet.getConcreteResources();
 
         for(ConcreteResource concreteResource: ConcreteResource.values()) {
             int count = concreteResourceSet.getCount(concreteResource);
             if(count > 0) {
-                resourcePanels.add(ResourceImage.getResourcePanel(count, concreteResource.getResourceImageType(), devCardHeight / 25));
+                resourcePanels.add(ResourceImage.getResourcePanel(count, concreteResource.getResourceImageType(), font));
             }
         }
 
         int count = choiceResourceSet.getChoiceResources().size();
         if(count > 0) {
-            resourcePanels.add(ResourceImage.getResourcePanel(count, ResourceImageType.CHOICE, devCardHeight / 25));
-        }
-
-        int faithPoints = obtainableResourceSet.getFaithPoints();
-        if(faithPoints > 0) {
-            resourcePanels.add(ResourceImage.getResourcePanel(faithPoints, ResourceImageType.FAITHPOINT, devCardHeight / 25));
+            resourcePanels.add(ResourceImage.getResourcePanel(count, ResourceImageType.CHOICE, font));
         }
 
         panel = new JPanel();
         panel.setLayout(new GridBagLayout());
-        panel.setBounds(devCardWidth * 16 / 31, devCardHeight * 16 / 31, devCardWidth * 7 / 20, devCardHeight * 3 / 11);
+        if(bounds != null) {
+            panel.setBounds(bounds);
+        }
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -50,7 +45,7 @@ public class ProductionOutPanel {
 
         for (int i = 0; i < resourcePanels.size(); i++) {
             JPanel resourcePanel = resourcePanels.get(i);
-            if(i == 4 && i == resourcePanels.size() - 1) {
+            if(i == 4) {
                 gbc.gridwidth = 2;
             }
 

@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.leaderCards;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.InvalidResourceException;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
+import it.polimi.ingsw.model.resources.resourceSets.InvalidQuantityException;
 import it.polimi.ingsw.model.resources.resourceSets.InvalidResourceSetException;
 
 /**
@@ -23,6 +24,9 @@ public class DiscountEffect implements Cloneable {
     public DiscountEffect(ConcreteResource type, int quantity) throws InvalidResourceException {
         if (type == null) {
             throw new InvalidResourceException();
+        }
+        if (quantity <= 0) {
+            throw new InvalidQuantityException();
         }
         this.type = type;
         this.quantity = quantity;
@@ -48,6 +52,14 @@ public class DiscountEffect implements Cloneable {
         return result;
     }
 
+    public int getDiscount() {
+        return quantity;
+    }
+
+    public ConcreteResource getType() {
+        return type;
+    }
+
     /**
      * clone returns a copy of this object
      *
@@ -60,6 +72,26 @@ public class DiscountEffect implements Cloneable {
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public String getFilename() {
+        switch (type) {
+            case COIN: {
+                return "3";
+            }
+            case STONE: {
+                return "2";
+            }
+            case SHIELD: {
+                return "1";
+            }
+            case SERVANT: {
+                return "0";
+            }
+            default: {
+                return null;
+            }
         }
     }
 }

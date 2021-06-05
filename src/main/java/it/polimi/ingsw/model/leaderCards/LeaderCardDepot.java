@@ -8,7 +8,6 @@ import it.polimi.ingsw.model.resources.InvalidResourceException;
  * A special depot created by the activation of a DepotLeaderCard, it can store just 2 resource of a defined type.
  */
 public class LeaderCardDepot extends Depot {
-
     /**
      * The type of resource storable into the depot.
      */
@@ -36,5 +35,20 @@ public class LeaderCardDepot extends Depot {
     @Override
     public ConcreteResource getResourceType() {
         return type;
+    }
+
+    public String getFilename() {
+        switch (type) {
+            case COIN:
+                return "coinDepot";
+            case STONE:
+                return "stoneDepot";
+            case SHIELD:
+                return "shieldDepot";
+            case SERVANT:
+                return "servantDepot";
+            default:
+                return null;
+        }
     }
 }

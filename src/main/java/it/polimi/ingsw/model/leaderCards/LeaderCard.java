@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.playerBoard.InvalidBoardException;
 import it.polimi.ingsw.model.playerBoard.Scoring;
 import it.polimi.ingsw.model.resources.InvalidResourceException;
 import it.polimi.ingsw.view.cli.Strings;
+import it.polimi.ingsw.view.gui.images.leaderCard.LeaderCardImage;
 
 import java.util.HashSet;
 
@@ -136,6 +137,14 @@ public abstract class LeaderCard implements Scoring {
         return requirements;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public boolean isType(LeaderCardType leaderCardType) {
+        return this.leaderCardType == leaderCardType;
+    }
+    
     public abstract String getEffectString();
 
     public void addCLISupport() {
@@ -176,12 +185,5 @@ public abstract class LeaderCard implements Scoring {
         return result.toString();
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public boolean isType(LeaderCardType leaderCardType) {
-        return this.leaderCardType == leaderCardType;
-    }
-
+    public abstract LeaderCardImage getLeaderCardImage(int width);
 }

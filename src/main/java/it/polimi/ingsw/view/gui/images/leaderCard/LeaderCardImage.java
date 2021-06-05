@@ -11,10 +11,10 @@ import java.net.URL;
 
 public class LeaderCardImage extends JPanel {
     private final Image image;
-    private final int width;
-    private final int height;
+    protected final int width;
+    protected final int height;
 
-    public LeaderCardImage(String filename, int width, LeaderCard leaderCard) throws IOException {
+    protected LeaderCardImage(String filename, LeaderCard leaderCard, int width) throws IOException {
         super(null);
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         URL resource = classLoader.getResource("LeaderCardPNGs/" + filename + ".png");

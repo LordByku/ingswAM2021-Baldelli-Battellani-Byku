@@ -5,20 +5,17 @@ import it.polimi.ingsw.model.playerBoard.resourceLocations.InvalidDepotSizeExcep
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.InvalidResourceException;
 import it.polimi.ingsw.view.cli.TextColour;
+import it.polimi.ingsw.view.gui.images.leaderCard.DepotLeaderCardImage;
+import it.polimi.ingsw.view.gui.images.leaderCard.LeaderCardImage;
+
+import java.io.IOException;
 
 /**
  * DepotLeaderCard represents all LeaderCards with a depot power.
  */
 
 public class DepotLeaderCard extends LeaderCard {
-    /**
-     * the type of ConcreteResource that can be stored in the depot.
-     */
-    private final ConcreteResource type;
-    /**
-     * The size of the depot provided by this LeaderCard
-     */
-    private final int depotSize;
+    private final LeaderCardDepot depot;
 
     /**
      * The constructor sets the parameters of the leader cards.
@@ -35,15 +32,7 @@ public class DepotLeaderCard extends LeaderCard {
     public DepotLeaderCard(int points, LeaderCardRequirements requirements, ConcreteResource type, int depotSize, int id)
             throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceException, InvalidDepotSizeException, InvalidIdException {
         super(points, requirements, id, LeaderCardType.DEPOT);
-        if (type == null) {
-            throw new InvalidResourceException();
-        }
-        if (depotSize <= 0) {
-            throw new InvalidDepotSizeException();
-        }
-
-        this.type = type;
-        this.depotSize = depotSize;
+        this.depot = new LeaderCardDepot(type, depotSize);
     }
 
     /**
@@ -53,14 +42,18 @@ public class DepotLeaderCard extends LeaderCard {
     public void play() {
         if (isPlayable()) {
             active = true;
-            board.getWarehouse().addLeaderCardDepot(new LeaderCardDepot(type, depotSize));
+            board.getWarehouse().addLeaderCardDepot(depot);
         }
+    }
+
+    public LeaderCardDepot getDepot() {
+        return depot;
     }
 
     @Override
     public String getEffectString() {
-        StringBuilder effect = new StringBuilder(type.getColour().escape());
-        for (int i = 0; i < depotSize; ++i) {
+        StringBuilder effect = new StringBuilder(depot.getResourceType().getColour().escape());
+        for (int i = 0; i < depot.getSlots(); ++i) {
             if (i > 0) {
                 effect.append(" ");
             }
@@ -70,7 +63,12 @@ public class DepotLeaderCard extends LeaderCard {
         return effect.toString();
     }
 
-    public ConcreteResource getType() {
-        return type;
+    @Override
+    public LeaderCardImage getLeaderCardImage(int width) {
+        try {
+            return new DepotLeaderCardImage(this, width);
+        } catch (IOException e) {
+            return null;
+        }
     }
 }

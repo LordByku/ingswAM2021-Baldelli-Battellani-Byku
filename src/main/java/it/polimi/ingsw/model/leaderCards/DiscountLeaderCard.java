@@ -3,22 +3,16 @@ package it.polimi.ingsw.model.leaderCards;
 import it.polimi.ingsw.model.devCards.InvalidIdException;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.InvalidResourceException;
-import it.polimi.ingsw.model.resources.resourceSets.InvalidQuantityException;
+import it.polimi.ingsw.view.gui.images.leaderCard.DiscountLeaderCardImage;
+import it.polimi.ingsw.view.gui.images.leaderCard.LeaderCardImage;
+
+import java.io.IOException;
 
 /**
  * DiscountLeaderCard represents all LeaderCards with a discount power.
  */
 
 public class DiscountLeaderCard extends LeaderCard {
-    /**
-     * The type of ConcreteResource discounted.
-     */
-    private final ConcreteResource type;
-    /**
-     * The amount of resources discounted.
-     */
-    private final int discount;
-
     private final DiscountEffect discountEffect;
 
     /**
@@ -36,15 +30,6 @@ public class DiscountLeaderCard extends LeaderCard {
     public DiscountLeaderCard(int points, LeaderCardRequirements requirements, ConcreteResource type, int discount, int id)
             throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceException, InvalidDiscountException, InvalidIdException {
         super(points, requirements, id, LeaderCardType.DISCOUNT);
-        if (type == null) {
-            throw new InvalidResourceException();
-        }
-        if (discount <= 0) {
-            throw new InvalidQuantityException();
-        }
-
-        this.type = type;
-        this.discount = discount;
         discountEffect = new DiscountEffect(type, discount);
     }
 
@@ -59,12 +44,21 @@ public class DiscountLeaderCard extends LeaderCard {
         }
     }
 
-    @Override
-    public String getEffectString() {
-        return "???? -" + discount + type.getCLIString();
-    }
-
     public DiscountEffect getDiscountEffect() {
         return discountEffect;
+    }
+
+    @Override
+    public String getEffectString() {
+        return "???? -" + discountEffect.getDiscount() + discountEffect.getType().getCLIString();
+    }
+
+    @Override
+    public LeaderCardImage getLeaderCardImage(int width) {
+        try {
+            return new DiscountLeaderCardImage(this, width);
+        } catch (IOException e) {
+            return null;
+        }
     }
 }

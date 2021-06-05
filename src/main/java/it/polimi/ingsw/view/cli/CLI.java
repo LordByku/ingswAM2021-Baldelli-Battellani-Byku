@@ -259,7 +259,7 @@ public class CLI implements ViewInterface {
                 while (leaderCardIndex < playedLeaderCards.size()) {
                     LeaderCard leaderCard = LeaderCardsParser.getInstance().getCard(playedLeaderCards.get(leaderCardIndex++));
                     if (leaderCard.isType(LeaderCardType.DEPOT)) {
-                        resourceType = ((DepotLeaderCard) leaderCard).getType();
+                        resourceType = ((DepotLeaderCard) leaderCard).getDepot().getResourceType();
                         break;
                     }
                 }

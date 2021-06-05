@@ -7,7 +7,9 @@ import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.InvalidResourceSetException;
 import it.polimi.ingsw.view.cli.BackGroundColor;
 import it.polimi.ingsw.view.cli.Strings;
+import it.polimi.ingsw.view.gui.images.devCard.DevCardImage;
 
+import java.io.IOException;
 import java.util.HashSet;
 
 /**
@@ -225,5 +227,13 @@ public class DevCard implements Scoring, Cloneable {
         }
         result.append("|");
         return result;
+    }
+
+    public DevCardImage getDevCardImage(int width) {
+        try {
+            return new DevCardImage("" + id, width, this);
+        } catch (IOException e) {
+            return null;
+        }
     }
 }

@@ -145,7 +145,7 @@ public class MarketWindow extends CommandWindow {
                 for (Integer leaderCardId : board.getPlayedLeaderCards()) {
                     LeaderCard leaderCard = LeaderCardsParser.getInstance().getCard(leaderCardId);
                     if (leaderCard.isType(LeaderCardType.CONVERSION)) {
-                        choiceSet.addChoice(((WhiteConversionLeaderCard) leaderCard).getType());
+                        choiceSet.addChoice(((WhiteConversionLeaderCard) leaderCard).getConversionEffect().getResource());
                     }
                 }
                 CLI.whiteMarbleSelection(choiceSet, obtained.getChoiceResources().size());

@@ -1,8 +1,9 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.model.devCards.*;
+import it.polimi.ingsw.model.leaderCards.DepotLeaderCard;
 import it.polimi.ingsw.model.leaderCards.LeaderCard;
-import it.polimi.ingsw.model.leaderCards.WhiteConversionLeaderCard;
+import it.polimi.ingsw.model.leaderCards.ProductionLeaderCard;
 import it.polimi.ingsw.model.resources.ChoiceResource;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.FullChoiceSet;
@@ -57,31 +58,30 @@ public class TextFieldExample {
             cardTypeSet.add(cardTypeDetails);
         }
 
-        LeaderCard resourcesLeaderCard = new WhiteConversionLeaderCard(10, requirements, ConcreteResource.COIN, 3000);
-        LeaderCard cardTypeLeaderCard = new WhiteConversionLeaderCard(10, cardTypeSet, ConcreteResource.COIN, 3001);
+        LeaderCard resourcesLeaderCard = new ProductionLeaderCard(10, requirements, new ProductionDetails(productionIn, productionOut), 3000);
+        LeaderCard cardTypeLeaderCard = new DepotLeaderCard(10, cardTypeSet, ConcreteResource.SERVANT, 5, 3001);
 
         try {
             for(int i = 0; i < 16; i += 5) {
-                LeaderCardImage leaderCardImage = new LeaderCardImage("" + i, 100 + i * 10, LeaderCardsParser.getInstance().getCard(i));
+                LeaderCardImage leaderCardImage = LeaderCardsParser.getInstance().getCard(i).getLeaderCardImage(100 + i * 10);
                 topPanel.add(leaderCardImage);
             }
 
             for(int i = 0; i < 4; ++ i) {
-                LeaderCardImage leaderCardImage = new LeaderCardImage("" + i, 100 + i * 50, resourcesLeaderCard);
+                LeaderCardImage leaderCardImage = resourcesLeaderCard.getLeaderCardImage(100 + i * 50);
                 //topPanel.add(leaderCardImage);
             }
 
             for(int i = 0; i < 4; ++i) {
-                LeaderCardImage leaderCardImage = new LeaderCardImage("" + i, 100 + i * 50, cardTypeLeaderCard);
-                //bottomPanel.add(leaderCardImage);
+                LeaderCardImage leaderCardImage = cardTypeLeaderCard.getLeaderCardImage(100 + i * 50);
+                bottomPanel.add(leaderCardImage);
             }
 
             int startIndex = 32;
             for(int i = 0; i < 4; ++i) {
                 DevCardImage devCardImage = new DevCardImage("" + (startIndex + 5 * i), 200, devCard);
-                bottomPanel.add(devCardImage);
+                //bottomPanel.add(devCardImage);
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }

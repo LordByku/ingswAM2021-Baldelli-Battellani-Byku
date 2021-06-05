@@ -4,16 +4,19 @@ import it.polimi.ingsw.model.devCards.InvalidIdException;
 import it.polimi.ingsw.model.gameZone.marbles.MarbleColour;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.InvalidResourceException;
+import it.polimi.ingsw.view.gui.images.leaderCard.ConversionLeaderCardImage;
+import it.polimi.ingsw.view.gui.images.leaderCard.LeaderCardImage;
+
+import java.io.IOException;
 
 /**
  * WhiteConversionLeaderCard represents all LeaderCards with a conversion power.
  */
 public class WhiteConversionLeaderCard extends LeaderCard {
-
     /**
      * The type of ConcreteResource to convert the white marble into.
      */
-    private final ConcreteResource type;
+    private final ConversionEffect conversionEffect;
 
     /**
      * The constructor sets the parameters of the leader cards.
@@ -28,11 +31,7 @@ public class WhiteConversionLeaderCard extends LeaderCard {
     public WhiteConversionLeaderCard(int points, LeaderCardRequirements requirements, ConcreteResource type, int id)
             throws InvalidPointsValueException, InvalidRequirementsException, InvalidResourceException, InvalidIdException {
         super(points, requirements, id, LeaderCardType.CONVERSION);
-        if (type == null) {
-            throw new InvalidResourceException();
-        }
-
-        this.type = type;
+        conversionEffect = new ConversionEffect(type);
     }
 
     /**
@@ -42,16 +41,25 @@ public class WhiteConversionLeaderCard extends LeaderCard {
     public void play() {
         if (isPlayable()) {
             active = true;
-            board.getConversionEffectArea().addConversionEffect(new ConversionEffect(this.type));
+            board.getConversionEffectArea().addConversionEffect(conversionEffect);
         }
+    }
+
+    public ConversionEffect getConversionEffect() {
+        return conversionEffect;
     }
 
     @Override
     public String getEffectString() {
-        return MarbleColour.WHITE.getCLIString() + " = " + type.getCLIString();
+        return MarbleColour.WHITE.getCLIString() + " = " + conversionEffect.getResource().getCLIString();
     }
 
-    public ConcreteResource getType() {
-        return type;
+    @Override
+    public LeaderCardImage getLeaderCardImage(int width) {
+        try {
+            return new ConversionLeaderCardImage(this, width);
+        } catch (IOException e) {
+            return null;
+        }
     }
 }
