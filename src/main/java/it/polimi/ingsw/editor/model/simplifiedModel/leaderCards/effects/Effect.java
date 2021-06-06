@@ -1,5 +1,8 @@
 package it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.effects;
 
+import com.google.gson.JsonObject;
+import it.polimi.ingsw.utility.JsonUtil;
+
 public abstract class Effect {
     private final EffectType effectType;
 
@@ -29,5 +32,9 @@ public abstract class Effect {
 
     public EffectType getEffectType() {
         return effectType;
+    }
+
+    public JsonObject serialize() {
+        return JsonUtil.getInstance().serialize(this).getAsJsonObject();
     }
 }

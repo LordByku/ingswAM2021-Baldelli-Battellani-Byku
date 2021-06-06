@@ -1,7 +1,9 @@
 package it.polimi.ingsw.editor.model.simplifiedModel.leaderCards;
 
+import com.google.gson.JsonObject;
 import it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.effects.Effect;
 import it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.requirements.Requirements;
+import it.polimi.ingsw.utility.JsonUtil;
 
 public class LeaderCard {
     private int points;
@@ -36,5 +38,16 @@ public class LeaderCard {
 
     public void setEffect(Effect effect) {
         this.effect = effect;
+    }
+
+    public JsonObject serialize() {
+        JsonObject json = new JsonObject();
+
+        json.addProperty("points", points);
+        json.add("requirementsType", JsonUtil.getInstance().serialize(requirements.getRequirementType()));
+        json.add("requirements", requirements.serialize());
+        json.add("effect", effect.serialize());
+
+        return json;
     }
 }

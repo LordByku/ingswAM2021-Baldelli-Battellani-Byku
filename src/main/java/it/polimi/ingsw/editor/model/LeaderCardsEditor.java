@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import it.polimi.ingsw.editor.model.simplifiedModel.DevCard;
 import it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.LeaderCard;
 import it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.effects.DiscountEffect;
 import it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.effects.Effect;
@@ -50,10 +51,21 @@ public class LeaderCardsEditor {
     }
 
     public void addNewCard() {
+        currentSelection = leaderCards.size();
         leaderCards.add(new LeaderCard(1, new ResourcesRequirements(), new DiscountEffect()));
     }
 
     public void removeCard(int index) {
         leaderCards.remove(index);
+    }
+
+    public void write(JsonObject out) {
+        JsonArray array = new JsonArray();
+
+        for(LeaderCard leaderCard: leaderCards) {
+            array.add(leaderCard.serialize());
+        }
+
+        out.add("leaderCards", array);
     }
 }

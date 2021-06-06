@@ -1,9 +1,11 @@
 package it.polimi.ingsw.editor.model;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.editor.model.resources.ObtainableResourceSet;
 import it.polimi.ingsw.editor.model.resources.SpendableResourceSet;
+import it.polimi.ingsw.utility.JsonUtil;
 
 import java.util.ArrayList;
 
@@ -58,5 +60,23 @@ public class BoardEditor {
 
     public int getDevelopmentCardSlots() {
         return developmentCardSlots;
+    }
+
+    private JsonArray buildDepotSizes() {
+        return JsonUtil.getInstance().serialize(depotSizes).getAsJsonArray();
+    }
+
+    public void write(JsonObject out) {
+        if(!out.has("board")) {
+            JsonObject board = new JsonObject();
+            board.add("defaultProductionPower", Config.writeProductionPower(defaultProductionIn, defaultProductionOut));
+            board.add("depotSizes", buildDepotSizes());
+            board.addProperty("developmentCardsSlots", developmentCardSlots);
+            out.add("board", board);
+        } else {
+            out.getAsJsonObject("board").add("defaultProductionPower", Config.writeProductionPower(defaultProductionIn, defaultProductionOut));
+            out.getAsJsonObject("board").add("depotSizes", buildDepotSizes());
+            out.getAsJsonObject("board").addProperty("developmentCardsSlots", developmentCardSlots);
+        }
     }
 }

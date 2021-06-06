@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import it.polimi.ingsw.editor.model.resources.ObtainableResourceSet;
+import it.polimi.ingsw.editor.model.resources.SpendableResourceSet;
 import it.polimi.ingsw.editor.model.simplifiedModel.VaticanReportSection;
 
 import java.io.*;
@@ -60,7 +62,7 @@ public class Config {
 
     public static void setPath(String filename) throws FileNotFoundException {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        URL resource = classLoader.getResource("custom/" + filename);
+        URL resource = classLoader.getResource("custom/" + filename + ".json");
         if (resource == null) {
             throw new FileNotFoundException();
         } else {
@@ -87,7 +89,10 @@ public class Config {
     public void save(String outFilename) throws IOException {
         JsonObject out = new JsonObject();
         faithTrackEditor.write(out);
-        // TODO: write json
+        boardEditor.write(out);
+        initGameEditor.write(out);
+        devCardsEditor.write(out);
+        leaderCardsEditor.write(out);
 
         String path = "src/main/resources/custom";
         File directory = new File(path);
@@ -120,5 +125,14 @@ public class Config {
 
     public LeaderCardsEditor getLeaderCardsEditor() {
         return leaderCardsEditor;
+    }
+
+    public static JsonObject writeProductionPower(SpendableResourceSet spendable, ObtainableResourceSet obtainable) {
+        JsonObject json = new JsonObject();
+
+        json.add("productionIn", spendable.serialize());
+        json.add("productionOut", obtainable.serialize());
+
+        return json;
     }
 }

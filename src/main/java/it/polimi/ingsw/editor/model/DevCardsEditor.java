@@ -51,11 +51,22 @@ public class DevCardsEditor {
     }
 
     public void addNewCard() {
+        currentSelection = devCards.size();
         devCards.add(new DevCard(CardColour.GREEN, CardLevel.I, 1,
                 new ConcreteResourceSet(), new SpendableResourceSet(), new ObtainableResourceSet()));
     }
 
     public void removeCard(int index) {
         devCards.remove(index);
+    }
+
+    public void write(JsonObject out) {
+        JsonArray array = new JsonArray();
+
+        for(DevCard devCard: devCards) {
+            array.add(devCard.serialize());
+        }
+
+        out.add("developmentCards", array);
     }
 }

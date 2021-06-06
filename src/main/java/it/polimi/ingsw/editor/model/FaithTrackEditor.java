@@ -81,7 +81,7 @@ public class FaithTrackEditor {
         return checkPoints;
     }
 
-    public JsonObject buildFaithTrack() {
+    private JsonObject buildFaithTrack() {
         JsonObject out = new JsonObject();
         JsonArray checkPointsArray = new JsonArray();
         for(CheckPoint checkPoint: checkPoints) {
@@ -92,7 +92,7 @@ public class FaithTrackEditor {
         return out;
     }
 
-    public JsonArray buildVaticanReportSections() {
+    private JsonArray buildVaticanReportSections() {
         JsonArray vrsArray = new JsonArray();
         for(VaticanReportSection vaticanReportSection: vaticanReportSections) {
             vrsArray.add(JsonUtil.getInstance().serialize(vaticanReportSection));

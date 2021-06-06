@@ -1,10 +1,14 @@
 package it.polimi.ingsw.editor.model.simplifiedModel;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import it.polimi.ingsw.editor.model.Config;
 import it.polimi.ingsw.editor.model.resources.ConcreteResourceSet;
 import it.polimi.ingsw.editor.model.resources.ObtainableResourceSet;
 import it.polimi.ingsw.editor.model.resources.SpendableResourceSet;
 import it.polimi.ingsw.model.devCards.CardColour;
 import it.polimi.ingsw.model.devCards.CardLevel;
+import it.polimi.ingsw.utility.JsonUtil;
 
 public class DevCard {
     private CardColour colour;
@@ -48,7 +52,6 @@ public class DevCard {
         return productionOut;
     }
 
-
     public void setLevel(CardLevel level) {
         this.level = level;
     }
@@ -59,5 +62,17 @@ public class DevCard {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public JsonObject serialize() {
+        JsonObject json = new JsonObject();
+
+        json.add("colour", JsonUtil.getInstance().serialize(colour));
+        json.add("level", JsonUtil.getInstance().serialize(level));
+        json.addProperty("points", points);
+        json.add("requirements", requirements.serialize());
+        json.add("productionPower", Config.writeProductionPower(productionIn, productionOut));
+
+        return json;
     }
 }

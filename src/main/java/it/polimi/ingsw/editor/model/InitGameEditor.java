@@ -1,5 +1,8 @@
 package it.polimi.ingsw.editor.model;
 
+import com.google.gson.JsonObject;
+import it.polimi.ingsw.utility.JsonUtil;
+
 public class InitGameEditor {
     private int leaderCardsToAssign;
     private int leaderCardsToDiscard;
@@ -36,5 +39,9 @@ public class InitGameEditor {
 
     public void setResources(int index, int resources) {
         this.resources[index] = resources;
+    }
+
+    public void write(JsonObject out) {
+        out.add("initGame", JsonUtil.getInstance().serialize(this));
     }
 }

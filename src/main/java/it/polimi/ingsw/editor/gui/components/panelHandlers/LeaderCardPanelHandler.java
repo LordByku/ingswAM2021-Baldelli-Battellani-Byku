@@ -49,6 +49,7 @@ public class LeaderCardPanelHandler extends PanelHandler {
             if(newSelection == leaderCardsEditor.getLeaderCards().size()) {
                 leaderCardsEditor.addNewCard();
                 buildComboBox(newSelection);
+                loadCard(newSelection);
             } else if(newSelection != -1) {
                 leaderCardsEditor.setCurrentSelection(newSelection);
                 loadCard(newSelection);

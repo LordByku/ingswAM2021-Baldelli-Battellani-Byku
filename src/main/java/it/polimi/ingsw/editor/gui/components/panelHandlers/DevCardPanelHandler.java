@@ -49,6 +49,7 @@ public class DevCardPanelHandler extends PanelHandler {
             if(newSelection == devCardsEditor.getDevCards().size()) {
                 devCardsEditor.addNewCard();
                 buildComboBox(newSelection);
+                loadCard(newSelection);
             } else if(newSelection != -1) {
                 devCardsEditor.setCurrentSelection(newSelection);
                 loadCard(newSelection);
@@ -73,7 +74,6 @@ public class DevCardPanelHandler extends PanelHandler {
                 devCardsEditor.getDevCards().get(devCardsEditor.getCurrentSelection()).setLevel(cardLevel);
             }));
         }
-
 
         Enumeration<AbstractButton> colourButtons = colourGroup.getElements();
         for(CardColour cardColour: CardColour.values()) {
