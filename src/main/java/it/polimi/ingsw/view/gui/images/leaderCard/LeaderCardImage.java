@@ -22,6 +22,8 @@ public class LeaderCardImage extends JPanel {
         this.width = width;
         this.height = (int) (1.5 * width);
 
+        this.setPreferredSize(new Dimension(width, height));
+
         this.add(leaderCard.getRequirements().getRequirementsPanel(width, height));
 
         JPanel pointsPanel = new JPanel();

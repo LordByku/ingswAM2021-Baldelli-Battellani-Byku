@@ -24,6 +24,8 @@ public class DevCardImage extends JPanel {
         this.width = width;
         this.height = (int) (1.5 * width);
 
+        this.setPreferredSize(new Dimension(width, height));
+
         this.add(new RequirementsPanel(devCard.getReqResources(), width, height).getPanel());
 
         JPanel points = new JPanel();

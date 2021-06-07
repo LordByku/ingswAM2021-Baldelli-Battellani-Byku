@@ -26,25 +26,26 @@ public class GUIHandLeaderCards {
         boolean doneInitDiscard = client.getModel().allInitDiscard();
         GridBagConstraints c = new GridBagConstraints();
 
-        for (int i=0; i< handLeaderCards.size(); i++) {
+        c.gridx = 0;
+        for (int handLeaderCard : handLeaderCards) {
             JPanel cardPanel = new JPanel(new GridBagLayout());
-            LeaderCard card = LeaderCardsParser.getInstance().getCard(handLeaderCards.get(i));
-            JPanel cardImage = card.getLeaderCardImage(50);
+            LeaderCard card = LeaderCardsParser.getInstance().getCard(handLeaderCard);
+            JPanel cardImage = card.getLeaderCardImage(150);
             cardImage.setVisible(true);
             JButton discardButton = new JButton("discard");
             JButton playButton = new JButton("play");
             if (!doneInitDiscard)
                 playButton.setEnabled(false);
 
-            c.gridy=0;
-            cardPanel.add(cardImage,c);
+            c.gridy = 0;
+            cardPanel.add(cardImage, c);
             c.gridy++;
             cardPanel.add(discardButton, c);
             c.gridy++;
-            cardPanel.add(playButton,c);
+            cardPanel.add(playButton, c);
 
-            c.gridy=0;
-            c.insets = new Insets(0,5,0,5);
+            c.gridy = 0;
+            c.insets = new Insets(0, 5, 0, 5);
             handLeaderCardsPanel.add(cardPanel, c);
             c.gridx++;
         }

@@ -21,7 +21,6 @@ public class GUIStrongbox {
         this.client=client;
         this.strongboxPanel=strongboxPanel;
         strongbox = client.getModel().getPlayer(client.getNickname()).getBoard().getStrongBox();
-
     }
 
     public void loadStrongbox(){
@@ -29,6 +28,7 @@ public class GUIStrongbox {
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 0.5;
         c.weighty = 0.5;
+        c.gridy = 0;
         for(ConcreteResource resource: ConcreteResource.values()){
             quantity = strongbox.getCount(resource);
             resourcePanel = new ResourceImage(resource.getResourceImageType(), 30);
