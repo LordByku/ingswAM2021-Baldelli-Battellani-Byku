@@ -88,6 +88,10 @@ public class LocalConfig {
         return Parser.getInstance().parseProductionDetails(config.getAsJsonObject("board").getAsJsonObject("defaultProductionPower"));
     }
 
+    public int getDevelopmentCardsSlots(){
+        return config.getAsJsonObject("board").get("developmentCardsSlots").getAsInt();
+    }
+
     public ArrayList<VaticanReportSection> getVaticanReportSections(){
         ArrayList<VaticanReportSection> vrsArray = new ArrayList<>();
 
