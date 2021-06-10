@@ -1,5 +1,6 @@
 package it.polimi.ingsw.editor.gui.components.panelHandlers;
 
+import it.polimi.ingsw.editor.gui.EditorGUIUtil;
 import it.polimi.ingsw.editor.gui.components.ButtonClickEvent;
 import it.polimi.ingsw.editor.model.resources.ConcreteResource;
 import it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.effects.ConversionEffect;
@@ -22,7 +23,7 @@ public class ConversionEffectPanelHandler extends PanelHandler {
         JPanel resourcePanel = new JPanel();
         resourcePanel.setLayout(new BoxLayout(resourcePanel, BoxLayout.X_AXIS));
 
-        addLabel("Resource:", resourcePanel);
+        EditorGUIUtil.addLabel("Resource:", resourcePanel);
 
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.Y_AXIS));
@@ -30,7 +31,7 @@ public class ConversionEffectPanelHandler extends PanelHandler {
         ButtonGroup buttonGroup = new ButtonGroup();
 
         for(ConcreteResource resource: ConcreteResource.values()) {
-            addRadioButton(resource.getString(), conversionEffect.getResource() == resource, buttonGroup, buttonsPanel, new ButtonClickEvent((e) -> {
+            EditorGUIUtil.addRadioButton(resource.getString(), conversionEffect.getResource() == resource, buttonGroup, buttonsPanel, new ButtonClickEvent((e) -> {
                 conversionEffect.setResource(resource);
             }));
         }
@@ -40,5 +41,10 @@ public class ConversionEffectPanelHandler extends PanelHandler {
         panel.add(resourcePanel);
 
         frame.setVisible(true);
+    }
+
+    @Override
+    public boolean validate() {
+        return true;
     }
 }

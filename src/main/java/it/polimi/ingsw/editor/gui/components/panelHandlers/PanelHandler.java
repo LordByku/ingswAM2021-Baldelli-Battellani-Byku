@@ -2,91 +2,23 @@ package it.polimi.ingsw.editor.gui.components.panelHandlers;
 
 import it.polimi.ingsw.editor.gui.components.ButtonClickEvent;
 import it.polimi.ingsw.editor.gui.components.TextFieldDocumentListener;
+import it.polimi.ingsw.editor.gui.components.ValidatableTextField;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public abstract class PanelHandler {
     protected final JFrame frame;
     protected final JPanel panel;
-    protected final GridBagConstraints gbc;
 
     protected PanelHandler(JFrame frame, JPanel panel) {
         this.frame = frame;
         this.panel = panel;
-        gbc = new GridBagConstraints();
     }
 
     public abstract void build();
 
-    protected void addTextField(int value, JPanel outerPanel, Consumer<Integer> lambda) {
-        JPanel container = new JPanel(new GridBagLayout());
-
-        JFormattedTextField textField = new JFormattedTextField();
-        textField.setValue(value);
-        Dimension dimension = textField.getPreferredSize();
-        dimension.width = 30;
-        textField.setPreferredSize(dimension);
-        textField.getDocument().addDocumentListener(new TextFieldDocumentListener(textField, lambda));
-
-        container.add(textField, gbc);
-
-        outerPanel.add(container);
-    }
-
-    protected void addButton(String text, JPanel outerPanel, ButtonClickEvent clickEvent) {
-        JPanel container = new JPanel(new GridBagLayout());
-
-        JButton button = new JButton(text);
-        button.setMargin(new Insets(1, 1, 1, 1));
-        button.setPreferredSize(new Dimension(25, 25));
-        button.setVerticalAlignment(SwingConstants.CENTER);
-        button.addMouseListener(clickEvent);
-
-        container.add(button, gbc);
-
-        outerPanel.add(container);
-    }
-
-    protected void addLabel(String text, JPanel outerPanel) {
-        JPanel container = new JPanel(new GridBagLayout());
-
-        JLabel label = new JLabel();
-        label.setText(text);
-
-        container.add(label, gbc);
-
-        outerPanel.add(container);
-    }
-
-    protected void addCheckBox(String text, boolean isSelected, ButtonGroup checkBoxesButtonGroup, JPanel outerPanel, ButtonClickEvent buttonClickEvent) {
-        JPanel container = new JPanel(new GridBagLayout());
-
-        JCheckBox checkBox = new JCheckBox();
-        checkBox.setText(text);
-        checkBox.addMouseListener(buttonClickEvent);
-
-        checkBoxesButtonGroup.add(checkBox);
-        checkBoxesButtonGroup.setSelected(checkBox.getModel(), isSelected);
-
-        container.add(checkBox, gbc);
-
-        outerPanel.add(container);
-    }
-
-    protected void addRadioButton(String text, boolean isSelected, ButtonGroup buttonGroup,
-                                  JPanel outerPanel, ButtonClickEvent buttonClickEvent) {
-        JPanel container = new JPanel(new GridBagLayout());
-
-        JRadioButton button = new JRadioButton();
-        button.setText(text);
-        button.setSelected(isSelected);
-        button.addMouseListener(buttonClickEvent);
-        buttonGroup.add(button);
-
-        container.add(button, gbc);
-
-        outerPanel.add(container);
-    }
+    public abstract boolean validate();
 }

@@ -1,6 +1,8 @@
 package it.polimi.ingsw.editor.gui.components.panelHandlers;
 
+import it.polimi.ingsw.editor.gui.EditorGUIUtil;
 import it.polimi.ingsw.editor.gui.components.ButtonClickEvent;
+import it.polimi.ingsw.editor.gui.components.ValidatableTextField;
 import it.polimi.ingsw.editor.model.resources.ConcreteResource;
 import it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.effects.DepotEffect;
 
@@ -8,6 +10,7 @@ import javax.swing.*;
 
 public class DepotEffectPanelHandler extends PanelHandler {
     private final DepotEffect depotEffect;
+    private ValidatableTextField slotsField;
 
     public DepotEffectPanelHandler(JFrame frame, JPanel panel, DepotEffect depotEffect) {
         super(frame, panel);
@@ -22,7 +25,7 @@ public class DepotEffectPanelHandler extends PanelHandler {
         JPanel resourcePanel = new JPanel();
         resourcePanel.setLayout(new BoxLayout(resourcePanel, BoxLayout.X_AXIS));
 
-        addLabel("Resource:", resourcePanel);
+        EditorGUIUtil.addLabel("Resource:", resourcePanel);
 
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.Y_AXIS));
@@ -30,24 +33,29 @@ public class DepotEffectPanelHandler extends PanelHandler {
         ButtonGroup buttonGroup = new ButtonGroup();
 
         for(ConcreteResource resource: ConcreteResource.values()) {
-            addRadioButton(resource.getString(), depotEffect.getResource() == resource, buttonGroup, buttonsPanel, new ButtonClickEvent((e) -> {
+            EditorGUIUtil.addRadioButton(resource.getString(), depotEffect.getResource() == resource, buttonGroup, buttonsPanel, new ButtonClickEvent((e) -> {
                 depotEffect.setResource(resource);
             }));
         }
 
         resourcePanel.add(buttonsPanel);
 
-
         JPanel slotsPanel = new JPanel();
         slotsPanel.setLayout(new BoxLayout(slotsPanel, BoxLayout.X_AXIS));
 
-        addLabel("Depot slots:", slotsPanel);
+        EditorGUIUtil.addLabel("Depot slots:", slotsPanel);
 
-        addTextField(depotEffect.getSlots(), slotsPanel, depotEffect::setSlots);
+        slotsField = EditorGUIUtil.addValidatableTextField(depotEffect.getSlots(), slotsPanel,
+                depotEffect::setSlots, (value) -> value > 0 && value <= 5);
 
         panel.add(resourcePanel);
         panel.add(slotsPanel);
 
         frame.setVisible(true);
+    }
+
+    @Override
+    public boolean validate() {
+        return slotsField.validate();
     }
 }

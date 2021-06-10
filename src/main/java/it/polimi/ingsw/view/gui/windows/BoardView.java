@@ -35,10 +35,10 @@ public class BoardView extends GUIWindow {
     private JButton purchaseDevCardButton;
     private JButton collectResourcesButton;
     private JPanel bottomPanel;
-    ArrayList<String> nicknames = LocalConfig.getInstance().getTurnOrder();
+    private final ArrayList<String> nicknames;
 
     public BoardView(Client client, BlockingQueue<String> buffer){
-
+        nicknames = LocalConfig.getInstance().getTurnOrder();
         nicknames.remove(client.getNickname());
         int numOfPlayers = nicknames.size();
 

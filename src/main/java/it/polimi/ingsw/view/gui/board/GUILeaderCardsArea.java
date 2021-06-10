@@ -21,10 +21,11 @@ public class GUILeaderCardsArea {
 
     public void loadLeaderCardsArea(){
         GridBagConstraints c = new GridBagConstraints();
-        for(int i=0;i<playedLeaderCards.size(); ++i){
-            LeaderCard leaderCard = LeaderCardsParser.getInstance().getCard(playedLeaderCards.get(i));
+        c.gridy = 0;
+        for (int playedLeaderCardID : playedLeaderCards) {
+            LeaderCard leaderCard = LeaderCardsParser.getInstance().getCard(playedLeaderCardID);
             JPanel card = leaderCard.getLeaderCardImage(50);
-            leaderCardsArea.add(card,c);
+            leaderCardsArea.add(card, c);
             c.gridy++;
         }
     }

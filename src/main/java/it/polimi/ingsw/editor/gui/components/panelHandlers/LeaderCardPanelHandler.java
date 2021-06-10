@@ -1,7 +1,9 @@
 package it.polimi.ingsw.editor.gui.components.panelHandlers;
 
+import it.polimi.ingsw.editor.gui.EditorGUIUtil;
 import it.polimi.ingsw.editor.gui.components.ButtonClickEvent;
 import it.polimi.ingsw.editor.gui.components.TextFieldDocumentListener;
+import it.polimi.ingsw.editor.gui.components.ValidatableTextField;
 import it.polimi.ingsw.editor.model.Config;
 import it.polimi.ingsw.editor.model.LeaderCardsEditor;
 import it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.LeaderCard;
@@ -12,6 +14,9 @@ import it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.requirements.Req
 import it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.requirements.ResourcesRequirements;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
@@ -19,25 +24,30 @@ public class LeaderCardPanelHandler extends PanelHandler {
     private final JPanel leaderCardRequirementsPanel;
     private final JPanel leaderCardEffectPanel;
     private final JComboBox leaderCardSelectionBox;
-    private final JFormattedTextField leaderCardPointsTextField;
+    private final JPanel leaderCardPointsPanel;
     private final JButton removeLeaderCardButton;
     private final ButtonGroup requirementsGroup;
     private final ButtonGroup effectGroup;
     private final LeaderCardsEditor leaderCardsEditor;
+    private PanelHandler requirementsPanelHandler;
+    private PanelHandler effectPanelHandler;
+    private ValidatableTextField pointsField;
 
     public LeaderCardPanelHandler(JFrame frame, JPanel panel, JPanel leaderCardRequirementsPanel,
                                   JPanel leaderCardEffectPanel, JComboBox leaderCardSelectionBox,
-                                  JFormattedTextField leaderCardPointsTextField, JButton removeLeaderCardButton,
+                                  JPanel leaderCardPointsPanel, JButton removeLeaderCardButton,
                                   ButtonGroup requirementsGroup, ButtonGroup effectGroup) {
         super(frame, panel);
         this.leaderCardRequirementsPanel = leaderCardRequirementsPanel;
         this.leaderCardEffectPanel = leaderCardEffectPanel;
         this.leaderCardSelectionBox = leaderCardSelectionBox;
-        this.leaderCardPointsTextField = leaderCardPointsTextField;
+        this.leaderCardPointsPanel = leaderCardPointsPanel;
         this.removeLeaderCardButton = removeLeaderCardButton;
         this.requirementsGroup = requirementsGroup;
         this.effectGroup = effectGroup;
         leaderCardsEditor = Config.getInstance().getLeaderCardsEditor();
+
+        leaderCardPointsPanel.setLayout(new GridBagLayout());
     }
 
     @Override
@@ -45,13 +55,19 @@ public class LeaderCardPanelHandler extends PanelHandler {
         int selection = leaderCardsEditor.getCurrentSelection();
 
         leaderCardSelectionBox.addActionListener(e -> {
-            int newSelection = leaderCardSelectionBox.getSelectedIndex();
-            if(newSelection == leaderCardsEditor.getLeaderCards().size()) {
-                leaderCardsEditor.addNewCard();
+            if (validate()) {
+                int newSelection = leaderCardSelectionBox.getSelectedIndex();
+                if (newSelection == leaderCardsEditor.getLeaderCards().size()) {
+                    leaderCardsEditor.addNewCard();
+                    buildComboBox(newSelection);
+                    loadCard(newSelection);
+                } else if (newSelection != -1) {
+                    leaderCardsEditor.setCurrentSelection(newSelection);
+                    loadCard(newSelection);
+                }
+            } else {
+                int newSelection = leaderCardsEditor.getCurrentSelection();
                 buildComboBox(newSelection);
-                loadCard(newSelection);
-            } else if(newSelection != -1) {
-                leaderCardsEditor.setCurrentSelection(newSelection);
                 loadCard(newSelection);
             }
         });
@@ -62,10 +78,6 @@ public class LeaderCardPanelHandler extends PanelHandler {
             leaderCardsEditor.setCurrentSelection(newSelection);
             buildComboBox(newSelection);
             loadCard(newSelection);
-        }));
-
-        leaderCardPointsTextField.getDocument().addDocumentListener(new TextFieldDocumentListener(leaderCardPointsTextField, (value) -> {
-            leaderCardsEditor.getLeaderCards().get(leaderCardsEditor.getCurrentSelection()).setPoints(value);
         }));
 
         Enumeration<AbstractButton> requirementsButton = requirementsGroup.getElements();
@@ -92,8 +104,20 @@ public class LeaderCardPanelHandler extends PanelHandler {
             }));
         }
 
-        buildComboBox(selection);
         loadCard(selection);
+        buildComboBox(selection);
+    }
+
+    @Override
+    public boolean validate() {
+        boolean result = true;
+        if(!requirementsPanelHandler.validate() || !effectPanelHandler.validate()) {
+            result = false;
+        }
+        if(!pointsField.validate()) {
+            result = false;
+        }
+        return result;
     }
 
     private void buildComboBox(int selection) {
@@ -111,7 +135,10 @@ public class LeaderCardPanelHandler extends PanelHandler {
     private void loadCard(int selection) {
         LeaderCard leaderCard = leaderCardsEditor.getLeaderCards().get(selection);
 
-        leaderCardPointsTextField.setValue(leaderCard.getPoints());
+        leaderCardPointsPanel.removeAll();
+        pointsField = EditorGUIUtil.addValidatableTextField(leaderCard.getPoints(), leaderCardPointsPanel, (value) -> {
+            leaderCardsEditor.getLeaderCards().get(leaderCardsEditor.getCurrentSelection()).setPoints(value);
+        }, (value) -> value > 0 && value < 100);
 
         Enumeration<AbstractButton> requirementsButton = requirementsGroup.getElements();
         for(RequirementType requirementType: RequirementType.values()) {
@@ -124,58 +151,42 @@ public class LeaderCardPanelHandler extends PanelHandler {
         }
 
         switch (leaderCard.getRequirements().getRequirementType()) {
-            case cardSet: {
-                CardSetPanelHandler cardSetPanelHandler = new CardSetPanelHandler(frame, leaderCardRequirementsPanel, (CardSetRequirements) leaderCard.getRequirements());
-                cardSetPanelHandler.build();
+            case resources: {
+                requirementsPanelHandler = new ConcretePanelHandler(frame, leaderCardRequirementsPanel, ((ResourcesRequirements) leaderCard.getRequirements()).getResources());
                 break;
             }
-            case resources: {
-                ConcretePanelHandler concretePanelHandler = new ConcretePanelHandler(frame, leaderCardRequirementsPanel, ((ResourcesRequirements) leaderCard.getRequirements()).getResources());
-                concretePanelHandler.build();
+            case cardSet: {
+                requirementsPanelHandler = new CardSetPanelHandler(frame, leaderCardRequirementsPanel, (CardSetRequirements) leaderCard.getRequirements());
                 break;
             }
         }
+
+        requirementsPanelHandler.build();
 
         switch (leaderCard.getEffect().getEffectType()) {
             case discount: {
                 DiscountEffect discountEffect = (DiscountEffect) leaderCard.getEffect();
-                DiscountEffectPanelHandler discountEffectPanelHandler = new DiscountEffectPanelHandler(frame, leaderCardEffectPanel, discountEffect);
-                discountEffectPanelHandler.build();
+                effectPanelHandler = new DiscountEffectPanelHandler(frame, leaderCardEffectPanel, discountEffect);
                 break;
             }
             case depot: {
                 DepotEffect depotEffect = (DepotEffect) leaderCard.getEffect();
-                DepotEffectPanelHandler depotEffectPanelHandler = new DepotEffectPanelHandler(frame, leaderCardEffectPanel, depotEffect);
-                depotEffectPanelHandler.build();
+                effectPanelHandler = new DepotEffectPanelHandler(frame, leaderCardEffectPanel, depotEffect);
                 break;
             }
             case conversion: {
                 ConversionEffect conversionEffect = (ConversionEffect) leaderCard.getEffect();
-                ConversionEffectPanelHandler conversionEffectPanelHandler = new ConversionEffectPanelHandler(frame, leaderCardEffectPanel, conversionEffect);
-                conversionEffectPanelHandler.build();
+                effectPanelHandler = new ConversionEffectPanelHandler(frame, leaderCardEffectPanel, conversionEffect);
                 break;
             }
             case production: {
-                leaderCardEffectPanel.removeAll();
-                leaderCardEffectPanel.setLayout(new BoxLayout(leaderCardEffectPanel, BoxLayout.X_AXIS));
-
-                JPanel spendablePanel = new JPanel();
-                JPanel obtainablePanel = new JPanel();
-
                 ProductionEffect productionEffect = (ProductionEffect) leaderCard.getEffect();
-
-                leaderCardEffectPanel.add(spendablePanel);
-                leaderCardEffectPanel.add(obtainablePanel);
-
-                SpendablePanelHandler spendablePanelHandler = new SpendablePanelHandler(frame, spendablePanel, productionEffect.getProductionIn());
-                spendablePanelHandler.build();
-
-                ObtainablePanelHandler obtainablePanelHandler = new ObtainablePanelHandler(frame, obtainablePanel, productionEffect.getProductionOut());
-                obtainablePanelHandler.build();
-
+                effectPanelHandler = new ProductionEffectPanelHandler(frame, leaderCardEffectPanel, productionEffect);
                 break;
             }
         }
+
+        effectPanelHandler.build();
 
         frame.setVisible(true);
     }

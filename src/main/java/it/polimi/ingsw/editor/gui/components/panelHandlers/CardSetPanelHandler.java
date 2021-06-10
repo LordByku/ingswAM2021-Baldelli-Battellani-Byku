@@ -1,14 +1,19 @@
 package it.polimi.ingsw.editor.gui.components.panelHandlers;
 
+import it.polimi.ingsw.editor.gui.EditorGUIUtil;
 import it.polimi.ingsw.editor.gui.components.ButtonClickEvent;
+import it.polimi.ingsw.editor.gui.components.ValidatableTextField;
 import it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.requirements.CardSetRequirements;
 import it.polimi.ingsw.model.devCards.CardColour;
 import it.polimi.ingsw.model.devCards.CardLevel;
+import it.polimi.ingsw.utility.JsonUtil;
 
 import javax.swing.*;
+import java.util.ArrayList;
 
 public class CardSetPanelHandler extends PanelHandler {
     private final CardSetRequirements cardSet;
+    private ArrayList<ValidatableTextField> quantityFields;
 
     public CardSetPanelHandler(JFrame frame, JPanel panel, CardSetRequirements cardSet) {
         super(frame, panel);
@@ -20,6 +25,8 @@ public class CardSetPanelHandler extends PanelHandler {
     public void build() {
         panel.removeAll();
 
+        quantityFields = new ArrayList<>();
+
         JPanel colourPanel = new JPanel();
         colourPanel.setLayout(new BoxLayout(colourPanel, BoxLayout.Y_AXIS));
 
@@ -29,34 +36,28 @@ public class CardSetPanelHandler extends PanelHandler {
         JPanel quantityPanel = new JPanel();
         quantityPanel.setLayout(new BoxLayout(quantityPanel, BoxLayout.Y_AXIS));
 
-        // TODO: remove local arrays
-        String[] coloursText = {"GREEN", "BLUE", "YELLOW", "PURPLE"};
-        String[] levelsText = {"I", "II", "III"};
-
-        for(int i = 0; i < CardColour.values().length; ++i) {
-            addLabel(coloursText[i], colourPanel);
-
-            CardColour colour = CardColour.values()[i];
+        for(CardColour colour: CardColour.values()) {
+            EditorGUIUtil.addLabel(JsonUtil.getInstance().serialize(colour).getAsString(), colourPanel);
 
             JPanel checkBoxesPanel = new JPanel();
             checkBoxesPanel.setLayout(new BoxLayout(checkBoxesPanel, BoxLayout.X_AXIS));
 
             ButtonGroup checkBoxesButtonGroup = new ButtonGroup();
 
-            for(int j = 0; j < CardLevel.values().length; ++j) {
-                CardLevel level = CardLevel.values()[j];
-                addCheckBox(levelsText[j], cardSet.getCardSet(colour).getCardLevel() == level,
+            for(CardLevel level: CardLevel.values()) {
+                EditorGUIUtil.addCheckBox(JsonUtil.getInstance().serialize(level).getAsString(), cardSet.getCardSet(colour).getCardLevel() == level,
                         checkBoxesButtonGroup, checkBoxesPanel, new ButtonClickEvent((e) -> {
                     cardSet.getCardSet(colour).toggle(level);
-                    build();
                 }));
             }
 
             levelPanel.add(checkBoxesPanel);
 
-            addTextField(cardSet.getCardSet(colour).getQuantity(), quantityPanel, (value) -> {
-                cardSet.getCardSet(colour).setQuantity(value);
-            });
+            quantityFields.add(EditorGUIUtil.addValidatableTextField(
+                cardSet.getCardSet(colour).getQuantity(), quantityPanel, (value) -> {
+                    cardSet.getCardSet(colour).setQuantity(value);
+                }, value -> value >= 0 && value < 100
+            ));
         }
 
         panel.add(colourPanel);
@@ -64,5 +65,16 @@ public class CardSetPanelHandler extends PanelHandler {
         panel.add(quantityPanel);
 
         frame.setVisible(true);
+    }
+
+    @Override
+    public boolean validate() {
+        boolean result = true;
+        for(ValidatableTextField validatableTextField: quantityFields) {
+            if(!validatableTextField.validate()) {
+                result = false;
+            }
+        }
+        return result;
     }
 }

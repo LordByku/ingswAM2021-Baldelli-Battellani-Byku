@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.localModel;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.model.devCards.CardColour;
 import it.polimi.ingsw.model.devCards.CardLevel;
+import it.polimi.ingsw.utility.JsonUtil;
 import it.polimi.ingsw.view.cli.CLIPrintable;
 import it.polimi.ingsw.view.cli.Strings;
 
@@ -15,7 +16,7 @@ public class CardMarket implements LocalModelElement, CLIPrintable {
     public String getCLIString() {
         int levelWidth = 0, colourWidth = 0;
         for (CardLevel cardLevel : CardLevel.values()) {
-            levelWidth = Math.max(levelWidth, Strings.getGraphemesCount(cardLevel.getExtendedCLIString()));
+            levelWidth = Math.max(levelWidth, Strings.getGraphemesCount(JsonUtil.getInstance().serialize(cardLevel).getAsString()));
         }
         for (CardColour cardColour : CardColour.values()) {
             colourWidth = Math.max(colourWidth, Strings.getGraphemesCount(cardColour.getCLIString()));
@@ -24,7 +25,7 @@ public class CardMarket implements LocalModelElement, CLIPrintable {
         StringBuilder result = new StringBuilder();
 
         for (int i = CardLevel.values().length - 1; i >= 0; --i) {
-            String levelString = CardLevel.values()[i].getExtendedCLIString();
+            String levelString = JsonUtil.getInstance().serialize(CardLevel.values()[i]).getAsString();
             int levelStringLength = Strings.getGraphemesCount(levelString);
 
             result.append("[").append(i).append("] ").append(levelString);

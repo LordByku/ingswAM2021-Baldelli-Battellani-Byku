@@ -1,6 +1,8 @@
 package it.polimi.ingsw.editor.gui.components.panelHandlers;
 
+import it.polimi.ingsw.editor.gui.EditorGUIUtil;
 import it.polimi.ingsw.editor.gui.components.ButtonClickEvent;
+import it.polimi.ingsw.editor.gui.components.ValidatableTextField;
 import it.polimi.ingsw.editor.model.Config;
 import it.polimi.ingsw.editor.model.FaithTrackEditor;
 import it.polimi.ingsw.model.playerBoard.faithTrack.CheckPoint;
@@ -10,6 +12,8 @@ import java.util.ArrayList;
 
 public class CheckPointsPanelHandler extends PanelHandler {
     private final FaithTrackEditor faithTrackEditor;
+    private ArrayList<ValidatableTextField> checkPointFields;
+    private ArrayList<ValidatableTextField> pointsFields;
 
     public CheckPointsPanelHandler(JFrame frame, JPanel panel) {
         super(frame, panel);
@@ -21,6 +25,9 @@ public class CheckPointsPanelHandler extends PanelHandler {
     public void build() {
         panel.removeAll();
 
+        checkPointFields = new ArrayList<>();
+        pointsFields = new ArrayList<>();
+
         ArrayList<CheckPoint> checkPoints = faithTrackEditor.getCheckPoints();
 
         for(int i = 0; i < checkPoints.size(); ++i) {
@@ -28,7 +35,7 @@ public class CheckPointsPanelHandler extends PanelHandler {
 
             CheckPoint checkPoint = checkPoints.get(i);
 
-            addButton("+", panel, new ButtonClickEvent((e) -> {
+            EditorGUIUtil.addButton("+", panel, new ButtonClickEvent((e) -> {
                 if(validate()) {
                     faithTrackEditor.addCheckPoint(finalI, new CheckPoint(1, 1));
                     build();
@@ -38,21 +45,27 @@ public class CheckPointsPanelHandler extends PanelHandler {
             JPanel dataPanel = new JPanel();
             dataPanel.setLayout(new BoxLayout(dataPanel, BoxLayout.Y_AXIS));
 
-            addTextField(checkPoint.getPosition(), dataPanel, (value) -> faithTrackEditor.setCheckPointPosition(finalI, value));
+            checkPointFields.add(EditorGUIUtil.addValidatableTextField(
+                checkPoint.getPosition(), dataPanel, (value) -> {
+                    faithTrackEditor.setCheckPointPosition(finalI, value);
+                }, (value) -> faithTrackEditor.validatePosition(finalI)
+            ));
 
-            addTextField(checkPoint.getPoints(), dataPanel, (value) -> faithTrackEditor.setCheckPointPoints(finalI, value));
+            pointsFields.add(EditorGUIUtil.addValidatableTextField(
+                checkPoint.getPoints(), dataPanel, (value) -> {
+                    faithTrackEditor.setCheckPointPoints(finalI, value);
+                }, (value) -> faithTrackEditor.validatePoints(finalI)
+            ));
 
-            addButton("-", dataPanel, new ButtonClickEvent((e) -> {
-                if(validate()) {
-                    faithTrackEditor.removeCheckPoint(finalI);
-                    build();
-                }
+            EditorGUIUtil.addButton("-", dataPanel, new ButtonClickEvent((e) -> {
+                faithTrackEditor.removeCheckPoint(finalI);
+                build();
             }));
 
             panel.add(dataPanel);
         }
 
-        addButton("+", panel, new ButtonClickEvent((e) -> {
+        EditorGUIUtil.addButton("+", panel, new ButtonClickEvent((e) -> {
             if(validate()) {
                 faithTrackEditor.addCheckPoint(checkPoints.size(), new CheckPoint(1, 1));
                 build();
@@ -63,7 +76,18 @@ public class CheckPointsPanelHandler extends PanelHandler {
     }
 
     public boolean validate() {
-        // TODO
-        return true;
+        // TODO : limit number of checkpoints
+        boolean result = true;
+        for(ValidatableTextField validatableTextField: checkPointFields) {
+            if(!validatableTextField.validate()) {
+                result = false;
+            }
+        }
+        for(ValidatableTextField validatableTextField: pointsFields) {
+            if(!validatableTextField.validate()) {
+                result = false;
+            }
+        }
+        return result;
     }
 }

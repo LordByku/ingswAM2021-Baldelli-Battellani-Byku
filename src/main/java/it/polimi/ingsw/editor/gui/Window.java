@@ -41,7 +41,6 @@ public class Window {
     private JRadioButton BLUERadioButton;
     private JRadioButton YELLOWRadioButton;
     private JRadioButton PURPLERadioButton;
-    private JFormattedTextField devCardPointsTextField;
     private JPanel devCardRequirementPanel;
     private JPanel devCardProductionInPanel;
     private JPanel devCardProductionOutPanel;
@@ -51,7 +50,6 @@ public class Window {
     private JButton removeLeaderCardButton;
     private JRadioButton resourcesRadioButton;
     private JRadioButton devCardsRadioButton;
-    private JFormattedTextField leaderCardPointsTextField;
     private JRadioButton developmentCardDiscountRadioButton;
     private JRadioButton productionPowerRadioButton;
     private JRadioButton whiteMarbleConversionRadioButton;
@@ -65,6 +63,8 @@ public class Window {
     private JFormattedTextField saveConfigTextField;
     private JFormattedTextField loadCustomConfigTextField;
     private JLabel fileErrorLabel;
+    private JPanel devCardPointsPanel;
+    private JPanel leaderCardPointsPanel;
 
     public Window(JFrame frame) {
         loadDefaultConfigButton.addMouseListener(new MouseAdapter() {
@@ -103,7 +103,7 @@ public class Window {
         FaithTrackEditor faithTrackEditor = Config.getInstance().getFaithTrackEditor();
         faithTrackLengthTextField.setValue(faithTrackEditor.getFinalPosition());
         faithTrackLengthTextField.getDocument().addDocumentListener(new TextFieldDocumentListener(
-                faithTrackLengthTextField, faithTrackEditor::setFinalPosition
+                faithTrackLengthTextField, (value) -> faithTrackEditor.setFinalPosition(Integer.parseInt(value))
         ));
 
         CheckPointsPanelHandler checkPointsPanelHandler = new CheckPointsPanelHandler(frame, checkPointsPanel);
@@ -121,7 +121,7 @@ public class Window {
         depotsPanelHandler.build();
         developmentCardSlotsTextField.setValue(boardEditor.getDevelopmentCardSlots());
         developmentCardSlotsTextField.getDocument().addDocumentListener(new TextFieldDocumentListener(
-                developmentCardSlotsTextField, boardEditor::setDevelopmentCardSlots
+                developmentCardSlotsTextField, (value) -> boardEditor.setDevelopmentCardSlots(Integer.parseInt(value))
         ));
 
         InitGameEditor initGameEditor = Config.getInstance().getInitGameEditor();
@@ -136,35 +136,37 @@ public class Window {
         initResources3.setValue(initGameEditor.getResources(2));
         initResources4.setValue(initGameEditor.getResources(3));
         leaderCardsToAssignTextField.getDocument().addDocumentListener(new TextFieldDocumentListener(
-                leaderCardsToAssignTextField, initGameEditor::setLeaderCardsToAssign
+                leaderCardsToAssignTextField, (value) -> initGameEditor.setLeaderCardsToAssign(Integer.parseInt(value))
         ));
         leaderCardsToDiscardTextField.getDocument().addDocumentListener(new TextFieldDocumentListener(
-                leaderCardsToDiscardTextField, initGameEditor::setLeaderCardsToDiscard
+                leaderCardsToDiscardTextField, (value) -> initGameEditor.setLeaderCardsToDiscard(Integer.parseInt(value))
         ));
         initFaithPoints1.getDocument().addDocumentListener(new TextFieldDocumentListener(
-                initFaithPoints1, (value) -> initGameEditor.setFaithPoints(0, value)
+                initFaithPoints1, (value) -> initGameEditor.setFaithPoints(0, Integer.parseInt(value))
         ));
         initFaithPoints2.getDocument().addDocumentListener(new TextFieldDocumentListener(
-                initFaithPoints2, (value) -> initGameEditor.setFaithPoints(1, value)
+                initFaithPoints2, (value) -> initGameEditor.setFaithPoints(1, Integer.parseInt(value))
         ));
         initFaithPoints3.getDocument().addDocumentListener(new TextFieldDocumentListener(
-                initFaithPoints3, (value) -> initGameEditor.setFaithPoints(2, value)
+                initFaithPoints3, (value) -> initGameEditor.setFaithPoints(2, Integer.parseInt(value))
         ));
         initFaithPoints4.getDocument().addDocumentListener(new TextFieldDocumentListener(
-                initFaithPoints4, (value) -> initGameEditor.setFaithPoints(3, value)
+                initFaithPoints4, (value) -> initGameEditor.setFaithPoints(3, Integer.parseInt(value))
         ));
         initResources1.getDocument().addDocumentListener(new TextFieldDocumentListener(
-                initResources1, (value) -> initGameEditor.setResources(0, value)
+                initResources1, (value) -> initGameEditor.setResources(0, Integer.parseInt(value))
         ));
         initResources2.getDocument().addDocumentListener(new TextFieldDocumentListener(
-                initResources2, (value) -> initGameEditor.setResources(1, value)
+                initResources2, (value) -> initGameEditor.setResources(1, Integer.parseInt(value))
         ));
         initResources3.getDocument().addDocumentListener(new TextFieldDocumentListener(
-                initResources3, (value) -> initGameEditor.setResources(2, value)
+                initResources3, (value) -> initGameEditor.setResources(2, Integer.parseInt(value))
         ));
         initResources4.getDocument().addDocumentListener(new TextFieldDocumentListener(
-                initResources4, (value) -> initGameEditor.setResources(3, value)
+                initResources4, (value) -> initGameEditor.setResources(3, Integer.parseInt(value))
         ));
+
+        // TODO : Radio Buttons: set listener to state change instead of mouse clicked
 
         ButtonGroup levelGroup = new ButtonGroup();
         levelGroup.add(IRadioButton);
@@ -179,7 +181,7 @@ public class Window {
 
         DevCardPanelHandler devCardPanelHandler = new DevCardPanelHandler(frame, devCardPanel,
                 devCardRequirementPanel, devCardProductionInPanel, devCardProductionOutPanel,
-                devCardSelectionBox, devCardPointsTextField, removeDevCardButton, levelGroup, colourGroup);
+                devCardSelectionBox, devCardPointsPanel, removeDevCardButton, levelGroup, colourGroup);
         devCardPanelHandler.build();
 
         ButtonGroup requirementsGroup = new ButtonGroup();
@@ -194,7 +196,7 @@ public class Window {
 
         LeaderCardPanelHandler leaderCardPanelHandler = new LeaderCardPanelHandler(frame, leaderCardPanel,
                 leaderCardRequirementsPanel, leaderCardEffectPanel, leaderCardSelectionBox,
-                leaderCardPointsTextField, removeLeaderCardButton, requirementsGroup, effectGroup);
+                leaderCardPointsPanel, removeLeaderCardButton, requirementsGroup, effectGroup);
         leaderCardPanelHandler.build();
 
         frame.setContentPane(panel);

@@ -7,16 +7,16 @@ import java.util.function.Consumer;
 
 public class TextFieldDocumentListener implements DocumentListener {
     private final JFormattedTextField textField;
-    private final Consumer<Integer> lambda;
+    private final Consumer<String> lambda;
 
-    public TextFieldDocumentListener(JFormattedTextField textField, Consumer<Integer> lambda) {
+    public TextFieldDocumentListener(JFormattedTextField textField, Consumer<String> lambda) {
         this.textField = textField;
         this.lambda = lambda;
     }
 
     private void update(DocumentEvent event) {
         try {
-            lambda.accept(Integer.valueOf(textField.getText()));
+            lambda.accept(textField.getText());
         } catch (NumberFormatException e) {
         }
     }

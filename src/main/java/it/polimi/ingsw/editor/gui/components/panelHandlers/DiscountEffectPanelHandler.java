@@ -1,6 +1,8 @@
 package it.polimi.ingsw.editor.gui.components.panelHandlers;
 
+import it.polimi.ingsw.editor.gui.EditorGUIUtil;
 import it.polimi.ingsw.editor.gui.components.ButtonClickEvent;
+import it.polimi.ingsw.editor.gui.components.ValidatableTextField;
 import it.polimi.ingsw.editor.model.resources.ConcreteResource;
 import it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.effects.DiscountEffect;
 
@@ -8,6 +10,7 @@ import javax.swing.*;
 
 public class DiscountEffectPanelHandler extends PanelHandler {
     private final DiscountEffect discountEffect;
+    private ValidatableTextField quantityField;
 
     public DiscountEffectPanelHandler(JFrame frame, JPanel panel, DiscountEffect discountEffect) {
         super(frame, panel);
@@ -22,7 +25,7 @@ public class DiscountEffectPanelHandler extends PanelHandler {
         JPanel resourcePanel = new JPanel();
         resourcePanel.setLayout(new BoxLayout(resourcePanel, BoxLayout.X_AXIS));
 
-        addLabel("Resource:", resourcePanel);
+        EditorGUIUtil.addLabel("Resource:", resourcePanel);
 
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.Y_AXIS));
@@ -30,7 +33,7 @@ public class DiscountEffectPanelHandler extends PanelHandler {
         ButtonGroup buttonGroup = new ButtonGroup();
 
         for(ConcreteResource resource: ConcreteResource.values()) {
-            addRadioButton(resource.getString(), discountEffect.getResource() == resource, buttonGroup, buttonsPanel, new ButtonClickEvent((e) -> {
+            EditorGUIUtil.addRadioButton(resource.getString(), discountEffect.getResource() == resource, buttonGroup, buttonsPanel, new ButtonClickEvent((e) -> {
                 discountEffect.setResource(resource);
             }));
         }
@@ -41,13 +44,19 @@ public class DiscountEffectPanelHandler extends PanelHandler {
         JPanel quantityPanel = new JPanel();
         quantityPanel.setLayout(new BoxLayout(quantityPanel, BoxLayout.X_AXIS));
 
-        addLabel("Discount:", quantityPanel);
+        EditorGUIUtil.addLabel("Discount:", quantityPanel);
 
-        addTextField(discountEffect.getDiscount(), quantityPanel, discountEffect::setDiscount);
+        quantityField = EditorGUIUtil.addValidatableTextField(discountEffect.getDiscount(), quantityPanel,
+                discountEffect::setDiscount, (value) -> value > 0 && value < 100);
 
         panel.add(resourcePanel);
         panel.add(quantityPanel);
 
         frame.setVisible(true);
+    }
+
+    @Override
+    public boolean validate() {
+        return quantityField.validate();
     }
 }

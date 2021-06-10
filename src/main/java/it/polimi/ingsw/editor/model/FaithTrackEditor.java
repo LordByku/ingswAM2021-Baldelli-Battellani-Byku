@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.playerBoard.faithTrack.CheckPoint;
 import it.polimi.ingsw.utility.JsonUtil;
 
 import java.util.ArrayList;
+import java.util.function.Predicate;
 
 public class FaithTrackEditor {
     private int finalPosition;
@@ -110,5 +111,80 @@ public class FaithTrackEditor {
         }
 
         out.add("vaticanReportSections", buildVaticanReportSections());
+    }
+
+    public boolean validatePosition(int index) {
+        int left = 0;
+        int right = finalPosition + 1;
+
+        if(index > 0) {
+            left = checkPoints.get(index - 1).getPosition();
+        }
+        if(index < checkPoints.size() - 1) {
+            right = checkPoints.get(index + 1).getPosition();
+        }
+
+        int position = checkPoints.get(index).getPosition();
+        return position > left && position < right;
+    }
+
+    public boolean validatePoints(int index) {
+        int left = 0;
+        int right = 100;
+
+        if(index > 0) {
+            left = Math.max(left, checkPoints.get(index - 1).getPoints());
+        }
+        if(index < checkPoints.size() - 1) {
+            right = Math.min(right, checkPoints.get(index + 1).getPoints());
+        }
+
+        int points = checkPoints.get(index).getPoints();
+        return points > left && points < right;
+    }
+
+    public boolean validateVRSFirstSpace(int index) {
+        int left = 0;
+        int right = Math.min(finalPosition + 1, vaticanReportSections.get(index).getPopeSpace() + 1);
+
+        if(index > 0) {
+            left = Math.max(left, vaticanReportSections.get(index - 1).getPopeSpace());
+        }
+        if(index < vaticanReportSections.size() - 1) {
+            right = Math.min(right, vaticanReportSections.get(index + 1).getFirstSpace());
+        }
+
+        int firstSpace = vaticanReportSections.get(index).getFirstSpace();
+        return firstSpace > left && firstSpace < right;
+    }
+
+    public boolean validateVRSPopeSpace(int index) {
+        int left = Math.max(0, vaticanReportSections.get(index).getFirstSpace() - 1);
+        int right = finalPosition + 1;
+
+        if(index > 0) {
+            left = Math.max(left, vaticanReportSections.get(index - 1).getPopeSpace());
+        }
+        if(index < vaticanReportSections.size() - 1) {
+            right = Math.min(right, vaticanReportSections.get(index + 1).getFirstSpace());
+        }
+
+        int popeSpace = vaticanReportSections.get(index).getPopeSpace();
+        return popeSpace > left && popeSpace < right;
+    }
+
+    public boolean validateVRSPoints(int index) {
+        int left = 0;
+        int right = 100;
+
+        if(index > 0) {
+            left = Math.max(left, vaticanReportSections.get(index - 1).getPoints());
+        }
+        if(index < vaticanReportSections.size() - 1) {
+            right = Math.min(right, vaticanReportSections.get(index + 1).getPoints());
+        }
+
+        int points = vaticanReportSections.get(index).getPoints();
+        return points > left && points < right;
     }
 }

@@ -1,6 +1,8 @@
 package it.polimi.ingsw.editor.gui.components.panelHandlers;
 
+import it.polimi.ingsw.editor.gui.EditorGUIUtil;
 import it.polimi.ingsw.editor.gui.components.ButtonClickEvent;
+import it.polimi.ingsw.editor.gui.components.ValidatableTextField;
 import it.polimi.ingsw.editor.model.Config;
 import it.polimi.ingsw.editor.model.FaithTrackEditor;
 import it.polimi.ingsw.editor.model.simplifiedModel.VaticanReportSection;
@@ -10,6 +12,9 @@ import java.util.ArrayList;
 
 public class VRSPanelHandler extends PanelHandler {
     private final FaithTrackEditor faithTrackEditor;
+    private ArrayList<ValidatableTextField> firstSpaceFields;
+    private ArrayList<ValidatableTextField> popeSpaceFields;
+    private ArrayList<ValidatableTextField> pointsFields;
 
     public VRSPanelHandler(JFrame frame, JPanel panel) {
         super(frame, panel);
@@ -21,6 +26,10 @@ public class VRSPanelHandler extends PanelHandler {
     public void build() {
         panel.removeAll();
 
+        firstSpaceFields = new ArrayList<>();
+        popeSpaceFields = new ArrayList<>();
+        pointsFields = new ArrayList<>();
+
         ArrayList<VaticanReportSection> vaticanReportSections = faithTrackEditor.getVaticanReportSections();
 
         for(int i = 0; i < vaticanReportSections.size(); ++i) {
@@ -28,7 +37,7 @@ public class VRSPanelHandler extends PanelHandler {
 
             VaticanReportSection vaticanReportSection = vaticanReportSections.get(i);
 
-            addButton("+", panel, new ButtonClickEvent((e) -> {
+            EditorGUIUtil.addButton("+", panel, new ButtonClickEvent((e) -> {
                 if(validate()) {
                     faithTrackEditor.addVaticanReportSection(finalI, 1, 1, 1);
                     build();
@@ -38,23 +47,27 @@ public class VRSPanelHandler extends PanelHandler {
             JPanel dataPanel = new JPanel();
             dataPanel.setLayout(new BoxLayout(dataPanel, BoxLayout.Y_AXIS));
 
-            addTextField(vaticanReportSection.getFirstSpace(), dataPanel, (value) -> faithTrackEditor.setVRSFirstSpace(finalI, value));
+            firstSpaceFields.add(EditorGUIUtil.addValidatableTextField(vaticanReportSection.getFirstSpace(), dataPanel, (value) -> {
+                faithTrackEditor.setVRSFirstSpace(finalI, value);
+            }, (value) -> faithTrackEditor.validateVRSFirstSpace(finalI)));
 
-            addTextField(vaticanReportSection.getPopeSpace(), dataPanel, (value) -> faithTrackEditor.setVRSPopeSpace(finalI, value));
+            popeSpaceFields.add(EditorGUIUtil.addValidatableTextField(vaticanReportSection.getPopeSpace(), dataPanel, (value) -> {
+                faithTrackEditor.setVRSPopeSpace(finalI, value);
+            }, (value) -> faithTrackEditor.validateVRSPopeSpace(finalI)));
 
-            addTextField(vaticanReportSection.getPoints(), dataPanel, (value) -> faithTrackEditor.setVRSPoints(finalI, value));
+            pointsFields.add(EditorGUIUtil.addValidatableTextField(vaticanReportSection.getPoints(), dataPanel, (value) -> {
+                faithTrackEditor.setVRSPoints(finalI, value);
+            }, (value) -> faithTrackEditor.validateVRSPoints(finalI)));
 
-            addButton("-", dataPanel, new ButtonClickEvent((e) -> {
-                if(validate()) {
-                    faithTrackEditor.removeVaticanReportSection(finalI);
-                    build();
-                }
+            EditorGUIUtil.addButton("-", dataPanel, new ButtonClickEvent((e) -> {
+                faithTrackEditor.removeVaticanReportSection(finalI);
+                build();
             }));
 
             panel.add(dataPanel);
         }
 
-        addButton("+", panel, new ButtonClickEvent((e) -> {
+        EditorGUIUtil.addButton("+", panel, new ButtonClickEvent((e) -> {
             if(validate()) {
                 faithTrackEditor.addVaticanReportSection(vaticanReportSections.size(), 1, 1, 1);
                 build();
@@ -65,7 +78,23 @@ public class VRSPanelHandler extends PanelHandler {
     }
 
     public boolean validate() {
-        // TODO
-        return true;
+        // TODO : limit number of vrs
+        boolean result = true;
+        for(ValidatableTextField validatableTextField: firstSpaceFields) {
+            if(!validatableTextField.validate()) {
+                result = false;
+            }
+        }
+        for(ValidatableTextField validatableTextField: popeSpaceFields) {
+            if(!validatableTextField.validate()) {
+                result = false;
+            }
+        }
+        for(ValidatableTextField validatableTextField: pointsFields) {
+            if(!validatableTextField.validate()) {
+                result = false;
+            }
+        }
+        return result;
     }
 }

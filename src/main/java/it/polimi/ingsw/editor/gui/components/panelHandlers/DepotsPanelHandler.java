@@ -1,6 +1,8 @@
 package it.polimi.ingsw.editor.gui.components.panelHandlers;
 
+import it.polimi.ingsw.editor.gui.EditorGUIUtil;
 import it.polimi.ingsw.editor.gui.components.ButtonClickEvent;
+import it.polimi.ingsw.editor.gui.components.ValidatableTextField;
 import it.polimi.ingsw.editor.model.BoardEditor;
 import it.polimi.ingsw.editor.model.Config;
 
@@ -9,6 +11,7 @@ import java.util.ArrayList;
 
 public class DepotsPanelHandler extends PanelHandler {
     private final BoardEditor boardEditor;
+    private ArrayList<ValidatableTextField> slotsFields;
 
     public DepotsPanelHandler(JFrame frame, JPanel panel) {
         super(frame, panel);
@@ -20,6 +23,8 @@ public class DepotsPanelHandler extends PanelHandler {
     public void build() {
         panel.removeAll();
 
+        slotsFields = new ArrayList<>();
+
         ArrayList<Integer> depotSizes = boardEditor.getDepotSizes();
 
         for(int i = 0; i < depotSizes.size(); ++i) {
@@ -27,7 +32,7 @@ public class DepotsPanelHandler extends PanelHandler {
 
             int size = depotSizes.get(i);
 
-            addButton("+", panel, new ButtonClickEvent((e) -> {
+            EditorGUIUtil.addButton("+", panel, new ButtonClickEvent((e) -> {
                 if(validate()) {
                     boardEditor.addDepot(finalI, 1);
                     build();
@@ -37,19 +42,19 @@ public class DepotsPanelHandler extends PanelHandler {
             JPanel dataPanel = new JPanel();
             dataPanel.setLayout(new BoxLayout(dataPanel, BoxLayout.Y_AXIS));
 
-            addTextField(size, dataPanel, (value) -> boardEditor.setDepot(finalI, value));
+            slotsFields.add(EditorGUIUtil.addValidatableTextField(size, dataPanel, (value) -> {
+                boardEditor.setDepot(finalI, value);
+            }, (value) -> value > 0 && value < 100));
 
-            addButton("-", dataPanel, new ButtonClickEvent((e) -> {
-                if(validate()) {
-                    boardEditor.removeDepot(finalI);
-                    build();
-                }
+            EditorGUIUtil.addButton("-", dataPanel, new ButtonClickEvent((e) -> {
+                boardEditor.removeDepot(finalI);
+                build();
             }));
 
             panel.add(dataPanel);
         }
 
-        addButton("+", panel, new ButtonClickEvent((e) -> {
+        EditorGUIUtil.addButton("+", panel, new ButtonClickEvent((e) -> {
             if(validate()) {
                 boardEditor.addDepot(depotSizes.size(), 1);
                 build();
@@ -60,7 +65,13 @@ public class DepotsPanelHandler extends PanelHandler {
     }
 
     public boolean validate() {
-        // TODO
-        return true;
+        // TODO : limit number of depots
+        boolean result = true;
+        for(ValidatableTextField validatableTextField: slotsFields) {
+            if(!validatableTextField.validate()) {
+                result = false;
+            }
+        }
+        return result;
     }
 }

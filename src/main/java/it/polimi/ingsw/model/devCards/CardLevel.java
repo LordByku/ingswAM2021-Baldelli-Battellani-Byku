@@ -4,16 +4,14 @@ package it.polimi.ingsw.model.devCards;
  * CardLevel represents all possible cards' levels
  */
 public enum CardLevel {
-    I("1", "I"),
-    II("2", "II"),
-    III("3", "III");
+    I("1"),
+    II("2"),
+    III("3");
 
     private final String CLIString;
-    private final String extendedCLIString;
 
-    CardLevel(String CLIString, String extendedCLIString) {
+    CardLevel(String CLIString) {
         this.CLIString = CLIString;
-        this.extendedCLIString = extendedCLIString;
     }
 
     public CardLevel next() {
@@ -34,9 +32,5 @@ public enum CardLevel {
 
     public String getCLIString() {
         return CLIString;
-    }
-
-    public String getExtendedCLIString() {
-        return extendedCLIString;
     }
 }
