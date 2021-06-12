@@ -10,7 +10,6 @@ public abstract class GUIWindow {
     public void setActive(boolean active, JFrame frame) {
         if (active) {
             frame.setContentPane(getPanel());
-            frame.pack();
         }
         frame.setVisible(true);
     }

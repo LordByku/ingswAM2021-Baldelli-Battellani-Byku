@@ -28,6 +28,8 @@ public class GUI implements ViewInterface {
         this.client = client;
         frame = new JFrame("Masters of Renaissance");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setResizable(false);
 
         buffer = new LinkedBlockingQueue<>();
         clientUserCommunication = new Thread(new GUIClientUserCommunication(client, buffer));
