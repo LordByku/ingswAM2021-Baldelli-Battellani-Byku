@@ -32,7 +32,7 @@ public class DiscountEffectPanelHandler extends PanelHandler {
 
         ButtonGroup buttonGroup = new ButtonGroup();
 
-        for(ConcreteResource resource: ConcreteResource.values()) {
+        for (ConcreteResource resource : ConcreteResource.values()) {
             EditorGUIUtil.addRadioButton(resource.getString(), discountEffect.getResource() == resource, buttonGroup, buttonsPanel, new ButtonClickEvent((e) -> {
                 discountEffect.setResource(resource);
             }));

@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.playerBoard.faithTrack.CheckPoint;
 import it.polimi.ingsw.utility.JsonUtil;
 
 import java.util.ArrayList;
-import java.util.function.Predicate;
 
 public class FaithTrackEditor {
     private int finalPosition;
@@ -15,18 +14,18 @@ public class FaithTrackEditor {
     private ArrayList<VaticanReportSection> vaticanReportSections;
 
     public void addVRS(VaticanReportSection vaticanReportSection) {
-        if(vaticanReportSections == null) {
+        if (vaticanReportSections == null) {
             vaticanReportSections = new ArrayList<>();
         }
         vaticanReportSections.add(vaticanReportSection);
     }
 
-    public void setFinalPosition(int finalPosition) {
-        this.finalPosition = finalPosition;
-    }
-
     public int getFinalPosition() {
         return finalPosition;
+    }
+
+    public void setFinalPosition(int finalPosition) {
+        this.finalPosition = finalPosition;
     }
 
     public void addVaticanReportSection(int index, int firstSpace, int popeSpace, int points) {
@@ -85,7 +84,7 @@ public class FaithTrackEditor {
     private JsonObject buildFaithTrack() {
         JsonObject out = new JsonObject();
         JsonArray checkPointsArray = new JsonArray();
-        for(CheckPoint checkPoint: checkPoints) {
+        for (CheckPoint checkPoint : checkPoints) {
             checkPointsArray.add(JsonUtil.getInstance().serialize(checkPoint));
         }
         out.addProperty("finalPosition", finalPosition);
@@ -95,14 +94,14 @@ public class FaithTrackEditor {
 
     private JsonArray buildVaticanReportSections() {
         JsonArray vrsArray = new JsonArray();
-        for(VaticanReportSection vaticanReportSection: vaticanReportSections) {
+        for (VaticanReportSection vaticanReportSection : vaticanReportSections) {
             vrsArray.add(JsonUtil.getInstance().serialize(vaticanReportSection));
         }
         return vrsArray;
     }
 
     public void write(JsonObject out) {
-        if(!out.has("board")) {
+        if (!out.has("board")) {
             JsonObject board = new JsonObject();
             board.add("faithTrack", buildFaithTrack());
             out.add("board", board);
@@ -117,10 +116,10 @@ public class FaithTrackEditor {
         int left = 0;
         int right = finalPosition + 1;
 
-        if(index > 0) {
+        if (index > 0) {
             left = checkPoints.get(index - 1).getPosition();
         }
-        if(index < checkPoints.size() - 1) {
+        if (index < checkPoints.size() - 1) {
             right = checkPoints.get(index + 1).getPosition();
         }
 
@@ -132,10 +131,10 @@ public class FaithTrackEditor {
         int left = 0;
         int right = 100;
 
-        if(index > 0) {
+        if (index > 0) {
             left = Math.max(left, checkPoints.get(index - 1).getPoints());
         }
-        if(index < checkPoints.size() - 1) {
+        if (index < checkPoints.size() - 1) {
             right = Math.min(right, checkPoints.get(index + 1).getPoints());
         }
 
@@ -147,10 +146,10 @@ public class FaithTrackEditor {
         int left = 0;
         int right = Math.min(finalPosition + 1, vaticanReportSections.get(index).getPopeSpace() + 1);
 
-        if(index > 0) {
+        if (index > 0) {
             left = Math.max(left, vaticanReportSections.get(index - 1).getPopeSpace());
         }
-        if(index < vaticanReportSections.size() - 1) {
+        if (index < vaticanReportSections.size() - 1) {
             right = Math.min(right, vaticanReportSections.get(index + 1).getFirstSpace());
         }
 
@@ -162,10 +161,10 @@ public class FaithTrackEditor {
         int left = Math.max(0, vaticanReportSections.get(index).getFirstSpace() - 1);
         int right = finalPosition + 1;
 
-        if(index > 0) {
+        if (index > 0) {
             left = Math.max(left, vaticanReportSections.get(index - 1).getPopeSpace());
         }
-        if(index < vaticanReportSections.size() - 1) {
+        if (index < vaticanReportSections.size() - 1) {
             right = Math.min(right, vaticanReportSections.get(index + 1).getFirstSpace());
         }
 
@@ -177,10 +176,10 @@ public class FaithTrackEditor {
         int left = 0;
         int right = 100;
 
-        if(index > 0) {
+        if (index > 0) {
             left = Math.max(left, vaticanReportSections.get(index - 1).getPoints());
         }
-        if(index < vaticanReportSections.size() - 1) {
+        if (index < vaticanReportSections.size() - 1) {
             right = Math.min(right, vaticanReportSections.get(index + 1).getPoints());
         }
 

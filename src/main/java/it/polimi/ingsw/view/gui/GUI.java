@@ -84,10 +84,10 @@ public class GUI implements ViewInterface {
     @Override
     public void loadGame() {
         try {
-            for(ResourceImageType resourceImageType: ResourceImageType.values()) {
+            for (ResourceImageType resourceImageType : ResourceImageType.values()) {
                 resourceImageType.loadImage();
             }
-            for(CardColour cardColour: CardColour.values()) {
+            for (CardColour cardColour : CardColour.values()) {
                 cardColour.loadImage();
             }
         } catch (IOException e) {
@@ -114,7 +114,7 @@ public class GUI implements ViewInterface {
 
     @Override
     public void connectionFailed(int timerDelay) {
-        if(timerDelay > 0) {
+        if (timerDelay > 0) {
             // TODO: handle reconnection
         } else {
             ((Welcome) guiWindow).connectionFailed();

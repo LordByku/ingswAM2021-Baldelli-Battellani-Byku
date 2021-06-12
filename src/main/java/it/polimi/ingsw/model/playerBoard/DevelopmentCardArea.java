@@ -76,11 +76,11 @@ public class DevelopmentCardArea implements Scoring {
         decks.get(deckIndex).add(devCard);
 
         int cards = 0;
-        for(DevCardDeck deck: decks) {
+        for (DevCardDeck deck : decks) {
             cards += deck.getCards().size();
         }
 
-        if(cards == 7) {
+        if (cards == 7) {
             Game.getInstance().setLastTurn();
         }
     }

@@ -32,7 +32,7 @@
 /**
  * This example, like all Swing examples, exists in a package:
  * in this case, the "start" package.
- * If you are using an IDE, such as NetBeans, this should work 
+ * If you are using an IDE, such as NetBeans, this should work
  * seamlessly.  If you are compiling and running the examples
  * from the command-line, this may be confusing if you aren't
  * used to using named packages.  In most cases,
@@ -47,6 +47,7 @@ package it.polimi.ingsw.view.gui;
 /*
  * HelloWorldSwing.java requires no other files.
  */
+
 import javax.swing.*;
 
 public class HelloWorldSwing {

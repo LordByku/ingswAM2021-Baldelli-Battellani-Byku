@@ -1,9 +1,9 @@
 package it.polimi.ingsw.view.localModel;
 
-import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
 import it.polimi.ingsw.model.gameZone.marbles.MarbleColour;
 
-public class MarbleMarket implements LocalModelElement {
+public class MarbleMarket extends LocalModelElement {
     private MarbleColour[][] market;
     private MarbleColour freeMarble;
 
@@ -45,7 +45,7 @@ public class MarbleMarket implements LocalModelElement {
     }
 
     @Override
-    public void updateModel(JsonObject jsonObject) {
-
+    public void updateModel(JsonElement jsonElement) {
+        notifyObservers();
     }
 }

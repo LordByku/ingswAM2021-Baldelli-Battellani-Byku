@@ -1,7 +1,6 @@
 package it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.requirements;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import it.polimi.ingsw.model.devCards.CardColour;
 import it.polimi.ingsw.utility.JsonUtil;
 
@@ -35,8 +34,8 @@ public class CardSetRequirements extends Requirements {
     public JsonArray serialize() {
         JsonArray array = new JsonArray();
 
-        for(CardSet cardSet: cardSets) {
-            if(cardSet.getQuantity() > 0) {
+        for (CardSet cardSet : cardSets) {
+            if (cardSet.getQuantity() > 0) {
                 array.add(JsonUtil.getInstance().serialize(cardSet));
             }
         }

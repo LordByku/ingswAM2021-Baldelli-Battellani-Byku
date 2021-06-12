@@ -1,11 +1,11 @@
 package it.polimi.ingsw.view.localModel;
 
-import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
 import it.polimi.ingsw.model.devCards.DevCard;
 import it.polimi.ingsw.parsing.DevCardsParser;
 import it.polimi.ingsw.view.cli.CLIPrintable;
 
-public class CardMarketDeck implements LocalModelElement, CLIPrintable {
+public class CardMarketDeck extends LocalModelElement implements CLIPrintable {
     private Integer topCard;
     private int quantity;
 
@@ -18,8 +18,8 @@ public class CardMarketDeck implements LocalModelElement, CLIPrintable {
     }
 
     @Override
-    public void updateModel(JsonObject jsonObject) {
-
+    public void updateModel(JsonElement cardMarketDeckJson) {
+        notifyObservers();
     }
 
     @Override

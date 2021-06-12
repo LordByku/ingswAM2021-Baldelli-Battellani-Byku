@@ -51,7 +51,7 @@ public class ValidatableTextField {
             result = false;
         }
 
-        if(result) {
+        if (result) {
             errorLabel.setText(" ");
         } else {
             errorLabel.setText("!");

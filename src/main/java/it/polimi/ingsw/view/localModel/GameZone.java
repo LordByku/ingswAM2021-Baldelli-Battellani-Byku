@@ -1,24 +1,34 @@
 package it.polimi.ingsw.view.localModel;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.model.game.actionTokens.ActionToken;
 
-public class GameZone implements LocalModelElement {
+public class GameZone extends LocalModelElement {
     private MarbleMarket marbleMarket;
     private CardMarket cardMarket;
-    private ActionToken actionToken;
+    private ActionTokenDeck actionTokenDeck;
 
     @Override
-    public void updateModel(JsonObject gameZoneJson) {
-        if (gameZoneJson.has("marbleMarket")) {
-            marbleMarket = gson.fromJson(gameZoneJson.getAsJsonObject("marbleMarket"), MarbleMarket.class);
+    public void updateModel(JsonElement gameZoneJson) {
+        JsonObject gameZoneObject = gameZoneJson.getAsJsonObject();
+        if (gameZoneObject.has("marbleMarket")) {
+            JsonElement marbleMarketJson = gameZoneObject.get("marbleMarket");
+            marbleMarket = gson.fromJson(marbleMarketJson, MarbleMarket.class);
+            marbleMarket.updateModel(marbleMarketJson);
         }
-        if (gameZoneJson.has("cardMarket")) {
-            cardMarket = gson.fromJson(gameZoneJson.getAsJsonObject("cardMarket"), CardMarket.class);
+        if (gameZoneObject.has("cardMarket")) {
+            JsonElement cardMarketJson = gameZoneObject.get("cardMarket");
+            cardMarket = gson.fromJson(cardMarketJson, CardMarket.class);
+            cardMarket.updateModel(cardMarketJson);
         }
-        if (gameZoneJson.has("actionToken")) {
-            actionToken = gson.fromJson(gameZoneJson.get("actionToken"), ActionToken.class);
+        if (gameZoneObject.has("actionTokenDeck")) {
+            JsonElement actionTokenDeckJson = gameZoneObject.get("actionTokenDeck");
+            actionTokenDeck = gson.fromJson(actionTokenDeckJson, ActionTokenDeck.class);
+            actionTokenDeck.updateModel(actionTokenDeckJson);
         }
+
+        notifyObservers();
     }
 
     public MarbleMarket getMarbleMarket() {
@@ -30,10 +40,13 @@ public class GameZone implements LocalModelElement {
     }
 
     public ActionToken getActionToken() {
-        return actionToken;
+        if (actionTokenDeck == null) {
+            return null;
+        }
+        return actionTokenDeck.getFlippedActionToken();
     }
 
     public void resetActionToken() {
-        actionToken = null;
+        actionTokenDeck.resetActionToken();
     }
 }

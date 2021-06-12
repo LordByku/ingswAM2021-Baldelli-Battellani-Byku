@@ -30,13 +30,13 @@ public class CheckPointsPanelHandler extends PanelHandler {
 
         ArrayList<CheckPoint> checkPoints = faithTrackEditor.getCheckPoints();
 
-        for(int i = 0; i < checkPoints.size(); ++i) {
+        for (int i = 0; i < checkPoints.size(); ++i) {
             int finalI = i;
 
             CheckPoint checkPoint = checkPoints.get(i);
 
             EditorGUIUtil.addButton("+", panel, new ButtonClickEvent((e) -> {
-                if(validate()) {
+                if (validate()) {
                     faithTrackEditor.addCheckPoint(finalI, new CheckPoint(1, 1));
                     build();
                 }
@@ -46,15 +46,15 @@ public class CheckPointsPanelHandler extends PanelHandler {
             dataPanel.setLayout(new BoxLayout(dataPanel, BoxLayout.Y_AXIS));
 
             checkPointFields.add(EditorGUIUtil.addValidatableTextField(
-                checkPoint.getPosition(), dataPanel, (value) -> {
-                    faithTrackEditor.setCheckPointPosition(finalI, value);
-                }, (value) -> faithTrackEditor.validatePosition(finalI)
+                    checkPoint.getPosition(), dataPanel, (value) -> {
+                        faithTrackEditor.setCheckPointPosition(finalI, value);
+                    }, (value) -> faithTrackEditor.validatePosition(finalI)
             ));
 
             pointsFields.add(EditorGUIUtil.addValidatableTextField(
-                checkPoint.getPoints(), dataPanel, (value) -> {
-                    faithTrackEditor.setCheckPointPoints(finalI, value);
-                }, (value) -> faithTrackEditor.validatePoints(finalI)
+                    checkPoint.getPoints(), dataPanel, (value) -> {
+                        faithTrackEditor.setCheckPointPoints(finalI, value);
+                    }, (value) -> faithTrackEditor.validatePoints(finalI)
             ));
 
             EditorGUIUtil.addButton("-", dataPanel, new ButtonClickEvent((e) -> {
@@ -66,7 +66,7 @@ public class CheckPointsPanelHandler extends PanelHandler {
         }
 
         EditorGUIUtil.addButton("+", panel, new ButtonClickEvent((e) -> {
-            if(validate()) {
+            if (validate()) {
                 faithTrackEditor.addCheckPoint(checkPoints.size(), new CheckPoint(1, 1));
                 build();
             }
@@ -78,13 +78,13 @@ public class CheckPointsPanelHandler extends PanelHandler {
     public boolean validate() {
         // TODO : limit number of checkpoints
         boolean result = true;
-        for(ValidatableTextField validatableTextField: checkPointFields) {
-            if(!validatableTextField.validate()) {
+        for (ValidatableTextField validatableTextField : checkPointFields) {
+            if (!validatableTextField.validate()) {
                 result = false;
             }
         }
-        for(ValidatableTextField validatableTextField: pointsFields) {
-            if(!validatableTextField.validate()) {
+        for (ValidatableTextField validatableTextField : pointsFields) {
+            if (!validatableTextField.validate()) {
                 result = false;
             }
         }

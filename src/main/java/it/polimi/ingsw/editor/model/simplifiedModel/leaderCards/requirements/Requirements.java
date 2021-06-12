@@ -1,7 +1,6 @@
 package it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.requirements;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 public abstract class Requirements {
     private final RequirementType requirementType;

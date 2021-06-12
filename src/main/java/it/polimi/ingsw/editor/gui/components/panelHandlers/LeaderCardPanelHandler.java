@@ -2,7 +2,6 @@ package it.polimi.ingsw.editor.gui.components.panelHandlers;
 
 import it.polimi.ingsw.editor.gui.EditorGUIUtil;
 import it.polimi.ingsw.editor.gui.components.ButtonClickEvent;
-import it.polimi.ingsw.editor.gui.components.TextFieldDocumentListener;
 import it.polimi.ingsw.editor.gui.components.ValidatableTextField;
 import it.polimi.ingsw.editor.model.Config;
 import it.polimi.ingsw.editor.model.LeaderCardsEditor;
@@ -15,8 +14,6 @@ import it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.requirements.Res
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
@@ -81,11 +78,11 @@ public class LeaderCardPanelHandler extends PanelHandler {
         }));
 
         Enumeration<AbstractButton> requirementsButton = requirementsGroup.getElements();
-        for(RequirementType requirementType: RequirementType.values()) {
+        for (RequirementType requirementType : RequirementType.values()) {
             requirementsButton.nextElement().addMouseListener(new ButtonClickEvent((e) -> {
                 int currentSelection = leaderCardsEditor.getCurrentSelection();
                 LeaderCard leaderCard = leaderCardsEditor.getLeaderCards().get(currentSelection);
-                if(leaderCard.getRequirements().getRequirementType() != requirementType) {
+                if (leaderCard.getRequirements().getRequirementType() != requirementType) {
                     leaderCard.setRequirements(Requirements.build(requirementType));
                     loadCard(currentSelection);
                 }
@@ -93,11 +90,11 @@ public class LeaderCardPanelHandler extends PanelHandler {
         }
 
         Enumeration<AbstractButton> effectButton = effectGroup.getElements();
-        for(EffectType effectType: EffectType.values()) {
+        for (EffectType effectType : EffectType.values()) {
             effectButton.nextElement().addMouseListener(new ButtonClickEvent((e) -> {
                 int currentSelection = leaderCardsEditor.getCurrentSelection();
                 LeaderCard leaderCard = leaderCardsEditor.getLeaderCards().get(currentSelection);
-                if(leaderCard.getEffect().getEffectType() != effectType) {
+                if (leaderCard.getEffect().getEffectType() != effectType) {
                     leaderCard.setEffect(Effect.build(effectType));
                     loadCard(currentSelection);
                 }
@@ -111,10 +108,10 @@ public class LeaderCardPanelHandler extends PanelHandler {
     @Override
     public boolean validate() {
         boolean result = true;
-        if(!requirementsPanelHandler.validate() || !effectPanelHandler.validate()) {
+        if (!requirementsPanelHandler.validate() || !effectPanelHandler.validate()) {
             result = false;
         }
-        if(!pointsField.validate()) {
+        if (!pointsField.validate()) {
             result = false;
         }
         return result;
@@ -141,12 +138,12 @@ public class LeaderCardPanelHandler extends PanelHandler {
         }, (value) -> value > 0 && value < 100);
 
         Enumeration<AbstractButton> requirementsButton = requirementsGroup.getElements();
-        for(RequirementType requirementType: RequirementType.values()) {
+        for (RequirementType requirementType : RequirementType.values()) {
             requirementsGroup.setSelected(requirementsButton.nextElement().getModel(), leaderCard.getRequirements().getRequirementType() == requirementType);
         }
 
         Enumeration<AbstractButton> effectButton = effectGroup.getElements();
-        for(EffectType effectType: EffectType.values()) {
+        for (EffectType effectType : EffectType.values()) {
             effectGroup.setSelected(effectButton.nextElement().getModel(), leaderCard.getEffect().getEffectType() == effectType);
         }
 

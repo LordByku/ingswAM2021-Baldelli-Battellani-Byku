@@ -22,6 +22,7 @@ public class Client {
     private final String hostname;
     private final int port;
     private final int timerDelay = 10000;
+    private final boolean guiSelection;
     private ClientState clientState;
     private String nickname;
     private PrintWriter serverOut;
@@ -33,7 +34,6 @@ public class Client {
     private Thread localController;
     private Thread localClientCommunication;
     private ViewInterface viewInterface;
-    private final boolean guiSelection;
 
     public Client(String hostname, int port, boolean guiSelection) {
         this.hostname = hostname;
@@ -56,7 +56,7 @@ public class Client {
     }
 
     public void start() {
-        if(guiSelection) {
+        if (guiSelection) {
             viewInterface = new GUI(this);
         } else {
             viewInterface = new CLI(this);
@@ -129,7 +129,7 @@ public class Client {
         }
 
         try {
-            if(!getModel().getEndGame()) {
+            if (!getModel().getEndGame()) {
                 connectToServer();
             }
         } catch (IOException e) {

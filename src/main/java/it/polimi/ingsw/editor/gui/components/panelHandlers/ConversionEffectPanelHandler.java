@@ -30,7 +30,7 @@ public class ConversionEffectPanelHandler extends PanelHandler {
 
         ButtonGroup buttonGroup = new ButtonGroup();
 
-        for(ConcreteResource resource: ConcreteResource.values()) {
+        for (ConcreteResource resource : ConcreteResource.values()) {
             EditorGUIUtil.addRadioButton(resource.getString(), conversionEffect.getResource() == resource, buttonGroup, buttonsPanel, new ButtonClickEvent((e) -> {
                 conversionEffect.setResource(resource);
             }));

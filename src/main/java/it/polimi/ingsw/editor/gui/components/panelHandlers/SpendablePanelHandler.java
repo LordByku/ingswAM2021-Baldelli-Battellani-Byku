@@ -30,7 +30,7 @@ public class SpendablePanelHandler extends PanelHandler {
         JPanel textFieldPanel = new JPanel();
         textFieldPanel.setLayout(new BoxLayout(textFieldPanel, BoxLayout.Y_AXIS));
 
-        for(SpendableResource resource: SpendableResource.values()) {
+        for (SpendableResource resource : SpendableResource.values()) {
             EditorGUIUtil.addLabel(resource.getString(), labelPanel);
             quantityFields.add(EditorGUIUtil.addValidatableTextField(spendable.getQuantity(resource), textFieldPanel, (value) -> {
                 spendable.updateQuantity(resource, value);
@@ -46,8 +46,8 @@ public class SpendablePanelHandler extends PanelHandler {
     @Override
     public boolean validate() {
         boolean result = true;
-        for(ValidatableTextField validatableTextField: quantityFields) {
-            if(!validatableTextField.validate()) {
+        for (ValidatableTextField validatableTextField : quantityFields) {
+            if (!validatableTextField.validate()) {
                 result = false;
             }
         }

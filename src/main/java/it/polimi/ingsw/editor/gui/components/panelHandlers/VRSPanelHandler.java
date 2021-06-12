@@ -32,13 +32,13 @@ public class VRSPanelHandler extends PanelHandler {
 
         ArrayList<VaticanReportSection> vaticanReportSections = faithTrackEditor.getVaticanReportSections();
 
-        for(int i = 0; i < vaticanReportSections.size(); ++i) {
+        for (int i = 0; i < vaticanReportSections.size(); ++i) {
             int finalI = i;
 
             VaticanReportSection vaticanReportSection = vaticanReportSections.get(i);
 
             EditorGUIUtil.addButton("+", panel, new ButtonClickEvent((e) -> {
-                if(validate()) {
+                if (validate()) {
                     faithTrackEditor.addVaticanReportSection(finalI, 1, 1, 1);
                     build();
                 }
@@ -68,7 +68,7 @@ public class VRSPanelHandler extends PanelHandler {
         }
 
         EditorGUIUtil.addButton("+", panel, new ButtonClickEvent((e) -> {
-            if(validate()) {
+            if (validate()) {
                 faithTrackEditor.addVaticanReportSection(vaticanReportSections.size(), 1, 1, 1);
                 build();
             }
@@ -77,21 +77,22 @@ public class VRSPanelHandler extends PanelHandler {
         frame.setVisible(true);
     }
 
+    @Override
     public boolean validate() {
         // TODO : limit number of vrs
         boolean result = true;
-        for(ValidatableTextField validatableTextField: firstSpaceFields) {
-            if(!validatableTextField.validate()) {
+        for (ValidatableTextField validatableTextField : firstSpaceFields) {
+            if (!validatableTextField.validate()) {
                 result = false;
             }
         }
-        for(ValidatableTextField validatableTextField: popeSpaceFields) {
-            if(!validatableTextField.validate()) {
+        for (ValidatableTextField validatableTextField : popeSpaceFields) {
+            if (!validatableTextField.validate()) {
                 result = false;
             }
         }
-        for(ValidatableTextField validatableTextField: pointsFields) {
-            if(!validatableTextField.validate()) {
+        for (ValidatableTextField validatableTextField : pointsFields) {
+            if (!validatableTextField.validate()) {
                 result = false;
             }
         }

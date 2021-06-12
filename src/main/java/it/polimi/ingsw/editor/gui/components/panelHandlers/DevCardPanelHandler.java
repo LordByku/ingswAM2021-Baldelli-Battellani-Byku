@@ -2,7 +2,6 @@ package it.polimi.ingsw.editor.gui.components.panelHandlers;
 
 import it.polimi.ingsw.editor.gui.EditorGUIUtil;
 import it.polimi.ingsw.editor.gui.components.ButtonClickEvent;
-import it.polimi.ingsw.editor.gui.components.TextFieldDocumentListener;
 import it.polimi.ingsw.editor.gui.components.ValidatableTextField;
 import it.polimi.ingsw.editor.model.Config;
 import it.polimi.ingsw.editor.model.DevCardsEditor;
@@ -54,11 +53,11 @@ public class DevCardPanelHandler extends PanelHandler {
 
         devCardSelectionBox.addActionListener(e -> {
             int newSelection = devCardSelectionBox.getSelectedIndex();
-            if(newSelection == devCardsEditor.getDevCards().size()) {
+            if (newSelection == devCardsEditor.getDevCards().size()) {
                 devCardsEditor.addNewCard();
                 buildComboBox(newSelection);
                 loadCard(newSelection);
-            } else if(newSelection != -1) {
+            } else if (newSelection != -1) {
                 devCardsEditor.setCurrentSelection(newSelection);
                 loadCard(newSelection);
             }
@@ -73,14 +72,14 @@ public class DevCardPanelHandler extends PanelHandler {
         }));
 
         Enumeration<AbstractButton> levelButtons = levelGroup.getElements();
-        for(CardLevel cardLevel: CardLevel.values()) {
+        for (CardLevel cardLevel : CardLevel.values()) {
             levelButtons.nextElement().addMouseListener(new ButtonClickEvent((e) -> {
                 devCardsEditor.getDevCards().get(devCardsEditor.getCurrentSelection()).setLevel(cardLevel);
             }));
         }
 
         Enumeration<AbstractButton> colourButtons = colourGroup.getElements();
-        for(CardColour cardColour: CardColour.values()) {
+        for (CardColour cardColour : CardColour.values()) {
             colourButtons.nextElement().addMouseListener(new ButtonClickEvent((e) -> {
                 devCardsEditor.getDevCards().get(devCardsEditor.getCurrentSelection()).setColour(cardColour);
             }));
@@ -93,13 +92,13 @@ public class DevCardPanelHandler extends PanelHandler {
     @Override
     public boolean validate() {
         boolean result = true;
-        if(!pointsField.validate()) {
+        if (!pointsField.validate()) {
             result = false;
         }
-        if(!requirementsPanelHandler.validate()) {
+        if (!requirementsPanelHandler.validate()) {
             result = false;
         }
-        if(!productionInPanelHandler.validate() || !productionOutPanelHandler.validate()) {
+        if (!productionInPanelHandler.validate() || !productionOutPanelHandler.validate()) {
             result = false;
         }
         return result;
@@ -126,12 +125,12 @@ public class DevCardPanelHandler extends PanelHandler {
         }, (value) -> value > 0 && value < 100);
 
         Enumeration<AbstractButton> levelButtons = levelGroup.getElements();
-        for(CardLevel cardLevel: CardLevel.values()) {
+        for (CardLevel cardLevel : CardLevel.values()) {
             levelGroup.setSelected(levelButtons.nextElement().getModel(), devCard.getLevel() == cardLevel);
         }
 
         Enumeration<AbstractButton> colourButtons = colourGroup.getElements();
-        for(CardColour cardColour: CardColour.values()) {
+        for (CardColour cardColour : CardColour.values()) {
             colourGroup.setSelected(colourButtons.nextElement().getModel(), devCard.getColour() == cardColour);
         }
 

@@ -86,7 +86,7 @@ public class ClientHandler implements Runnable {
                 broadcast("playerList", GameStateSerializer.getJsonPlayerList());
             }
         } catch (GameAlreadyStartedException e) {
-            if(!Game.getInstance().hasGameEnded()) {
+            if (!Game.getInstance().hasGameEnded()) {
                 person.disconnect();
                 if (commandBuffer != null) {
                     Consumer<GameStateSerializer> lambda = commandBuffer.kill();
@@ -107,7 +107,7 @@ public class ClientHandler implements Runnable {
     }
 
     public synchronized void handlePing() {
-        if(timer != null) {
+        if (timer != null) {
             timer.cancel();
         }
         if (ponged) {
@@ -158,7 +158,7 @@ public class ClientHandler implements Runnable {
         if ("pong".equals(line)) {
             ponged = true;
         } else {
-            if(Game.getInstance().hasGameEnded()) {
+            if (Game.getInstance().hasGameEnded()) {
                 ok("endGame", server.buildEndGameMessage());
             } else {
                 serverState.handleClientMessage(this, line);
@@ -212,7 +212,7 @@ public class ClientHandler implements Runnable {
             Consumer<GameStateSerializer> lambda = (serializer) -> {
                 serializer.addCardMarket();
                 serializer.addFaithTrack(person);
-                serializer.addFlippedActionToken();
+                serializer.addActionTokenDeck();
             };
             updateGameState(lambda);
         } else {
@@ -228,7 +228,7 @@ public class ClientHandler implements Runnable {
 
         commandBuffer = null;
 
-        if(Game.getInstance().hasGameEnded()) {
+        if (Game.getInstance().hasGameEnded()) {
             endGame();
         } else {
             broadcast("command", JsonUtil.getInstance().serializeCommandBuffer(commandBuffer, person));

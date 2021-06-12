@@ -13,7 +13,7 @@ public class GUIClientUserCommunication implements Runnable {
 
     @Override
     public void run() {
-        while(!Thread.interrupted()) {
+        while (!Thread.interrupted()) {
             try {
                 String line = buffer.take();
                 client.handleUserMessage(line);

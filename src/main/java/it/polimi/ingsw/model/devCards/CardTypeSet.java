@@ -70,7 +70,7 @@ public class CardTypeSet implements LeaderCardRequirements {
 
     public String getCLIString() {
         StringBuilder result = new StringBuilder();
-        for (CardTypeDetails cardTypeDetails: cardTypes.values()) {
+        for (CardTypeDetails cardTypeDetails : cardTypes.values()) {
             result.append(cardTypeDetails.getCLIString()).append(" ");
         }
         return result.toString();

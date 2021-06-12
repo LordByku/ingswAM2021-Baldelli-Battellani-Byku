@@ -16,14 +16,6 @@ public class ResourceImage extends JPanel {
         this.setPreferredSize(new Dimension(size, size));
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        if(image != null) {
-            g.drawImage(image, 0, 0, size, size, null);
-        }
-    }
-
     public static JPanel getResourcePanel(int count, ResourceImageType resourceImageType, int height) {
         JPanel resourcePanel = new JPanel();
         resourcePanel.setLayout(new BoxLayout(resourcePanel, BoxLayout.X_AXIS));
@@ -46,5 +38,13 @@ public class ResourceImage extends JPanel {
         resourcePanel.add(containerPanel);
 
         return resourcePanel;
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if (image != null) {
+            g.drawImage(image, 0, 0, size, size, null);
+        }
     }
 }

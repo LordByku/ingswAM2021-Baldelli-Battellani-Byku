@@ -15,7 +15,7 @@ public class CardTypeRequirementsPanel {
     public CardTypeRequirementsPanel(TreeMap<CardColour, CardTypeDetails> cardTypes, int leaderCardWidth, int leaderCardHeight) {
         ArrayList<JPanel> cardTypePanels = new ArrayList<>();
 
-        for(CardTypeDetails cardTypeDetails: cardTypes.values()) {
+        for (CardTypeDetails cardTypeDetails : cardTypes.values()) {
             JPanel requirementsPanel = new JPanel();
             requirementsPanel.setLayout(new BoxLayout(requirementsPanel, BoxLayout.X_AXIS));
 
@@ -43,7 +43,7 @@ public class CardTypeRequirementsPanel {
         panel.setBounds(leaderCardWidth / 20, leaderCardHeight / 30, leaderCardWidth * 9 / 10, leaderCardHeight / 7);
         panel.setLayout(new GridLayout(1, cardTypePanels.size()));
 
-        for(JPanel cardTypePanel: cardTypePanels) {
+        for (JPanel cardTypePanel : cardTypePanels) {
             panel.add(cardTypePanel);
         }
     }

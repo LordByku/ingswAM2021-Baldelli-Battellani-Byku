@@ -10,9 +10,9 @@ import java.io.IOException;
 import java.net.URL;
 
 public class LeaderCardImage extends JPanel {
-    private final Image image;
     protected final int width;
     protected final int height;
+    private final Image image;
 
     protected LeaderCardImage(String filename, LeaderCard leaderCard, int width) throws IOException {
         super(null);
@@ -41,7 +41,7 @@ public class LeaderCardImage extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if(image != null) {
+        if (image != null) {
             g.drawImage(image, 0, 0, width, height, null);
         }
     }

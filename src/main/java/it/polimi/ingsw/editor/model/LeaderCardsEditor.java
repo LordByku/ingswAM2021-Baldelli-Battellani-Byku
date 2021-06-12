@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import it.polimi.ingsw.editor.model.simplifiedModel.DevCard;
 import it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.LeaderCard;
 import it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.effects.DiscountEffect;
 import it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.effects.Effect;
@@ -24,7 +23,7 @@ public class LeaderCardsEditor {
 
         currentSelection = 0;
         leaderCards = new ArrayList<>();
-        for(JsonElement jsonElement: jsonArray) {
+        for (JsonElement jsonElement : jsonArray) {
             JsonObject cardObject = jsonElement.getAsJsonObject();
 
             int points = cardObject.get("points").getAsInt();
@@ -62,7 +61,7 @@ public class LeaderCardsEditor {
     public void write(JsonObject out) {
         JsonArray array = new JsonArray();
 
-        for(LeaderCard leaderCard: leaderCards) {
+        for (LeaderCard leaderCard : leaderCards) {
             array.add(leaderCard.serialize());
         }
 

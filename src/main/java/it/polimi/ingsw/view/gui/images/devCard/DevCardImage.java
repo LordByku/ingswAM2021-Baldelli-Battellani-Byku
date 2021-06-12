@@ -30,7 +30,7 @@ public class DevCardImage extends JPanel {
 
         JPanel points = new JPanel();
         points.setLayout(new GridBagLayout());
-        points.setBounds(width * 4 / 9, height * 6 / 7,width / 9, height / 12);
+        points.setBounds(width * 4 / 9, height * 6 / 7, width / 9, height / 12);
 
         JLabel pointsLabel = new JLabel("" + devCard.getPoints(), SwingConstants.CENTER);
         pointsLabel.setBorder(new EmptyBorder(1, 1, 1, 1));
@@ -49,7 +49,7 @@ public class DevCardImage extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if(image != null) {
+        if (image != null) {
             g.drawImage(image, 0, 0, width, height, null);
         }
     }

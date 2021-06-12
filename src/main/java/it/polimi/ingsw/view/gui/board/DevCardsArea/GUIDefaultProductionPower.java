@@ -23,8 +23,8 @@ public class GUIDefaultProductionPower {
     JPanel outputPanel;
     GridBagConstraints inputC;
 
-    public GUIDefaultProductionPower(JPanel devCardsArea){
-        this.devCardsArea=devCardsArea;
+    public GUIDefaultProductionPower(JPanel devCardsArea) {
+        this.devCardsArea = devCardsArea;
         defaultProductionPower = LocalConfig.getInstance().getDefaultProductionPower();
         input = defaultProductionPower.getInput();
         output = defaultProductionPower.getOutput();
@@ -34,7 +34,7 @@ public class GUIDefaultProductionPower {
         inputC = new GridBagConstraints();
     }
 
-    public void loadDefaultProductionPower(){
+    public void loadDefaultProductionPower() {
         int numOfChoiceR;
         numOfChoiceR = input.getResourceSet().getChoiceResources().size();
         loadResources(numOfChoiceR, true); //load input
@@ -43,41 +43,41 @@ public class GUIDefaultProductionPower {
 
         defProdPower.setVisible(true);
         defProdPower.setBorder(new LineBorder(Color.BLACK));
-        inputC.gridx=0;
-        inputC.gridy=0;
-        inputC.insets = new Insets(0,0,0,5);
+        inputC.gridx = 0;
+        inputC.gridy = 0;
+        inputC.insets = new Insets(0, 0, 0, 5);
         defProdPower.add(inputPanel, inputC);
         inputC.gridx++;
-        inputC.insets = new Insets(0,5,0,0);
+        inputC.insets = new Insets(0, 5, 0, 0);
         defProdPower.add(outputPanel, inputC);
-        inputC.gridx=0;
-        inputC.gridy=0;
-        inputC.weightx=0.25;
-        inputC.insets = new Insets(0,0,0,0);
-        devCardsArea.add(defProdPower,inputC);
+        inputC.gridx = 0;
+        inputC.gridy = 0;
+        inputC.weightx = 0.25;
+        inputC.insets = new Insets(0, 0, 0, 0);
+        devCardsArea.add(defProdPower, inputC);
     }
 
-    private void loadResources(int numOfChoiceR,boolean in){
+    private void loadResources(int numOfChoiceR, boolean in) {
         JPanel loadingPanel;
         loadingPanel = in ? inputPanel : outputPanel;
 
-        if(numOfChoiceR>0) {
+        if (numOfChoiceR > 0) {
             JPanel choiceLabelIcon = new ResourceImage(ResourceImageType.CHOICE, 20);
             JLabel choiceLabelQuantity = new JLabel(Integer.toString(numOfChoiceR));
             inputC.gridx = 0;
             inputC.gridy = 0;
-            loadingPanel.add(choiceLabelQuantity,inputC);
+            loadingPanel.add(choiceLabelQuantity, inputC);
             inputC.gridx++;
-            loadingPanel.add(choiceLabelIcon,inputC);
+            loadingPanel.add(choiceLabelIcon, inputC);
             inputC.gridy++;
         }
 
-        for(ConcreteResource concreteResource: ConcreteResource.values()) {
+        for (ConcreteResource concreteResource : ConcreteResource.values()) {
             int count = input.getResourceSet().getConcreteResources().getCount(concreteResource);
-            if(count > 0) {
+            if (count > 0) {
                 JPanel resourcePanel = new ResourceImage(concreteResource.getResourceImageType(), 20);
-                JLabel quantity= new JLabel(Integer.toString(count));
-                inputC.gridx=0;
+                JLabel quantity = new JLabel(Integer.toString(count));
+                inputC.gridx = 0;
                 loadingPanel.add(quantity, inputC);
                 inputC.gridx++;
                 loadingPanel.add(resourcePanel, inputC);

@@ -1,13 +1,6 @@
 package it.polimi.ingsw.editor.gui.components.panelHandlers;
 
-import it.polimi.ingsw.editor.gui.components.ButtonClickEvent;
-import it.polimi.ingsw.editor.gui.components.TextFieldDocumentListener;
-import it.polimi.ingsw.editor.gui.components.ValidatableTextField;
-
 import javax.swing.*;
-import java.awt.*;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 public abstract class PanelHandler {
     protected final JFrame frame;

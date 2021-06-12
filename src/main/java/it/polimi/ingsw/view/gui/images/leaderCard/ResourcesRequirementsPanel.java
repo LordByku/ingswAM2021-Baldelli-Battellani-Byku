@@ -14,9 +14,9 @@ public class ResourcesRequirementsPanel {
     public ResourcesRequirementsPanel(ConcreteResourceSet concreteResourceSet, int leaderCardWidth, int leaderCardHeight) {
         ArrayList<JPanel> resourcePanels = new ArrayList<>();
 
-        for(ConcreteResource concreteResource: ConcreteResource.values()) {
+        for (ConcreteResource concreteResource : ConcreteResource.values()) {
             int count = concreteResourceSet.getCount(concreteResource);
-            if(count > 0) {
+            if (count > 0) {
                 resourcePanels.add(ResourceImage.getResourcePanel(count, concreteResource.getResourceImageType(), leaderCardHeight / 16));
             }
         }
@@ -27,7 +27,7 @@ public class ResourcesRequirementsPanel {
 
         panel.setLayout(new GridLayout(1, resourcePanels.size()));
 
-        for(JPanel resourcePanel: resourcePanels) {
+        for (JPanel resourcePanel : resourcePanels) {
             panel.add(resourcePanel);
         }
     }

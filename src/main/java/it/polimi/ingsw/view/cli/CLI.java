@@ -38,9 +38,9 @@ import java.util.Map;
 public class CLI implements ViewInterface {
     private static CLIWindow cliWindow;
     private static CLIViewWindow cliViewWindow;
-    private boolean pendingUpdate;
     private final Client client;
     private final Thread clientUserCommunication;
+    private boolean pendingUpdate;
 
     public CLI(Client client) {
         this.client = client;
@@ -53,23 +53,11 @@ public class CLI implements ViewInterface {
         clientUserCommunication.start();
     }
 
-    public CLIViewWindow getViewWindow() {
-        return cliViewWindow;
-    }
-
-    public static void setViewWindow(CLIViewWindow cliViewWindow) {
-        CLI.cliViewWindow = cliViewWindow;
-    }
-
     public static CLIWindow getActiveWindow() {
         if (cliViewWindow != null) {
             return cliViewWindow;
         }
         return cliWindow;
-    }
-
-    public void refreshWindow(Client client) {
-        cliWindow = CLIWindow.refresh(client);
     }
 
     public static void renderGameWindow(Client client) {
@@ -200,7 +188,7 @@ public class CLI implements ViewInterface {
     }
 
     public static void actionToken(LocalModel model) {
-        if(model != null){
+        if (model != null) {
             ActionToken actionToken = model.getGameZone().getActionToken();
             if (actionToken != null) {
                 System.out.println(actionToken.getCLIString());
@@ -373,25 +361,25 @@ public class CLI implements ViewInterface {
         int maxPoints = -1, maxResources = -1;
         ArrayList<String> winner = new ArrayList<>();
 
-        for(JsonElement jsonElement: results) {
+        for (JsonElement jsonElement : results) {
             JsonObject playerObject = jsonElement.getAsJsonObject();
             String player = playerObject.get("player").getAsString();
             int basePoints = playerObject.get("basePoints").getAsInt();
             int resources = playerObject.get("resources").getAsInt();
 
             int totalPoints = basePoints + resources / 5;
-            if(totalPoints >= maxPoints) {
-                if(totalPoints > maxPoints || resources > maxResources) {
+            if (totalPoints >= maxPoints) {
+                if (totalPoints > maxPoints || resources > maxResources) {
                     winner.clear();
                     winner.add(player);
-                } else if(resources == maxResources) {
+                } else if (resources == maxResources) {
                     winner.add(player);
                 }
             }
         }
 
         results();
-        for(JsonElement jsonElement: results) {
+        for (JsonElement jsonElement : results) {
             JsonObject playerObject = jsonElement.getAsJsonObject();
             String player = playerObject.get("player").getAsString();
             int basePoints = playerObject.get("basePoints").getAsInt();
@@ -402,7 +390,7 @@ public class CLI implements ViewInterface {
             playerResults(player, totalPoints);
         }
 
-        if(endGameMessage.has("computerWin")) {
+        if (endGameMessage.has("computerWin")) {
             singlePlayerWinner(endGameMessage.get("computerWin").getAsBoolean());
         } else {
             multiPlayerWinner(winner);
@@ -420,7 +408,7 @@ public class CLI implements ViewInterface {
 
     public static void singlePlayerWinner(boolean computerWin) {
         System.out.println();
-        if(computerWin) {
+        if (computerWin) {
             System.out.println(TextColour.GREEN.escape() + "Lorenzo il Magnifico has won" + TextColour.RESET);
         } else {
             System.out.println(TextColour.GREEN.escape() + "You have won" + TextColour.RESET);
@@ -431,17 +419,29 @@ public class CLI implements ViewInterface {
     public static void multiPlayerWinner(ArrayList<String> winner) {
         System.out.println();
         StringBuilder stringBuilder = new StringBuilder();
-        for(int i = 0; i < winner.size(); ++i) {
-            if(i > 0) {
+        for (int i = 0; i < winner.size(); ++i) {
+            if (i > 0) {
                 stringBuilder.append(", ");
             }
             stringBuilder.append(winner.get(i));
         }
-        if(winner.size() == 1) {
+        if (winner.size() == 1) {
             System.out.println(TextColour.GREEN.escape() + "The winner is " + winner.get(0) + TextColour.RESET);
         } else {
             System.out.println(TextColour.GREEN.escape() + "The winners are " + stringBuilder.toString() + " (Tie)" + TextColour.RESET);
         }
+    }
+
+    public CLIViewWindow getViewWindow() {
+        return cliViewWindow;
+    }
+
+    public static void setViewWindow(CLIViewWindow cliViewWindow) {
+        CLI.cliViewWindow = cliViewWindow;
+    }
+
+    public void refreshWindow(Client client) {
+        cliWindow = CLIWindow.refresh(client);
     }
 
     @Override
@@ -538,7 +538,7 @@ public class CLI implements ViewInterface {
     @Override
     public void connectionFailed(int timerDelay) {
         CLI.connectionError();
-        if(timerDelay > 0) {
+        if (timerDelay > 0) {
             CLI.reconnecting(timerDelay);
         }
     }

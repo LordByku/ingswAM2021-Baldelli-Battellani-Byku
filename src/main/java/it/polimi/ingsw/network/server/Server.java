@@ -88,7 +88,7 @@ public class Server {
     public void endGame() {
         synchronized (clientHandlers) {
             JsonObject endGameMessage = buildEndGameMessage();
-            for(ClientHandler clientHandler: clientHandlers) {
+            for (ClientHandler clientHandler : clientHandlers) {
                 clientHandler.ok("endGame", endGameMessage);
             }
         }
@@ -136,8 +136,8 @@ public class Server {
 
         JsonArray jsonArray = new JsonArray();
         ArrayList<Player> players = Game.getInstance().getPlayers();
-        for(Player player: players) {
-            if(player.getPlayerType() == PlayerType.PERSON) {
+        for (Player player : players) {
+            if (player.getPlayerType() == PlayerType.PERSON) {
                 Person person = (Person) player;
                 JsonObject playerObject = new JsonObject();
                 playerObject.addProperty("player", person.getNickname());
@@ -149,7 +149,7 @@ public class Server {
         }
 
         message.add("results", jsonArray);
-        if(Game.getInstance().getNumberOfPlayers() == 1) {
+        if (Game.getInstance().getNumberOfPlayers() == 1) {
             message.addProperty("computerWin", Game.getInstance().getComputer().hasWon());
         }
 

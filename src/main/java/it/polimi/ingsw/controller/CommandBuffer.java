@@ -71,7 +71,7 @@ public abstract class CommandBuffer {
     }
 
     public Consumer<GameStateSerializer> kill() {
-        if(completed) {
+        if (completed) {
             return (serializer) -> {
             };
         }

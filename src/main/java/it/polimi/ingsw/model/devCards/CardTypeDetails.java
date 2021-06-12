@@ -9,7 +9,7 @@ public class CardTypeDetails {
     private final CardLevel cardLevel;
 
     public CardTypeDetails(CardColour cardColour, int quantity) throws InvalidQuantityException, InvalidCardColourException {
-        if(cardColour == null) {
+        if (cardColour == null) {
             throw new InvalidCardColourException();
         }
         if (quantity < 0) {
@@ -21,7 +21,7 @@ public class CardTypeDetails {
     }
 
     public CardTypeDetails(CardColour cardColour, int quantity, CardLevel cardLevel) throws InvalidQuantityException, InvalidCardColourException {
-        if(cardColour == null) {
+        if (cardColour == null) {
             throw new InvalidCardColourException();
         }
         if (quantity < 0) {

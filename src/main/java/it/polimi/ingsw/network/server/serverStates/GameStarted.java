@@ -27,10 +27,22 @@ public class GameStarted extends ServerState {
                 JsonElement commandElement = json.get("command");
                 CommandType commandType = Deserializer.getInstance().getCommandType(commandElement);
                 try {
-                    clientHandler.setBuffer(commandType.getCommandBuffer(clientHandler.getPerson()));
-                    System.out.println("New buffer successfully created");
-                    JsonObject commandObject = JsonUtil.getInstance().serializeCommandBuffer(clientHandler.getCommandBuffer(), clientHandler.getPerson());
-                    clientHandler.broadcast("command", commandObject);
+                    CommandBuffer newBuffer = commandType.getCommandBuffer(clientHandler.getPerson());
+                    System.out.println("New buffer successfully created " + commandBuffer);
+
+                    Consumer<GameStateSerializer> lambda = null;
+                    if (commandBuffer == null || commandBuffer.isCompleted() || (lambda = commandBuffer.cancel()) != null) {
+                        clientHandler.setBuffer(newBuffer);
+
+                        if (lambda != null) {
+                            clientHandler.updateGameState(lambda);
+                        }
+
+                        JsonObject commandObject = JsonUtil.getInstance().serializeCommandBuffer(clientHandler.getCommandBuffer(), clientHandler.getPerson());
+                        clientHandler.broadcast("command", commandObject);
+                    } else {
+                        clientHandler.error("Invalid request");
+                    }
                 } catch (InvalidCommandException e) {
                     clientHandler.error("Invalid request");
                 }

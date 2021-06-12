@@ -28,12 +28,12 @@ public class LeaderCard {
         return requirements;
     }
 
-    public Effect getEffect() {
-        return effect;
-    }
-
     public void setRequirements(Requirements requirements) {
         this.requirements = requirements;
+    }
+
+    public Effect getEffect() {
+        return effect;
     }
 
     public void setEffect(Effect effect) {

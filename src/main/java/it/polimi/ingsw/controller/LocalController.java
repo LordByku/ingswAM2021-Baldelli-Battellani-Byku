@@ -45,7 +45,7 @@ public class LocalController implements Runnable {
     }
 
     public void handleUserMessage(String message) {
-        if(Game.getInstance().hasGameEnded()) {
+        if (Game.getInstance().hasGameEnded()) {
             sendEndGameMessage();
             return;
         }
@@ -60,10 +60,21 @@ public class LocalController implements Runnable {
                 // client requests a new command buffer
                 JsonElement commandElement = json.get("command");
                 CommandType commandType = Deserializer.getInstance().getCommandType(commandElement);
+
                 try {
-                    commandBuffer = commandType.getCommandBuffer(person);
-                    JsonObject commandObject = JsonUtil.getInstance().serializeCommandBuffer(commandBuffer, person);
-                    ok("command", commandObject);
+                    CommandBuffer newBuffer = commandType.getCommandBuffer(person);
+
+                    Consumer<GameStateSerializer> lambda = null;
+                    if (commandBuffer == null || commandBuffer.isCompleted() || (lambda = commandBuffer.cancel()) != null) {
+                        commandBuffer = newBuffer;
+                        if (lambda != null) {
+                            updateGameState(lambda);
+                        }
+                        JsonObject commandObject = JsonUtil.getInstance().serializeCommandBuffer(commandBuffer, person);
+                        ok("command", commandObject);
+                    } else {
+                        error("Invalid request");
+                    }
                 } catch (InvalidCommandException e) {
                     error("Invalid request");
                 }
@@ -114,12 +125,12 @@ public class LocalController implements Runnable {
                     Consumer<GameStateSerializer> lambda = (serializer) -> {
                         serializer.addCardMarket();
                         serializer.addFaithTrack(person);
-                        serializer.addFlippedActionToken();
+                        serializer.addActionTokenDeck();
                     };
 
                     updateGameState(lambda);
 
-                    if(Game.getInstance().hasGameEnded()) {
+                    if (Game.getInstance().hasGameEnded()) {
                         sendEndGameMessage();
                     } else {
                         ok("command", JsonUtil.getInstance().serializeCommandBuffer(commandBuffer, person));

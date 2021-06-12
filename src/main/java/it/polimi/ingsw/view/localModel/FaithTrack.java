@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.localModel;
 
-import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
 import it.polimi.ingsw.model.playerBoard.faithTrack.CheckPoint;
 import it.polimi.ingsw.model.playerBoard.faithTrack.VaticanReportSection;
 import it.polimi.ingsw.network.client.LocalConfig;
@@ -13,7 +13,7 @@ import it.polimi.ingsw.view.cli.TextColour;
 import java.util.ArrayList;
 
 
-public class FaithTrack implements LocalModelElement, CLIPrintable {
+public class FaithTrack extends LocalModelElement implements CLIPrintable {
     private int position;
     private ArrayList<Integer> receivedFavors;
     private Integer computerPosition;
@@ -105,8 +105,8 @@ public class FaithTrack implements LocalModelElement, CLIPrintable {
     }
 
     @Override
-    public void updateModel(JsonObject jsonObject) {
-
+    public void updateModel(JsonElement faithTrackJson) {
+        notifyObservers();
     }
 
     public ArrayList<Integer> getReceivedFavors() {

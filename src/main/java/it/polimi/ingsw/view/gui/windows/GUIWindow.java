@@ -8,7 +8,7 @@ import java.util.concurrent.BlockingQueue;
 
 public abstract class GUIWindow {
     public void setActive(boolean active, JFrame frame) {
-        if(active) {
+        if (active) {
             frame.setContentPane(getPanel());
             frame.pack();
         }

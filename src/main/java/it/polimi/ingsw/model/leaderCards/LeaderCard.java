@@ -144,7 +144,7 @@ public abstract class LeaderCard implements Scoring {
     public boolean isType(LeaderCardType leaderCardType) {
         return this.leaderCardType == leaderCardType;
     }
-    
+
     public abstract String getEffectString();
 
     public void addCLISupport() {

@@ -89,17 +89,19 @@ public class GameStateSerializer {
         }
     }
 
-    public JsonElement actionToken() {
-        return JsonUtil.getInstance().serialize(ActionTokenDeck.getFlippedToken());
+    public JsonObject actionTokenDeck() {
+        JsonObject actionTokenDeck = new JsonObject();
+        actionTokenDeck.add("flippedActionToken", JsonUtil.getInstance().serialize(ActionTokenDeck.getFlippedToken()));
+        return actionTokenDeck;
     }
 
-    public void addFlippedActionToken() {
+    public void addActionTokenDeck() {
         if (!message.has("gameZone")) {
             JsonObject gameZone = new JsonObject();
-            gameZone.add("actionToken", actionToken());
+            gameZone.add("actionTokenDeck", actionTokenDeck());
             message.add("gameZone", gameZone);
         } else {
-            message.getAsJsonObject("gameZone").add("actionToken", actionToken());
+            message.getAsJsonObject("gameZone").add("actionTokenDeck", actionTokenDeck());
         }
     }
 
@@ -132,8 +134,7 @@ public class GameStateSerializer {
     }
 
     public void addStrongbox(Person person) {
-        String strongboxJson = gson.toJson(person.getBoard().getStrongBox().getResources());
-        addToPlayers(person, "strongbox", JsonUtil.getInstance().parseLine(strongboxJson));
+        addToPlayers(person, "strongbox", strongbox(person));
     }
 
     public void addDevCards(Person person) {
@@ -195,13 +196,13 @@ public class GameStateSerializer {
 
         CardMarket cardMarket = Game.getInstance().getGameZone().getCardMarket();
 
-        for(int i = 0; i < CardLevel.values().length; ++i) {
+        for (int i = 0; i < CardLevel.values().length; ++i) {
             JsonArray row = new JsonArray();
 
-            for(int j = 0; j < CardColour.values().length; ++j) {
+            for (int j = 0; j < CardColour.values().length; ++j) {
                 JsonObject deck = new JsonObject();
 
-                if(cardMarket.size(i, j) == 0) {
+                if (cardMarket.size(i, j) == 0) {
                     deck.add("topCard", JsonNull.INSTANCE);
                 } else {
                     deck.addProperty("topCard", gson.toJson(cardMarket.top(i, j).getId()));
@@ -242,18 +243,30 @@ public class GameStateSerializer {
         return faithTrack;
     }
 
-    public JsonArray warehouse(Person person) {
-        JsonArray warehouse = new JsonArray();
+    public JsonObject warehouse(Person person) {
+        JsonObject warehouse = new JsonObject();
+
+        JsonArray depots = new JsonArray();
         int size = person.getBoard().getWarehouse().numberOfDepots();
         for (int i = 0; i < size; i++) {
             String jsonString = gson.toJson(person.getBoard().getWarehouse().getDepotResources(i));
-            warehouse.add(JsonUtil.getInstance().parseLine(jsonString));
+            depots.add(JsonUtil.getInstance().parseLine(jsonString));
         }
+
+        warehouse.add("depots", depots);
 
         return warehouse;
     }
 
-    public JsonArray devCards(Person person) {
+    public JsonObject strongbox(Person person) {
+        JsonObject strongbox = new JsonObject();
+        strongbox.add("content", JsonUtil.getInstance().serialize(person.getBoard().getStrongBox().getResources()));
+        return strongbox;
+    }
+
+    public JsonObject devCards(Person person) {
+        JsonObject container = new JsonObject();
+
         JsonArray devCards = new JsonArray();
 
         for (int i = 0; i < BoardParser.getInstance().getDevelopmentCardsSlots(); ++i) {
@@ -267,20 +280,29 @@ public class GameStateSerializer {
             devCards.add(cards);
         }
 
-        return devCards;
+        container.add("decks", devCards);
+
+        return container;
     }
 
-    public JsonArray playedLeaderCards(Person person) {
+    public JsonObject playedLeaderCards(Person person) {
+        JsonObject container = new JsonObject();
+
         JsonArray playedLeaderCards = new JsonArray();
         for (LeaderCard card : person.getBoard().getLeaderCardArea().getLeaderCards()) {
             if (card.isActive()) {
                 playedLeaderCards.add(card.getId());
             }
         }
-        return playedLeaderCards;
+
+        container.add("leaderCards", playedLeaderCards);
+
+        return container;
     }
 
-    public JsonArray handLeaderCards(Person person) {
+    public JsonObject handLeaderCards(Person person) {
+        JsonObject container = new JsonObject();
+
         JsonArray handLeaderCards = new JsonArray();
         String nick = person.getNickname();
         for (LeaderCard card : person.getBoard().getLeaderCardArea().getLeaderCards()) {
@@ -292,15 +314,17 @@ public class GameStateSerializer {
                 }
             }
         }
-        return handLeaderCards;
+
+        container.add("leaderCards", handLeaderCards);
+
+        return container;
     }
 
     public JsonObject board(Person person) {
         JsonObject board = new JsonObject();
         board.add("faithTrack", faithTrack(person));
         board.add("warehouse", warehouse(person));
-        String strongboxJson = gson.toJson(person.getBoard().getStrongBox().getResources());
-        board.add("strongbox", JsonUtil.getInstance().parseLine(strongboxJson));
+        board.add("strongbox", strongbox(person));
         board.add("devCards", devCards(person));
         board.add("playedLeaderCards", playedLeaderCards(person));
         board.add("handLeaderCards", handLeaderCards(person));

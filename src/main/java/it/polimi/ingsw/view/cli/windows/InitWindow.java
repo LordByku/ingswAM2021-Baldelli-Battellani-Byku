@@ -10,7 +10,7 @@ public class InitWindow extends CLIWindow {
 
     @Override
     public void render(Client client) {
-        if(client.getNickname() == null) {
+        if (client.getNickname() == null) {
             CLI.selectNickname();
         } else {
             CLI.selectMode();

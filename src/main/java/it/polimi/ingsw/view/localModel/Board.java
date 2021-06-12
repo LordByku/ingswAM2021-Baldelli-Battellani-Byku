@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.localModel;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.model.devCards.DevCard;
@@ -17,65 +16,57 @@ import it.polimi.ingsw.view.cli.CLIPrintable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Board implements LocalModelElement, CLIPrintable {
+public class Board extends LocalModelElement implements CLIPrintable {
     private FaithTrack faithTrack;
-    private ArrayList<ConcreteResourceSet> warehouse;
-    private ConcreteResourceSet strongbox;
-
-    private ArrayList<ArrayList<Integer>> devCards;
-    private ArrayList<Integer> playedLeaderCards;
-    private ArrayList<Integer> handLeaderCards;
+    private Warehouse warehouse;
+    private Strongbox strongbox;
+    private DevCardArea devCards;
+    private PlayedLeaderCardsArea playedLeaderCards;
+    private HandLeaderCardsArea handLeaderCards;
 
     @Override
-    public void updateModel(JsonObject boardJson) {
-        if (boardJson.has("faithTrack")) {
-            faithTrack = gson.fromJson(boardJson.getAsJsonObject("faithTrack"), FaithTrack.class);
+    public void updateModel(JsonElement boardJson) {
+        JsonObject boardObject = boardJson.getAsJsonObject();
+        if (boardObject.has("faithTrack")) {
+            JsonElement faithTrackJson = boardObject.get("faithTrack");
+            faithTrack = gson.fromJson(faithTrackJson, FaithTrack.class);
+            faithTrack.updateModel(faithTrackJson);
         }
-        if (boardJson.has("warehouse")) {
-            warehouse = new ArrayList<>();
-            JsonArray depotArray = boardJson.getAsJsonArray("warehouse");
-            for (JsonElement depotJsonElement : depotArray) {
-                JsonObject depotJson = (JsonObject) depotJsonElement;
-                warehouse.add(gson.fromJson(depotJson, ConcreteResourceSet.class));
-            }
+        if (boardObject.has("warehouse")) {
+            JsonElement warehouseJson = boardObject.get("warehouse");
+            warehouse = gson.fromJson(warehouseJson, Warehouse.class);
+            warehouse.updateModel(warehouseJson);
         }
-        if (boardJson.has("strongbox")) {
-            strongbox = gson.fromJson(boardJson.getAsJsonObject("strongbox"), ConcreteResourceSet.class);
+        if (boardObject.has("strongbox")) {
+            JsonElement strongboxJson = boardObject.get("strongbox");
+            strongbox = gson.fromJson(strongboxJson, Strongbox.class);
+            strongbox.updateModel(strongboxJson);
         }
-        if (boardJson.has("devCards")) {
-            devCards = new ArrayList<>();
-            JsonArray decks = boardJson.getAsJsonArray("devCards");
-            for (JsonElement deckJsonElement : decks) {
-                ArrayList<Integer> deck = new ArrayList<>();
-                JsonArray cards = deckJsonElement.getAsJsonArray();
-                for (JsonElement cardJsonElement : cards) {
-                    deck.add(cardJsonElement.getAsInt());
-                }
-                devCards.add(deck);
-            }
+        if (boardObject.has("devCards")) {
+            JsonElement devCardsJson = boardObject.get("devCards");
+            devCards = gson.fromJson(devCardsJson, DevCardArea.class);
+            devCards.updateModel(devCardsJson);
         }
-        if (boardJson.has("playedLeaderCards")) {
-            playedLeaderCards = new ArrayList<>();
-            JsonArray cards = boardJson.getAsJsonArray("playedLeaderCards");
-            for (JsonElement cardJson : cards) {
-                playedLeaderCards.add(cardJson.getAsInt());
-            }
+        if (boardObject.has("playedLeaderCards")) {
+            JsonElement playedLeaderCardsJson = boardObject.get("playedLeaderCards");
+            playedLeaderCards = gson.fromJson(playedLeaderCardsJson, PlayedLeaderCardsArea.class);
+            playedLeaderCards.updateModel(playedLeaderCardsJson);
         }
-        if (boardJson.has("handLeaderCards")) {
-            handLeaderCards = new ArrayList<>();
-            JsonArray cards = boardJson.getAsJsonArray("handLeaderCards");
-            for (JsonElement cardJson : cards) {
-                handLeaderCards.add(gson.fromJson(cardJson, Integer.class));
-            }
+        if (boardObject.has("handLeaderCards")) {
+            JsonElement handLeaderCardsJson = boardObject.get("handLeaderCards");
+            handLeaderCards = gson.fromJson(handLeaderCardsJson, HandLeaderCardsArea.class);
+            handLeaderCards.updateModel(handLeaderCardsJson);
         }
+
+        notifyObservers();
     }
 
     public ArrayList<Integer> getHandLeaderCards() {
-        return handLeaderCards;
+        return handLeaderCards.getLeaderCards();
     }
 
     public ArrayList<ConcreteResourceSet> getWarehouse() {
-        return warehouse;
+        return warehouse.getDepots();
     }
 
     public FaithTrack getFaithTrack() {
@@ -83,34 +74,34 @@ public class Board implements LocalModelElement, CLIPrintable {
     }
 
     public ArrayList<Integer> getPlayedLeaderCards() {
-        return playedLeaderCards;
+        return playedLeaderCards.getLeaderCards();
     }
 
     public ConcreteResourceSet getStrongBox() {
-        return strongbox;
+        return strongbox.getContent();
     }
 
     public ArrayList<Integer> getDevCardDeck(int deckIndex) {
-        return devCards.get(deckIndex);
+        return getDevCards().get(deckIndex);
     }
 
     public ArrayList<ArrayList<Integer>> getDevCards() {
-        return devCards;
+        return devCards.getDecks();
     }
 
     public HashMap<Integer, ProductionDetails> activeProductionDetails() {
         HashMap<Integer, ProductionDetails> map = new HashMap<>();
         map.put(0, LocalConfig.getInstance().getDefaultProductionPower());
-        for (int i = 0; i < devCards.size(); i++) {
-            ArrayList<Integer> deck = devCards.get(i);
+        for (int i = 0; i < getDevCards().size(); i++) {
+            ArrayList<Integer> deck = getDevCards().get(i);
             if (!deck.isEmpty()) {
                 int devCardID = deck.get(deck.size() - 1);
                 DevCard devCard = DevCardsParser.getInstance().getCard(devCardID);
                 map.put(i + 1, devCard.getProductionPower());
             }
         }
-        int index = devCards.size() + 1;
-        for (int leaderCardID : playedLeaderCards) {
+        int index = getDevCards().size() + 1;
+        for (int leaderCardID : getPlayedLeaderCards()) {
             LeaderCard leaderCard = LeaderCardsParser.getInstance().getCard(leaderCardID);
             if (leaderCard.isType(LeaderCardType.PRODUCTION)) {
                 ProductionLeaderCard productionLeaderCard = (ProductionLeaderCard) leaderCard;

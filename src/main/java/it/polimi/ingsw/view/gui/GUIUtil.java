@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.editor.gui.components.ButtonClickEvent;
-import it.polimi.ingsw.editor.gui.components.ValidatableTextField;
 
 import javax.swing.*;
 import java.awt.*;
@@ -54,7 +53,7 @@ public class GUIUtil {
     }
 
     public static JRadioButton addRadioButton(String text, boolean isSelected, ButtonGroup buttonGroup,
-                                  JPanel outerPanel, ButtonClickEvent buttonClickEvent) {
+                                              JPanel outerPanel, ButtonClickEvent buttonClickEvent) {
         JPanel container = new JPanel(new GridBagLayout());
 
         JRadioButton button = new JRadioButton();

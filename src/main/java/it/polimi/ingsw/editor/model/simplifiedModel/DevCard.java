@@ -1,6 +1,5 @@
 package it.polimi.ingsw.editor.model.simplifiedModel;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.editor.model.Config;
 import it.polimi.ingsw.editor.model.resources.ConcreteResourceSet;
@@ -32,12 +31,24 @@ public class DevCard {
         return colour;
     }
 
+    public void setColour(CardColour colour) {
+        this.colour = colour;
+    }
+
     public CardLevel getLevel() {
         return level;
     }
 
+    public void setLevel(CardLevel level) {
+        this.level = level;
+    }
+
     public int getPoints() {
         return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
     }
 
     public ConcreteResourceSet getRequirements() {
@@ -50,18 +61,6 @@ public class DevCard {
 
     public ObtainableResourceSet getProductionOut() {
         return productionOut;
-    }
-
-    public void setLevel(CardLevel level) {
-        this.level = level;
-    }
-
-    public void setColour(CardColour colour) {
-        this.colour = colour;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
     }
 
     public JsonObject serialize() {

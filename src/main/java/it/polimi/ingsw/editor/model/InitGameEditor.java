@@ -13,8 +13,16 @@ public class InitGameEditor {
         return leaderCardsToAssign;
     }
 
+    public void setLeaderCardsToAssign(int leaderCardsToAssign) {
+        this.leaderCardsToAssign = leaderCardsToAssign;
+    }
+
     public int getLeaderCardsToDiscard() {
         return leaderCardsToDiscard;
+    }
+
+    public void setLeaderCardsToDiscard(int leaderCardsToDiscard) {
+        this.leaderCardsToDiscard = leaderCardsToDiscard;
     }
 
     public int getFaithPoints(int index) {
@@ -23,14 +31,6 @@ public class InitGameEditor {
 
     public int getResources(int index) {
         return resources[index];
-    }
-
-    public void setLeaderCardsToAssign(int leaderCardsToAssign) {
-        this.leaderCardsToAssign = leaderCardsToAssign;
-    }
-
-    public void setLeaderCardsToDiscard(int leaderCardsToDiscard) {
-        this.leaderCardsToDiscard = leaderCardsToDiscard;
     }
 
     public void setFaithPoints(int index, int faithPoints) {

@@ -4,25 +4,29 @@ import it.polimi.ingsw.model.leaderCards.LeaderCard;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.LocalConfig;
 import it.polimi.ingsw.parsing.LeaderCardsParser;
+import it.polimi.ingsw.view.localModel.Player;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.concurrent.BlockingQueue;
 
 public class GUIHandLeaderCards {
+    private final Client client;
+    private final BlockingQueue<String> buffer;
     JPanel handLeaderCardsPanel;
-    Client client;
     int numOfCardsToDiscard;
     ArrayList<Integer> handLeaderCards;
 
-    public GUIHandLeaderCards(Client client, JPanel handLeaderCardsPanel){
+    public GUIHandLeaderCards(Client client, BlockingQueue<String> buffer, JPanel handLeaderCardsPanel) {
         this.client = client;
+        this.buffer = buffer;
         this.handLeaderCardsPanel = handLeaderCardsPanel;
         numOfCardsToDiscard = LocalConfig.getInstance().getInitialDiscards();
         handLeaderCards = client.getModel().getPlayer(client.getNickname()).getBoard().getHandLeaderCards();
     }
 
-    public void loadHandLeaderCards(){
+    public void loadHandLeaderCards() {
         boolean doneInitDiscard = client.getModel().allInitDiscard();
         GridBagConstraints c = new GridBagConstraints();
 
@@ -34,8 +38,10 @@ public class GUIHandLeaderCards {
             cardImage.setVisible(true);
             JButton discardButton = new JButton("discard");
             JButton playButton = new JButton("play");
-            if (!doneInitDiscard)
-                playButton.setEnabled(false);
+
+            Player self = client.getModel().getPlayer(client.getNickname());
+            discardButton.setEnabled(self.canDiscard(client.getModel()));
+            playButton.setEnabled(self.canPlay(client.getModel()));
 
             c.gridy = 0;
             cardPanel.add(cardImage, c);

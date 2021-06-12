@@ -16,7 +16,7 @@ public class CLIClientUserCommunication implements Runnable {
     public void run() {
         String line;
         try {
-            while(!Thread.interrupted() && (line = stdin.readLine()) != null) {
+            while (!Thread.interrupted() && (line = stdin.readLine()) != null) {
                 client.handleUserMessage(line);
             }
         } catch (IOException e) {

@@ -13,7 +13,7 @@ public class EndGameWindow extends CLIWindow {
 
     @Override
     public void handleUserMessage(Client client, String line) {
-        if(line.equals("x")) {
+        if (line.equals("x")) {
             client.exit();
             return;
         }

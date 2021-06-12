@@ -19,7 +19,7 @@ public class SpendableResourceSet {
     public void parse(JsonArray jsonArray) {
         Gson gson = new Gson();
 
-        for(JsonElement jsonElement: jsonArray) {
+        for (JsonElement jsonElement : jsonArray) {
             JsonObject resource = jsonElement.getAsJsonObject();
 
             SpendableResource spendableResource = gson.fromJson(resource.get("resource"), SpendableResource.class);
@@ -40,11 +40,11 @@ public class SpendableResourceSet {
     public JsonArray serialize() {
         JsonArray array = new JsonArray();
 
-        for(Map.Entry<SpendableResource, Integer> entry: resources.entrySet()) {
+        for (Map.Entry<SpendableResource, Integer> entry : resources.entrySet()) {
             SpendableResource resource = entry.getKey();
             int quantity = entry.getValue();
 
-            if(quantity > 0) {
+            if (quantity > 0) {
                 JsonObject resourceObject = new JsonObject();
                 resourceObject.add("resource", JsonUtil.getInstance().serialize(resource));
                 resourceObject.addProperty("quantity", quantity);

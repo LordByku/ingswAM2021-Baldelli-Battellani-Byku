@@ -20,20 +20,20 @@ public class GUIPopeFavor {
     int size;
     int numOfPlayers;
 
-    public GUIPopeFavor(Client client, JPanel faithTrack, JPanel[][] panels, GridBagConstraints c, Integer lolloPosition, int size){
-        this.faithTrack=faithTrack;
-        this.panels=panels;
-        this.c=c;
-        this.lolloPosition=lolloPosition;
-        this.client=client;
-        this.size=size;
+    public GUIPopeFavor(Client client, JPanel faithTrack, JPanel[][] panels, GridBagConstraints c, Integer lolloPosition, int size) {
+        this.faithTrack = faithTrack;
+        this.panels = panels;
+        this.c = c;
+        this.lolloPosition = lolloPosition;
+        this.client = client;
+        this.size = size;
         vaticanReportSections = LocalConfig.getInstance().getVaticanReportSections();
         nicknames = LocalConfig.getInstance().getTurnOrder();
         numOfPlayers = nicknames.size();
     }
 
-    public void loadPopeFavors(){
-        for(VaticanReportSection vaticanReportSection: vaticanReportSections){
+    public void loadPopeFavors() {
+        for (VaticanReportSection vaticanReportSection : vaticanReportSections) {
 
             int initPos = vaticanReportSection.getFirstSpace();
             int finalPos = vaticanReportSection.getPopeSpace();
@@ -51,36 +51,36 @@ public class GUIPopeFavor {
             JLabel popeFavor = new JLabel(points);
 
             int myIndex;
-            for(myIndex=0; myIndex<numOfPlayers && !nicknames.get(myIndex).equals(client.getNickname()); myIndex++) ;
+            for (myIndex = 0; myIndex < numOfPlayers && !nicknames.get(myIndex).equals(client.getNickname()); myIndex++)
+                ;
             boolean activated = false;
             Integer[] positions = new Integer[numOfPlayers];
 
             for (int i = 0; i < numOfPlayers; i++) {
                 positions[i] = client.getModel().getPlayer(nicknames.get(i)).getBoard().getFaithTrack().getPosition();
-                if(positions[i]>=finalPos)
-                    activated=true;
+                if (positions[i] >= finalPos)
+                    activated = true;
             }
-            if(lolloPosition!=null && lolloPosition>=finalPos)
-                activated=true;
+            if (lolloPosition != null && lolloPosition >= finalPos)
+                activated = true;
 
-            if(activated && positions[myIndex]<initPos){
+            if (activated && positions[myIndex] < initPos) {
                 popeFavor = new JLabel("X");
                 popeFavor.setForeground(Color.RED);
                 panels[0][initPos].setBackground(Color.WHITE);
-            }
-            else if((activated && positions[myIndex]>=initPos)){
+            } else if ((activated && positions[myIndex] >= initPos)) {
                 panels[0][initPos].setBackground(Color.GREEN);
             }
 
             popeFavor.setVisible(true);
             panels[0][initPos].add(popeFavor);
             c.fill = GridBagConstraints.HORIZONTAL;
-            c.gridx=initPos;
-            c.gridy=2;
-            c.weightx = 1.0/(size);
+            c.gridx = initPos;
+            c.gridy = 2;
+            c.weightx = 1.0 / (size);
             c.gridwidth = vrsSize;
             //c.insets = new Insets(20, 0, 0, 0);
-            faithTrack.add(panels[0][initPos],c);
+            faithTrack.add(panels[0][initPos], c);
         }
     }
 }

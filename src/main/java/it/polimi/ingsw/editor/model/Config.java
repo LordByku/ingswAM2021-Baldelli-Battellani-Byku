@@ -13,9 +13,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 public class Config {
+    public static final int MAXPLAYERS = 4;
     private static final String defaultConfig = "config.json";
     private static FileReader reader;
-
     private static Config instance;
     private final Gson gson;
     private final JsonObject json;
@@ -25,10 +25,8 @@ public class Config {
     private final DevCardsEditor devCardsEditor;
     private final LeaderCardsEditor leaderCardsEditor;
 
-    public static final int MAXPLAYERS = 4;
-
     public Config() {
-        if(reader == null) {
+        if (reader == null) {
             setDefaultPath();
         }
 
@@ -37,7 +35,7 @@ public class Config {
         json = (JsonObject) parser.parse(reader);
 
         faithTrackEditor = gson.fromJson(json.getAsJsonObject("board").getAsJsonObject("faithTrack"), FaithTrackEditor.class);
-        for(JsonElement jsonVRS: json.getAsJsonArray("vaticanReportSections")) {
+        for (JsonElement jsonVRS : json.getAsJsonArray("vaticanReportSections")) {
             faithTrackEditor.addVRS(gson.fromJson(jsonVRS, VaticanReportSection.class));
         }
 
@@ -76,7 +74,7 @@ public class Config {
     }
 
     public static Config getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new Config();
         }
         return instance;
@@ -84,6 +82,15 @@ public class Config {
 
     public static void reload() {
         instance = new Config();
+    }
+
+    public static JsonObject writeProductionPower(SpendableResourceSet spendable, ObtainableResourceSet obtainable) {
+        JsonObject json = new JsonObject();
+
+        json.add("productionIn", spendable.serialize());
+        json.add("productionOut", obtainable.serialize());
+
+        return json;
     }
 
     public void save(String outFilename) throws IOException {
@@ -97,7 +104,7 @@ public class Config {
         String path = "src/main/resources/custom";
         File directory = new File(path);
 
-        if(!directory.exists()) {
+        if (!directory.exists()) {
             directory.mkdir();
         }
 
@@ -125,14 +132,5 @@ public class Config {
 
     public LeaderCardsEditor getLeaderCardsEditor() {
         return leaderCardsEditor;
-    }
-
-    public static JsonObject writeProductionPower(SpendableResourceSet spendable, ObtainableResourceSet obtainable) {
-        JsonObject json = new JsonObject();
-
-        json.add("productionIn", spendable.serialize());
-        json.add("productionOut", obtainable.serialize());
-
-        return json;
     }
 }

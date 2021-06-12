@@ -30,7 +30,7 @@ public class ConcretePanelHandler extends PanelHandler {
         JPanel textFieldPanel = new JPanel();
         textFieldPanel.setLayout(new BoxLayout(textFieldPanel, BoxLayout.Y_AXIS));
 
-        for(ConcreteResource resource: ConcreteResource.values()) {
+        for (ConcreteResource resource : ConcreteResource.values()) {
             EditorGUIUtil.addLabel(resource.getString(), labelPanel);
 
             EditorGUIUtil.addValidatableTextField(concrete.getQuantity(resource), textFieldPanel, (value) -> {
@@ -47,8 +47,8 @@ public class ConcretePanelHandler extends PanelHandler {
     @Override
     public boolean validate() {
         boolean result = true;
-        for(ValidatableTextField validatableTextField: quantityFields) {
-            if(!validatableTextField.validate()) {
+        for (ValidatableTextField validatableTextField : quantityFields) {
+            if (!validatableTextField.validate()) {
                 result = false;
             }
         }

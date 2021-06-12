@@ -27,13 +27,13 @@ public class DepotsPanelHandler extends PanelHandler {
 
         ArrayList<Integer> depotSizes = boardEditor.getDepotSizes();
 
-        for(int i = 0; i < depotSizes.size(); ++i) {
+        for (int i = 0; i < depotSizes.size(); ++i) {
             int finalI = i;
 
             int size = depotSizes.get(i);
 
             EditorGUIUtil.addButton("+", panel, new ButtonClickEvent((e) -> {
-                if(validate()) {
+                if (validate()) {
                     boardEditor.addDepot(finalI, 1);
                     build();
                 }
@@ -55,7 +55,7 @@ public class DepotsPanelHandler extends PanelHandler {
         }
 
         EditorGUIUtil.addButton("+", panel, new ButtonClickEvent((e) -> {
-            if(validate()) {
+            if (validate()) {
                 boardEditor.addDepot(depotSizes.size(), 1);
                 build();
             }
@@ -67,8 +67,8 @@ public class DepotsPanelHandler extends PanelHandler {
     public boolean validate() {
         // TODO : limit number of depots
         boolean result = true;
-        for(ValidatableTextField validatableTextField: slotsFields) {
-            if(!validatableTextField.validate()) {
+        for (ValidatableTextField validatableTextField : slotsFields) {
+            if (!validatableTextField.validate()) {
                 result = false;
             }
         }

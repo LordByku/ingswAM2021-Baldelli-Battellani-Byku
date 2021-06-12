@@ -106,7 +106,7 @@ public class ChoiceResource implements Resource {
 
     @Override
     public ResourceImageType getResourceImageType() {
-        if(finalChoice == null) {
+        if (finalChoice == null) {
             return ResourceImageType.CHOICE;
         } else {
             return finalChoice.getResourceImageType();

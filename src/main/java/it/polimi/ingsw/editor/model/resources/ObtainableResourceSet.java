@@ -19,7 +19,7 @@ public class ObtainableResourceSet {
     public void parse(JsonArray jsonArray) {
         Gson gson = new Gson();
 
-        for(JsonElement jsonElement: jsonArray) {
+        for (JsonElement jsonElement : jsonArray) {
             JsonObject resource = jsonElement.getAsJsonObject();
 
             ObtainableResource obtainableResource = gson.fromJson(resource.get("resource"), ObtainableResource.class);
@@ -40,11 +40,11 @@ public class ObtainableResourceSet {
     public JsonArray serialize() {
         JsonArray array = new JsonArray();
 
-        for(Map.Entry<ObtainableResource, Integer> entry: resources.entrySet()) {
+        for (Map.Entry<ObtainableResource, Integer> entry : resources.entrySet()) {
             ObtainableResource resource = entry.getKey();
             int quantity = entry.getValue();
 
-            if(quantity > 0) {
+            if (quantity > 0) {
                 JsonObject resourceObject = new JsonObject();
                 resourceObject.add("resource", JsonUtil.getInstance().serialize(resource));
                 resourceObject.addProperty("quantity", quantity);

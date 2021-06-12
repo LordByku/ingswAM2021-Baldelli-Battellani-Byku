@@ -19,21 +19,21 @@ public class ProductionInPanel {
 
         ConcreteResourceSet concreteResourceSet = choiceResourceSet.getConcreteResources();
 
-        for(ConcreteResource concreteResource: ConcreteResource.values()) {
+        for (ConcreteResource concreteResource : ConcreteResource.values()) {
             int count = concreteResourceSet.getCount(concreteResource);
-            if(count > 0) {
+            if (count > 0) {
                 resourcePanels.add(ResourceImage.getResourcePanel(count, concreteResource.getResourceImageType(), font));
             }
         }
 
         int count = choiceResourceSet.getChoiceResources().size();
-        if(count > 0) {
+        if (count > 0) {
             resourcePanels.add(ResourceImage.getResourcePanel(count, ResourceImageType.CHOICE, font));
         }
 
         panel = new JPanel();
         panel.setLayout(new GridBagLayout());
-        if(bounds != null) {
+        if (bounds != null) {
             panel.setBounds(bounds);
         }
 
@@ -45,7 +45,7 @@ public class ProductionInPanel {
 
         for (int i = 0; i < resourcePanels.size(); i++) {
             JPanel resourcePanel = resourcePanels.get(i);
-            if(i == 4) {
+            if (i == 4) {
                 gbc.gridwidth = 2;
             }
 

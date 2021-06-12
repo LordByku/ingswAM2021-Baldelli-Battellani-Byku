@@ -88,18 +88,18 @@ public class LocalConfig {
         return Parser.getInstance().parseProductionDetails(config.getAsJsonObject("board").getAsJsonObject("defaultProductionPower"));
     }
 
-    public int getDevelopmentCardsSlots(){
+    public int getDevelopmentCardsSlots() {
         return config.getAsJsonObject("board").get("developmentCardsSlots").getAsInt();
     }
 
-    public ArrayList<VaticanReportSection> getVaticanReportSections(){
+    public ArrayList<VaticanReportSection> getVaticanReportSections() {
         ArrayList<VaticanReportSection> vrsArray = new ArrayList<>();
 
-        VaticanReportSection vrs =  VRSParser.getInstance().getNextVRS();
-        while(vrs!=null){
+        VaticanReportSection vrs = VRSParser.getInstance().getNextVRS();
+        while (vrs != null) {
             vrsArray.add(vrs);
-            vrs =  VRSParser.getInstance().getNextVRS();
+            vrs = VRSParser.getInstance().getNextVRS();
         }
-        return  vrsArray;
+        return vrsArray;
     }
 }

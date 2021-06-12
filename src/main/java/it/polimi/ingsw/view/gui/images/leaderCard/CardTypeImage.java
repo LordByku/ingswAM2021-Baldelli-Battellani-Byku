@@ -22,7 +22,7 @@ public class CardTypeImage extends JPanel {
 
         this.setLayout(new BorderLayout());
 
-        if(level != null) {
+        if (level != null) {
             JPanel container = new JPanel();
             container.setLayout(new GridBagLayout());
             container.setOpaque(false);
@@ -41,7 +41,7 @@ public class CardTypeImage extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if(image != null) {
+        if (image != null) {
             g.drawImage(image, 0, 0, width, height, null);
         }
     }

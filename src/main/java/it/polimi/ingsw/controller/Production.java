@@ -185,7 +185,7 @@ public class Production extends CommandBuffer {
             toSpend = toSpend.union(productionDetails.getInput());
         }
 
-        if(person.getBoard().getResources().containsResources(toSpend.getResourceSet())) {
+        if (person.getBoard().getResources().containsResources(toSpend.getResourceSet())) {
             this.productionsToActivate = productionsToActivate;
             warehouseToSpend = new ConcreteResourceSet[BoardParser.getInstance().getDepotSizes().size()];
             for (int i = 0; i < warehouseToSpend.length; ++i) {

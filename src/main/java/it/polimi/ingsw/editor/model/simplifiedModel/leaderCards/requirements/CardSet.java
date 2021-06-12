@@ -35,7 +35,7 @@ public class CardSet {
     }
 
     public void toggle(CardLevel cardLevel) {
-        if(this.cardLevel == cardLevel) {
+        if (this.cardLevel == cardLevel) {
             this.cardLevel = null;
         } else {
             this.cardLevel = cardLevel;

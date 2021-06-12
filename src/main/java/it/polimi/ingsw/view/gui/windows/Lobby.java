@@ -19,8 +19,8 @@ public class Lobby extends GUIWindow {
         DefaultTableModel model = new DefaultTableModel(new String[]{"Players:", ""}, 0);
         player.setModel(model);
 
-        for(String nickname: nicknames) {
-            if(nickname.equals(hostNickname)) {
+        for (String nickname : nicknames) {
+            if (nickname.equals(hostNickname)) {
                 model.addRow(new String[]{nickname, "Host"});
             } else {
                 model.addRow(new String[]{nickname, ""});
@@ -51,8 +51,8 @@ public class Lobby extends GUIWindow {
         DefaultTableModel model = new DefaultTableModel(new String[]{"Players:", ""}, 0);
         player.setModel(model);
 
-        for(String nickname: nicknames) {
-            if(nickname.equals(hostNickname)) {
+        for (String nickname : nicknames) {
+            if (nickname.equals(hostNickname)) {
                 model.addRow(new String[]{nickname, "Host"});
             } else {
                 model.addRow(new String[]{nickname, ""});

@@ -17,12 +17,12 @@ public class DiscountEffect extends Effect {
         return resource;
     }
 
-    public int getDiscount() {
-        return discount;
-    }
-
     public void setResource(ConcreteResource resource) {
         this.resource = resource;
+    }
+
+    public int getDiscount() {
+        return discount;
     }
 
     public void setDiscount(int discount) {

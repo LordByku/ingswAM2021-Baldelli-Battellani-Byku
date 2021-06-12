@@ -25,7 +25,7 @@ public class Welcome extends ClientState {
 
     @Override
     public void handleUserMessage(Client client, String line) {
-        if(client.getNickname() == null) {
+        if (client.getNickname() == null) {
             client.setNickname(line);
             viewInterface.welcome();
         } else {

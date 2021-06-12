@@ -11,14 +11,14 @@ public class Person extends Player {
      */
     private final String nickname;
     /**
-     * board is the personal Board of the player
-     */
-    private Board board;
-    /**
      * isActivePlayer is a flag that tells whether it's currently
      * the turn of this Player
      */
     boolean isActivePlayer;
+    /**
+     * board is the personal Board of the player
+     */
+    private Board board;
     /**
      * isHost checks whether this Person is the host of the lobby
      */
@@ -98,7 +98,7 @@ public class Person extends Player {
      * @return A copy of the Board of this Player
      */
     public Board getBoard() {
-        if(board == null) {
+        if (board == null) {
             board = new Board();
         }
         return board.clone();
@@ -130,7 +130,7 @@ public class Person extends Player {
     public void reconnect() {
         if (Game.getInstance().allDisconnected()) {
             isConnected = true;
-            while(!isActivePlayer) {
+            while (!isActivePlayer) {
                 Game.getInstance().handleTurnOrder();
             }
         } else {

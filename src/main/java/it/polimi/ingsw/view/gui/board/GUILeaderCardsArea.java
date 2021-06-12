@@ -13,13 +13,13 @@ public class GUILeaderCardsArea {
     Client client;
     ArrayList<Integer> playedLeaderCards;
 
-    public GUILeaderCardsArea(Client client, JPanel leaderCardsArea){
-        this.client=client;
-        this.leaderCardsArea=leaderCardsArea;
+    public GUILeaderCardsArea(Client client, JPanel leaderCardsArea) {
+        this.client = client;
+        this.leaderCardsArea = leaderCardsArea;
         playedLeaderCards = client.getModel().getPlayer(client.getNickname()).getBoard().getPlayedLeaderCards();
     }
 
-    public void loadLeaderCardsArea(){
+    public void loadLeaderCardsArea() {
         GridBagConstraints c = new GridBagConstraints();
         c.gridy = 0;
         for (int playedLeaderCardID : playedLeaderCards) {

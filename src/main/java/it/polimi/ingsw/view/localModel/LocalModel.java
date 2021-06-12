@@ -7,10 +7,10 @@ import it.polimi.ingsw.view.cli.CLIPrintable;
 
 import java.util.ArrayList;
 
-public class LocalModel implements LocalModelElement, CLIPrintable {
+public class LocalModel extends LocalModelElement implements CLIPrintable {
     private GameZone gameZone;
     private ArrayList<Player> players;
-    private boolean endGame;
+    private boolean endGame = false;
 
     public Player getPlayer(String nickname) {
         for (Player player : players) {
@@ -22,18 +22,21 @@ public class LocalModel implements LocalModelElement, CLIPrintable {
     }
 
     @Override
-    public void updateModel(JsonObject modelJson) {
-        if (modelJson.has("gameZone")) {
-            gameZone.updateModel(modelJson.getAsJsonObject("gameZone"));
+    public void updateModel(JsonElement modelJson) {
+        JsonObject modelObject = modelJson.getAsJsonObject();
+        if (modelObject.has("gameZone")) {
+            gameZone.updateModel(modelObject.getAsJsonObject("gameZone"));
         }
-        if (modelJson.has("players")) {
-            JsonArray playersJson = modelJson.getAsJsonArray("players");
+        if (modelObject.has("players")) {
+            JsonArray playersJson = modelObject.getAsJsonArray("players");
             for (JsonElement playerJsonElement : playersJson) {
                 JsonObject playerJson = (JsonObject) playerJsonElement;
                 String nickname = playerJson.get("nickname").getAsString();
                 getPlayer(nickname).updateModel(playerJson);
             }
         }
+
+        notifyObservers();
     }
 
     public GameZone getGameZone() {

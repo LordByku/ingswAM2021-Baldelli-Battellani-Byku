@@ -22,7 +22,7 @@ public class DevCardsEditor {
 
         currentSelection = 0;
         devCards = new ArrayList<>();
-        for (JsonElement jsonElement: jsonArray) {
+        for (JsonElement jsonElement : jsonArray) {
             JsonObject cardObject = jsonElement.getAsJsonObject();
             CardColour cardColour = gson.fromJson(cardObject.get("colour"), CardColour.class);
             CardLevel cardLevel = gson.fromJson(cardObject.get("level"), CardLevel.class);
@@ -63,7 +63,7 @@ public class DevCardsEditor {
     public void write(JsonObject out) {
         JsonArray array = new JsonArray();
 
-        for(DevCard devCard: devCards) {
+        for (DevCard devCard : devCards) {
             array.add(devCard.serialize());
         }
 

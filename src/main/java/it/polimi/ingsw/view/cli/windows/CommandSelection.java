@@ -99,8 +99,8 @@ public class CommandSelection extends CLIWindow {
             return true;
         }
         Player self = client.getModel().getPlayer(client.getNickname());
-        if(self.hasInkwell()) {
-            if(turnStarted) {
+        if (self.hasInkwell()) {
+            if (turnStarted) {
                 return false;
             } else {
                 turnStarted = true;

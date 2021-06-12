@@ -1,9 +1,10 @@
 package it.polimi.ingsw.view.localModel;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.controller.CommandBuffer;
 
-public class Player implements LocalModelElement {
+public class Player extends LocalModelElement {
     private String nickname;
     private boolean inkwell;
     private boolean initDiscard;
@@ -21,14 +22,17 @@ public class Player implements LocalModelElement {
     }
 
     @Override
-    public void updateModel(JsonObject playerJson) {
-        inkwell = playerJson.get("inkwell").getAsBoolean();
-        initDiscard = playerJson.get("initDiscard").getAsBoolean();
-        initResources = playerJson.get("initResources").getAsBoolean();
-        mainAction = playerJson.get("mainAction").getAsBoolean();
-        if (playerJson.has("board")) {
-            board.updateModel(playerJson.getAsJsonObject("board"));
+    public void updateModel(JsonElement playerJson) {
+        JsonObject playerObject = playerJson.getAsJsonObject();
+        inkwell = playerObject.get("inkwell").getAsBoolean();
+        initDiscard = playerObject.get("initDiscard").getAsBoolean();
+        initResources = playerObject.get("initResources").getAsBoolean();
+        mainAction = playerObject.get("mainAction").getAsBoolean();
+        if (playerObject.has("board")) {
+            board.updateModel(playerObject.getAsJsonObject("board"));
         }
+
+        notifyObservers();
     }
 
     public CommandBuffer getCommandBuffer() {
@@ -53,5 +57,16 @@ public class Player implements LocalModelElement {
 
     public boolean mainAction() {
         return mainAction;
+    }
+
+    public boolean canDiscard(LocalModel model) {
+        if (!initDiscard) {
+            return true;
+        }
+        return model.allInitDiscard() && model.allInitResources() && hasInkwell();
+    }
+
+    public boolean canPlay(LocalModel model) {
+        return model.allInitDiscard() && model.allInitResources() && hasInkwell();
     }
 }

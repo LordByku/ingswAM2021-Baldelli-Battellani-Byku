@@ -23,7 +23,7 @@ public class BoardEditor {
         defaultProductionOut.parse(json.getAsJsonObject("defaultProductionPower").getAsJsonArray("productionOut"));
 
         depotSizes = new ArrayList<>();
-        for(JsonElement jsonElement: json.getAsJsonArray("depotSizes")) {
+        for (JsonElement jsonElement : json.getAsJsonArray("depotSizes")) {
             depotSizes.add(jsonElement.getAsInt());
         }
 
@@ -54,12 +54,12 @@ public class BoardEditor {
         depotSizes.remove(index);
     }
 
-    public void setDevelopmentCardSlots(int developmentCardSlots) {
-        this.developmentCardSlots = developmentCardSlots;
-    }
-
     public int getDevelopmentCardSlots() {
         return developmentCardSlots;
+    }
+
+    public void setDevelopmentCardSlots(int developmentCardSlots) {
+        this.developmentCardSlots = developmentCardSlots;
     }
 
     private JsonArray buildDepotSizes() {
@@ -67,7 +67,7 @@ public class BoardEditor {
     }
 
     public void write(JsonObject out) {
-        if(!out.has("board")) {
+        if (!out.has("board")) {
             JsonObject board = new JsonObject();
             board.add("defaultProductionPower", Config.writeProductionPower(defaultProductionIn, defaultProductionOut));
             board.add("depotSizes", buildDepotSizes());

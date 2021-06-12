@@ -15,16 +15,16 @@ public class GUIFaithTrack {
     int currPosition;
     Integer lolloPosition;
 
-    public GUIFaithTrack(Client client, JPanel faithTrack){
+    public GUIFaithTrack(Client client, JPanel faithTrack) {
         currPosition = client.getModel().getPlayer(client.getNickname()).getBoard().getFaithTrack().getPosition();
         lolloPosition = client.getModel().getPlayer(client.getNickname()).getBoard().getFaithTrack().getComputerPosition();
         this.client = client;
-        this.faithTrack= faithTrack;
+        this.faithTrack = faithTrack;
     }
 
-    public void loadFaithTrack(){
+    public void loadFaithTrack() {
         int size = LocalConfig.getInstance().getFaithTrackFinalPosition() + 1;
-        ArrayList <CheckPoint> checkPoints = LocalConfig.getInstance().getFaithTrackCheckPoints();
+        ArrayList<CheckPoint> checkPoints = LocalConfig.getInstance().getFaithTrackCheckPoints();
         GridBagConstraints c = new GridBagConstraints();
         JPanel[][] panels = new JPanel[3][size];
         Dimension cellSizeD = new Dimension(30, 30);
@@ -32,7 +32,7 @@ public class GUIFaithTrack {
         Image redCross = Toolkit.getDefaultToolkit().getImage("src/main/resources/Punchboard/calamaio.png");
         Image blackCross = Toolkit.getDefaultToolkit().getImage("src/main/resources/Punchboard/croce.png");
 
-        for(int i=0; i<size; i++) {
+        for (int i = 0; i < size; i++) {
             JLabel position = new JLabel();
             position.setForeground(Color.GRAY);
             position.setPreferredSize(cellSizeD);
@@ -42,41 +42,37 @@ public class GUIFaithTrack {
             panels[1][i].setVisible(true);
             panels[1][i].setBorder(new LineBorder(Color.BLACK));
             panels[1][i].setBackground(Color.decode("#fffcf0"));
-            if (lolloPosition == null){
+            if (lolloPosition == null) {
                 if (currPosition == i) {
                     position.setIcon(new ImageIcon(redCross.getScaledInstance(30, 30, Image.SCALE_SMOOTH)));
-                }else{
+                } else {
                     position.setText(Integer.toString(i));
                 }
-            }
-            else {
-                if (currPosition!=i && lolloPosition==i) {
+            } else {
+                if (currPosition != i && lolloPosition == i) {
                     position.setIcon(new ImageIcon(blackCross.getScaledInstance(30, 30, Image.SCALE_SMOOTH)));
-                }
-                else if(currPosition==i && lolloPosition != i){
+                } else if (currPosition == i && lolloPosition != i) {
                     position.setIcon(new ImageIcon(redCross.getScaledInstance(30, 30, Image.SCALE_SMOOTH)));
-                }
-                else if(currPosition==i){
+                } else if (currPosition == i) {
                     JLabel magnificoPosition = new JLabel();
-                    magnificoPosition.setIcon(new ImageIcon(blackCross.getScaledInstance(20,20, Image.SCALE_SMOOTH)));
+                    magnificoPosition.setIcon(new ImageIcon(blackCross.getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
                     position.setIcon(new ImageIcon(redCross.getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
-                    labelC.gridx=0;
-                    labelC.gridy=0;
-                    labelC.insets =new Insets(0,5,0,0);
+                    labelC.gridx = 0;
+                    labelC.gridy = 0;
+                    labelC.insets = new Insets(0, 5, 0, 0);
                     panels[1][i].add(magnificoPosition, labelC);
-                    labelC.insets =new Insets(0,0,0,5);
-                }
-                else {
+                    labelC.insets = new Insets(0, 0, 0, 5);
+                } else {
                     position.setText(Integer.toString(i));
                 }
             }
-            labelC.gridx=0;
-            labelC.gridy=0;
-            panels[1][i].add(position,labelC);
+            labelC.gridx = 0;
+            labelC.gridy = 0;
+            panels[1][i].add(position, labelC);
             c.fill = GridBagConstraints.BOTH;
-            c.gridx=i;
-            c.gridy=1;
-            c.weightx = 1.0/(size);
+            c.gridx = i;
+            c.gridy = 1;
+            c.weightx = 1.0 / (size);
             faithTrack.add(panels[1][i], c);
         }
 

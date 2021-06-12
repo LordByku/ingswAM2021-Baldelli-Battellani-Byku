@@ -6,7 +6,6 @@ import it.polimi.ingsw.editor.gui.components.ValidatableTextField;
 import it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.requirements.CardSetRequirements;
 import it.polimi.ingsw.model.devCards.CardColour;
 import it.polimi.ingsw.model.devCards.CardLevel;
-import it.polimi.ingsw.utility.JsonUtil;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -36,27 +35,27 @@ public class CardSetPanelHandler extends PanelHandler {
         JPanel quantityPanel = new JPanel();
         quantityPanel.setLayout(new BoxLayout(quantityPanel, BoxLayout.Y_AXIS));
 
-        for(CardColour colour: CardColour.values()) {
-            EditorGUIUtil.addLabel(JsonUtil.getInstance().serialize(colour).getAsString(), colourPanel);
+        for (CardColour colour : CardColour.values()) {
+            EditorGUIUtil.addLabel(colour.toString(), colourPanel);
 
             JPanel checkBoxesPanel = new JPanel();
             checkBoxesPanel.setLayout(new BoxLayout(checkBoxesPanel, BoxLayout.X_AXIS));
 
             ButtonGroup checkBoxesButtonGroup = new ButtonGroup();
 
-            for(CardLevel level: CardLevel.values()) {
-                EditorGUIUtil.addCheckBox(JsonUtil.getInstance().serialize(level).getAsString(), cardSet.getCardSet(colour).getCardLevel() == level,
+            for (CardLevel level : CardLevel.values()) {
+                EditorGUIUtil.addCheckBox(level.toString(), cardSet.getCardSet(colour).getCardLevel() == level,
                         checkBoxesButtonGroup, checkBoxesPanel, new ButtonClickEvent((e) -> {
-                    cardSet.getCardSet(colour).toggle(level);
-                }));
+                            cardSet.getCardSet(colour).toggle(level);
+                        }));
             }
 
             levelPanel.add(checkBoxesPanel);
 
             quantityFields.add(EditorGUIUtil.addValidatableTextField(
-                cardSet.getCardSet(colour).getQuantity(), quantityPanel, (value) -> {
-                    cardSet.getCardSet(colour).setQuantity(value);
-                }, value -> value >= 0 && value < 100
+                    cardSet.getCardSet(colour).getQuantity(), quantityPanel, (value) -> {
+                        cardSet.getCardSet(colour).setQuantity(value);
+                    }, value -> value >= 0 && value < 100
             ));
         }
 
@@ -70,8 +69,8 @@ public class CardSetPanelHandler extends PanelHandler {
     @Override
     public boolean validate() {
         boolean result = true;
-        for(ValidatableTextField validatableTextField: quantityFields) {
-            if(!validatableTextField.validate()) {
+        for (ValidatableTextField validatableTextField : quantityFields) {
+            if (!validatableTextField.validate()) {
                 result = false;
             }
         }

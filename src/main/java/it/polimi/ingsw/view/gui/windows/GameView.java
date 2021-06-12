@@ -23,7 +23,7 @@ public class GameView {
     private JPanel strongbox4;
     private JPanel strongbox2;
 
-    public GameView(Client client, BlockingQueue<String> buffer){
+    public GameView(Client client, BlockingQueue<String> buffer) {
 
         viewBoard1Button.setEnabled(true);
         viewBoard2Button.setEnabled(true);
@@ -31,23 +31,29 @@ public class GameView {
         viewBoard4Button.setEnabled(true);
         viewBoard1Button.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {}
+            public void mouseClicked(MouseEvent e) {
+            }
         });
         viewBoard2Button.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {}
+            public void mouseClicked(MouseEvent e) {
+            }
         });
         viewBoard3Button.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {}
+            public void mouseClicked(MouseEvent e) {
+            }
         });
         viewBoard4Button.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {}
+            public void mouseClicked(MouseEvent e) {
+            }
         });
 
     }
 
-    public void refreshWindow(JFrame frame){frame.setVisible(true);}
+    public void refreshWindow(JFrame frame) {
+        frame.setVisible(true);
+    }
 
 }

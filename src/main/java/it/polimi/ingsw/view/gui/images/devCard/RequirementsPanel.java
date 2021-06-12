@@ -14,9 +14,9 @@ public class RequirementsPanel {
     public RequirementsPanel(ConcreteResourceSet concreteResourceSet, int devCardWidth, int devCardHeight) {
         ArrayList<JPanel> resourcePanels = new ArrayList<>();
 
-        for(ConcreteResource concreteResource: ConcreteResource.values()) {
+        for (ConcreteResource concreteResource : ConcreteResource.values()) {
             int count = concreteResourceSet.getCount(concreteResource);
-            if(count > 0) {
+            if (count > 0) {
                 resourcePanels.add(ResourceImage.getResourcePanel(count, concreteResource.getResourceImageType(), devCardHeight / 25));
             }
         }
@@ -24,13 +24,13 @@ public class RequirementsPanel {
         panel = new JPanel();
         panel.setBounds(devCardWidth * 3 / 10, devCardHeight / 30, devCardWidth * 4 / 10, devCardHeight / 9);
 
-        if(resourcePanels.size() == 4) {
+        if (resourcePanels.size() == 4) {
             panel.setLayout(new GridLayout(2, 2));
         } else {
             panel.setLayout(new GridLayout(1, resourcePanels.size()));
         }
 
-        for(JPanel resourcePanel: resourcePanels) {
+        for (JPanel resourcePanel : resourcePanels) {
             panel.add(resourcePanel);
         }
     }

@@ -36,13 +36,13 @@ public class TextFieldExample {
 
         ConcreteResourceSet requirements = new ConcreteResourceSet();
         ChoiceResourceSet choiceResourceSet = new ChoiceResourceSet();
-        for(ConcreteResource resource: ConcreteResource.values()) {
+        for (ConcreteResource resource : ConcreteResource.values()) {
             requirements.addResource(resource, 34);
-            for(int i = 0; i < 56; ++i) {
+            for (int i = 0; i < 56; ++i) {
                 choiceResourceSet.addResource(resource);
             }
         }
-        for(int i = 0; i < 56; ++i) {
+        for (int i = 0; i < 56; ++i) {
             choiceResourceSet.addResource(new ChoiceResource(new FullChoiceSet()));
         }
 
@@ -53,7 +53,7 @@ public class TextFieldExample {
                 new ProductionDetails(productionIn, productionOut), 25, 3000);
 
         CardTypeSet cardTypeSet = new CardTypeSet();
-        for(CardColour cardColour: CardColour.values()) {
+        for (CardColour cardColour : CardColour.values()) {
             CardTypeDetails cardTypeDetails = new CardTypeDetails(cardColour, 56, CardLevel.II);
             cardTypeSet.add(cardTypeDetails);
         }
@@ -62,23 +62,23 @@ public class TextFieldExample {
         LeaderCard cardTypeLeaderCard = new DepotLeaderCard(10, cardTypeSet, ConcreteResource.SERVANT, 5, 3001);
 
         try {
-            for(int i = 0; i < 16; i += 5) {
+            for (int i = 0; i < 16; i += 5) {
                 LeaderCardImage leaderCardImage = LeaderCardsParser.getInstance().getCard(i).getLeaderCardImage(100 + i * 10);
                 topPanel.add(leaderCardImage);
             }
 
-            for(int i = 0; i < 4; ++ i) {
+            for (int i = 0; i < 4; ++i) {
                 LeaderCardImage leaderCardImage = resourcesLeaderCard.getLeaderCardImage(100 + i * 50);
                 //topPanel.add(leaderCardImage);
             }
 
-            for(int i = 0; i < 4; ++i) {
+            for (int i = 0; i < 4; ++i) {
                 LeaderCardImage leaderCardImage = cardTypeLeaderCard.getLeaderCardImage(100 + i * 50);
                 bottomPanel.add(leaderCardImage);
             }
 
             int startIndex = 32;
-            for(int i = 0; i < 4; ++i) {
+            for (int i = 0; i < 4; ++i) {
                 DevCardImage devCardImage = new DevCardImage("" + (startIndex + 5 * i), 200, devCard);
                 //bottomPanel.add(devCardImage);
             }
@@ -95,10 +95,10 @@ public class TextFieldExample {
 
     public static void main(String[] args) {
         try {
-            for(ResourceImageType resourceImageType: ResourceImageType.values()) {
-               resourceImageType.loadImage();
+            for (ResourceImageType resourceImageType : ResourceImageType.values()) {
+                resourceImageType.loadImage();
             }
-            for(CardColour cardColour: CardColour.values()) {
+            for (CardColour cardColour : CardColour.values()) {
                 cardColour.loadImage();
             }
         } catch (IOException e) {

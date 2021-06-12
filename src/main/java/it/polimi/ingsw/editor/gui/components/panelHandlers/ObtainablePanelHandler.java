@@ -30,7 +30,7 @@ public class ObtainablePanelHandler extends PanelHandler {
         JPanel textFieldPanel = new JPanel();
         textFieldPanel.setLayout(new BoxLayout(textFieldPanel, BoxLayout.Y_AXIS));
 
-        for(ObtainableResource resource: ObtainableResource.values()) {
+        for (ObtainableResource resource : ObtainableResource.values()) {
             EditorGUIUtil.addLabel(resource.getString(), labelPanel);
             quantityFields.add(EditorGUIUtil.addValidatableTextField(obtainable.getQuantity(resource), textFieldPanel, (value) -> {
                 obtainable.updateQuantity(resource, value);
@@ -46,8 +46,8 @@ public class ObtainablePanelHandler extends PanelHandler {
     @Override
     public boolean validate() {
         boolean result = true;
-        for(ValidatableTextField validatableTextField: quantityFields) {
-            if(!validatableTextField.validate()) {
+        for (ValidatableTextField validatableTextField : quantityFields) {
+            if (!validatableTextField.validate()) {
                 result = false;
             }
         }

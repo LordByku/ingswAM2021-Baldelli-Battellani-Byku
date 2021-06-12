@@ -17,7 +17,7 @@ public class DepotLeaderCardImage extends LeaderCardImage {
 
         LeaderCardDepot depot = leaderCard.getDepot();
 
-        for(int i = 0; i < depot.getSlots(); ++i) {
+        for (int i = 0; i < depot.getSlots(); ++i) {
             JPanel container = new JPanel();
             container.setLayout(new GridBagLayout());
 

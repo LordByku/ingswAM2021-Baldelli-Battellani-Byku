@@ -1,22 +1,22 @@
 package it.polimi.ingsw.view.localModel;
 
-import com.google.gson.JsonObject;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import it.polimi.ingsw.model.devCards.CardColour;
 import it.polimi.ingsw.model.devCards.CardLevel;
-import it.polimi.ingsw.utility.JsonUtil;
 import it.polimi.ingsw.view.cli.CLIPrintable;
 import it.polimi.ingsw.view.cli.Strings;
 
 import java.util.ArrayList;
 
-public class CardMarket implements LocalModelElement, CLIPrintable {
+public class CardMarket extends LocalModelElement implements CLIPrintable {
     ArrayList<ArrayList<CardMarketDeck>> market;
 
     @Override
     public String getCLIString() {
         int levelWidth = 0, colourWidth = 0;
         for (CardLevel cardLevel : CardLevel.values()) {
-            levelWidth = Math.max(levelWidth, Strings.getGraphemesCount(JsonUtil.getInstance().serialize(cardLevel).getAsString()));
+            levelWidth = Math.max(levelWidth, Strings.getGraphemesCount(cardLevel.toString()));
         }
         for (CardColour cardColour : CardColour.values()) {
             colourWidth = Math.max(colourWidth, Strings.getGraphemesCount(cardColour.getCLIString()));
@@ -25,7 +25,7 @@ public class CardMarket implements LocalModelElement, CLIPrintable {
         StringBuilder result = new StringBuilder();
 
         for (int i = CardLevel.values().length - 1; i >= 0; --i) {
-            String levelString = JsonUtil.getInstance().serialize(CardLevel.values()[i]).getAsString();
+            String levelString = CardLevel.values()[i].toString();
             int levelStringLength = Strings.getGraphemesCount(levelString);
 
             result.append("[").append(i).append("] ").append(levelString);
@@ -84,7 +84,14 @@ public class CardMarket implements LocalModelElement, CLIPrintable {
     }
 
     @Override
-    public void updateModel(JsonObject jsonObject) {
-
+    public void updateModel(JsonElement cardMarketJson) {
+        JsonArray cardMarketArray = cardMarketJson.getAsJsonObject().getAsJsonArray("market");
+        for (int i = 0; i < market.size(); ++i) {
+            JsonArray marketRow = cardMarketArray.get(i).getAsJsonArray();
+            for (int j = 0; j < market.get(0).size(); ++j) {
+                market.get(i).get(j).updateModel(marketRow.get(j));
+            }
+        }
+        notifyObservers();
     }
 }

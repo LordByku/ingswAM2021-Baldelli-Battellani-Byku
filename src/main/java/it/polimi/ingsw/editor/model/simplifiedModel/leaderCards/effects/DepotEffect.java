@@ -16,12 +16,12 @@ public class DepotEffect extends Effect {
         return resource;
     }
 
-    public int getSlots() {
-        return slots;
-    }
-
     public void setResource(ConcreteResource resource) {
         this.resource = resource;
+    }
+
+    public int getSlots() {
+        return slots;
     }
 
     public void setSlots(int slots) {

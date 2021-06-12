@@ -15,7 +15,7 @@ public enum RequirementType {
     cardSet((jsonArray) -> {
         Gson gson = new Gson();
         CardSetRequirements requirements = new CardSetRequirements();
-        for(JsonElement jsonElement: jsonArray) {
+        for (JsonElement jsonElement : jsonArray) {
             CardSet cardSet = gson.fromJson(jsonElement, CardSet.class);
             requirements.setCardSet(cardSet);
         }
