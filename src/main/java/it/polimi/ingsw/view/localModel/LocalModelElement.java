@@ -18,7 +18,6 @@ public abstract class LocalModelElement {
     protected void notifyObservers() {
         for (LocalModelElementObserver observer : observers) {
             observer.notifyObserver();
-            ;
         }
     }
 }

@@ -8,10 +8,12 @@ import java.util.concurrent.BlockingQueue;
 
 public abstract class GUIWindow {
     public void setActive(boolean active, JFrame frame) {
-        if (active) {
-            frame.setContentPane(getPanel());
-        }
-        frame.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            if (active) {
+                frame.setContentPane(getPanel());
+            }
+            frame.setVisible(true);
+        });
     }
 
     protected abstract JPanel getPanel();

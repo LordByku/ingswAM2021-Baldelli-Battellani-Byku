@@ -25,19 +25,18 @@ public class CommandSelection extends CLIWindow {
             if (self.mainAction()) {
                 switch (selection) {
                     case 0: {
-                        JsonObject message = new JsonObject();
-                        message.addProperty("request", "endTurn");
+                        JsonObject message = client.buildEndTurnMessage();
                         client.write(message.toString());
                         endTurnRequested = true;
                         return;
                     }
                     case 1: {
-                        JsonObject message = buildRequestMessage(CommandType.PLAYLEADER);
+                        JsonObject message = client.buildRequestMessage(CommandType.PLAYLEADER);
                         client.write(message.toString());
                         return;
                     }
                     case 2: {
-                        JsonObject message = buildRequestMessage(CommandType.DISCARDLEADER);
+                        JsonObject message = client.buildRequestMessage(CommandType.DISCARDLEADER);
                         client.write(message.toString());
                         return;
                     }
@@ -45,27 +44,27 @@ public class CommandSelection extends CLIWindow {
             } else {
                 switch (selection) {
                     case 0: {
-                        JsonObject message = buildRequestMessage(CommandType.MARKET);
+                        JsonObject message = client.buildRequestMessage(CommandType.MARKET);
                         client.write(message.toString());
                         return;
                     }
                     case 1: {
-                        JsonObject message = buildRequestMessage(CommandType.PURCHASE);
+                        JsonObject message = client.buildRequestMessage(CommandType.PURCHASE);
                         client.write(message.toString());
                         return;
                     }
                     case 2: {
-                        JsonObject message = buildRequestMessage(CommandType.PRODUCTION);
+                        JsonObject message = client.buildRequestMessage(CommandType.PRODUCTION);
                         client.write(message.toString());
                         return;
                     }
                     case 3: {
-                        JsonObject message = buildRequestMessage(CommandType.PLAYLEADER);
+                        JsonObject message = client.buildRequestMessage(CommandType.PLAYLEADER);
                         client.write(message.toString());
                         return;
                     }
                     case 4: {
-                        JsonObject message = buildRequestMessage(CommandType.DISCARDLEADER);
+                        JsonObject message = client.buildRequestMessage(CommandType.DISCARDLEADER);
                         client.write(message.toString());
                         return;
                     }

@@ -9,6 +9,10 @@ public class HandLeaderCardsArea extends LocalModelElement {
 
     @Override
     public void updateModel(JsonElement leaderCardsJson) {
+        leaderCards.clear();
+        for (JsonElement leaderCardId : leaderCardsJson.getAsJsonObject().getAsJsonArray("leaderCards")) {
+            leaderCards.add(leaderCardId.getAsInt());
+        }
         notifyObservers();
     }
 

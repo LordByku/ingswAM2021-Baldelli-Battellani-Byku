@@ -1,11 +1,9 @@
 package it.polimi.ingsw.view.cli.windows;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.controller.CommandBuffer;
 import it.polimi.ingsw.controller.CommandType;
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.utility.JsonUtil;
 import it.polimi.ingsw.view.localModel.LocalModel;
 import it.polimi.ingsw.view.localModel.Player;
 
@@ -21,7 +19,7 @@ public abstract class CLIWindow {
 
         if (!model.allInitDiscard()) {
             if (!self.initDiscard()) {
-                JsonObject message = buildRequestMessage(CommandType.INITDISCARD);
+                JsonObject message = client.buildRequestMessage(CommandType.INITDISCARD);
                 client.write(message.toString());
                 return null;
             }
@@ -30,7 +28,7 @@ public abstract class CLIWindow {
 
         if (!model.allInitResources()) {
             if (!self.initResources()) {
-                JsonObject message = buildRequestMessage(CommandType.INITRESOURCES);
+                JsonObject message = client.buildRequestMessage(CommandType.INITRESOURCES);
                 client.write(message.toString());
                 return null;
             }
@@ -38,27 +36,6 @@ public abstract class CLIWindow {
         }
 
         return new CommandSelection(client);
-    }
-
-    public static JsonObject buildRequestMessage(CommandType commandType) {
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("request", "newCommand");
-        jsonObject.add("command", JsonUtil.getInstance().serialize(commandType));
-        return jsonObject;
-    }
-
-    public static JsonObject buildCommandMessage(String command, JsonElement value) {
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("request", "action");
-        jsonObject.addProperty("command", command);
-        jsonObject.add("value", value);
-        return jsonObject;
-    }
-
-    public static JsonObject buildCancelMessage() {
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("request", "cancel");
-        return jsonObject;
     }
 
     public abstract void handleUserMessage(Client client, String line);

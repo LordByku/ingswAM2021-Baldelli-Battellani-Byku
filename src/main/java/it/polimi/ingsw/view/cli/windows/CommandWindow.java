@@ -1,9 +1,9 @@
 package it.polimi.ingsw.view.cli.windows;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import it.polimi.ingsw.controller.CommandType;
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.utility.JsonUtil;
 import it.polimi.ingsw.view.cli.CLI;
 
 public abstract class CommandWindow extends CLIWindow {
@@ -30,13 +30,14 @@ public abstract class CommandWindow extends CLIWindow {
 
     protected void handleLeaderCard(Client client, String line) {
         if (line.equals("x")) {
-            client.write(buildCancelMessage().toString());
+            JsonObject message = client.buildCancelMessage();
+            client.write(message.toString());
             return;
         }
 
         try {
             int index = Integer.parseInt(line);
-            JsonObject message = buildCommandMessage("index", JsonUtil.getInstance().serialize(index));
+            JsonObject message = client.buildCommandMessage("index", new JsonPrimitive(index));
             client.write(message.toString());
             return;
         } catch (NumberFormatException e) {

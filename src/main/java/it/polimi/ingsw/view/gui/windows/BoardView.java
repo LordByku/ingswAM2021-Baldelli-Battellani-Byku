@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui.windows;
 
+import it.polimi.ingsw.editor.gui.components.ButtonClickEvent;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.LocalConfig;
 import it.polimi.ingsw.view.gui.board.DevCardsArea.GUIDevCardsArea;
@@ -28,6 +29,7 @@ public class BoardView extends GUIWindow {
     private JButton purchaseDevCardButton;
     private JButton collectResourcesButton;
     private JPanel bottomPanel;
+    private JLabel errorLabel;
 
     public BoardView(Client client, BlockingQueue<String> buffer) {
         nicknames = LocalConfig.getInstance().getTurnOrder();
@@ -38,7 +40,16 @@ public class BoardView extends GUIWindow {
         JPanel viewMarketsPanel = new JPanel();
         viewMarketsPanel.setVisible(true);
         //viewMarketsPanel.setBorder(new LineBorder(Color.BLACK));
-        viewMarketsPanel.add(new JButton("View Markets"));
+        JButton marketView = new JButton("View Markets");
+        marketView.addMouseListener(new ButtonClickEvent((event) -> {
+            // TODO : handle window switches better
+            try {
+                buffer.put("! cardmarket");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }));
+        viewMarketsPanel.add(marketView);
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 1.0 / (numOfPlayers + 1);
@@ -61,6 +72,7 @@ public class BoardView extends GUIWindow {
 
         loadBoard(client, buffer);
 
+        errorLabel.setForeground(Color.RED);
     }
 
     public void loadBoard(Client client, BlockingQueue<String> buffer) {
@@ -113,7 +125,7 @@ public class BoardView extends GUIWindow {
 
     @Override
     public void onError(String message) {
-
+        errorLabel.setText(message);
     }
 }
 

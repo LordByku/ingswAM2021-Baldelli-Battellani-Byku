@@ -10,6 +10,10 @@ public class Warehouse extends LocalModelElement {
 
     @Override
     public void updateModel(JsonElement warehouseJson) {
+        depots.clear();
+        for (JsonElement depotJson : warehouseJson.getAsJsonObject().getAsJsonArray("depots")) {
+            depots.add(gson.fromJson(depotJson, ConcreteResourceSet.class));
+        }
         notifyObservers();
     }
 

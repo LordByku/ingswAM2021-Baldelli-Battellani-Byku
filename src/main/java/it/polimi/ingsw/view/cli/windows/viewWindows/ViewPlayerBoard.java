@@ -41,7 +41,7 @@ public class ViewPlayerBoard extends CLIViewWindow {
                         break;
                     }
                     case 5: {
-                        CLI.showLeaderCards(board.getHandLeaderCards());
+                        CLI.showLeaderCards(board.getHandLeaderCards().getLeaderCards());
                         break;
                     }
                 }

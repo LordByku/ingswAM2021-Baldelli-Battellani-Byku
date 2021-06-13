@@ -7,7 +7,8 @@ public class ActionTokenDeck extends LocalModelElement {
     private ActionToken flippedActionToken;
 
     @Override
-    public void updateModel(JsonElement jsonElement) {
+    public void updateModel(JsonElement actionTokenDeckJson) {
+        flippedActionToken = gson.fromJson(actionTokenDeckJson.getAsJsonObject().get("flippedActionToken"), ActionToken.class);
         notifyObservers();
     }
 

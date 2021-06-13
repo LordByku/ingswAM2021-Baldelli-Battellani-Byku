@@ -8,6 +8,7 @@ public class Strongbox extends LocalModelElement {
 
     @Override
     public void updateModel(JsonElement strongboxJson) {
+        content = gson.fromJson(strongboxJson, ConcreteResourceSet.class);
         notifyObservers();
     }
 

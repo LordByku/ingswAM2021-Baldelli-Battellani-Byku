@@ -16,7 +16,7 @@ public class PlayLeader extends CommandWindow {
     @Override
     public void render(Client client) {
         Player self = client.getModel().getPlayer(client.getNickname());
-        CLI.showLeaderCards(self.getBoard().getHandLeaderCards());
+        CLI.showLeaderCards(self.getBoard().getHandLeaderCards().getLeaderCards());
         CLI.playLeaderCard();
     }
 }

@@ -14,17 +14,14 @@ public class GameZone extends LocalModelElement {
         JsonObject gameZoneObject = gameZoneJson.getAsJsonObject();
         if (gameZoneObject.has("marbleMarket")) {
             JsonElement marbleMarketJson = gameZoneObject.get("marbleMarket");
-            marbleMarket = gson.fromJson(marbleMarketJson, MarbleMarket.class);
             marbleMarket.updateModel(marbleMarketJson);
         }
         if (gameZoneObject.has("cardMarket")) {
             JsonElement cardMarketJson = gameZoneObject.get("cardMarket");
-            cardMarket = gson.fromJson(cardMarketJson, CardMarket.class);
             cardMarket.updateModel(cardMarketJson);
         }
         if (gameZoneObject.has("actionTokenDeck")) {
             JsonElement actionTokenDeckJson = gameZoneObject.get("actionTokenDeck");
-            actionTokenDeck = gson.fromJson(actionTokenDeckJson, ActionTokenDeck.class);
             actionTokenDeck.updateModel(actionTokenDeckJson);
         }
 

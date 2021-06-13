@@ -29,40 +29,34 @@ public class Board extends LocalModelElement implements CLIPrintable {
         JsonObject boardObject = boardJson.getAsJsonObject();
         if (boardObject.has("faithTrack")) {
             JsonElement faithTrackJson = boardObject.get("faithTrack");
-            faithTrack = gson.fromJson(faithTrackJson, FaithTrack.class);
             faithTrack.updateModel(faithTrackJson);
         }
         if (boardObject.has("warehouse")) {
             JsonElement warehouseJson = boardObject.get("warehouse");
-            warehouse = gson.fromJson(warehouseJson, Warehouse.class);
             warehouse.updateModel(warehouseJson);
         }
         if (boardObject.has("strongbox")) {
             JsonElement strongboxJson = boardObject.get("strongbox");
-            strongbox = gson.fromJson(strongboxJson, Strongbox.class);
             strongbox.updateModel(strongboxJson);
         }
         if (boardObject.has("devCards")) {
             JsonElement devCardsJson = boardObject.get("devCards");
-            devCards = gson.fromJson(devCardsJson, DevCardArea.class);
             devCards.updateModel(devCardsJson);
         }
         if (boardObject.has("playedLeaderCards")) {
             JsonElement playedLeaderCardsJson = boardObject.get("playedLeaderCards");
-            playedLeaderCards = gson.fromJson(playedLeaderCardsJson, PlayedLeaderCardsArea.class);
             playedLeaderCards.updateModel(playedLeaderCardsJson);
         }
         if (boardObject.has("handLeaderCards")) {
             JsonElement handLeaderCardsJson = boardObject.get("handLeaderCards");
-            handLeaderCards = gson.fromJson(handLeaderCardsJson, HandLeaderCardsArea.class);
             handLeaderCards.updateModel(handLeaderCardsJson);
         }
 
         notifyObservers();
     }
 
-    public ArrayList<Integer> getHandLeaderCards() {
-        return handLeaderCards.getLeaderCards();
+    public HandLeaderCardsArea getHandLeaderCards() {
+        return handLeaderCards;
     }
 
     public ArrayList<ConcreteResourceSet> getWarehouse() {

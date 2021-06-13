@@ -38,7 +38,8 @@ public class MarketWindow extends CommandWindow {
                 switch (words[0]) {
                     case "x": {
                         if (words.length == 1) {
-                            client.write(buildCancelMessage().toString());
+                            JsonObject message = client.buildCancelMessage();
+                            client.write(message.toString());
                             return;
                         }
                         break;
@@ -78,7 +79,7 @@ public class MarketWindow extends CommandWindow {
                             JsonObject jsonObject = new JsonObject();
                             jsonObject.addProperty("depotIndexA", depotIndexA);
                             jsonObject.addProperty("depotIndexB", depotIndexB);
-                            JsonObject message = buildCommandMessage("swapFromDepots", jsonObject);
+                            JsonObject message = client.buildCommandMessage("swapFromDepots", jsonObject);
                             client.write(message.toString());
                             return;
                         }
@@ -86,7 +87,7 @@ public class MarketWindow extends CommandWindow {
                     }
                     case "confirm": {
                         if (words.length == 1) {
-                            JsonObject message = buildCommandMessage("confirmWarehouse", JsonNull.INSTANCE);
+                            JsonObject message = client.buildCommandMessage("confirmWarehouse", JsonNull.INSTANCE);
                             client.write(message.toString());
                             return;
                         }
@@ -98,7 +99,7 @@ public class MarketWindow extends CommandWindow {
                             ConcreteResource resource = UserParser.getInstance().readUserResource(word);
                             jsonArray.add(JsonUtil.getInstance().serialize(resource));
                         }
-                        JsonObject message = buildCommandMessage("conversion", jsonArray);
+                        JsonObject message = client.buildCommandMessage("conversion", jsonArray);
                         client.write(message.toString());
                         return;
                     }
@@ -116,7 +117,7 @@ public class MarketWindow extends CommandWindow {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("depotIndex", depotIndex);
         jsonObject.add("resources", JsonUtil.getInstance().serialize(toAdd));
-        JsonObject message = buildCommandMessage(command, jsonObject);
+        JsonObject message = client.buildCommandMessage(command, jsonObject);
         client.write(message.toString());
     }
 
@@ -125,7 +126,7 @@ public class MarketWindow extends CommandWindow {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("rowColSel", rowColSel);
         jsonObject.addProperty("index", index);
-        JsonObject message = buildCommandMessage("selection", jsonObject);
+        JsonObject message = client.buildCommandMessage("selection", jsonObject);
         client.write(message.toString());
     }
 

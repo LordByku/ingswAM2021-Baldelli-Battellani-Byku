@@ -1,10 +1,13 @@
 package it.polimi.ingsw.network.client;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import it.polimi.ingsw.controller.CommandType;
 import it.polimi.ingsw.controller.LocalController;
 import it.polimi.ingsw.network.client.clientStates.ClientState;
 import it.polimi.ingsw.network.client.clientStates.Lobby;
 import it.polimi.ingsw.network.client.clientStates.Welcome;
+import it.polimi.ingsw.utility.JsonUtil;
 import it.polimi.ingsw.view.ViewInterface;
 import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.view.gui.GUI;
@@ -171,5 +174,32 @@ public class Client {
         }
 
         viewInterface.terminate();
+    }
+
+    public JsonObject buildRequestMessage(CommandType commandType) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("request", "newCommand");
+        jsonObject.add("command", JsonUtil.getInstance().serialize(commandType));
+        return jsonObject;
+    }
+
+    public JsonObject buildCommandMessage(String command, JsonElement value) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("request", "action");
+        jsonObject.addProperty("command", command);
+        jsonObject.add("value", value);
+        return jsonObject;
+    }
+
+    public JsonObject buildCancelMessage() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("request", "cancel");
+        return jsonObject;
+    }
+
+    public JsonObject buildEndTurnMessage() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("request", "endTurn");
+        return jsonObject;
     }
 }

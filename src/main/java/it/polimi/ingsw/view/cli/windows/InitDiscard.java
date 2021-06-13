@@ -19,7 +19,7 @@ public class InitDiscard extends CommandWindow {
             for (int i = 0; i < words.length; ++i) {
                 indices[i] = Integer.parseInt(words[i]);
             }
-            JsonObject message = buildCommandMessage("indices", JsonUtil.getInstance().serialize(indices));
+            JsonObject message = client.buildCommandMessage("indices", JsonUtil.getInstance().serialize(indices));
             client.write(message.toString());
             return;
         } catch (NumberFormatException e) {
@@ -31,7 +31,7 @@ public class InitDiscard extends CommandWindow {
     @Override
     public void render(Client client) {
         Player self = client.getModel().getPlayer(client.getNickname());
-        CLI.showLeaderCards(self.getBoard().getHandLeaderCards());
+        CLI.showLeaderCards(self.getBoard().getHandLeaderCards().getLeaderCards());
         CLI.initDiscard();
     }
 

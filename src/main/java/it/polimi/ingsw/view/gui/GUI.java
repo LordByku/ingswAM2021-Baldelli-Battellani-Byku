@@ -6,12 +6,15 @@ import it.polimi.ingsw.model.devCards.CardColour;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.GUIClientUserCommunication;
 import it.polimi.ingsw.view.ViewInterface;
+import it.polimi.ingsw.view.cli.Strings;
 import it.polimi.ingsw.view.gui.images.resources.ResourceImageType;
 import it.polimi.ingsw.view.gui.windows.BoardView;
+import it.polimi.ingsw.view.gui.windows.CardMarketView;
 import it.polimi.ingsw.view.gui.windows.GUIWindow;
 import it.polimi.ingsw.view.gui.windows.Welcome;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
@@ -27,9 +30,14 @@ public class GUI implements ViewInterface {
     public GUI(Client client) {
         this.client = client;
         frame = new JFrame("Masters of Renaissance");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setResizable(false);
+
+        SwingUtilities.invokeLater(() -> {
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setResizable(false);
+            //frame.setUndecorated(true);
+            frame.setMinimumSize(Toolkit.getDefaultToolkit().getScreenSize());
+            frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        });
 
         buffer = new LinkedBlockingQueue<>();
         clientUserCommunication = new Thread(new GUIClientUserCommunication(client, buffer));
@@ -59,7 +67,21 @@ public class GUI implements ViewInterface {
 
     @Override
     public void onUserInput(String line) {
-
+        // TODO : handle window switches better
+        if (line.charAt(0) == '!') {
+            String[] lines = Strings.splitLine(line);
+            switch (lines[1]) {
+                case "cardmarket": {
+                    guiWindow.setActive(false, frame);
+                    guiWindow = new CardMarketView(client, buffer);
+                    guiWindow.setActive(true, frame);
+                    break;
+                }
+            }
+        } else {
+            System.out.println("sending: " + line);
+            client.write(line);
+        }
     }
 
     @Override

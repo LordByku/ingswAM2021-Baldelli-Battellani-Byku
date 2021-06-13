@@ -38,7 +38,7 @@ public class InitResources extends CommandWindow {
                 currentDepotIndex = (currentDepotIndex + 1) % assignment.length;
                 CLI.renderGameWindow(client);
             } else {
-                JsonObject message = buildCommandMessage("resources", JsonUtil.getInstance().serialize(assignment));
+                JsonObject message = client.buildCommandMessage("resources", JsonUtil.getInstance().serialize(assignment));
                 client.write(message.toString());
             }
         } catch (JsonSyntaxException | InvalidResourceException e) {

@@ -8,8 +8,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URL;
 
@@ -44,17 +42,14 @@ public class LeaderCardImage extends JPanel {
         this.addMouseListener(new ButtonClickEvent((e) -> {
             PopupFactory popupFactory = PopupFactory.getSharedInstance();
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            int cardWidth = 500;
-            int cardHeight = 750;
+            LeaderCardImage zoomed = leaderCard.getLeaderCardImage(500);
 
             JPanel container = new JPanel();
-            container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
-            Popup popup = popupFactory.getPopup(LeaderCardImage.this, container, (screenSize.width - cardWidth) / 2, (screenSize.height - cardHeight) / 2);
+            container.setLayout(new GridBagLayout());
+            Popup popup = popupFactory.getPopup(LeaderCardImage.this, container, (screenSize.width - zoomed.width) / 2, (screenSize.height - zoomed.height) / 2);
 
-            LeaderCardImage zoomed = leaderCard.getLeaderCardImage(cardWidth);
-            zoomed.addButton("x", new ButtonClickEvent((event) -> popup.hide()), new Rectangle(cardWidth - 27, 0, 27, 27));
+            zoomed.addButton("x", new ButtonClickEvent((event) -> popup.hide(), true), new Rectangle(zoomed.width - 27, 0, 27, 27));
             container.add(zoomed);
-
             popup.show();
         }));
     }

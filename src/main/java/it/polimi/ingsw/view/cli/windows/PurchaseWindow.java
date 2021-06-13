@@ -43,7 +43,8 @@ public class PurchaseWindow extends CommandWindow {
                 switch (words[0]) {
                     case "x": {
                         if (words.length == 1) {
-                            client.write(buildCancelMessage().toString());
+                            JsonObject message = client.buildCancelMessage();
+                            client.write(message.toString());
                             return;
                         }
                         break;
@@ -77,13 +78,13 @@ public class PurchaseWindow extends CommandWindow {
                             JsonObject jsonObject = new JsonObject();
                             jsonObject.addProperty("row", row);
                             jsonObject.addProperty("column", col);
-                            JsonObject message = buildCommandMessage("cardSelection", jsonObject);
+                            JsonObject message = client.buildCommandMessage("cardSelection", jsonObject);
                             client.write(message.toString());
                             return;
                         } else {
                             int deckIndex = Integer.parseInt(line);
 
-                            JsonObject message = buildCommandMessage("deckSelection", new JsonPrimitive(deckIndex));
+                            JsonObject message = client.buildCommandMessage("deckSelection", new JsonPrimitive(deckIndex));
                             client.write(message.toString());
                             return;
                         }
@@ -100,7 +101,7 @@ public class PurchaseWindow extends CommandWindow {
         JsonObject jsonObject = new JsonObject();
         jsonObject.add("warehouse", JsonUtil.getInstance().serialize(warehouse));
         jsonObject.add("strongbox", JsonUtil.getInstance().serialize(strongbox));
-        JsonObject message = buildCommandMessage("spendResources", jsonObject);
+        JsonObject message = client.buildCommandMessage("spendResources", jsonObject);
         client.write(message.toString());
     }
 

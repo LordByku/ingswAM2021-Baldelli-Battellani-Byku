@@ -34,7 +34,7 @@ public class DiscardLeader extends CommandBuffer {
 
         Person person = getPerson();
         ArrayList<LeaderCard> leaderCards = person.getBoard().getLeaderCardArea().getLeaderCards();
-        leaderCards.get(index).play();
+        leaderCards.get(index).discard();
 
         setCompleted();
 

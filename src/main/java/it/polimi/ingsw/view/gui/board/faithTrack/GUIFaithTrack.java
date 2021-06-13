@@ -3,26 +3,33 @@ package it.polimi.ingsw.view.gui.board.faithTrack;
 import it.polimi.ingsw.model.playerBoard.faithTrack.CheckPoint;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.LocalConfig;
+import it.polimi.ingsw.view.localModel.FaithTrack;
+import it.polimi.ingsw.view.localModel.LocalModelElementObserver;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class GUIFaithTrack {
-    JPanel faithTrack;
-    Client client;
-    int currPosition;
-    Integer lolloPosition;
+public class GUIFaithTrack implements LocalModelElementObserver {
+    private JPanel faithTrackPanel;
+    private Client client;
+    private int currPosition;
+    private Integer lolloPosition;
 
-    public GUIFaithTrack(Client client, JPanel faithTrack) {
-        currPosition = client.getModel().getPlayer(client.getNickname()).getBoard().getFaithTrack().getPosition();
-        lolloPosition = client.getModel().getPlayer(client.getNickname()).getBoard().getFaithTrack().getComputerPosition();
+    public GUIFaithTrack(Client client, JPanel faithTrackPanel) {
         this.client = client;
-        this.faithTrack = faithTrack;
+        this.faithTrackPanel = faithTrackPanel;
+
+        FaithTrack faithTrack = client.getModel().getPlayer(client.getNickname()).getBoard().getFaithTrack();
+        faithTrack.addObserver(this);
     }
 
     public void loadFaithTrack() {
+        FaithTrack faithTrack = client.getModel().getPlayer(client.getNickname()).getBoard().getFaithTrack();
+        currPosition = faithTrack.getPosition();
+        lolloPosition = faithTrack.getComputerPosition();
+
         int size = LocalConfig.getInstance().getFaithTrackFinalPosition() + 1;
         ArrayList<CheckPoint> checkPoints = LocalConfig.getInstance().getFaithTrackCheckPoints();
         GridBagConstraints c = new GridBagConstraints();
@@ -73,14 +80,25 @@ public class GUIFaithTrack {
             c.gridx = i;
             c.gridy = 1;
             c.weightx = 1.0 / (size);
-            faithTrack.add(panels[1][i], c);
+            faithTrackPanel.add(panels[1][i], c);
         }
 
-        GUICheckPoints guiCheckPoints = new GUICheckPoints(faithTrack, panels, c, checkPoints, size);
+        GUICheckPoints guiCheckPoints = new GUICheckPoints(faithTrackPanel, panels, c, checkPoints, size);
         guiCheckPoints.loadCheckPoints();
 
-        GUIPopeFavor guiPopeFavor = new GUIPopeFavor(client, faithTrack, panels, c, lolloPosition, size);
+        GUIPopeFavor guiPopeFavor = new GUIPopeFavor(client, faithTrackPanel, panels, c, lolloPosition, size);
         guiPopeFavor.loadPopeFavors();
 
+    }
+
+    @Override
+    public void notifyObserver() {
+        // TODO : only update positions ?
+        SwingUtilities.invokeLater(() -> {
+            faithTrackPanel.removeAll();
+            loadFaithTrack();
+            faithTrackPanel.revalidate();
+            faithTrackPanel.repaint();
+        });
     }
 }

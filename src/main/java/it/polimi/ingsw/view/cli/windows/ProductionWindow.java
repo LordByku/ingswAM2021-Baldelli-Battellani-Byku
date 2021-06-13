@@ -42,7 +42,8 @@ public class ProductionWindow extends CommandWindow {
                 switch (words[0]) {
                     case "x": {
                         if (words.length == 1) {
-                            client.write(buildCancelMessage().toString());
+                            JsonObject message = client.buildCancelMessage();
+                            client.write(message.toString());
                             return;
                         }
                         break;
@@ -71,7 +72,7 @@ public class ProductionWindow extends CommandWindow {
                     default: {
                         try {
                             int[] toActivate = UserParser.getInstance().readIntArray(words);
-                            JsonObject message = buildCommandMessage("selection", JsonUtil.getInstance().serialize(toActivate));
+                            JsonObject message = client.buildCommandMessage("selection", JsonUtil.getInstance().serialize(toActivate));
                             client.write(message.toString());
                             return;
                         } catch (NumberFormatException | JsonSyntaxException e) {
@@ -80,7 +81,7 @@ public class ProductionWindow extends CommandWindow {
                                 ConcreteResource concreteResource = UserParser.getInstance().readUserResource(word);
                                 jsonArray.add(JsonUtil.getInstance().serialize(concreteResource));
                             }
-                            JsonObject message = buildCommandMessage("choiceSelection", jsonArray);
+                            JsonObject message = client.buildCommandMessage("choiceSelection", jsonArray);
                             client.write(message.toString());
                             return;
                         }
@@ -130,7 +131,7 @@ public class ProductionWindow extends CommandWindow {
         JsonObject jsonObject = new JsonObject();
         jsonObject.add("warehouse", JsonUtil.getInstance().serialize(warehouse));
         jsonObject.add("strongbox", JsonUtil.getInstance().serialize(strongbox));
-        JsonObject message = buildCommandMessage("spendResources", jsonObject);
+        JsonObject message = client.buildCommandMessage("spendResources", jsonObject);
         client.write(message.toString());
     }
 }
