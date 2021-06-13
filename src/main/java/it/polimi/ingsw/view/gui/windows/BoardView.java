@@ -35,12 +35,13 @@ public class BoardView extends GUIWindow {
         nicknames = LocalConfig.getInstance().getTurnOrder();
         nicknames.remove(client.getNickname());
         int numOfPlayers = nicknames.size();
+        JPanel jpanel;
 
         GridBagConstraints c = new GridBagConstraints();
-        JPanel viewMarketsPanel = new JPanel();
-        viewMarketsPanel.setVisible(true);
+        jpanel = new JPanel();
+        jpanel.setVisible(true);
         //viewMarketsPanel.setBorder(new LineBorder(Color.BLACK));
-        JButton marketView = new JButton("View Markets");
+        JButton marketView = new JButton("View Card Market");
         marketView.addMouseListener(new ButtonClickEvent((event) -> {
             // TODO : handle window switches better
             try {
@@ -49,12 +50,23 @@ public class BoardView extends GUIWindow {
                 e.printStackTrace();
             }
         }));
-        viewMarketsPanel.add(marketView);
+        jpanel.add(marketView);
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 1.0 / (numOfPlayers + 1);
         c.insets = new Insets(10, 10, 10, 10);
-        bottomPanel.add(viewMarketsPanel, c);
+        bottomPanel.add(jpanel, c);
+
+        jpanel = new JPanel();
+        jpanel.setVisible(true);
+        marketView = new JButton("View Marble Market");
+        //TODO: add mouse listener
+        jpanel.add(marketView);
+        c.gridx = 1;
+        c.gridy = 0;
+        c.weightx = 1.0 / (numOfPlayers + 1);
+        c.insets = new Insets(10, 10, 10, 10);
+        bottomPanel.add(jpanel, c);
 
         JPanel[] panels = new JPanel[3];
 
@@ -63,7 +75,7 @@ public class BoardView extends GUIWindow {
             panels[i].setVisible(true);
             //panels[i].setBorder(new LineBorder(Color.BLACK));
             panels[i].add(new JButton("View " + nicknames.get(i) + " board"));
-            c.gridx = i + 1;
+            c.gridx++;
             c.gridy = 0;
             c.weightx = 1.0 / (numOfPlayers + 1);
             c.insets = new Insets(10, 10, 10, 10);
