@@ -22,6 +22,9 @@ public class MarbleMarket extends LocalModelElement {
     public MarbleColour get(int row, int column){
         return market[row][column];
     }
+    public MarbleColour getFreeMarble(){
+        return freeMarble;
+    }
 
     public String getCLIString() {
         StringBuilder result = new StringBuilder(" ");

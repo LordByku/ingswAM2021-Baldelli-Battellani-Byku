@@ -2,21 +2,39 @@ package it.polimi.ingsw.model.gameZone.marbles;
 
 import it.polimi.ingsw.view.cli.TextColour;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.io.IOException;
+import java.net.URL;
+
 /**
  * MarbleColour represents all possible Marble colours
  */
 public enum MarbleColour {
-    WHITE(TextColour.WHITE),
-    BLUE(TextColour.BLUE),
-    GREY(TextColour.GREY),
-    YELLOW(TextColour.YELLOW),
-    PURPLE(TextColour.PURPLE),
-    RED(TextColour.RED);
+    WHITE(TextColour.WHITE, "white"),
+    BLUE(TextColour.BLUE, "blue"),
+    GREY(TextColour.GREY, "grey"),
+    YELLOW(TextColour.YELLOW, "yellow"),
+    PURPLE(TextColour.PURPLE, "purple"),
+    RED(TextColour.RED, "red");
 
-    TextColour colour;
+    private final TextColour colour;
+    private Image marbleColourImage;
+    private final String filename;
 
-    MarbleColour(TextColour colour) {
+    MarbleColour(TextColour colour, String filename) {
         this.colour = colour;
+        this.filename = filename;
+    }
+
+    public void loadImage() throws IOException {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        URL resource = classLoader.getResource("Biglie/" + filename + ".png");
+        marbleColourImage = ImageIO.read(resource);
+    }
+
+    public Image getImage() {
+        return marbleColourImage;
     }
 
     public TextColour getTextColour() {
