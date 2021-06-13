@@ -19,8 +19,8 @@ public enum MarbleColour {
     RED(TextColour.RED, "red");
 
     private final TextColour colour;
-    private Image marbleColourImage;
     private final String filename;
+    private Image marbleColourImage;
 
     MarbleColour(TextColour colour, String filename) {
         this.colour = colour;
@@ -29,7 +29,7 @@ public enum MarbleColour {
 
     public void loadImage() throws IOException {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        URL resource = classLoader.getResource("Biglie/" + filename + ".png");
+        URL resource = classLoader.getResource("Marbles/" + filename + ".png");
         marbleColourImage = ImageIO.read(resource);
     }
 

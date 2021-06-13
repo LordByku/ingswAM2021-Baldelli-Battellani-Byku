@@ -19,10 +19,11 @@ public class MarbleMarket extends LocalModelElement {
         return market[0].length;
     }
 
-    public MarbleColour get(int row, int column){
+    public MarbleColour get(int row, int column) {
         return market[row][column];
     }
-    public MarbleColour getFreeMarble(){
+
+    public MarbleColour getFreeMarble() {
         return freeMarble;
     }
 

@@ -60,7 +60,14 @@ public class BoardView extends GUIWindow {
         jpanel = new JPanel();
         jpanel.setVisible(true);
         marketView = new JButton("View Marble Market");
-        //TODO: add mouse listener
+        marketView.addMouseListener(new ButtonClickEvent((event) -> {
+            // TODO : handle window switches better
+            try {
+                buffer.put("! marblemarket");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }));
         jpanel.add(marketView);
         c.gridx = 1;
         c.gridy = 0;

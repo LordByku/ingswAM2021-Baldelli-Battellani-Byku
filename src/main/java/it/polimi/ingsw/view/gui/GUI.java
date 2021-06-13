@@ -3,15 +3,13 @@ package it.polimi.ingsw.view.gui;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.controller.CommandBuffer;
 import it.polimi.ingsw.model.devCards.CardColour;
+import it.polimi.ingsw.model.gameZone.marbles.MarbleColour;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.GUIClientUserCommunication;
 import it.polimi.ingsw.view.ViewInterface;
 import it.polimi.ingsw.view.cli.Strings;
 import it.polimi.ingsw.view.gui.images.resources.ResourceImageType;
-import it.polimi.ingsw.view.gui.windows.BoardView;
-import it.polimi.ingsw.view.gui.windows.CardMarketView;
-import it.polimi.ingsw.view.gui.windows.GUIWindow;
-import it.polimi.ingsw.view.gui.windows.Welcome;
+import it.polimi.ingsw.view.gui.windows.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -77,6 +75,11 @@ public class GUI implements ViewInterface {
                     guiWindow.setActive(true, frame);
                     break;
                 }
+                case "marblemarket": {
+                    guiWindow.setActive(false, frame);
+                    guiWindow = new MarbleMarketView(client, buffer);
+                    guiWindow.setActive(true, frame);
+                }
             }
         } else {
             System.out.println("sending: " + line);
@@ -113,6 +116,9 @@ public class GUI implements ViewInterface {
             }
             for (CardColour cardColour : CardColour.values()) {
                 cardColour.loadImage();
+            }
+            for (MarbleColour marbleColour : MarbleColour.values()) {
+                marbleColour.loadImage();
             }
         } catch (IOException e) {
         }
