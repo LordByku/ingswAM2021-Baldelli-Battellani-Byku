@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.windows;
 
 import it.polimi.ingsw.network.client.Client;
+import it.polimi.ingsw.view.gui.GUI;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
@@ -23,7 +24,7 @@ public class GameView {
     private JPanel strongbox4;
     private JPanel strongbox2;
 
-    public GameView(Client client, BlockingQueue<String> buffer) {
+    public GameView(GUI gui, Client client, BlockingQueue<String> buffer) {
 
         viewBoard1Button.setEnabled(true);
         viewBoard2Button.setEnabled(true);

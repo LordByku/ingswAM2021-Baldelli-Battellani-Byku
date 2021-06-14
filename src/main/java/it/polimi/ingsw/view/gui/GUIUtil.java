@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.editor.gui.components.ButtonClickEvent;
+import it.polimi.ingsw.view.gui.components.ButtonClickEvent;
 
 import javax.swing.*;
 import java.awt.*;

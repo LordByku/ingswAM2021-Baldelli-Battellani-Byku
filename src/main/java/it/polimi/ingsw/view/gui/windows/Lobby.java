@@ -2,11 +2,11 @@ package it.polimi.ingsw.view.gui.windows;
 
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.LocalConfig;
+import it.polimi.ingsw.view.gui.GUI;
+import it.polimi.ingsw.view.gui.components.ButtonClickEvent;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 
@@ -15,7 +15,8 @@ public class Lobby extends GUIWindow {
     private JButton startGameButton;
     private JPanel panel;
 
-    public Lobby(Client client, BlockingQueue<String> buffer, ArrayList<String> nicknames, String hostNickname) {
+    public Lobby(GUI gui, Client client, ArrayList<String> nicknames, String hostNickname) {
+        super(gui, client);
         DefaultTableModel model = new DefaultTableModel(new String[]{"Players:", ""}, 0);
         player.setModel(model);
 
@@ -29,16 +30,9 @@ public class Lobby extends GUIWindow {
 
         startGameButton.setEnabled(LocalConfig.getInstance().isHost());
 
-        startGameButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                try {
-                    buffer.put("");
-                } catch (InterruptedException interruptedException) {
-                    interruptedException.printStackTrace();
-                }
-            }
-        });
+        startGameButton.addMouseListener(new ButtonClickEvent((event) -> {
+            gui.bufferWrite("");
+        }));
     }
 
     @Override

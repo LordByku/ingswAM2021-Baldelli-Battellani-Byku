@@ -1,11 +1,10 @@
 package it.polimi.ingsw.view.gui.windows;
 
 import it.polimi.ingsw.network.client.Client;
+import it.polimi.ingsw.view.gui.GUI;
+import it.polimi.ingsw.view.gui.components.ButtonClickEvent;
 
 import javax.swing.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.concurrent.BlockingQueue;
 
 public class Welcome extends GUIWindow {
     private JPanel panel;
@@ -15,33 +14,20 @@ public class Welcome extends GUIWindow {
     private JLabel connectionLabel;
     private JLabel errorLabel;
 
-    public Welcome(Client client, BlockingQueue<String> buffer) {
-        playOnlineButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                errorLabel.setText(" ");
-                connectionLabel.setText(" ");
-                try {
-                    buffer.put(insertYourNicknameTextField.getText());
-                    buffer.put("0");
-                } catch (InterruptedException interruptedException) {
-                    interruptedException.printStackTrace();
-                }
-            }
-        });
-        playOfflineButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                errorLabel.setText(" ");
-                connectionLabel.setText(" ");
-                try {
-                    buffer.put(insertYourNicknameTextField.getText());
-                    buffer.put("1");
-                } catch (InterruptedException interruptedException) {
-                    interruptedException.printStackTrace();
-                }
-            }
-        });
+    public Welcome(GUI gui, Client client) {
+        super(gui, client);
+        playOnlineButton.addMouseListener(new ButtonClickEvent((event) -> {
+            errorLabel.setText(" ");
+            connectionLabel.setText(" ");
+            gui.bufferWrite(insertYourNicknameTextField.getText());
+            gui.bufferWrite("0");
+        }));
+        playOfflineButton.addMouseListener(new ButtonClickEvent((event) -> {
+            errorLabel.setText(" ");
+            connectionLabel.setText(" ");
+            gui.bufferWrite(insertYourNicknameTextField.getText());
+            gui.bufferWrite("1");
+        }));
     }
 
     @Override

@@ -1,22 +1,16 @@
 package it.polimi.ingsw.view.gui.windows;
 
-import it.polimi.ingsw.editor.gui.components.ButtonClickEvent;
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.network.client.LocalConfig;
+import it.polimi.ingsw.view.gui.GUI;
 import it.polimi.ingsw.view.gui.board.DevCardsArea.GUIDevCardsArea;
-import it.polimi.ingsw.view.gui.board.GUIHandLeaderCards;
-import it.polimi.ingsw.view.gui.board.GUILeaderCardsArea;
-import it.polimi.ingsw.view.gui.board.GUIStrongbox;
-import it.polimi.ingsw.view.gui.board.GUIWarehouse;
+import it.polimi.ingsw.view.gui.board.*;
 import it.polimi.ingsw.view.gui.board.faithTrack.GUIFaithTrack;
+import it.polimi.ingsw.view.gui.windows.tokens.BoardToken;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.concurrent.BlockingQueue;
 
 public class BoardView extends GUIWindow {
-    private final ArrayList<String> nicknames;
     private JPanel panel;
     private JPanel faithTrack;
     private JPanel devCardsArea;
@@ -31,76 +25,25 @@ public class BoardView extends GUIWindow {
     private JPanel bottomPanel;
     private JLabel errorLabel;
 
-    public BoardView(Client client, BlockingQueue<String> buffer) {
-        nicknames = LocalConfig.getInstance().getTurnOrder();
-        nicknames.remove(client.getNickname());
-        int numOfPlayers = nicknames.size();
-        JPanel jpanel;
+    public BoardView(GUI gui, Client client, String nickname) {
+        super(gui, client);
 
-        GridBagConstraints c = new GridBagConstraints();
-        jpanel = new JPanel();
-        jpanel.setVisible(true);
-        //viewMarketsPanel.setBorder(new LineBorder(Color.BLACK));
-        JButton marketView = new JButton("View Card Market");
-        marketView.addMouseListener(new ButtonClickEvent((event) -> {
-            // TODO : handle window switches better
-            try {
-                buffer.put("! cardmarket");
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }));
-        jpanel.add(marketView);
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 1.0 / (numOfPlayers + 1);
-        c.insets = new Insets(10, 10, 10, 10);
-        bottomPanel.add(jpanel, c);
+        // TODO : load board's component according to nickname
+        GUIBottomPanel guiBottomPanel = new GUIBottomPanel(gui, client, bottomPanel, new BoardToken(nickname));
+        guiBottomPanel.loadBottomPanel();
 
-        jpanel = new JPanel();
-        jpanel.setVisible(true);
-        marketView = new JButton("View Marble Market");
-        marketView.addMouseListener(new ButtonClickEvent((event) -> {
-            // TODO : handle window switches better
-            try {
-                buffer.put("! marblemarket");
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }));
-        jpanel.add(marketView);
-        c.gridx = 1;
-        c.gridy = 0;
-        c.weightx = 1.0 / (numOfPlayers + 1);
-        c.insets = new Insets(10, 10, 10, 10);
-        bottomPanel.add(jpanel, c);
-
-        JPanel[] panels = new JPanel[3];
-
-        for (int i = 0; i < numOfPlayers; i++) {
-            panels[i] = new JPanel();
-            panels[i].setVisible(true);
-            //panels[i].setBorder(new LineBorder(Color.BLACK));
-            panels[i].add(new JButton("View " + nicknames.get(i) + " board"));
-            c.gridx++;
-            c.gridy = 0;
-            c.weightx = 1.0 / (numOfPlayers + 1);
-            c.insets = new Insets(10, 10, 10, 10);
-            bottomPanel.add(panels[i], c);
-        }
-
-        loadBoard(client, buffer);
+        loadBoard();
 
         errorLabel.setForeground(Color.RED);
     }
 
-    public void loadBoard(Client client, BlockingQueue<String> buffer) {
+    public void loadBoard() {
         loadFaithTrack(client);
         loadDevCardsArea(client);
         loadLeaderCardsArea(client);
         loadWarehouse(client);
         loadStrongbox(client);
-        loadHandLeaderCardsArea(client, buffer);
+        loadHandLeaderCardsArea(gui, client);
     }
 
     public void loadFaithTrack(Client client) {
@@ -128,8 +71,8 @@ public class BoardView extends GUIWindow {
         guiStrongbox.loadStrongbox();
     }
 
-    public void loadHandLeaderCardsArea(Client client, BlockingQueue<String> buffer) {
-        GUIHandLeaderCards guiHandLeaderCards = new GUIHandLeaderCards(client, buffer, handLeaderCardsArea);
+    public void loadHandLeaderCardsArea(GUI gui, Client client) {
+        GUIHandLeaderCards guiHandLeaderCards = new GUIHandLeaderCards(gui, client, handLeaderCardsArea);
         guiHandLeaderCards.loadHandLeaderCards();
     }
 

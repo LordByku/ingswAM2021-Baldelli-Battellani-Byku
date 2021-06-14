@@ -7,9 +7,11 @@ import it.polimi.ingsw.model.gameZone.marbles.MarbleColour;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.GUIClientUserCommunication;
 import it.polimi.ingsw.view.ViewInterface;
-import it.polimi.ingsw.view.cli.Strings;
 import it.polimi.ingsw.view.gui.images.resources.ResourceImageType;
-import it.polimi.ingsw.view.gui.windows.*;
+import it.polimi.ingsw.view.gui.windows.BoardView;
+import it.polimi.ingsw.view.gui.windows.GUIWindow;
+import it.polimi.ingsw.view.gui.windows.Welcome;
+import it.polimi.ingsw.view.gui.windows.tokens.WindowToken;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,14 +45,33 @@ public class GUI implements ViewInterface {
         clientUserCommunication.start();
     }
 
+    public void bufferWrite(String message) {
+        try {
+            buffer.put(message);
+        } catch (InterruptedException e) {
+        }
+    }
+
+    public void switchGameWindow(WindowToken token) {
+        SwingUtilities.invokeLater(() -> {
+            guiWindow.setActive(false, frame);
+            guiWindow = token.getWindow(this, client);
+            guiWindow.setActive(true, frame);
+        });
+    }
+
     @Override
     public void onFatalError(String message) {
-        guiWindow.onError(message);
+        SwingUtilities.invokeLater(() -> {
+            guiWindow.onError(message);
+        });
     }
 
     @Override
     public void onError(String message) {
-        guiWindow.onError(message);
+        SwingUtilities.invokeLater(() -> {
+            guiWindow.onError(message);
+        });
     }
 
     @Override
@@ -65,26 +86,8 @@ public class GUI implements ViewInterface {
 
     @Override
     public void onUserInput(String line) {
-        // TODO : handle window switches better
-        if (line.charAt(0) == '!') {
-            String[] lines = Strings.splitLine(line);
-            switch (lines[1]) {
-                case "cardmarket": {
-                    guiWindow.setActive(false, frame);
-                    guiWindow = new CardMarketView(client, buffer);
-                    guiWindow.setActive(true, frame);
-                    break;
-                }
-                case "marblemarket": {
-                    guiWindow.setActive(false, frame);
-                    guiWindow = new MarbleMarketView(client, buffer);
-                    guiWindow.setActive(true, frame);
-                }
-            }
-        } else {
-            System.out.println("sending: " + line);
-            client.write(line);
-        }
+        System.out.println("sending: " + line);
+        client.write(line);
     }
 
     @Override
@@ -99,8 +102,10 @@ public class GUI implements ViewInterface {
 
     @Override
     public void init() {
-        guiWindow = new Welcome(client, buffer);
-        guiWindow.setActive(true, frame);
+        SwingUtilities.invokeLater(() -> {
+            guiWindow = new Welcome(this, client);
+            guiWindow.setActive(true, frame);
+        });
     }
 
     @Override
@@ -126,7 +131,9 @@ public class GUI implements ViewInterface {
 
     @Override
     public void updatePlayerList(ArrayList<String> nicknames, String hostNickname) {
-        guiWindow = guiWindow.refreshPlayerList(client, frame, buffer, nicknames, hostNickname);
+        SwingUtilities.invokeLater(() -> {
+            guiWindow = guiWindow.refreshPlayerList(client, frame, buffer, nicknames, hostNickname);
+        });
     }
 
     @Override
@@ -139,7 +146,9 @@ public class GUI implements ViewInterface {
 
     @Override
     public void startConnection() {
-        ((Welcome) guiWindow).startConnection();
+        SwingUtilities.invokeLater(() -> {
+            ((Welcome) guiWindow).startConnection();
+        });
     }
 
     @Override
@@ -147,7 +156,9 @@ public class GUI implements ViewInterface {
         if (timerDelay > 0) {
             // TODO: handle reconnection
         } else {
-            ((Welcome) guiWindow).connectionFailed();
+            SwingUtilities.invokeLater(() -> {
+                ((Welcome) guiWindow).connectionFailed();
+            });
         }
     }
 
@@ -163,8 +174,10 @@ public class GUI implements ViewInterface {
 
     @Override
     public void loadGameInterface() {
-        guiWindow.setActive(false, frame);
-        guiWindow = new BoardView(client, buffer);
-        guiWindow.setActive(true, frame);
+        SwingUtilities.invokeLater(() -> {
+            guiWindow.setActive(false, frame);
+            guiWindow = new BoardView(this, client, client.getNickname());
+            guiWindow.setActive(true, frame);
+        });
     }
 }

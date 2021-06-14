@@ -1,21 +1,25 @@
 package it.polimi.ingsw.view.gui.windows;
 
 import it.polimi.ingsw.network.client.Client;
+import it.polimi.ingsw.view.gui.GUI;
+import it.polimi.ingsw.view.gui.board.GUIBottomPanel;
 import it.polimi.ingsw.view.gui.board.GUICardMarket;
+import it.polimi.ingsw.view.gui.windows.tokens.CardMarketToken;
 
 import javax.swing.*;
-import java.util.concurrent.BlockingQueue;
 
 public class CardMarketView extends GUIWindow {
     private JPanel bottomPanel;
     private JPanel marketPanel;
     private JPanel panel;
 
-    public CardMarketView(Client client, BlockingQueue<String> buffer) {
-        GUICardMarket cardMarket = new GUICardMarket(marketPanel, client, buffer);
+    public CardMarketView(GUI gui, Client client) {
+        super(gui, client);
+        GUICardMarket cardMarket = new GUICardMarket(gui, client, marketPanel);
         cardMarket.loadCardMarket();
 
-        // TODO : add bottom panel
+        GUIBottomPanel guiBottomPanel = new GUIBottomPanel(gui, client, bottomPanel, new CardMarketToken());
+        guiBottomPanel.loadBottomPanel();
     }
 
     @Override

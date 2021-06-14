@@ -1,10 +1,10 @@
 package it.polimi.ingsw.editor.gui.components.panelHandlers;
 
 import it.polimi.ingsw.editor.gui.EditorGUIUtil;
-import it.polimi.ingsw.editor.gui.components.ButtonClickEvent;
 import it.polimi.ingsw.editor.gui.components.ValidatableTextField;
 import it.polimi.ingsw.editor.model.resources.ConcreteResource;
 import it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.effects.DepotEffect;
+import it.polimi.ingsw.view.gui.components.ButtonClickEvent;
 
 import javax.swing.*;
 

@@ -1,8 +1,8 @@
 package it.polimi.ingsw.view.gui.images.devCard;
 
-import it.polimi.ingsw.editor.gui.components.ButtonClickEvent;
 import it.polimi.ingsw.model.devCards.DevCard;
 import it.polimi.ingsw.view.gui.GUIUtil;
+import it.polimi.ingsw.view.gui.components.ButtonClickEvent;
 import it.polimi.ingsw.view.gui.images.resources.ProductionInPanel;
 import it.polimi.ingsw.view.gui.images.resources.ProductionOutPanel;
 

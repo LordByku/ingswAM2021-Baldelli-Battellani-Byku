@@ -1,10 +1,10 @@
 package it.polimi.ingsw.editor.gui.components.panelHandlers;
 
 import it.polimi.ingsw.editor.gui.EditorGUIUtil;
-import it.polimi.ingsw.editor.gui.components.ButtonClickEvent;
 import it.polimi.ingsw.editor.gui.components.ValidatableTextField;
 import it.polimi.ingsw.editor.model.BoardEditor;
 import it.polimi.ingsw.editor.model.Config;
+import it.polimi.ingsw.view.gui.components.ButtonClickEvent;
 
 import javax.swing.*;
 import java.util.ArrayList;

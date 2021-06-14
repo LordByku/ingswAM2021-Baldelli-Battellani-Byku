@@ -1,8 +1,8 @@
 package it.polimi.ingsw.view.gui.images.leaderCard;
 
-import it.polimi.ingsw.editor.gui.components.ButtonClickEvent;
 import it.polimi.ingsw.model.leaderCards.LeaderCard;
 import it.polimi.ingsw.view.gui.GUIUtil;
+import it.polimi.ingsw.view.gui.components.ButtonClickEvent;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

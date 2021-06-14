@@ -2,12 +2,13 @@ package it.polimi.ingsw.view.gui.board;
 
 import com.google.gson.JsonPrimitive;
 import it.polimi.ingsw.controller.CommandType;
-import it.polimi.ingsw.editor.gui.components.ButtonClickEvent;
 import it.polimi.ingsw.model.leaderCards.LeaderCard;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.LocalConfig;
 import it.polimi.ingsw.parsing.LeaderCardsParser;
 import it.polimi.ingsw.utility.JsonUtil;
+import it.polimi.ingsw.view.gui.GUI;
+import it.polimi.ingsw.view.gui.components.ButtonClickEvent;
 import it.polimi.ingsw.view.gui.images.leaderCard.LeaderCardImage;
 import it.polimi.ingsw.view.localModel.HandLeaderCardsArea;
 import it.polimi.ingsw.view.localModel.LocalModelElementObserver;
@@ -17,19 +18,18 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.concurrent.BlockingQueue;
 
 public class GUIHandLeaderCards implements LocalModelElementObserver {
     private final Client client;
-    private final BlockingQueue<String> buffer;
+    private final GUI gui;
     private JPanel handLeaderCardsPanel;
     private int numOfCardsToDiscard;
     private ArrayList<Integer> initDiscardSelection;
     private ArrayList<Integer> handLeaderCards;
 
-    public GUIHandLeaderCards(Client client, BlockingQueue<String> buffer, JPanel handLeaderCardsPanel) {
+    public GUIHandLeaderCards(GUI gui, Client client, JPanel handLeaderCardsPanel) {
         this.client = client;
-        this.buffer = buffer;
+        this.gui = gui;
         this.handLeaderCardsPanel = handLeaderCardsPanel;
         numOfCardsToDiscard = LocalConfig.getInstance().getInitialDiscards();
         initDiscardSelection = new ArrayList<>();
@@ -61,37 +61,31 @@ public class GUIHandLeaderCards implements LocalModelElementObserver {
 
             int finalI = i;
             discardButton.addMouseListener(new ButtonClickEvent((event) -> {
-                try {
-                    if (!self.initDiscard()) {
-                        if (!initDiscardSelection.contains(finalI)) {
-                            Border redBorder = BorderFactory.createLineBorder(Color.RED);
-                            cardImage.setBorder(redBorder);
-                            initDiscardSelection.add(finalI);
-                            if (initDiscardSelection.size() == numOfCardsToDiscard) {
-                                for (LeaderCardImage leaderCardImage : leaderCardImages) {
-                                    leaderCardImage.setBorder(null);
-                                }
-                                buffer.put(client.buildRequestMessage(CommandType.INITDISCARD).toString());
-                                buffer.put(client.buildCommandMessage("indices", JsonUtil.getInstance().serialize(initDiscardSelection)).toString());
-                                initDiscardSelection.clear();
+                if (!self.initDiscard()) {
+                    if (!initDiscardSelection.contains(finalI)) {
+                        Border redBorder = BorderFactory.createLineBorder(Color.RED);
+                        cardImage.setBorder(redBorder);
+                        initDiscardSelection.add(finalI);
+                        if (initDiscardSelection.size() == numOfCardsToDiscard) {
+                            for (LeaderCardImage leaderCardImage : leaderCardImages) {
+                                leaderCardImage.setBorder(null);
                             }
-                        } else {
-                            cardImage.setBorder(null);
-                            initDiscardSelection.remove((Integer) finalI);
+                            gui.bufferWrite(client.buildRequestMessage(CommandType.INITDISCARD).toString());
+                            gui.bufferWrite(client.buildCommandMessage("indices", JsonUtil.getInstance().serialize(initDiscardSelection)).toString());
+                            initDiscardSelection.clear();
                         }
                     } else {
-                        buffer.put(client.buildRequestMessage(CommandType.DISCARDLEADER).toString());
-                        buffer.put(client.buildCommandMessage("index", new JsonPrimitive(finalI)).toString());
+                        cardImage.setBorder(null);
+                        initDiscardSelection.remove((Integer) finalI);
                     }
-                } catch (InterruptedException e) {
+                } else {
+                    gui.bufferWrite(client.buildRequestMessage(CommandType.DISCARDLEADER).toString());
+                    gui.bufferWrite(client.buildCommandMessage("index", new JsonPrimitive(finalI)).toString());
                 }
             }));
             playButton.addMouseListener(new ButtonClickEvent((event) -> {
-                try {
-                    buffer.put(client.buildRequestMessage(CommandType.PLAYLEADER).toString());
-                    buffer.put(client.buildCommandMessage("index", new JsonPrimitive(finalI)).toString());
-                } catch (InterruptedException e) {
-                }
+                gui.bufferWrite(client.buildRequestMessage(CommandType.PLAYLEADER).toString());
+                gui.bufferWrite(client.buildCommandMessage("index", new JsonPrimitive(finalI)).toString());
             }));
 
             c.gridy = 0;

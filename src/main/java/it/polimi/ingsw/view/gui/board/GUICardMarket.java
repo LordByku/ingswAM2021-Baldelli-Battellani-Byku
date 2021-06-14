@@ -2,23 +2,23 @@ package it.polimi.ingsw.view.gui.board;
 
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.parsing.DevCardsParser;
+import it.polimi.ingsw.view.gui.GUI;
 import it.polimi.ingsw.view.gui.images.devCard.DevCardImage;
 import it.polimi.ingsw.view.localModel.CardMarket;
 import it.polimi.ingsw.view.localModel.LocalModelElementObserver;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.concurrent.BlockingQueue;
 
 public class GUICardMarket implements LocalModelElementObserver {
-    private final JPanel marketPanel;
+    private final GUI gui;
     private final Client client;
-    private final BlockingQueue<String> buffer;
+    private final JPanel marketPanel;
 
-    public GUICardMarket(JPanel marketPanel, Client client, BlockingQueue<String> buffer) {
-        this.marketPanel = marketPanel;
+    public GUICardMarket(GUI gui, Client client, JPanel marketPanel) {
+        this.gui = gui;
         this.client = client;
-        this.buffer = buffer;
+        this.marketPanel = marketPanel;
     }
 
     public void loadCardMarket() {

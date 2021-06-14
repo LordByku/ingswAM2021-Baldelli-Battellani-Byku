@@ -1,7 +1,6 @@
 package it.polimi.ingsw.editor.gui.components.panelHandlers;
 
 import it.polimi.ingsw.editor.gui.EditorGUIUtil;
-import it.polimi.ingsw.editor.gui.components.ButtonClickEvent;
 import it.polimi.ingsw.editor.gui.components.ValidatableTextField;
 import it.polimi.ingsw.editor.model.Config;
 import it.polimi.ingsw.editor.model.LeaderCardsEditor;
@@ -11,6 +10,7 @@ import it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.requirements.Car
 import it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.requirements.RequirementType;
 import it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.requirements.Requirements;
 import it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.requirements.ResourcesRequirements;
+import it.polimi.ingsw.view.gui.components.ButtonClickEvent;
 
 import javax.swing.*;
 import java.awt.*;

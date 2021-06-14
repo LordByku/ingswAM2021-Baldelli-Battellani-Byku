@@ -1,4 +1,4 @@
-package it.polimi.ingsw.editor.gui.components;
+package it.polimi.ingsw.view.gui.components;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
