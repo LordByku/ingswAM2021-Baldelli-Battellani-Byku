@@ -7,10 +7,9 @@ import it.polimi.ingsw.editor.model.BoardEditor;
 import it.polimi.ingsw.editor.model.Config;
 import it.polimi.ingsw.editor.model.FaithTrackEditor;
 import it.polimi.ingsw.editor.model.InitGameEditor;
+import it.polimi.ingsw.view.gui.components.ButtonClickEvent;
 
 import javax.swing.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -67,39 +66,31 @@ public class Window {
     private JPanel leaderCardPointsPanel;
 
     public Window(JFrame frame) {
-        loadDefaultConfigButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                Config.setDefaultPath();
+        loadDefaultConfigButton.addMouseListener(new ButtonClickEvent((event) -> {
+            Config.setDefaultPath();
+            Config.reload();
+            EditorApp.setWindow(new Window(frame));
+        }));
+
+        loadCustomConfigButton.addMouseListener(new ButtonClickEvent((event) -> {
+            try {
+                Config.setPath(loadCustomConfigTextField.getText());
                 Config.reload();
                 EditorApp.setWindow(new Window(frame));
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileErrorLabel.setText("File not found");
             }
-        });
+        }));
 
-        loadCustomConfigButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                try {
-                    Config.setPath(loadCustomConfigTextField.getText());
-                    Config.reload();
-                    EditorApp.setWindow(new Window(frame));
-                } catch (FileNotFoundException fileNotFoundException) {
-                    fileErrorLabel.setText("File not found");
-                }
+        saveCurrentConfigButton.addMouseListener(new ButtonClickEvent((event) -> {
+            try {
+                Config.getInstance().save(saveConfigTextField.getText());
+            } catch (IOException ioException) {
+                fileErrorLabel.setText("An error occurred while saving the file");
             }
-        });
+        }));
 
-        saveCurrentConfigButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                try {
-                    Config.getInstance().save(saveConfigTextField.getText());
-                } catch (IOException ioException) {
-                    fileErrorLabel.setText("An error occurred while saving the file");
-                }
-            }
-        });
-
+        // TODO : replace with validatable text field
         FaithTrackEditor faithTrackEditor = Config.getInstance().getFaithTrackEditor();
         faithTrackLengthTextField.setValue(faithTrackEditor.getFinalPosition());
         faithTrackLengthTextField.getDocument().addDocumentListener(new TextFieldDocumentListener(
@@ -119,6 +110,8 @@ public class Window {
         productionOutPanelHandler.build();
         DepotsPanelHandler depotsPanelHandler = new DepotsPanelHandler(frame, depotsPanel);
         depotsPanelHandler.build();
+
+        // TODO : replace with validatable text field
         developmentCardSlotsTextField.setValue(boardEditor.getDevelopmentCardSlots());
         developmentCardSlotsTextField.getDocument().addDocumentListener(new TextFieldDocumentListener(
                 developmentCardSlotsTextField, (value) -> boardEditor.setDevelopmentCardSlots(Integer.parseInt(value))
@@ -135,6 +128,8 @@ public class Window {
         initResources2.setValue(initGameEditor.getResources(1));
         initResources3.setValue(initGameEditor.getResources(2));
         initResources4.setValue(initGameEditor.getResources(3));
+
+        // TODO : replace with validatable text fields
         leaderCardsToAssignTextField.getDocument().addDocumentListener(new TextFieldDocumentListener(
                 leaderCardsToAssignTextField, (value) -> initGameEditor.setLeaderCardsToAssign(Integer.parseInt(value))
         ));

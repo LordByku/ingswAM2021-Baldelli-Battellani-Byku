@@ -11,7 +11,7 @@ public class HandLeaderCardsArea extends LocalModelElement {
     public void updateModel(JsonElement leaderCardsJson) {
         leaderCards.clear();
         for (JsonElement leaderCardId : leaderCardsJson.getAsJsonObject().getAsJsonArray("leaderCards")) {
-            leaderCards.add(leaderCardId.getAsInt());
+            leaderCards.add(gson.fromJson(leaderCardId, Integer.class));
         }
         notifyObservers();
     }
