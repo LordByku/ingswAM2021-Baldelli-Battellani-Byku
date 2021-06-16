@@ -59,7 +59,7 @@ public class BoardView extends GUIWindow {
     }
 
     public void loadDevCardsArea(Client client) {
-        GUIDevCardsArea guiDevCardsArea = new GUIDevCardsArea(client, devCardsArea);
+        GUIDevCardsArea guiDevCardsArea = new GUIDevCardsArea(gui, client, devCardsArea);
         guiDevCardsArea.loadDevCardsArea();
     }
 

@@ -14,7 +14,7 @@ public class DefaultProductionImage extends JPanel {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         URL resource = classLoader.getResource(path);
         this.img = ImageIO.read(resource);
-        this.setPreferredSize(new Dimension(150, 300));
+        this.setPreferredSize(new Dimension(250, 300));
         this.setLayout(new GridBagLayout());
     }
 
@@ -22,7 +22,7 @@ public class DefaultProductionImage extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (img != null) {
-            g.drawImage(img, 0, 0, 150, 300, null);
+            g.drawImage(img, 0, 0, 250, 300, null);
         }
     }
 }

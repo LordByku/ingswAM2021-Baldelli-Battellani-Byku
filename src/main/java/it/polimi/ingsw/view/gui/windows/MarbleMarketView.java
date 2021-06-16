@@ -21,10 +21,11 @@ public class MarbleMarketView extends GUIWindow {
     public MarbleMarketView(GUI gui, Client client) {
         super(gui, client);
         guiMarbleMarket = new GUIMarbleMarket(gui, client, marketPanel);
+        guiMarbleMarket.loadMarbleMarket();
 
+        // TODO : load via Class Loader
         Image img = Toolkit.getDefaultToolkit().getImage("src/main/resources/Punchboard/plancia_portabiglie.png");
         marbleMarketPanel = new MarbleMarketImage(new ImageIcon(img).getImage());
-        guiMarbleMarket.loadMarbleMarket();
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
