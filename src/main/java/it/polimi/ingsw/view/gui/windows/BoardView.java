@@ -14,16 +14,18 @@ public class BoardView extends GUIWindow {
     private JPanel panel;
     private JPanel faithTrack;
     private JPanel devCardsArea;
-    private JPanel leaderCardsArea;
     private JPanel handLeaderCardsArea;
-    private JPanel warehouse;
-    private JPanel strongbox;
     private JPanel commands;
     private JButton startProductionButton;
     private JButton purchaseDevCardButton;
     private JButton collectResourcesButton;
     private JPanel bottomPanel;
     private JLabel errorLabel;
+    private JPanel strongbox;
+    private JPanel warehouse;
+    private JPanel resourcesPanel;
+    private JPanel leaderCardsArea;
+    private JPanel resourcePanel;
 
     public BoardView(GUI gui, Client client, String nickname) {
         super(gui, client);
@@ -32,18 +34,19 @@ public class BoardView extends GUIWindow {
         GUIBottomPanel guiBottomPanel = new GUIBottomPanel(gui, client, bottomPanel, new BoardToken(nickname));
         guiBottomPanel.loadBottomPanel();
 
-        loadBoard();
+        loadBoard(nickname);
 
         errorLabel.setForeground(Color.RED);
     }
 
-    public void loadBoard() {
+    public void loadBoard(String nickname) {
         loadFaithTrack(client);
         loadDevCardsArea(client);
         loadLeaderCardsArea(client);
         loadWarehouse(client);
         loadStrongbox(client);
         loadHandLeaderCardsArea(gui, client);
+
     }
 
     public void loadFaithTrack(Client client) {
@@ -75,6 +78,7 @@ public class BoardView extends GUIWindow {
         GUIHandLeaderCards guiHandLeaderCards = new GUIHandLeaderCards(gui, client, handLeaderCardsArea);
         guiHandLeaderCards.loadHandLeaderCards();
     }
+
 
     public void initDiscard() {
 

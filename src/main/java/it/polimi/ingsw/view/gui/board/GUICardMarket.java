@@ -3,7 +3,7 @@ package it.polimi.ingsw.view.gui.board;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.parsing.DevCardsParser;
 import it.polimi.ingsw.view.gui.GUI;
-import it.polimi.ingsw.view.gui.images.devCard.DevCardImage;
+import it.polimi.ingsw.view.gui.images.devCardsArea.devCard.DevCardImage;
 import it.polimi.ingsw.view.localModel.CardMarket;
 import it.polimi.ingsw.view.localModel.LocalModelElementObserver;
 

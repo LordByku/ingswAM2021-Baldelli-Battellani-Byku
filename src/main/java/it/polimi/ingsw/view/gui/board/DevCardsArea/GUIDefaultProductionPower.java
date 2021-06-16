@@ -5,12 +5,14 @@ import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ObtainableResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.SpendableResourceSet;
 import it.polimi.ingsw.network.client.LocalConfig;
+import it.polimi.ingsw.view.gui.images.devCardsArea.DefaultProductionImage;
 import it.polimi.ingsw.view.gui.images.resources.ResourceImage;
 import it.polimi.ingsw.view.gui.images.resources.ResourceImageType;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.io.IOException;
 
 public class GUIDefaultProductionPower {
 
@@ -28,7 +30,11 @@ public class GUIDefaultProductionPower {
         defaultProductionPower = LocalConfig.getInstance().getDefaultProductionPower();
         input = defaultProductionPower.getInput();
         output = defaultProductionPower.getOutput();
-        defProdPower = new JPanel(new GridBagLayout());
+        try {
+            defProdPower = new DefaultProductionImage("Punchboard/scroll.png");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         inputPanel = new JPanel(new GridBagLayout());
         outputPanel = new JPanel(new GridBagLayout());
         inputC = new GridBagConstraints();

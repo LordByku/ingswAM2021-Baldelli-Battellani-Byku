@@ -12,7 +12,7 @@ import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ObtainableResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.SpendableResourceSet;
 import it.polimi.ingsw.parsing.LeaderCardsParser;
-import it.polimi.ingsw.view.gui.images.devCard.DevCardImage;
+import it.polimi.ingsw.view.gui.images.devCardsArea.devCard.DevCardImage;
 import it.polimi.ingsw.view.gui.images.leaderCard.LeaderCardImage;
 import it.polimi.ingsw.view.gui.images.resources.ResourceImageType;
 

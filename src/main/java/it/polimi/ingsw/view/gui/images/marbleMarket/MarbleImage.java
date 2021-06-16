@@ -5,23 +5,26 @@ import java.awt.*;
 
 public class MarbleImage extends JPanel {
     private Image img;
+    private final int width=48;
+    private final int height = 48;
 
     public MarbleImage(String img) {
         this(new ImageIcon(img).getImage());
     }
 
     public MarbleImage(Image img) {
+        super(null);
         this.img = img;
-        Dimension size = new Dimension(img.getWidth(null), img.getHeight(null));
-        setPreferredSize(size);
-        setMinimumSize(size);
-        setMaximumSize(size);
-        setSize(size);
+        this.setPreferredSize(new Dimension(width, height));
+        this.setOpaque(false);
         setLayout(null);
     }
 
     @Override
-    public void paintComponent(Graphics g) {
-        g.drawImage(img, 0, 0, null);
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if (img != null) {
+            g.drawImage(img, 0, 0, width, height, null);
+        }
     }
 }

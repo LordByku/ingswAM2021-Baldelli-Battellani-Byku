@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.InvalidResourceSetException;
 import it.polimi.ingsw.view.cli.BackGroundColor;
 import it.polimi.ingsw.view.cli.Strings;
-import it.polimi.ingsw.view.gui.images.devCard.DevCardImage;
+import it.polimi.ingsw.view.gui.images.devCardsArea.devCard.DevCardImage;
 
 import java.io.IOException;
 import java.util.HashSet;
