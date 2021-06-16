@@ -15,22 +15,25 @@ public class BoardView extends GUIWindow {
     private JPanel faithTrack;
     private JPanel devCardsArea;
     private JPanel handLeaderCardsArea;
-    private JPanel commands;
-    private JButton startProductionButton;
-    private JButton purchaseDevCardButton;
-    private JButton collectResourcesButton;
     private JPanel bottomPanel;
     private JLabel errorLabel;
     private JPanel strongbox;
     private JPanel warehouse;
     private JPanel resourcesPanel;
     private JPanel leaderCardsArea;
+    private JPanel commandsPanel;
     private JPanel resourcePanel;
     private GUIFaithTrack guiFaithTrack;
     private GUIHandLeaderCards guiHandLeaderCards;
+    private GUICommandsPanel guiCommandsPanel;
 
     public BoardView(GUI gui, Client client, String nickname) {
         super(gui, client);
+
+        if(nickname.equals(client.getNickname())) {
+            guiCommandsPanel = new GUICommandsPanel(gui, client, commandsPanel);
+            guiCommandsPanel.loadCommandsPanel();
+        }
 
         GUIBottomPanel guiBottomPanel = new GUIBottomPanel(gui, client, bottomPanel, new BoardToken(nickname));
         guiBottomPanel.loadBottomPanel();
@@ -89,6 +92,7 @@ public class BoardView extends GUIWindow {
     protected void clean() {
         guiFaithTrack.clean();
         guiHandLeaderCards.clean();
+        guiCommandsPanel.clean();
     }
 
     @Override

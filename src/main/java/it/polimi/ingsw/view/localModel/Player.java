@@ -73,4 +73,12 @@ public class Player extends LocalModelElement {
     public boolean canPlay(LocalModel model) {
         return model.allInitDiscard() && model.allInitResources() && hasInkwell();
     }
+
+    public boolean canMainAction(LocalModel model) {
+        return model.allInitDiscard() && model.allInitResources() && hasInkwell() && !mainAction();
+    }
+
+    public boolean canEndTurn(LocalModel model) {
+        return model.allInitDiscard() && model.allInitResources() && hasInkwell() && mainAction();
+    }
 }

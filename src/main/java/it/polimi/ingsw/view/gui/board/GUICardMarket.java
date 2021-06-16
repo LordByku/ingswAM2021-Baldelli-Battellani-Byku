@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui.board;
 
+import com.google.gson.JsonObject;
 import it.polimi.ingsw.controller.CommandBuffer;
 import it.polimi.ingsw.controller.CommandType;
 import it.polimi.ingsw.controller.Purchase;
@@ -7,7 +8,9 @@ import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.parsing.DevCardsParser;
 import it.polimi.ingsw.view.gui.GUI;
 import it.polimi.ingsw.view.gui.GUIUtil;
+import it.polimi.ingsw.view.gui.components.ButtonClickEvent;
 import it.polimi.ingsw.view.gui.images.devCardsArea.devCard.DevCardImage;
+import it.polimi.ingsw.view.gui.windows.tokens.BoardToken;
 import it.polimi.ingsw.view.localModel.CardMarket;
 import it.polimi.ingsw.view.localModel.LocalModelElementObserver;
 import it.polimi.ingsw.view.localModel.Player;
@@ -22,7 +25,7 @@ public class GUICardMarket implements LocalModelElementObserver {
     private final Client client;
     private final JPanel marketPanel;
     private final CardMarket cardMarket;
-    private ArrayList<Player> players;
+    private final ArrayList<Player> players;
 
     public GUICardMarket(GUI gui, Client client, JPanel marketPanel) {
         this.gui = gui;
@@ -67,7 +70,15 @@ public class GUICardMarket implements LocalModelElementObserver {
                                 devCardImage.setBorder(redBorder);
                             }
                         } else if (player.getNickname().equals(client.getNickname())) {
-                            GUIUtil.addButton("Purchase", container, null);
+                            int finalI = i;
+                            int finalJ = j;
+                            GUIUtil.addButton("Purchase", container, new ButtonClickEvent((e) -> {
+                                JsonObject value = new JsonObject();
+                                value.addProperty("row", 2 - finalI);
+                                value.addProperty("column", finalJ);
+                                JsonObject message = client.buildCommandMessage("cardSelection", value);
+                                gui.bufferWrite(message.toString());
+                            }));
                         }
                     }
                 }
@@ -80,6 +91,17 @@ public class GUICardMarket implements LocalModelElementObserver {
 
     @Override
     public void notifyObserver() {
+        Player self = client.getModel().getPlayer(client.getNickname());
+        CommandBuffer commandBuffer = self.getCommandBuffer();
+
+        if(commandBuffer != null && commandBuffer.getCommandType() == CommandType.PURCHASE) {
+            Purchase purchaseCommand = (Purchase) commandBuffer;
+            if(purchaseCommand.getMarketRow() != -1 && purchaseCommand.getMarketCol() != -1) {
+                gui.switchGameWindow(new BoardToken(client.getNickname()));
+                return;
+            }
+        }
+
         SwingUtilities.invokeLater(() -> {
             marketPanel.removeAll();
             loadCardMarket();
@@ -91,5 +113,8 @@ public class GUICardMarket implements LocalModelElementObserver {
     @Override
     public void clean() {
         cardMarket.removeObserver(this);
+        for (Player player : players) {
+            player.getCommandElement().removeObserver(this, CommandType.PURCHASE);
+        }
     }
 }
