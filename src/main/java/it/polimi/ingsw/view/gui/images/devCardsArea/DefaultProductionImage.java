@@ -14,7 +14,7 @@ public class DefaultProductionImage extends JPanel {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         URL resource = classLoader.getResource(path);
         this.img = ImageIO.read(resource);
-        this.setPreferredSize(new Dimension(150,300));
+        this.setPreferredSize(new Dimension(150, 300));
         this.setLayout(new GridBagLayout());
     }
 

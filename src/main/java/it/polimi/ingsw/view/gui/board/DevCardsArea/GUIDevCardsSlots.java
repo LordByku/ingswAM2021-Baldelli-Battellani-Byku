@@ -38,7 +38,7 @@ public class GUIDevCardsSlots {
                 c.insets = new Insets(0, 0, j * 10, 0);
                 slotPanel.add(card, c);
             }
-            c.gridx=i+1;
+            c.gridx = i + 1;
             c.gridy = 0;
             c.insets = new Insets(0, 0, 0, 0);
             c.weightx = 0.5;

@@ -2,7 +2,6 @@ package it.polimi.ingsw.view.gui.board;
 
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.view.gui.images.marbleMarket.MarbleImage;
-import it.polimi.ingsw.view.gui.images.marbleMarket.MarbleMarketImage;
 import it.polimi.ingsw.view.gui.images.marbleMarket.MarketTrayImage;
 import it.polimi.ingsw.view.localModel.LocalModelElementObserver;
 import it.polimi.ingsw.view.localModel.MarbleMarket;
@@ -12,11 +11,10 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class GUIMarbleMarket implements LocalModelElementObserver {
-
-    JPanel marketPanel;
-    JPanel marblePanel;
-    JPanel marketTrayPanel;
-    Client client;
+    private JPanel marketPanel;
+    private JPanel marblePanel;
+    private JPanel marketTrayPanel;
+    private Client client;
 
     public GUIMarbleMarket(Client client, JPanel marketPanel) {
         this.client = client;
@@ -49,7 +47,7 @@ public class GUIMarbleMarket implements LocalModelElementObserver {
         c.insets = new Insets(0, 300, 210, 0);
         marketTrayPanel.add(marble, c);
         marblePanel.setBorder(new LineBorder(Color.RED));
-        marblePanel.setPreferredSize(new Dimension(60*4, 60*3));
+        marblePanel.setPreferredSize(new Dimension(60 * 4, 60 * 3));
         marblePanel.setOpaque(false);
         c.gridx = 0;
         c.gridy = 0;
@@ -63,5 +61,15 @@ public class GUIMarbleMarket implements LocalModelElementObserver {
     @Override
     public void notifyObserver() {
 
+    }
+
+    @Override
+    public void clean() {
+        SwingUtilities.invokeLater(() -> {
+            marketPanel.removeAll();
+            loadMarbleMarket();
+            marketPanel.revalidate();
+            marketPanel.repaint();
+        });
     }
 }

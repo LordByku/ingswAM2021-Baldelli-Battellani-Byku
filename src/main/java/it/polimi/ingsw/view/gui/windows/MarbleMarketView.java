@@ -16,18 +16,19 @@ public class MarbleMarketView extends GUIWindow {
     private JPanel marketPanel;
     private JPanel bottomPanel;
     private JPanel marbleMarketPanel;
+    private GUIMarbleMarket guiMarbleMarket;
 
     public MarbleMarketView(GUI gui, Client client) {
         super(gui, client);
+        guiMarbleMarket = new GUIMarbleMarket(client, marketPanel);
         Image img = Toolkit.getDefaultToolkit().getImage("src/main/resources/Punchboard/plancia_portabiglie.png");
         marbleMarketPanel = new MarbleMarketImage(new ImageIcon(img).getImage());
-        GUIMarbleMarket guiMarbleMarket = new GUIMarbleMarket(client, marbleMarketPanel);
         guiMarbleMarket.loadMarbleMarket();
         GridBagConstraints c = new GridBagConstraints();
-        c.gridx=0;
-        c.gridy=0;
+        c.gridx = 0;
+        c.gridy = 0;
         c.fill = GridBagConstraints.BOTH;
-        marketPanel.add(marbleMarketPanel,c);
+        marketPanel.add(marbleMarketPanel, c);
         marketPanel.setBorder(new LineBorder(Color.BLACK));
         GUIBottomPanel guiBottomPanel = new GUIBottomPanel(gui, client, bottomPanel, new MarbleMarketToken());
         guiBottomPanel.loadBottomPanel();
@@ -36,6 +37,11 @@ public class MarbleMarketView extends GUIWindow {
     @Override
     protected JPanel getPanel() {
         return panel;
+    }
+
+    @Override
+    protected void clean() {
+        guiMarbleMarket.clean();
     }
 
     @Override

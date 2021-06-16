@@ -24,6 +24,7 @@ public class GUIHandLeaderCards implements LocalModelElementObserver {
     private final GUI gui;
     private JPanel handLeaderCardsPanel;
     private int numOfCardsToDiscard;
+    private HandLeaderCardsArea handLeaderCardsArea;
     private ArrayList<Integer> initDiscardSelection;
     private ArrayList<Integer> handLeaderCards;
 
@@ -34,7 +35,10 @@ public class GUIHandLeaderCards implements LocalModelElementObserver {
         numOfCardsToDiscard = LocalConfig.getInstance().getInitialDiscards();
         initDiscardSelection = new ArrayList<>();
 
-        HandLeaderCardsArea handLeaderCardsArea = client.getModel().getPlayer(client.getNickname()).getBoard().getHandLeaderCards();
+        Player self = client.getModel().getPlayer(client.getNickname());
+        self.addObserver(this);
+
+        handLeaderCardsArea = self.getBoard().getHandLeaderCards();
         handLeaderCardsArea.addObserver(this);
 
         handLeaderCards = handLeaderCardsArea.getLeaderCards();
@@ -104,12 +108,16 @@ public class GUIHandLeaderCards implements LocalModelElementObserver {
 
     @Override
     public void notifyObserver() {
-        System.out.println("notification");
         SwingUtilities.invokeLater(() -> {
             handLeaderCardsPanel.removeAll();
             loadHandLeaderCards();
             handLeaderCardsPanel.revalidate();
             handLeaderCardsPanel.repaint();
         });
+    }
+
+    @Override
+    public void clean() {
+        handLeaderCardsArea.removeObserver(this);
     }
 }

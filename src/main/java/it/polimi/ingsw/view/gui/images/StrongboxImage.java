@@ -5,9 +5,9 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class StrongboxImage extends JPanel {
-    private Image img;
-    private final int width=100;
+    private final int width = 100;
     private final int height = 100;
+    private Image img;
 
     public StrongboxImage(String img) {
         this(new ImageIcon(img).getImage());

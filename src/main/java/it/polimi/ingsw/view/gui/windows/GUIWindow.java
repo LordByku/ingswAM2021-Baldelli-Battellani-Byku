@@ -19,11 +19,15 @@ public abstract class GUIWindow {
     public void setActive(boolean active, JFrame frame) {
         if (active) {
             frame.setContentPane(getPanel());
+        } else {
+            clean();
         }
         frame.setVisible(true);
     }
 
     protected abstract JPanel getPanel();
+
+    protected abstract void clean();
 
     public GUIWindow refreshPlayerList(Client client, JFrame frame, BlockingQueue<String> buffer, ArrayList<String> nicknames, String hostNickname) {
         setActive(false, frame);

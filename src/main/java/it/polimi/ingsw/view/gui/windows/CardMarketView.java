@@ -12,11 +12,12 @@ public class CardMarketView extends GUIWindow {
     private JPanel bottomPanel;
     private JPanel marketPanel;
     private JPanel panel;
+    private GUICardMarket guiCardMarket;
 
     public CardMarketView(GUI gui, Client client) {
         super(gui, client);
-        GUICardMarket cardMarket = new GUICardMarket(gui, client, marketPanel);
-        cardMarket.loadCardMarket();
+        guiCardMarket = new GUICardMarket(gui, client, marketPanel);
+        guiCardMarket.loadCardMarket();
 
         GUIBottomPanel guiBottomPanel = new GUIBottomPanel(gui, client, bottomPanel, new CardMarketToken());
         guiBottomPanel.loadBottomPanel();
@@ -25,6 +26,11 @@ public class CardMarketView extends GUIWindow {
     @Override
     protected JPanel getPanel() {
         return panel;
+    }
+
+    @Override
+    protected void clean() {
+        guiCardMarket.clean();
     }
 
     @Override

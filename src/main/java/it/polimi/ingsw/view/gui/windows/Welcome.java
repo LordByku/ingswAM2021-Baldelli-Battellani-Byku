@@ -36,6 +36,11 @@ public class Welcome extends GUIWindow {
     }
 
     @Override
+    protected void clean() {
+
+    }
+
+    @Override
     public void onError(String message) {
         connectionLabel.setText(" ");
         errorLabel.setText(message);

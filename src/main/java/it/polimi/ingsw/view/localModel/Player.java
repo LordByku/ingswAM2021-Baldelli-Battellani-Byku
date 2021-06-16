@@ -11,7 +11,7 @@ public class Player extends LocalModelElement {
     private boolean initResources;
     private boolean mainAction;
     private Board board;
-    private CommandBuffer commandBuffer;
+    private CommandElement command = new CommandElement();
 
     public String getNickname() {
         return nickname;
@@ -36,11 +36,11 @@ public class Player extends LocalModelElement {
     }
 
     public CommandBuffer getCommandBuffer() {
-        return commandBuffer;
+        return command.getCommandBuffer();
     }
 
     public void setCommandBuffer(CommandBuffer commandBuffer) {
-        this.commandBuffer = commandBuffer;
+        command.updateCommand(commandBuffer);
     }
 
     public boolean hasInkwell() {
@@ -57,6 +57,10 @@ public class Player extends LocalModelElement {
 
     public boolean mainAction() {
         return mainAction;
+    }
+
+    public CommandElement getCommandElement() {
+        return command;
     }
 
     public boolean canDiscard(LocalModel model) {

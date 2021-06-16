@@ -5,9 +5,9 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class WarehouseImage extends JPanel {
-    private Image img;
-    private final int width=100;
+    private final int width = 100;
     private final int height = 200;
+    private Image img;
 
     public WarehouseImage(String img) {
         this(new ImageIcon(img).getImage());

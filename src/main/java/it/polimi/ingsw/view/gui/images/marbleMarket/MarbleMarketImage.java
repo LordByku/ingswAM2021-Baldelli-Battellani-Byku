@@ -5,9 +5,9 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class MarbleMarketImage extends JPanel {
-    private Image img;
     private final int width = 550;
     private final int height = 700;
+    private Image img;
 
     public MarbleMarketImage(String img) {
         this(new ImageIcon(img).getImage());
@@ -16,7 +16,7 @@ public class MarbleMarketImage extends JPanel {
     public MarbleMarketImage(Image img) {
         super(null);
         this.img = img;
-        this.setPreferredSize(new Dimension(width,height));
+        this.setPreferredSize(new Dimension(width, height));
         this.setLayout(new GridBagLayout());
         this.setBorder(new LineBorder(Color.BLACK));
     }

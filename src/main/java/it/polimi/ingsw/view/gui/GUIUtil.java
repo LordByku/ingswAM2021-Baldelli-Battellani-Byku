@@ -11,7 +11,8 @@ public class GUIUtil {
 
         JButton button = new JButton(text);
         button.setMargin(new Insets(1, 1, 1, 1));
-        button.setPreferredSize(new Dimension(25, 25));
+        int width = 17 + 8 * text.length();
+        button.setPreferredSize(new Dimension(width, 25));
         button.setVerticalAlignment(SwingConstants.CENTER);
         button.addMouseListener(clickEvent);
 

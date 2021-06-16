@@ -41,6 +41,11 @@ public class Lobby extends GUIWindow {
     }
 
     @Override
+    protected void clean() {
+
+    }
+
+    @Override
     public GUIWindow refreshPlayerList(Client client, JFrame frame, BlockingQueue<String> buffer, ArrayList<String> nicknames, String hostNickname) {
         DefaultTableModel model = new DefaultTableModel(new String[]{"Players:", ""}, 0);
         player.setModel(model);

@@ -26,14 +26,16 @@ public class BoardView extends GUIWindow {
     private JPanel resourcesPanel;
     private JPanel leaderCardsArea;
     private JPanel resourcePanel;
+    private GUIFaithTrack guiFaithTrack;
+    private GUIHandLeaderCards guiHandLeaderCards;
 
     public BoardView(GUI gui, Client client, String nickname) {
         super(gui, client);
 
-        // TODO : load board's component according to nickname
         GUIBottomPanel guiBottomPanel = new GUIBottomPanel(gui, client, bottomPanel, new BoardToken(nickname));
         guiBottomPanel.loadBottomPanel();
 
+        // TODO : load board's component according to nickname
         loadBoard(nickname);
 
         errorLabel.setForeground(Color.RED);
@@ -46,11 +48,10 @@ public class BoardView extends GUIWindow {
         loadWarehouse(client);
         loadStrongbox(client);
         loadHandLeaderCardsArea(gui, client);
-
     }
 
     public void loadFaithTrack(Client client) {
-        GUIFaithTrack guiFaithTrack = new GUIFaithTrack(client, faithTrack);
+        guiFaithTrack = new GUIFaithTrack(client, faithTrack);
         guiFaithTrack.loadFaithTrack();
     }
 
@@ -75,18 +76,19 @@ public class BoardView extends GUIWindow {
     }
 
     public void loadHandLeaderCardsArea(GUI gui, Client client) {
-        GUIHandLeaderCards guiHandLeaderCards = new GUIHandLeaderCards(gui, client, handLeaderCardsArea);
+        guiHandLeaderCards = new GUIHandLeaderCards(gui, client, handLeaderCardsArea);
         guiHandLeaderCards.loadHandLeaderCards();
-    }
-
-
-    public void initDiscard() {
-
     }
 
     @Override
     protected JPanel getPanel() {
         return panel;
+    }
+
+    @Override
+    protected void clean() {
+        guiFaithTrack.clean();
+        guiHandLeaderCards.clean();
     }
 
     @Override

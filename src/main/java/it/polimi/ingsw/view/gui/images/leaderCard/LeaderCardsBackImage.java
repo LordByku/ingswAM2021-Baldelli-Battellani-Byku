@@ -7,19 +7,19 @@ import java.io.IOException;
 import java.net.URL;
 
 public class LeaderCardsBackImage extends JPanel {
-    private Image img;
     private final int width;
     private final int height;
+    private Image img;
 
 
     public LeaderCardsBackImage(String path, int width) throws IOException {
         super(null);
         this.width = width;
-        this.height = (int)(1.5 * width);
+        this.height = (int) (1.5 * width);
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         URL resource = classLoader.getResource(path);
         this.img = ImageIO.read(resource);
-        this.setPreferredSize(new Dimension(width,height));
+        this.setPreferredSize(new Dimension(width, height));
         setLayout(null);
     }
 

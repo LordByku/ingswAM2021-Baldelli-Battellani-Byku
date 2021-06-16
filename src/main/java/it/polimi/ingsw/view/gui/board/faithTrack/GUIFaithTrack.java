@@ -16,17 +16,17 @@ public class GUIFaithTrack implements LocalModelElementObserver {
     private Client client;
     private int currPosition;
     private Integer lolloPosition;
+    private FaithTrack faithTrack;
 
     public GUIFaithTrack(Client client, JPanel faithTrackPanel) {
         this.client = client;
         this.faithTrackPanel = faithTrackPanel;
 
-        FaithTrack faithTrack = client.getModel().getPlayer(client.getNickname()).getBoard().getFaithTrack();
+        faithTrack = client.getModel().getPlayer(client.getNickname()).getBoard().getFaithTrack();
         faithTrack.addObserver(this);
     }
 
     public void loadFaithTrack() {
-        FaithTrack faithTrack = client.getModel().getPlayer(client.getNickname()).getBoard().getFaithTrack();
         currPosition = faithTrack.getPosition();
         lolloPosition = faithTrack.getComputerPosition();
 
@@ -100,5 +100,10 @@ public class GUIFaithTrack implements LocalModelElementObserver {
             faithTrackPanel.revalidate();
             faithTrackPanel.repaint();
         });
+    }
+
+    @Override
+    public void clean() {
+        faithTrack.removeObserver(this);
     }
 }

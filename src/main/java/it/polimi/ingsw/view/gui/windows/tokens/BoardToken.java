@@ -5,8 +5,6 @@ import it.polimi.ingsw.view.gui.GUI;
 import it.polimi.ingsw.view.gui.windows.BoardView;
 import it.polimi.ingsw.view.gui.windows.GUIWindow;
 
-import java.util.Objects;
-
 public class BoardToken extends WindowToken {
     private final String nickname;
 
@@ -25,10 +23,5 @@ public class BoardToken extends WindowToken {
         if (o == null || getClass() != o.getClass()) return false;
         BoardToken that = (BoardToken) o;
         return nickname.equals(that.nickname);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(nickname);
     }
 }

@@ -15,8 +15,14 @@ public abstract class LocalModelElement {
         observers.add(observer);
     }
 
+    public void removeObserver(LocalModelElementObserver observer) {
+        observers.remove(observer);
+    }
+
     protected void notifyObservers() {
+        System.out.println(observers.size());
         for (LocalModelElementObserver observer : observers) {
+            System.out.println(observer);
             observer.notifyObserver();
         }
     }

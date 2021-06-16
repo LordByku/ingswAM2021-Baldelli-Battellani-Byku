@@ -9,7 +9,7 @@ public class DevCardSlotImage extends JPanel {
     public DevCardSlotImage(Image img) {
         super(null);
         this.img = img;
-        this.setPreferredSize(new Dimension(200,300));
+        this.setPreferredSize(new Dimension(200, 300));
         this.setLayout(new GridBagLayout());
     }
 
