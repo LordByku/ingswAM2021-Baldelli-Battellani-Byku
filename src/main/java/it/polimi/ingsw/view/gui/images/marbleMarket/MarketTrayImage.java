@@ -1,21 +1,26 @@
 package it.polimi.ingsw.view.gui.images.marbleMarket;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.io.IOException;
+import java.net.URL;
 
 public class MarketTrayImage extends JPanel {
     private final int width = 375;
     private final int height = 306;
     private Image img;
 
-    public MarketTrayImage(String img) {
-        this(new ImageIcon(img).getImage());
-    }
-
-    public MarketTrayImage(Image img) {
+    public MarketTrayImage() {
         super(null);
-        this.img = img;
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        URL resource = classLoader.getResource("Punchboard/marketTray.png");
+        try {
+            this.img = ImageIO.read(resource);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         this.setPreferredSize(new Dimension(width, height));
         this.setLayout(new GridBagLayout());
         this.setBorder(new LineBorder(Color.BLACK));

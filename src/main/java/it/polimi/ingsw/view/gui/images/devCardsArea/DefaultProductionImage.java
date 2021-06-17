@@ -9,11 +9,15 @@ import java.net.URL;
 public class DefaultProductionImage extends JPanel {
     private Image img;
 
-    public DefaultProductionImage(String path) throws IOException {
+    public DefaultProductionImage() {
         super(null);
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        URL resource = classLoader.getResource(path);
-        this.img = ImageIO.read(resource);
+        URL resource = classLoader.getResource("Punchboard/scroll.png");
+        try {
+            this.img = ImageIO.read(resource);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         this.setPreferredSize(new Dimension(250, 300));
         this.setLayout(new GridBagLayout());
     }

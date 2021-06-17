@@ -28,11 +28,7 @@ public class GUIDefaultProductionPower {
     public GUIDefaultProductionPower(JPanel devCardsArea) {
         this.devCardsArea = devCardsArea;
         defaultProductionPower = LocalConfig.getInstance().getDefaultProductionPower();
-        try {
-            defProdPower = new DefaultProductionImage("Punchboard/scroll.png");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        defProdPower = new DefaultProductionImage();
     }
 
     public void loadDefaultProductionPower() {

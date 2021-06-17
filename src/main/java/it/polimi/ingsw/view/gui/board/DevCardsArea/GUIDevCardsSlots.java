@@ -36,9 +36,7 @@ public class GUIDevCardsSlots {
     public void loadDevCardsSlots() {
         GridBagConstraints c = new GridBagConstraints();
         for (int i = 0; i < numOfSlots; i++) {
-            // TODO : load via Class Loader
-            Image img = Toolkit.getDefaultToolkit().getImage("src/main/resources/Punchboard/devcardslot.jpg");
-            JPanel slotPanel = new DevCardSlotImage(new ImageIcon(img).getImage());
+            JPanel slotPanel = new DevCardSlotImage();
             slotPanel.setBorder(new LineBorder(Color.BLACK));
 
             // TODO : change player to load

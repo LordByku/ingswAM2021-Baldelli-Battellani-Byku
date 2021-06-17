@@ -30,8 +30,7 @@ public class GUIMarbleMarket implements LocalModelElementObserver {
         this.gui = gui;
         this.client = client;
         this.marketPanel = marketPanel;
-        Image img = Toolkit.getDefaultToolkit().getImage("src/main/resources/Punchboard/marketTray.png");
-        marketTrayPanel = new MarketTrayImage(new ImageIcon(img).getImage());
+        marketTrayPanel = new MarketTrayImage();
         marblePanel = new JPanel(new GridBagLayout());
 
         marbleMarket = client.getModel().getGameZone().getMarbleMarket();
@@ -46,6 +45,7 @@ public class GUIMarbleMarket implements LocalModelElementObserver {
     public void loadMarbleMarket() {
         JPanel marble;
         Image img;
+        JButton button;
         GridBagConstraints c = new GridBagConstraints();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 4; j++) {
@@ -57,6 +57,24 @@ public class GUIMarbleMarket implements LocalModelElementObserver {
                 marblePanel.add(marble, c);
             }
         }
+        int offset = 125;
+        for(int i=0; i<3; i++){
+            button = new JButton("<-");
+            c.gridx=0;
+            c.gridy=0;
+            c.insets = new Insets(0,500,325-(i*offset),0);
+            marketPanel.add(button, c);
+        }
+
+        for(int i=0; i<4; i++){
+            button = new JButton("↑");
+            button.setPreferredSize(new Dimension(40,60));
+            c.gridx=0;
+            c.gridy=0;
+            c.insets = new Insets(200,(i*offset),0,130);
+            marketPanel.add(button, c);
+        }
+
         img = marbleMarket.getFreeMarble().getImage();
         marble = new MarbleImage(img);
         c.gridx = 0;

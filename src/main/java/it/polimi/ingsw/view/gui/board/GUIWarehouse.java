@@ -34,10 +34,8 @@ public class GUIWarehouse {
         for (int i = 0; i < numOfDepots; i++) {
             JPanel depotPanel = new JPanel(new GridBagLayout());
             ConcreteResourceSet depot = warehouse.get(i);
-            for (ConcreteResource resource : ConcreteResource.values()) {
-                count = depot.getCount(resource);
-                concreteResource = resource;
-            }
+            count = depot.size();
+            concreteResource = depot.getResourceType();
             for (j = 0; j < depotSizes.get(i); ++j) {
                 if (j < count && concreteResource != null) {
                     JPanel resourcePanel = new ResourceImage(concreteResource.getResourceImageType(), 20);
