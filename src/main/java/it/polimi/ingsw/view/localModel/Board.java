@@ -59,8 +59,8 @@ public class Board extends LocalModelElement implements CLIPrintable {
         return handLeaderCards;
     }
 
-    public ArrayList<ConcreteResourceSet> getWarehouse() {
-        return warehouse.getDepots();
+    public Warehouse getWarehouse() {
+        return warehouse;
     }
 
     public FaithTrack getFaithTrack() {
@@ -104,6 +104,17 @@ public class Board extends LocalModelElement implements CLIPrintable {
         }
 
         return map;
+    }
+
+    public ConcreteResourceSet getResources() {
+        ConcreteResourceSet result = new ConcreteResourceSet();
+
+        for(ConcreteResourceSet depot: warehouse.getDepots()) {
+            result.union(depot);
+        }
+        result.union(strongbox.getContent());
+
+        return result;
     }
 
     @Override

@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 import it.polimi.ingsw.controller.CommandBuffer;
 import it.polimi.ingsw.controller.CommandType;
 import it.polimi.ingsw.controller.Purchase;
+import it.polimi.ingsw.model.devCards.DevCard;
+import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.parsing.DevCardsParser;
 import it.polimi.ingsw.view.gui.GUI;
@@ -54,7 +56,8 @@ public class GUICardMarket implements LocalModelElementObserver {
                 JPanel container = new JPanel();
                 container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
 
-                DevCardImage devCardImage = DevCardsParser.getInstance().getCard(cardMarket.getDevCard(2 - i, j)).getDevCardImage(150);
+                DevCard devCard = DevCardsParser.getInstance().getCard(cardMarket.getDevCard(2 - i, j));
+                DevCardImage devCardImage = devCard.getDevCardImage(150);
                 container.add(devCardImage);
 
                 for (Player player : players) {
@@ -72,13 +75,17 @@ public class GUICardMarket implements LocalModelElementObserver {
                         } else if (player.getNickname().equals(client.getNickname())) {
                             int finalI = i;
                             int finalJ = j;
+
+                            ConcreteResourceSet requirements = devCard.getReqResources();
+                            ConcreteResourceSet boardResources = player.getBoard().getResources();
+
                             GUIUtil.addButton("Purchase", container, new ButtonClickEvent((e) -> {
                                 JsonObject value = new JsonObject();
                                 value.addProperty("row", 2 - finalI);
                                 value.addProperty("column", finalJ);
                                 JsonObject message = client.buildCommandMessage("cardSelection", value);
                                 gui.bufferWrite(message.toString());
-                            }));
+                            })).setEnabled(boardResources.contains(requirements));
                         }
                     }
                 }

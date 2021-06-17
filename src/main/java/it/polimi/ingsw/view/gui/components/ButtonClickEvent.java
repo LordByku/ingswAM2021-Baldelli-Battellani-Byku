@@ -5,27 +5,27 @@ import java.awt.event.MouseEvent;
 import java.util.function.Consumer;
 
 public class ButtonClickEvent extends MouseAdapter {
-    private static boolean locked = false;
+    private static volatile boolean locked = false;
     private final Consumer<MouseEvent> lambda;
-    private final boolean popupPriority;
+    private final boolean priority;
 
     public ButtonClickEvent(Consumer<MouseEvent> lambda) {
         this(lambda, false);
     }
 
-    public ButtonClickEvent(Consumer<MouseEvent> lambda, boolean popupPriority) {
+    public ButtonClickEvent(Consumer<MouseEvent> lambda, boolean priority) {
         this.lambda = lambda;
-        this.popupPriority = popupPriority;
-        if (popupPriority) {
+        this.priority = priority;
+        if (priority) {
             locked = true;
         }
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (!locked || popupPriority) {
+        if (!locked || priority) {
             lambda.accept(e);
-            if (popupPriority) {
+            if(priority) {
                 locked = false;
             }
         }

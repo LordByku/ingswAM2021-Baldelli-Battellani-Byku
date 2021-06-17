@@ -60,7 +60,6 @@ public class GUIHandLeaderCards implements LocalModelElementObserver {
 
             leaderCardImages.add(cardImage);
 
-            Player self = client.getModel().getPlayer(client.getNickname());
             discardButton.setEnabled(self.canDiscard(client.getModel()));
             playButton.setEnabled(self.canPlay(client.getModel()));
 

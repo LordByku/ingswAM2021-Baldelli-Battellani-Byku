@@ -27,7 +27,7 @@ public class PurchaseWindow extends CommandWindow {
 
     public PurchaseWindow(Client client) {
         Player self = client.getModel().getPlayer(client.getNickname());
-        warehouse = new ConcreteResourceSet[self.getBoard().getWarehouse().size()];
+        warehouse = new ConcreteResourceSet[self.getBoard().getWarehouse().getDepots().size()];
         for (int i = 0; i < warehouse.length; ++i) {
             warehouse[i] = new ConcreteResourceSet();
         }
@@ -133,7 +133,7 @@ public class PurchaseWindow extends CommandWindow {
 
                 ConcreteResourceSet currentSelection = commandBuffer.getCurrentTotalToSpend();
 
-                CLI.showWarehouse(self.getBoard().getWarehouse(), self.getBoard().getPlayedLeaderCards());
+                CLI.showWarehouse(self.getBoard().getWarehouse().getDepots(), self.getBoard().getPlayedLeaderCards());
                 CLI.showStrongbox(self.getBoard().getStrongBox());
                 CLI.spendResources(toSpend, currentSelection);
             }

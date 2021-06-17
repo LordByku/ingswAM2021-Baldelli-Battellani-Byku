@@ -12,18 +12,24 @@ public abstract class LocalModelElement {
     public abstract void updateModel(JsonElement jsonElement);
 
     public void addObserver(LocalModelElementObserver observer) {
-        observers.add(observer);
+        synchronized (observers) {
+            observers.add(observer);
+        }
     }
 
     public void removeObserver(LocalModelElementObserver observer) {
-        observers.remove(observer);
+        synchronized (observers) {
+            observers.remove(observer);
+        }
     }
 
     protected void notifyObservers() {
-        System.out.println(observers.size());
-        for (LocalModelElementObserver observer : observers) {
-            System.out.println(observer);
-            observer.notifyObserver();
+        synchronized (observers) {
+            System.out.println(observers.size());
+            for (LocalModelElementObserver observer : observers) {
+                System.out.println(observer);
+                observer.notifyObserver();
+            }
         }
     }
 }

@@ -26,7 +26,7 @@ public class ProductionWindow extends CommandWindow {
 
     public ProductionWindow(Client client) {
         Player self = client.getModel().getPlayer(client.getNickname());
-        warehouse = new ConcreteResourceSet[self.getBoard().getWarehouse().size()];
+        warehouse = new ConcreteResourceSet[self.getBoard().getWarehouse().getDepots().size()];
         for (int i = 0; i < warehouse.length; ++i) {
             warehouse[i] = new ConcreteResourceSet();
         }
@@ -101,7 +101,7 @@ public class ProductionWindow extends CommandWindow {
         Board board = self.getBoard();
         HashMap<Integer, ProductionDetails> map = board.activeProductionDetails();
         if (commandBuffer.getProductionsToActivate() == null) {
-            CLI.showWarehouse(board.getWarehouse(), board.getPlayedLeaderCards());
+            CLI.showWarehouse(board.getWarehouse().getDepots(), board.getPlayedLeaderCards());
             CLI.showStrongbox(board.getStrongBox());
             CLI.activateProductionSelection(map);
         } else {
@@ -113,7 +113,7 @@ public class ProductionWindow extends CommandWindow {
                 }
                 ConcreteResourceSet currentSelection = commandBuffer.getCurrentTotalToSpend();
 
-                CLI.showWarehouse(self.getBoard().getWarehouse(), self.getBoard().getPlayedLeaderCards());
+                CLI.showWarehouse(self.getBoard().getWarehouse().getDepots(), self.getBoard().getPlayedLeaderCards());
                 CLI.showStrongbox(self.getBoard().getStrongBox());
                 CLI.spendResources(toSpend, currentSelection);
             } else {

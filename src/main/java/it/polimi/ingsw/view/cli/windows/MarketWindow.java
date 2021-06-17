@@ -151,7 +151,7 @@ public class MarketWindow extends CommandWindow {
                 }
                 CLI.whiteMarbleSelection(choiceSet, obtained.getChoiceResources().size());
             } else {
-                CLI.showWarehouse(board.getWarehouse(), board.getPlayedLeaderCards());
+                CLI.showWarehouse(board.getWarehouse().getDepots(), board.getPlayedLeaderCards());
                 CLI.manageWarehouse(commandBuffer.getToDiscard());
             }
         }

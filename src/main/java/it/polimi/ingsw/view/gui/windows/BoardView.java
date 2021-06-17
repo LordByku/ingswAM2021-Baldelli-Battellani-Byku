@@ -50,7 +50,7 @@ public class BoardView extends GUIWindow {
         loadLeaderCardsArea(client);
         loadWarehouse(client);
         loadStrongbox(client);
-        loadHandLeaderCardsArea(gui, client);
+        loadHandLeaderCardsArea(client);
     }
 
     public void loadFaithTrack(Client client) {
@@ -69,7 +69,7 @@ public class BoardView extends GUIWindow {
     }
 
     public void loadWarehouse(Client client) {
-        GUIWarehouse guiWarehouse = new GUIWarehouse(client, warehouse);
+        GUIWarehouse guiWarehouse = new GUIWarehouse(gui, client, warehouse);
         guiWarehouse.loadWarehouse();
     }
 
@@ -78,7 +78,7 @@ public class BoardView extends GUIWindow {
         guiStrongbox.loadStrongbox();
     }
 
-    public void loadHandLeaderCardsArea(GUI gui, Client client) {
+    public void loadHandLeaderCardsArea(Client client) {
         guiHandLeaderCards = new GUIHandLeaderCards(gui, client, handLeaderCardsArea);
         guiHandLeaderCards.loadHandLeaderCards();
     }
