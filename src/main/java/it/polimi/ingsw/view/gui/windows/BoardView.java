@@ -33,7 +33,7 @@ public class BoardView extends GUIWindow {
     public BoardView(GUI gui, Client client, String nickname) {
         super(gui, client);
 
-        if(nickname.equals(client.getNickname())) {
+        if (nickname.equals(client.getNickname())) {
             guiCommandsPanel = new GUICommandsPanel(gui, client, commandsPanel);
             guiCommandsPanel.loadCommandsPanel();
         }

@@ -71,8 +71,8 @@ public class Board extends LocalModelElement implements CLIPrintable {
         return playedLeaderCards.getLeaderCards();
     }
 
-    public ConcreteResourceSet getStrongBox() {
-        return strongbox.getContent();
+    public Strongbox getStrongBox() {
+        return strongbox;
     }
 
     public DevCardsArea getDevCardsArea() {
@@ -107,7 +107,7 @@ public class Board extends LocalModelElement implements CLIPrintable {
     public ConcreteResourceSet getResources() {
         ConcreteResourceSet result = new ConcreteResourceSet();
 
-        for(ConcreteResourceSet depot: warehouse.getDepots()) {
+        for (ConcreteResourceSet depot : warehouse.getDepots()) {
             result.union(depot);
         }
         result.union(strongbox.getContent());

@@ -39,6 +39,8 @@ public class GameStarted extends ClientState {
                         String player = message.get("player").getAsString();
                         CommandBuffer commandBuffer = Deserializer.getInstance().getCommandBuffer(message.get("value"));
 
+                        System.out.println(message.get("value").toString());
+
                         client.getModel().getPlayer(player).setCommandBuffer(commandBuffer);
 
                         viewInterface.onCommand(player, commandBuffer);

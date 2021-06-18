@@ -4,13 +4,15 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import it.polimi.ingsw.controller.CommandBuffer;
 import it.polimi.ingsw.controller.CommandType;
-import it.polimi.ingsw.controller.DiscardLeader;
+import it.polimi.ingsw.controller.Production;
 import it.polimi.ingsw.controller.Purchase;
 import it.polimi.ingsw.model.devCards.DevCard;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.LocalConfig;
 import it.polimi.ingsw.parsing.DevCardsParser;
+import it.polimi.ingsw.utility.JsonUtil;
 import it.polimi.ingsw.view.gui.GUI;
+import it.polimi.ingsw.view.gui.GUIUtil;
 import it.polimi.ingsw.view.gui.components.ButtonClickEvent;
 import it.polimi.ingsw.view.gui.images.devCardsArea.DevCardSlotImage;
 import it.polimi.ingsw.view.localModel.LocalModelElementObserver;
@@ -23,10 +25,11 @@ import java.util.ArrayList;
 
 public class GUIDevCardsSlots implements LocalModelElementObserver {
     private final GUI gui;
+    private final JPanel slotsPanel;
+    private final Player player;
     private JPanel devCardsArea;
     private int numOfSlots;
     private Client client;
-    private final Player player;
 
     public GUIDevCardsSlots(GUI gui, Client client, JPanel devCardsArea) {
         this.gui = gui;
@@ -38,12 +41,18 @@ public class GUIDevCardsSlots implements LocalModelElementObserver {
         player = client.getModel().getPlayer(client.getNickname());
 
         player.getCommandElement().addObserver(this, CommandType.PURCHASE);
+        player.getCommandElement().addObserver(this, CommandType.PRODUCTION);
         player.getBoard().getDevCardsArea().addObserver(this);
+
+        slotsPanel = new JPanel(new GridBagLayout());
+        devCardsArea.add(slotsPanel);
     }
 
     public void loadDevCardsSlots() {
         GridBagConstraints c = new GridBagConstraints();
         for (int i = 0; i < numOfSlots; i++) {
+            int finalI = i;
+
             JPanel slotPanel = new DevCardSlotImage();
             slotPanel.setBorder(new LineBorder(Color.BLACK));
 
@@ -55,7 +64,6 @@ public class GUIDevCardsSlots implements LocalModelElementObserver {
                 if (commandBuffer != null && commandBuffer.getCommandType() == CommandType.PURCHASE) {
                     Purchase purchaseCommand = (Purchase) commandBuffer;
                     if (purchaseCommand.getDeckIndex() == -1) {
-                        int finalI = i;
                         slotPanel.addMouseListener(new ButtonClickEvent((e) -> {
                             JsonObject message = client.buildCommandMessage("deckSelection", new JsonPrimitive(finalI));
                             gui.bufferWrite(message.toString());
@@ -63,9 +71,9 @@ public class GUIDevCardsSlots implements LocalModelElementObserver {
                     }
                 }
             }
+            c.gridx = c.gridy = 0;
 
             ArrayList<Integer> deck = new ArrayList<>(player.getBoard().getDevCardsArea().getDecks().get(i)); //cards ID
-            System.out.println(deck);
             CommandBuffer commandBuffer = player.getCommandBuffer();
             if (commandBuffer != null && !commandBuffer.isCompleted() && commandBuffer.getCommandType() == CommandType.PURCHASE) {
                 Purchase purchaseCommand = (Purchase) commandBuffer;
@@ -77,42 +85,65 @@ public class GUIDevCardsSlots implements LocalModelElementObserver {
             }
 
             // for testing:
-            /*
-            for(int j = 0; j <= i; ++j) {
+            /*for(int j = 0; j <= i; ++j) {
                 deck.add(j);
             }*/
 
             for (int j = deck.size() - 1; j >= 0; --j) {
                 // TODO : adjust size ?
                 DevCard devCard = DevCardsParser.getInstance().getCard(deck.get(j));
-                JPanel card = devCard.getDevCardImage(100);
+                JPanel card = devCard.getDevCardImage(128);
                 card.setBorder(new LineBorder(Color.BLACK));
-                c.gridx = 0;
-                c.gridy = 0;
-                c.insets = new Insets(20 * (deck.size() - 1), 0, j * 50, 0);
+                card.setOpaque(false);
+
+                c.insets = new Insets(32 * (deck.size() - 1 - j), 0, 32 * j, 0);
                 slotPanel.add(card, c);
             }
+
+            if (commandBuffer != null && commandBuffer.getCommandType() == CommandType.PRODUCTION) {
+                if (!deck.isEmpty()) {
+                    Production productionCommand = (Production) commandBuffer;
+                    int[] currentSelection = productionCommand.getProductionsToActivate();
+                    int n = currentSelection != null ? currentSelection.length : 0;
+                    JPanel container = new JPanel();
+                    GUIUtil.addButton("select", container, new ButtonClickEvent((e) -> {
+                        int[] selection = new int[n + 1];
+                        for (int j = 0; j < n; ++j) {
+                            selection[j] = currentSelection[j];
+                        }
+                        selection[n] = finalI + 1;
+                        JsonObject message = client.buildCommandMessage("selection", JsonUtil.getInstance().serialize(selection));
+                        gui.bufferWrite(message.toString());
+                    }));
+                    container.setOpaque(false);
+                    c.gridy++;
+                    c.insets = new Insets(0, 0, 0, 0);
+                    slotPanel.add(container, c);
+                }
+            }
+
             c.gridx = i + 1;
             c.gridy = 0;
             c.insets = new Insets(0, 0, 0, 0);
             c.weightx = 0.5;
-            devCardsArea.add(slotPanel, c);
+            slotsPanel.add(slotPanel, c);
         }
     }
 
     @Override
     public void notifyObserver() {
         SwingUtilities.invokeLater(() -> {
-            devCardsArea.removeAll();
+            slotsPanel.removeAll();
             loadDevCardsSlots();
-            devCardsArea.revalidate();
-            devCardsArea.repaint();
+            slotsPanel.revalidate();
+            slotsPanel.repaint();
         });
     }
 
     @Override
     public void clean() {
         player.getCommandElement().removeObserver(this, CommandType.PURCHASE);
+        player.getCommandElement().removeObserver(this, CommandType.PRODUCTION);
         player.getBoard().getDevCardsArea().removeObserver(this);
     }
 }

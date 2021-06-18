@@ -134,7 +134,7 @@ public class PurchaseWindow extends CommandWindow {
                 ConcreteResourceSet currentSelection = commandBuffer.getCurrentTotalToSpend();
 
                 CLI.showWarehouse(self.getBoard().getWarehouse().getDepots(), self.getBoard().getPlayedLeaderCards());
-                CLI.showStrongbox(self.getBoard().getStrongBox());
+                CLI.showStrongbox(self.getBoard().getStrongBox().getContent());
                 CLI.spendResources(toSpend, currentSelection);
             }
         }

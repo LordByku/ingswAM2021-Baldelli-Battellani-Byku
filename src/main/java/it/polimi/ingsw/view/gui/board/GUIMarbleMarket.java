@@ -21,12 +21,12 @@ import java.util.ArrayList;
 
 public class GUIMarbleMarket implements LocalModelElementObserver {
     private final GUI gui;
+    private final MarbleMarket marbleMarket;
+    private final ArrayList<Player> players;
     private JPanel marketPanel;
     private JPanel marblePanel;
     private JPanel marketTrayPanel;
     private Client client;
-    private final MarbleMarket marbleMarket;
-    private final ArrayList<Player> players;
 
     public GUIMarbleMarket(GUI gui, Client client, JPanel marketPanel) {
         this.gui = gui;
@@ -61,18 +61,18 @@ public class GUIMarbleMarket implements LocalModelElementObserver {
         }
 
 
-        for(Player player: client.getModel().getPlayers()) {
+        for (Player player : client.getModel().getPlayers()) {
             CommandBuffer commandBuffer = player.getCommandBuffer();
-            if(commandBuffer == null) {
+            if (commandBuffer == null) {
                 continue;
             }
-            if(commandBuffer.getCommandType() == CommandType.MARKET) {
+            if (commandBuffer.getCommandType() == CommandType.MARKET) {
                 Market marketCommand = (Market) commandBuffer;
-                if(marketCommand.getIndex() != -1) {
+                if (marketCommand.getIndex() != -1) {
                     // TODO : move free marble
-                } else if(player.getNickname().equals(client.getNickname())) {
+                } else if (player.getNickname().equals(client.getNickname())) {
                     int offset = 125;
-                    for(int i=0; i<3; i++){
+                    for (int i = 0; i < 3; i++) {
                         button = new JButton("<-");
 
                         int finalI = i;
@@ -84,15 +84,15 @@ public class GUIMarbleMarket implements LocalModelElementObserver {
                             gui.bufferWrite(message.toString());
                         }));
 
-                        c.gridx=0;
-                        c.gridy=0;
-                        c.insets = new Insets(0,500,325-(i*offset),0);
+                        c.gridx = 0;
+                        c.gridy = 0;
+                        c.insets = new Insets(0, 500, 325 - (i * offset), 0);
                         marketPanel.add(button, c);
                     }
 
-                    for(int i=0; i<4; i++){
+                    for (int i = 0; i < 4; i++) {
                         button = new JButton("↑");
-                        button.setPreferredSize(new Dimension(40,60));
+                        button.setPreferredSize(new Dimension(40, 60));
 
                         int finalI = i;
                         button.addMouseListener(new ButtonClickEvent((e) -> {
@@ -103,9 +103,9 @@ public class GUIMarbleMarket implements LocalModelElementObserver {
                             gui.bufferWrite(message.toString());
                         }));
 
-                        c.gridx=0;
-                        c.gridy=0;
-                        c.insets = new Insets(200,(i*offset),0,130);
+                        c.gridx = 0;
+                        c.gridy = 0;
+                        c.insets = new Insets(200, (i * offset), 0, 130);
                         marketPanel.add(button, c);
                     }
                 }
@@ -135,9 +135,9 @@ public class GUIMarbleMarket implements LocalModelElementObserver {
         Player self = client.getModel().getPlayer(client.getNickname());
         CommandBuffer commandBuffer = self.getCommandBuffer();
 
-        if(commandBuffer != null && commandBuffer.getCommandType() == CommandType.MARKET) {
+        if (commandBuffer != null && commandBuffer.getCommandType() == CommandType.MARKET) {
             Market marketCommand = (Market) commandBuffer;
-            if(marketCommand.getIndex() != -1) {
+            if (marketCommand.getIndex() != -1) {
                 gui.switchGameWindow(new BoardToken(client.getNickname()));
                 return;
             }

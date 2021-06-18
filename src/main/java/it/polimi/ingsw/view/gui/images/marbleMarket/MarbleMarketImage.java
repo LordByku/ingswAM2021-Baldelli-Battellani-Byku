@@ -12,8 +12,8 @@ public class MarbleMarketImage extends JPanel {
     private final int height = 700;
     private Image img;
 
-    public MarbleMarketImage(){
-        super(null);
+    public MarbleMarketImage() {
+        super(new GridBagLayout());
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         URL resource = classLoader.getResource("Punchboard/plancia_portabiglie.png");
         try {
@@ -22,7 +22,6 @@ public class MarbleMarketImage extends JPanel {
             e.printStackTrace();
         }
         this.setPreferredSize(new Dimension(width, height));
-        this.setLayout(new GridBagLayout());
         this.setBorder(new LineBorder(Color.BLACK));
     }
 

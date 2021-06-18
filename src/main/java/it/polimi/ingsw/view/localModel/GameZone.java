@@ -22,7 +22,7 @@ public class GameZone extends LocalModelElement {
         }
         if (gameZoneObject.has("actionTokenDeck")) {
             JsonElement actionTokenDeckJson = gameZoneObject.get("actionTokenDeck");
-            if(actionTokenDeck == null) {
+            if (actionTokenDeck == null) {
                 actionTokenDeck = new ActionTokenDeck();
             }
             actionTokenDeck.updateModel(actionTokenDeckJson);

@@ -23,9 +23,9 @@ import java.util.ArrayList;
 public class GUIHandLeaderCards implements LocalModelElementObserver {
     private final Client client;
     private final GUI gui;
+    private final Player self;
     private JPanel handLeaderCardsPanel;
     private int numOfCardsToDiscard;
-    private final Player self;
     private HandLeaderCardsArea handLeaderCardsArea;
     private ArrayList<Integer> initDiscardSelection;
     private ArrayList<Integer> handLeaderCards;

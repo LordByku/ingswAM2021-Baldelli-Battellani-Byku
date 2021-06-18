@@ -11,6 +11,7 @@ public class GUIDevCardsArea implements LocalModelElementObserver {
     private JPanel devCardsArea;
     private Client client;
     private GUIDevCardsSlots guiDevCardsSlots;
+    private GUIDefaultProductionPower guiDefaultProductionPower;
 
     public GUIDevCardsArea(GUI gui, Client client, JPanel devCardsArea) {
         this.gui = gui;
@@ -19,7 +20,7 @@ public class GUIDevCardsArea implements LocalModelElementObserver {
     }
 
     public void loadDevCardsArea() {
-        GUIDefaultProductionPower guiDefaultProductionPower = new GUIDefaultProductionPower(devCardsArea);
+        guiDefaultProductionPower = new GUIDefaultProductionPower(gui, client, devCardsArea);
         guiDefaultProductionPower.loadDefaultProductionPower();
 
         loadSlots();
@@ -43,5 +44,6 @@ public class GUIDevCardsArea implements LocalModelElementObserver {
     @Override
     public void clean() {
         guiDevCardsSlots.clean();
+        guiDefaultProductionPower.clean();
     }
 }

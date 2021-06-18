@@ -25,7 +25,7 @@ public class ButtonClickEvent extends MouseAdapter {
     public void mouseClicked(MouseEvent e) {
         if (!locked || priority) {
             lambda.accept(e);
-            if(priority) {
+            if (priority) {
                 locked = false;
             }
         }

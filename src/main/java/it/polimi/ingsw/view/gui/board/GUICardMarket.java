@@ -103,9 +103,9 @@ public class GUICardMarket implements LocalModelElementObserver {
         Player self = client.getModel().getPlayer(client.getNickname());
         CommandBuffer commandBuffer = self.getCommandBuffer();
 
-        if(commandBuffer != null && commandBuffer.getCommandType() == CommandType.PURCHASE) {
+        if (commandBuffer != null && commandBuffer.getCommandType() == CommandType.PURCHASE) {
             Purchase purchaseCommand = (Purchase) commandBuffer;
-            if(purchaseCommand.getMarketRow() != -1 && purchaseCommand.getMarketCol() != -1) {
+            if (purchaseCommand.getMarketRow() != -1 && purchaseCommand.getMarketCol() != -1) {
                 gui.switchGameWindow(new BoardToken(client.getNickname()));
                 return;
             }

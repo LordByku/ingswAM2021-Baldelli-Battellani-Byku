@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class CommandElement {
-    private CommandBuffer commandBuffer;
     private final HashMap<CommandType, ArrayList<LocalModelElementObserver>> observers = new HashMap<>();
+    private CommandBuffer commandBuffer;
 
     public CommandBuffer getCommandBuffer() {
         return commandBuffer;

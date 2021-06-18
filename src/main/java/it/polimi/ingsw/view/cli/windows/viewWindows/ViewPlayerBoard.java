@@ -29,7 +29,7 @@ public class ViewPlayerBoard extends CLIViewWindow {
                         break;
                     }
                     case 2: {
-                        CLI.showStrongbox(board.getStrongBox());
+                        CLI.showStrongbox(board.getStrongBox().getContent());
                         break;
                     }
                     case 3: {

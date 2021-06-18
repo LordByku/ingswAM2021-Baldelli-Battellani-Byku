@@ -2,10 +2,7 @@ package it.polimi.ingsw.view.gui.board;
 
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
-import it.polimi.ingsw.controller.CommandBuffer;
-import it.polimi.ingsw.controller.CommandType;
-import it.polimi.ingsw.controller.Market;
-import it.polimi.ingsw.controller.Purchase;
+import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.model.resources.ChoiceResource;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ChoiceResourceSet;
@@ -30,12 +27,12 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class GUIWarehouse implements LocalModelElementObserver {
     private final GUI gui;
+    private final Player player;
+    private final Warehouse warehouse;
     private Client client;
     private JPanel warehousePanel;
     private int numOfDepots;
     private ArrayList<Integer> depotSizes;
-    private final Player player;
-    private final Warehouse warehouse;
 
     public GUIWarehouse(GUI gui, Client client, JPanel warehousePanel) {
         this.gui = gui;
@@ -51,6 +48,7 @@ public class GUIWarehouse implements LocalModelElementObserver {
 
         player.getCommandElement().addObserver(this, CommandType.MARKET);
         player.getCommandElement().addObserver(this, CommandType.PURCHASE);
+        player.getCommandElement().addObserver(this, CommandType.PRODUCTION);
         warehouse.addObserver(this);
     }
 
@@ -58,9 +56,9 @@ public class GUIWarehouse implements LocalModelElementObserver {
         CommandBuffer commandBuffer = player.getCommandBuffer();
         AtomicReference<JPanel> selectedPanel = new AtomicReference<>();
         AtomicReference<ConcreteResource> selectedResource = new AtomicReference<>();
-        if(commandBuffer != null && commandBuffer.getCommandType() == CommandType.MARKET) {
+        if (commandBuffer != null && commandBuffer.getCommandType() == CommandType.MARKET) {
             Market marketCommand = (Market) commandBuffer;
-            if(marketCommand.getIndex() != -1 && !marketCommand.isCompleted()) {
+            if (marketCommand.getIndex() != -1 && !marketCommand.isCompleted()) {
                 JPanel obtainedPanel = new JPanel();
                 obtainedPanel.setLayout(new BoxLayout(obtainedPanel, BoxLayout.Y_AXIS));
 
@@ -70,9 +68,9 @@ public class GUIWarehouse implements LocalModelElementObserver {
 
                 // TODO : handle obtained faith points
 
-                if(toDiscard == null) {
+                if (toDiscard == null) {
                     ChoiceResourceSet obtained = marketCommand.getObtainedResources();
-                    for(ConcreteResource concreteResource: ConcreteResource.values()) {
+                    for (ConcreteResource concreteResource : ConcreteResource.values()) {
                         ResourceImageType resourceImageType = concreteResource.getResourceImageType();
                         for (int i = 0; i < obtained.getConcreteResources().getCount(concreteResource); ++i) {
                             JPanel container = new JPanel();
@@ -85,7 +83,7 @@ public class GUIWarehouse implements LocalModelElementObserver {
                     JPanel choicePanel = new JPanel();
                     choicePanel.setLayout(new BoxLayout(choicePanel, BoxLayout.X_AXIS));
 
-                    for(ChoiceResource choiceResource: obtained.getChoiceResources()) {
+                    for (ChoiceResource choiceResource : obtained.getChoiceResources()) {
                         ResourceImageType resourceImageType = choiceResource.getResourceImageType();
 
                         JPanel container = new JPanel();
@@ -99,23 +97,23 @@ public class GUIWarehouse implements LocalModelElementObserver {
                         concretePanel.add(container);
                     }
                 } else {
-                    for(ConcreteResource concreteResource: ConcreteResource.values()) {
+                    for (ConcreteResource concreteResource : ConcreteResource.values()) {
                         ResourceImageType resourceImageType = concreteResource.getResourceImageType();
-                        for(int i = 0; i < toDiscard.getCount(concreteResource); ++i) {
+                        for (int i = 0; i < toDiscard.getCount(concreteResource); ++i) {
                             JPanel container = new JPanel(new GridBagLayout());
                             JPanel imagePanel = new ResourceImage(resourceImageType, 30);
-                            if(imagePanel.equals(selectedPanel.get())) {
+                            if (imagePanel.equals(selectedPanel.get())) {
                                 Border redBorder = BorderFactory.createLineBorder(Color.RED);
                                 imagePanel.setBorder(redBorder);
                             }
 
                             imagePanel.addMouseListener(new ButtonClickEvent((e) -> {
-                                if(imagePanel.equals(selectedPanel.get())) {
+                                if (imagePanel.equals(selectedPanel.get())) {
                                     imagePanel.setBorder(null);
                                     selectedPanel.set(null);
                                     selectedResource.set(null);
                                 } else {
-                                    if(selectedPanel.get() != null) {
+                                    if (selectedPanel.get() != null) {
                                         selectedPanel.get().setBorder(null);
                                     }
                                     Border redBorder = BorderFactory.createLineBorder(Color.RED);
@@ -164,7 +162,7 @@ public class GUIWarehouse implements LocalModelElementObserver {
                     depotPanel.add(resourcePanel, c);
 
                     // TODO : only if player is self
-                    if(commandBuffer != null) {
+                    if (commandBuffer != null) {
                         switch (commandBuffer.getCommandType()) {
                             case MARKET: {
                                 Market marketCommand = (Market) commandBuffer;
@@ -184,18 +182,15 @@ public class GUIWarehouse implements LocalModelElementObserver {
                             }
                             case PURCHASE: {
                                 Purchase purchaseCommand = (Purchase) commandBuffer;
-                                if(purchaseCommand.getDeckIndex() != -1) {
+                                if (purchaseCommand.getDeckIndex() != -1) {
                                     resourcePanel.addMouseListener(new ButtonClickEvent((e) -> {
-                                        ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
-                                        concreteResourceSet.addResource(concreteResource);
-
                                         ConcreteResourceSet[] depots = new ConcreteResourceSet[warehouse.getDepots().size()];
-                                        for(int k = 0; k < depots.length; ++k) {
+                                        for (int k = 0; k < depots.length; ++k) {
                                             depots[k] = new ConcreteResourceSet();
                                         }
                                         ConcreteResourceSet strongBox = new ConcreteResourceSet();
 
-                                        depots[finalI] = concreteResourceSet;
+                                        depots[finalI].addResource(concreteResource);
 
                                         JsonObject value = new JsonObject();
                                         value.add("warehouse", JsonUtil.getInstance().serialize(depots));
@@ -205,6 +200,29 @@ public class GUIWarehouse implements LocalModelElementObserver {
                                         gui.bufferWrite(message.toString());
                                     }));
                                 }
+                                break;
+                            }
+                            case PRODUCTION: {
+                                Production productionCommand = (Production) commandBuffer;
+                                if (productionCommand.getProductionsToActivate() != null) {
+                                    resourcePanel.addMouseListener(new ButtonClickEvent((e) -> {
+                                        ConcreteResourceSet[] depots = new ConcreteResourceSet[warehouse.getDepots().size()];
+                                        for (int k = 0; k < depots.length; ++k) {
+                                            depots[k] = new ConcreteResourceSet();
+                                        }
+                                        ConcreteResourceSet strongBox = new ConcreteResourceSet();
+
+                                        depots[finalI].addResource(concreteResource);
+
+                                        JsonObject value = new JsonObject();
+                                        value.add("warehouse", JsonUtil.getInstance().serialize(depots));
+                                        value.add("strongbox", JsonUtil.getInstance().serialize(strongBox));
+
+                                        JsonObject message = client.buildCommandMessage("spendResources", value);
+                                        gui.bufferWrite(message.toString());
+                                    }));
+                                }
+                                break;
                             }
                         }
                     }
@@ -216,11 +234,11 @@ public class GUIWarehouse implements LocalModelElementObserver {
                     emptyResourceLabel.setIcon(new ImageIcon(empty.getScaledInstance(30, 30, Image.SCALE_SMOOTH)));
                     depotPanel.add(emptyResourceLabel, c);
 
-                    if(commandBuffer != null && commandBuffer.getCommandType() == CommandType.MARKET) {
+                    if (commandBuffer != null && commandBuffer.getCommandType() == CommandType.MARKET) {
                         Market marketCommand = (Market) commandBuffer;
                         if (marketCommand.getIndex() != -1 && !marketCommand.isCompleted()) {
                             emptyResourceLabel.addMouseListener(new ButtonClickEvent((e) -> {
-                                if(selectedResource.get() != null) {
+                                if (selectedResource.get() != null) {
                                     ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
                                     concreteResourceSet.addResource(selectedResource.get());
                                     selectedResource.set(null);
@@ -260,6 +278,7 @@ public class GUIWarehouse implements LocalModelElementObserver {
     public void clean() {
         player.getCommandElement().removeObserver(this, CommandType.MARKET);
         player.getCommandElement().removeObserver(this, CommandType.PURCHASE);
+        player.getCommandElement().removeObserver(this, CommandType.PRODUCTION);
         warehouse.removeObserver(this);
     }
 }

@@ -10,7 +10,7 @@ public class DefaultProductionImage extends JPanel {
     private Image img;
 
     public DefaultProductionImage() {
-        super(null);
+        super(new GridBagLayout());
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         URL resource = classLoader.getResource("Punchboard/scroll.png");
         try {
@@ -19,7 +19,6 @@ public class DefaultProductionImage extends JPanel {
             e.printStackTrace();
         }
         this.setPreferredSize(new Dimension(250, 300));
-        this.setLayout(new GridBagLayout());
     }
 
     @Override

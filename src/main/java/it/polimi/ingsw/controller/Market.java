@@ -127,8 +127,8 @@ public class Market extends CommandBuffer {
                     return null;
                 }
 
-                JsonArray resourcesElement = value.getAsJsonArray();
-                ConcreteResource[] resources = Deserializer.getInstance().getConcreteResourceArray(resourcesElement);
+                JsonArray resourcesArray = value.getAsJsonArray();
+                ConcreteResource[] resources = Deserializer.getInstance().getConcreteResourceArray(resourcesArray);
                 if (resources != null) {
                     convert(resources);
                 }
