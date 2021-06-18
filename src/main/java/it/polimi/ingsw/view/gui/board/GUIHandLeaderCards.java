@@ -8,6 +8,7 @@ import it.polimi.ingsw.network.client.LocalConfig;
 import it.polimi.ingsw.parsing.LeaderCardsParser;
 import it.polimi.ingsw.utility.JsonUtil;
 import it.polimi.ingsw.view.gui.GUI;
+import it.polimi.ingsw.view.gui.GUIUtil;
 import it.polimi.ingsw.view.gui.components.ButtonClickEvent;
 import it.polimi.ingsw.view.gui.images.leaderCard.LeaderCardImage;
 import it.polimi.ingsw.view.localModel.HandLeaderCardsArea;
@@ -36,6 +37,8 @@ public class GUIHandLeaderCards implements LocalModelElementObserver {
         numOfCardsToDiscard = LocalConfig.getInstance().getInitialDiscards();
         initDiscardSelection = new ArrayList<>();
 
+        handLeaderCardsPanel.setLayout(new GridBagLayout());
+
         self = client.getModel().getPlayer(client.getNickname());
         self.addObserver(this);
 
@@ -50,21 +53,26 @@ public class GUIHandLeaderCards implements LocalModelElementObserver {
         ArrayList<LeaderCardImage> leaderCardImages = new ArrayList<>();
 
         c.gridx = 0;
+        c.gridy = 0;
+        c.insets = new Insets(0, 5, 0, 5);
         for (int i = 0; i < handLeaderCards.size(); i++) {
+            int finalI = i;
+
             int handLeaderCard = handLeaderCards.get(i);
-            JPanel cardPanel = new JPanel(new GridBagLayout());
+            JPanel cardPanel = new JPanel();
+            cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.Y_AXIS));
+
+            JPanel container = new JPanel(new GridBagLayout());
+
             LeaderCard card = LeaderCardsParser.getInstance().getCard(handLeaderCard);
             LeaderCardImage cardImage = card.getLeaderCardImage(150);
-            JButton discardButton = new JButton("discard");
-            JButton playButton = new JButton("play");
 
+            container.add(cardImage);
+
+            cardPanel.add(container);
             leaderCardImages.add(cardImage);
 
-            discardButton.setEnabled(self.canDiscard(client.getModel()));
-            playButton.setEnabled(self.canPlay(client.getModel()));
-
-            int finalI = i;
-            discardButton.addMouseListener(new ButtonClickEvent((event) -> {
+            JButton discardButton = GUIUtil.addButton("discard", cardPanel, new ButtonClickEvent((event) -> {
                 if (!self.initDiscard()) {
                     if (!initDiscardSelection.contains(finalI)) {
                         Border redBorder = BorderFactory.createLineBorder(Color.RED);
@@ -87,20 +95,14 @@ public class GUIHandLeaderCards implements LocalModelElementObserver {
                     gui.bufferWrite(client.buildCommandMessage("index", new JsonPrimitive(finalI)).toString());
                 }
             }));
-            playButton.addMouseListener(new ButtonClickEvent((event) -> {
+            JButton playButton = GUIUtil.addButton("play", cardPanel, new ButtonClickEvent((event) -> {
                 gui.bufferWrite(client.buildRequestMessage(CommandType.PLAYLEADER).toString());
                 gui.bufferWrite(client.buildCommandMessage("index", new JsonPrimitive(finalI)).toString());
             }));
 
-            c.gridy = 0;
-            cardPanel.add(cardImage, c);
-            c.gridy++;
-            cardPanel.add(discardButton, c);
-            c.gridy++;
-            cardPanel.add(playButton, c);
+            discardButton.setEnabled(self.canDiscard(client.getModel()));
+            playButton.setEnabled(self.canPlay(client.getModel()));
 
-            c.gridy = 0;
-            c.insets = new Insets(0, 5, 0, 5);
             handLeaderCardsPanel.add(cardPanel, c);
             c.gridx++;
         }

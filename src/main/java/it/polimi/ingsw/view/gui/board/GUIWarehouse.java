@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import it.polimi.ingsw.controller.CommandBuffer;
 import it.polimi.ingsw.controller.CommandType;
 import it.polimi.ingsw.controller.Market;
+import it.polimi.ingsw.controller.Purchase;
 import it.polimi.ingsw.model.resources.ChoiceResource;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ChoiceResourceSet;
@@ -49,6 +50,7 @@ public class GUIWarehouse implements LocalModelElementObserver {
         warehouse = player.getBoard().getWarehouse();
 
         player.getCommandElement().addObserver(this, CommandType.MARKET);
+        player.getCommandElement().addObserver(this, CommandType.PURCHASE);
         warehouse.addObserver(this);
     }
 
@@ -161,19 +163,49 @@ public class GUIWarehouse implements LocalModelElementObserver {
                     JPanel resourcePanel = new ResourceImage(concreteResource.getResourceImageType(), 30);
                     depotPanel.add(resourcePanel, c);
 
-                    if(commandBuffer != null && commandBuffer.getCommandType() == CommandType.MARKET) {
-                        Market marketCommand = (Market) commandBuffer;
-                        if (marketCommand.getIndex() != -1 && !marketCommand.isCompleted()) {
-                            resourcePanel.addMouseListener(new ButtonClickEvent((e) -> {
-                                ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
-                                concreteResourceSet.addResource(concreteResource);
+                    // TODO : only if player is self
+                    if(commandBuffer != null) {
+                        switch (commandBuffer.getCommandType()) {
+                            case MARKET: {
+                                Market marketCommand = (Market) commandBuffer;
+                                if (marketCommand.getIndex() != -1 && !marketCommand.isCompleted()) {
+                                    resourcePanel.addMouseListener(new ButtonClickEvent((e) -> {
+                                        ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
+                                        concreteResourceSet.addResource(concreteResource);
 
-                                JsonObject value = new JsonObject();
-                                value.addProperty("depotIndex", finalI);
-                                value.add("resources", JsonUtil.getInstance().serialize(concreteResourceSet));
-                                JsonObject message = client.buildCommandMessage("removeFromDepot", value);
-                                gui.bufferWrite(message.toString());
-                            }));
+                                        JsonObject value = new JsonObject();
+                                        value.addProperty("depotIndex", finalI);
+                                        value.add("resources", JsonUtil.getInstance().serialize(concreteResourceSet));
+                                        JsonObject message = client.buildCommandMessage("removeFromDepot", value);
+                                        gui.bufferWrite(message.toString());
+                                    }));
+                                }
+                                break;
+                            }
+                            case PURCHASE: {
+                                Purchase purchaseCommand = (Purchase) commandBuffer;
+                                if(purchaseCommand.getDeckIndex() != -1) {
+                                    resourcePanel.addMouseListener(new ButtonClickEvent((e) -> {
+                                        ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
+                                        concreteResourceSet.addResource(concreteResource);
+
+                                        ConcreteResourceSet[] depots = new ConcreteResourceSet[warehouse.getDepots().size()];
+                                        for(int k = 0; k < depots.length; ++k) {
+                                            depots[k] = new ConcreteResourceSet();
+                                        }
+                                        ConcreteResourceSet strongBox = new ConcreteResourceSet();
+
+                                        depots[finalI] = concreteResourceSet;
+
+                                        JsonObject value = new JsonObject();
+                                        value.add("warehouse", JsonUtil.getInstance().serialize(depots));
+                                        value.add("strongbox", JsonUtil.getInstance().serialize(strongBox));
+
+                                        JsonObject message = client.buildCommandMessage("spendResources", value);
+                                        gui.bufferWrite(message.toString());
+                                    }));
+                                }
+                            }
                         }
                     }
                 } else {
@@ -227,6 +259,7 @@ public class GUIWarehouse implements LocalModelElementObserver {
     @Override
     public void clean() {
         player.getCommandElement().removeObserver(this, CommandType.MARKET);
+        player.getCommandElement().removeObserver(this, CommandType.PURCHASE);
         warehouse.removeObserver(this);
     }
 }

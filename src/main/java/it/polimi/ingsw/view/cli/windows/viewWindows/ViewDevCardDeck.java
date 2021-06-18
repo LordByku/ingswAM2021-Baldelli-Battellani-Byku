@@ -20,7 +20,7 @@ public class ViewDevCardDeck extends CLIViewWindow {
         } else {
             try {
                 int selection = Integer.parseInt(line);
-                ArrayList<ArrayList<Integer>> devCards = board.getDevCards();
+                ArrayList<ArrayList<Integer>> devCards = board.getDevCardsArea().getDecks();
                 if (selection >= 0 && selection < devCards.size()) {
                     CLI.showDevCardDeck(devCards.get(selection));
                 }

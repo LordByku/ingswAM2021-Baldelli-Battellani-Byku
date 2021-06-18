@@ -4,11 +4,12 @@ import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.view.gui.images.resources.ResourceImage;
+import it.polimi.ingsw.view.localModel.LocalModelElementObserver;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class GUIStrongbox {
+public class GUIStrongbox implements LocalModelElementObserver {
     JPanel strongboxPanel;
     Client client;
     ConcreteResourceSet strongbox;
@@ -40,4 +41,13 @@ public class GUIStrongbox {
         }
     }
 
+    @Override
+    public void notifyObserver() {
+
+    }
+
+    @Override
+    public void clean() {
+
+    }
 }

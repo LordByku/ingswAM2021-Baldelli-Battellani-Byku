@@ -4,7 +4,7 @@ import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
 
-public class DevCardArea extends LocalModelElement {
+public class DevCardsArea extends LocalModelElement {
     private ArrayList<ArrayList<Integer>> decks;
 
     @Override

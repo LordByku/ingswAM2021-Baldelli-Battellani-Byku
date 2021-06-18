@@ -20,7 +20,7 @@ public class Board extends LocalModelElement implements CLIPrintable {
     private FaithTrack faithTrack;
     private Warehouse warehouse;
     private Strongbox strongbox;
-    private DevCardArea devCards;
+    private DevCardsArea devCards;
     private PlayedLeaderCardsArea playedLeaderCards;
     private HandLeaderCardsArea handLeaderCards;
 
@@ -75,26 +75,24 @@ public class Board extends LocalModelElement implements CLIPrintable {
         return strongbox.getContent();
     }
 
-    public ArrayList<Integer> getDevCardDeck(int deckIndex) {
-        return getDevCards().get(deckIndex);
-    }
-
-    public ArrayList<ArrayList<Integer>> getDevCards() {
-        return devCards.getDecks();
+    public DevCardsArea getDevCardsArea() {
+        return devCards;
     }
 
     public HashMap<Integer, ProductionDetails> activeProductionDetails() {
+        ArrayList<ArrayList<Integer>> devCardsId = devCards.getDecks();
+
         HashMap<Integer, ProductionDetails> map = new HashMap<>();
         map.put(0, LocalConfig.getInstance().getDefaultProductionPower());
-        for (int i = 0; i < getDevCards().size(); i++) {
-            ArrayList<Integer> deck = getDevCards().get(i);
+        for (int i = 0; i < devCardsId.size(); i++) {
+            ArrayList<Integer> deck = devCardsId.get(i);
             if (!deck.isEmpty()) {
                 int devCardID = deck.get(deck.size() - 1);
                 DevCard devCard = DevCardsParser.getInstance().getCard(devCardID);
                 map.put(i + 1, devCard.getProductionPower());
             }
         }
-        int index = getDevCards().size() + 1;
+        int index = devCardsId.size() + 1;
         for (int leaderCardID : getPlayedLeaderCards()) {
             LeaderCard leaderCard = LeaderCardsParser.getInstance().getCard(leaderCardID);
             if (leaderCard.isType(LeaderCardType.PRODUCTION)) {

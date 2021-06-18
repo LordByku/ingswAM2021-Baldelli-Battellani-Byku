@@ -46,6 +46,7 @@ public class LeaderCardImage extends JPanel {
 
             JPanel container = new JPanel();
             container.setLayout(new GridBagLayout());
+            // TODO : fix popup staying on top even when changing to other windows
             Popup popup = popupFactory.getPopup(LeaderCardImage.this, container, (screenSize.width - zoomed.width) / 2, (screenSize.height - zoomed.height) / 2);
 
             zoomed.addButton("x", new ButtonClickEvent((event) -> popup.hide(), true), new Rectangle(zoomed.width - 27, 0, 27, 27));

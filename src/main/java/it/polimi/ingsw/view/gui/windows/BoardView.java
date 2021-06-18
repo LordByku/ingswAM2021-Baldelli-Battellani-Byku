@@ -24,6 +24,9 @@ public class BoardView extends GUIWindow {
     private JPanel commandsPanel;
     private JPanel resourcePanel;
     private GUIFaithTrack guiFaithTrack;
+    private GUIWarehouse guiWarehouse;
+    private GUIStrongbox guiStrongbox;
+    private GUIDevCardsArea guiDevCardsArea;
     private GUIHandLeaderCards guiHandLeaderCards;
     private GUICommandsPanel guiCommandsPanel;
 
@@ -59,7 +62,7 @@ public class BoardView extends GUIWindow {
     }
 
     public void loadDevCardsArea(Client client) {
-        GUIDevCardsArea guiDevCardsArea = new GUIDevCardsArea(gui, client, devCardsArea);
+        guiDevCardsArea = new GUIDevCardsArea(gui, client, devCardsArea);
         guiDevCardsArea.loadDevCardsArea();
     }
 
@@ -69,12 +72,12 @@ public class BoardView extends GUIWindow {
     }
 
     public void loadWarehouse(Client client) {
-        GUIWarehouse guiWarehouse = new GUIWarehouse(gui, client, warehouse);
+        guiWarehouse = new GUIWarehouse(gui, client, warehouse);
         guiWarehouse.loadWarehouse();
     }
 
     public void loadStrongbox(Client client) {
-        GUIStrongbox guiStrongbox = new GUIStrongbox(client, strongbox);
+        guiStrongbox = new GUIStrongbox(client, strongbox);
         guiStrongbox.loadStrongbox();
     }
 
@@ -91,6 +94,9 @@ public class BoardView extends GUIWindow {
     @Override
     protected void clean() {
         guiFaithTrack.clean();
+        guiWarehouse.clean();
+        guiStrongbox.clean();
+        guiDevCardsArea.clean();
         guiHandLeaderCards.clean();
         guiCommandsPanel.clean();
     }

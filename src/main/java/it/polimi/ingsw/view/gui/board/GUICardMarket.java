@@ -56,7 +56,9 @@ public class GUICardMarket implements LocalModelElementObserver {
                 JPanel container = new JPanel();
                 container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
 
-                DevCard devCard = DevCardsParser.getInstance().getCard(cardMarket.getDevCard(2 - i, j));
+                Integer devCardId = cardMarket.getDevCard(2 - i, j);
+                // TODO : handle null devCardId
+                DevCard devCard = DevCardsParser.getInstance().getCard(devCardId);
                 DevCardImage devCardImage = devCard.getDevCardImage(150);
                 container.add(devCardImage);
 
