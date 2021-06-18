@@ -13,10 +13,10 @@ public class GUILeaderCardsArea {
     Client client;
     ArrayList<Integer> playedLeaderCards;
 
-    public GUILeaderCardsArea(Client client, JPanel leaderCardsArea) {
+    public GUILeaderCardsArea(Client client, JPanel leaderCardsArea, String nickname) {
         this.client = client;
         this.leaderCardsArea = leaderCardsArea;
-        playedLeaderCards = client.getModel().getPlayer(client.getNickname()).getBoard().getPlayedLeaderCards();
+        playedLeaderCards = client.getModel().getPlayer(nickname).getBoard().getPlayedLeaderCards();
     }
 
     public void loadLeaderCardsArea() {

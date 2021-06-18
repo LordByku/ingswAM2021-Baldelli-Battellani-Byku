@@ -29,10 +29,11 @@ public class BoardView extends GUIWindow {
     private GUIDevCardsArea guiDevCardsArea;
     private GUIHandLeaderCards guiHandLeaderCards;
     private GUICommandsPanel guiCommandsPanel;
+    private final String nickname;
 
     public BoardView(GUI gui, Client client, String nickname) {
         super(gui, client);
-
+        this.nickname = nickname;
         if (nickname.equals(client.getNickname())) {
             guiCommandsPanel = new GUICommandsPanel(gui, client, commandsPanel);
             guiCommandsPanel.loadCommandsPanel();
@@ -48,41 +49,41 @@ public class BoardView extends GUIWindow {
     }
 
     public void loadBoard(String nickname) {
-        loadFaithTrack(client);
-        loadDevCardsArea(client);
-        loadLeaderCardsArea(client);
-        loadWarehouse(client);
-        loadStrongbox(client);
-        loadHandLeaderCardsArea(client);
+        loadFaithTrack(client, nickname);
+        loadDevCardsArea(client, nickname);
+        loadLeaderCardsArea(client, nickname);
+        loadWarehouse(client, nickname);
+        loadStrongbox(client, nickname);
+        loadHandLeaderCardsArea(client, nickname);
     }
 
-    public void loadFaithTrack(Client client) {
-        guiFaithTrack = new GUIFaithTrack(client, faithTrack);
+    public void loadFaithTrack(Client client, String nickname) {
+        guiFaithTrack = new GUIFaithTrack(client, faithTrack, nickname);
         guiFaithTrack.loadFaithTrack();
     }
 
-    public void loadDevCardsArea(Client client) {
-        guiDevCardsArea = new GUIDevCardsArea(gui, client, devCardsArea);
+    public void loadDevCardsArea(Client client, String nickname) {
+        guiDevCardsArea = new GUIDevCardsArea(gui, client, devCardsArea, nickname);
         guiDevCardsArea.loadDevCardsArea();
     }
 
-    public void loadLeaderCardsArea(Client client) {
-        GUILeaderCardsArea guiLeaderCardsArea = new GUILeaderCardsArea(client, leaderCardsArea);
+    public void loadLeaderCardsArea(Client client, String nickname) {
+        GUILeaderCardsArea guiLeaderCardsArea = new GUILeaderCardsArea(client, leaderCardsArea, nickname);
         guiLeaderCardsArea.loadLeaderCardsArea();
     }
 
-    public void loadWarehouse(Client client) {
-        guiWarehouse = new GUIWarehouse(gui, client, warehouse);
+    public void loadWarehouse(Client client, String nickname) {
+        guiWarehouse = new GUIWarehouse(gui, client, warehouse, nickname);
         guiWarehouse.loadWarehouse();
     }
 
-    public void loadStrongbox(Client client) {
-        guiStrongbox = new GUIStrongbox(client, strongbox);
+    public void loadStrongbox(Client client, String nickname) {
+        guiStrongbox = new GUIStrongbox(client, strongbox, nickname);
         guiStrongbox.loadStrongbox();
     }
 
-    public void loadHandLeaderCardsArea(Client client) {
-        guiHandLeaderCards = new GUIHandLeaderCards(gui, client, handLeaderCardsArea);
+    public void loadHandLeaderCardsArea(Client client, String nickname) {
+        guiHandLeaderCards = new GUIHandLeaderCards(gui, client, handLeaderCardsArea, nickname);
         guiHandLeaderCards.loadHandLeaderCards();
     }
 
@@ -98,7 +99,9 @@ public class BoardView extends GUIWindow {
         guiStrongbox.clean();
         guiDevCardsArea.clean();
         guiHandLeaderCards.clean();
-        guiCommandsPanel.clean();
+        if (nickname.equals(client.getNickname())) {
+            guiCommandsPanel.clean();
+        }
     }
 
     @Override

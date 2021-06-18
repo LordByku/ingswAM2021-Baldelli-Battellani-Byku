@@ -34,7 +34,7 @@ public class GUIWarehouse implements LocalModelElementObserver {
     private int numOfDepots;
     private ArrayList<Integer> depotSizes;
 
-    public GUIWarehouse(GUI gui, Client client, JPanel warehousePanel) {
+    public GUIWarehouse(GUI gui, Client client, JPanel warehousePanel, String nickname) {
         this.gui = gui;
         this.client = client;
         this.warehousePanel = warehousePanel;
@@ -42,108 +42,21 @@ public class GUIWarehouse implements LocalModelElementObserver {
         depotSizes = LocalConfig.getInstance().getDepotSizes();
         warehousePanel.setLayout(new BoxLayout(warehousePanel, BoxLayout.X_AXIS));
 
-        // TODO : select player according to nickname
-        player = client.getModel().getPlayer(client.getNickname());
+        player = client.getModel().getPlayer(nickname);
         warehouse = player.getBoard().getWarehouse();
 
         player.getCommandElement().addObserver(this, CommandType.MARKET);
         player.getCommandElement().addObserver(this, CommandType.PURCHASE);
         player.getCommandElement().addObserver(this, CommandType.PRODUCTION);
         warehouse.addObserver(this);
+
+        // TODO : initial resources
     }
 
     public void loadWarehouse() {
         CommandBuffer commandBuffer = player.getCommandBuffer();
         AtomicReference<JPanel> selectedPanel = new AtomicReference<>();
         AtomicReference<ConcreteResource> selectedResource = new AtomicReference<>();
-        if (commandBuffer != null && commandBuffer.getCommandType() == CommandType.MARKET) {
-            Market marketCommand = (Market) commandBuffer;
-            if (marketCommand.getIndex() != -1 && !marketCommand.isCompleted()) {
-                JPanel obtainedPanel = new JPanel();
-                obtainedPanel.setLayout(new BoxLayout(obtainedPanel, BoxLayout.Y_AXIS));
-
-                ConcreteResourceSet toDiscard = marketCommand.getToDiscard();
-                JPanel concretePanel = new JPanel();
-                concretePanel.setLayout(new BoxLayout(concretePanel, BoxLayout.X_AXIS));
-
-                // TODO : handle obtained faith points
-
-                if (toDiscard == null) {
-                    ChoiceResourceSet obtained = marketCommand.getObtainedResources();
-                    for (ConcreteResource concreteResource : ConcreteResource.values()) {
-                        ResourceImageType resourceImageType = concreteResource.getResourceImageType();
-                        for (int i = 0; i < obtained.getConcreteResources().getCount(concreteResource); ++i) {
-                            JPanel container = new JPanel();
-                            JPanel imagePanel = new ResourceImage(resourceImageType, 20);
-                            container.add(imagePanel);
-                            concretePanel.add(container);
-                        }
-                    }
-
-                    JPanel choicePanel = new JPanel();
-                    choicePanel.setLayout(new BoxLayout(choicePanel, BoxLayout.X_AXIS));
-
-                    for (ChoiceResource choiceResource : obtained.getChoiceResources()) {
-                        ResourceImageType resourceImageType = choiceResource.getResourceImageType();
-
-                        JPanel container = new JPanel();
-                        JPanel imagePanel = new ResourceImage(resourceImageType, 30);
-
-                        imagePanel.addMouseListener(new ButtonClickEvent((e) -> {
-                            // TODO : choice selection
-                        }));
-
-                        container.add(imagePanel);
-                        concretePanel.add(container);
-                    }
-                } else {
-                    for (ConcreteResource concreteResource : ConcreteResource.values()) {
-                        ResourceImageType resourceImageType = concreteResource.getResourceImageType();
-                        for (int i = 0; i < toDiscard.getCount(concreteResource); ++i) {
-                            JPanel container = new JPanel(new GridBagLayout());
-                            JPanel imagePanel = new ResourceImage(resourceImageType, 30);
-                            if (imagePanel.equals(selectedPanel.get())) {
-                                Border redBorder = BorderFactory.createLineBorder(Color.RED);
-                                imagePanel.setBorder(redBorder);
-                            }
-
-                            imagePanel.addMouseListener(new ButtonClickEvent((e) -> {
-                                if (imagePanel.equals(selectedPanel.get())) {
-                                    imagePanel.setBorder(null);
-                                    selectedPanel.set(null);
-                                    selectedResource.set(null);
-                                } else {
-                                    if (selectedPanel.get() != null) {
-                                        selectedPanel.get().setBorder(null);
-                                    }
-                                    Border redBorder = BorderFactory.createLineBorder(Color.RED);
-                                    imagePanel.setBorder(redBorder);
-
-                                    selectedPanel.set(imagePanel);
-                                    selectedResource.set(concreteResource);
-                                }
-                            }));
-
-                            container.add(imagePanel);
-                            concretePanel.add(container);
-                        }
-                    }
-
-                    JPanel buttonPanel = new JPanel(new GridBagLayout());
-                    GUIUtil.addButton("Confirm", buttonPanel, new ButtonClickEvent((e) -> {
-                        JsonObject message = client.buildCommandMessage("confirmWarehouse", JsonNull.INSTANCE);
-                        gui.bufferWrite(message.toString());
-                    }));
-
-                    obtainedPanel.add(concretePanel);
-                    obtainedPanel.add(buttonPanel);
-                }
-
-                warehousePanel.add(obtainedPanel);
-
-                // TODO : add switch depots buttons
-            }
-        }
 
         JPanel depotsPanel = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -261,7 +174,108 @@ public class GUIWarehouse implements LocalModelElementObserver {
             depotsPanel.add(depotPanel, c);
         }
 
-        warehousePanel.add(depotsPanel);
+        if (commandBuffer != null && commandBuffer.getCommandType() == CommandType.MARKET) {
+            Market marketCommand = (Market) commandBuffer;
+            if (marketCommand.getIndex() != -1 && !marketCommand.isCompleted()) {
+                JPanel obtainedPanel = new JPanel();
+                obtainedPanel.setLayout(new BoxLayout(obtainedPanel, BoxLayout.Y_AXIS));
+
+                ConcreteResourceSet toDiscard = marketCommand.getToDiscard();
+                JPanel concretePanel = new JPanel();
+                concretePanel.setLayout(new BoxLayout(concretePanel, BoxLayout.X_AXIS));
+
+                // TODO : handle obtained faith points
+
+                if (toDiscard == null) {
+                    ChoiceResourceSet obtained = marketCommand.getObtainedResources();
+                    for (ConcreteResource concreteResource : ConcreteResource.values()) {
+                        ResourceImageType resourceImageType = concreteResource.getResourceImageType();
+                        for (int i = 0; i < obtained.getConcreteResources().getCount(concreteResource); ++i) {
+                            JPanel container = new JPanel();
+                            JPanel imagePanel = new ResourceImage(resourceImageType, 20);
+                            container.add(imagePanel);
+                            concretePanel.add(container);
+                        }
+                    }
+
+                    JPanel choicePanel = new JPanel();
+                    choicePanel.setLayout(new BoxLayout(choicePanel, BoxLayout.X_AXIS));
+
+                    for (ChoiceResource choiceResource : obtained.getChoiceResources()) {
+                        ResourceImageType resourceImageType = choiceResource.getResourceImageType();
+
+                        JPanel container = new JPanel();
+                        JPanel imagePanel = new ResourceImage(resourceImageType, 30);
+
+                        imagePanel.addMouseListener(new ButtonClickEvent((e) -> {
+                            // TODO : choice selection
+                        }));
+
+                        container.add(imagePanel);
+                        concretePanel.add(container);
+                    }
+                } else {
+                    for (ConcreteResource concreteResource : ConcreteResource.values()) {
+                        ResourceImageType resourceImageType = concreteResource.getResourceImageType();
+                        for (int i = 0; i < toDiscard.getCount(concreteResource); ++i) {
+                            JPanel container = new JPanel(new GridBagLayout());
+                            JPanel imagePanel = new ResourceImage(resourceImageType, 30);
+                            if (imagePanel.equals(selectedPanel.get())) {
+                                Border redBorder = BorderFactory.createLineBorder(Color.RED);
+                                imagePanel.setBorder(redBorder);
+                            }
+
+                            imagePanel.addMouseListener(new ButtonClickEvent((e) -> {
+                                if (imagePanel.equals(selectedPanel.get())) {
+                                    imagePanel.setBorder(null);
+                                    selectedPanel.set(null);
+                                    selectedResource.set(null);
+                                } else {
+                                    if (selectedPanel.get() != null) {
+                                        selectedPanel.get().setBorder(null);
+                                    }
+                                    Border redBorder = BorderFactory.createLineBorder(Color.RED);
+                                    imagePanel.setBorder(redBorder);
+
+                                    selectedPanel.set(imagePanel);
+                                    selectedResource.set(concreteResource);
+                                }
+                            }));
+
+                            container.add(imagePanel);
+                            concretePanel.add(container);
+                        }
+                    }
+
+                    JPanel buttonPanel = new JPanel(new GridBagLayout());
+                    GUIUtil.addButton("Confirm", buttonPanel, new ButtonClickEvent((e) -> {
+                        JsonObject message = client.buildCommandMessage("confirmWarehouse", JsonNull.INSTANCE);
+                        gui.bufferWrite(message.toString());
+                    }));
+
+                    obtainedPanel.add(concretePanel);
+                    obtainedPanel.add(buttonPanel);
+                }
+
+                warehousePanel.add(obtainedPanel);
+                warehousePanel.add(depotsPanel);
+
+                JPanel switchPanel = new JPanel(new GridBagLayout());
+                GridBagConstraints gbc = new GridBagConstraints();
+                JButton button;
+                for(int i =0; i<3; i++) {
+                    button = new JButton("switch");
+                    gbc.gridx = 0;
+                    gbc.gridy = i;
+                    gbc.insets = new Insets(2, 0, 2, 0);
+                    switchPanel.add(button, gbc);
+                }
+                warehousePanel.add(switchPanel);
+                // TODO : add mouse click event
+            }
+        }
+        else
+           warehousePanel.add(depotsPanel);
     }
 
     @Override

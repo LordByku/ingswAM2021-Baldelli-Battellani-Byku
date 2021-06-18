@@ -18,11 +18,11 @@ public class GUIFaithTrack implements LocalModelElementObserver {
     private Integer lolloPosition;
     private FaithTrack faithTrack;
 
-    public GUIFaithTrack(Client client, JPanel faithTrackPanel) {
+    public GUIFaithTrack(Client client, JPanel faithTrackPanel, String nickname) {
         this.client = client;
         this.faithTrackPanel = faithTrackPanel;
 
-        faithTrack = client.getModel().getPlayer(client.getNickname()).getBoard().getFaithTrack();
+        faithTrack = client.getModel().getPlayer(nickname).getBoard().getFaithTrack();
         faithTrack.addObserver(this);
     }
 

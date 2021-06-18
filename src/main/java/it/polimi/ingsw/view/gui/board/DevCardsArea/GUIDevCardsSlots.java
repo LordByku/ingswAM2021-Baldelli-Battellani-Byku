@@ -30,15 +30,16 @@ public class GUIDevCardsSlots implements LocalModelElementObserver {
     private JPanel devCardsArea;
     private int numOfSlots;
     private Client client;
+    private String nickname;
 
-    public GUIDevCardsSlots(GUI gui, Client client, JPanel devCardsArea) {
+    public GUIDevCardsSlots(GUI gui, Client client, JPanel devCardsArea, String nickname) {
         this.gui = gui;
         this.devCardsArea = devCardsArea;
         this.client = client;
+        this.nickname = nickname;
         numOfSlots = LocalConfig.getInstance().getDevelopmentCardsSlots();
 
-        // TODO : load player according to nickname
-        player = client.getModel().getPlayer(client.getNickname());
+        player = client.getModel().getPlayer(nickname);
 
         player.getCommandElement().addObserver(this, CommandType.PURCHASE);
         player.getCommandElement().addObserver(this, CommandType.PRODUCTION);
@@ -57,7 +58,7 @@ public class GUIDevCardsSlots implements LocalModelElementObserver {
             slotPanel.setBorder(new LineBorder(Color.BLACK));
 
             // TODO : change player to load
-            Player player = client.getModel().getPlayer(client.getNickname());
+            Player player = client.getModel().getPlayer(nickname);
 
             if (player.getNickname().equals(client.getNickname())) {
                 CommandBuffer commandBuffer = player.getCommandBuffer();

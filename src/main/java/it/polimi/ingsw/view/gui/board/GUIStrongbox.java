@@ -17,10 +17,10 @@ public class GUIStrongbox implements LocalModelElementObserver {
     JLabel resourceQuantity;
 
 
-    public GUIStrongbox(Client client, JPanel strongboxPanel) {
+    public GUIStrongbox(Client client, JPanel strongboxPanel, String nickname) {
         this.client = client;
         this.strongboxPanel = strongboxPanel;
-        strongbox = client.getModel().getPlayer(client.getNickname()).getBoard().getStrongBox();
+        strongbox = client.getModel().getPlayer(nickname).getBoard().getStrongBox();
 
         strongbox.addObserver(this);
 

@@ -32,15 +32,16 @@ public class GUIDefaultProductionPower implements LocalModelElementObserver {
     private JPanel devCardsArea;
     private ProductionDetails defaultProductionPower;
     private JPanel defProdPower;
+    private String nickname;
 
-    public GUIDefaultProductionPower(GUI gui, Client client, JPanel devCardsArea) {
+    public GUIDefaultProductionPower(GUI gui, Client client, JPanel devCardsArea, String nickname) {
         this.gui = gui;
         this.client = client;
         this.devCardsArea = devCardsArea;
+        this.nickname = nickname;
         defaultProductionPower = LocalConfig.getInstance().getDefaultProductionPower();
 
-        // TODO : load player according to nickname
-        player = client.getModel().getPlayer(client.getNickname());
+        player = client.getModel().getPlayer(nickname);
         player.getCommandElement().addObserver(this, CommandType.PRODUCTION);
 
         defProdPower = new DefaultProductionImage();
