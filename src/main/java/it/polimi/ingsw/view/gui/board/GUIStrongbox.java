@@ -49,11 +49,11 @@ public class GUIStrongbox implements LocalModelElementObserver {
 
     @Override
     public void notifyObserver() {
-        strongbox.removeObserver(this);
+        // TODO
     }
 
     @Override
     public void clean() {
-
+        strongbox.removeObserver(this);
     }
 }

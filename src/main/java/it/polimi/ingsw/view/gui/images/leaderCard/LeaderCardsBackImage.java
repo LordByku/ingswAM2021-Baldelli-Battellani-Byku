@@ -12,13 +12,16 @@ public class LeaderCardsBackImage extends JPanel {
     private Image img;
 
 
-    public LeaderCardsBackImage(int width) throws IOException {
+    public LeaderCardsBackImage(int width) {
         super(null);
         this.width = width;
         this.height = (int) (1.5 * width);
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         URL resource = classLoader.getResource("LeaderCardPNGs/leaderCardsBack.jpg");
-        this.img = ImageIO.read(resource);
+        try {
+            this.img = ImageIO.read(resource);
+        } catch (IOException e) {
+        }
         this.setPreferredSize(new Dimension(width, height));
         setLayout(null);
     }

@@ -106,6 +106,7 @@ public class GUIHandLeaderCards implements LocalModelElementObserver {
 
                 discardButton.setEnabled(player.canDiscard(client.getModel()));
                 playButton.setEnabled(player.canPlay(client.getModel()));
+                // TODO : disable if requirements not satisfied (?)
 
                 handLeaderCardsPanel.add(cardPanel, c);
                 c.gridx++;
