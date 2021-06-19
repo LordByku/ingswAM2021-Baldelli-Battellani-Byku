@@ -4,7 +4,6 @@ import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.model.resources.ChoiceResource;
-import it.polimi.ingsw.model.resources.ChoiceSet;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ChoiceResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
@@ -61,7 +60,7 @@ public class GUIWarehouse implements LocalModelElementObserver {
 
         AtomicReference<Integer> initResourcesCount = new AtomicReference<>(0);
         ConcreteResourceSet[] initDepots = new ConcreteResourceSet[numOfDepots];
-        for(int k = 0; k < numOfDepots; ++k) {
+        for (int k = 0; k < numOfDepots; ++k) {
             initDepots[k] = new ConcreteResourceSet();
         }
 
@@ -171,15 +170,15 @@ public class GUIWarehouse implements LocalModelElementObserver {
                             }));
                         }
                     } else {
-                        if(!player.initResources() && player.getNickname().equals(client.getNickname())) {
+                        if (!player.initResources() && player.getNickname().equals(client.getNickname())) {
                             emptyResourceLabel.addMouseListener(new ButtonClickEvent((e) -> {
-                                if(selectedResource.get() != null) {
+                                if (selectedResource.get() != null) {
                                     initDepots[finalI].addResource(selectedResource.get());
                                     selectedResource.set(null);
                                     selectedPanel.set(null);
 
                                     initResourcesCount.set(initResourcesCount.get() + 1);
-                                    if(initResourcesCount.get() == LocalConfig.getInstance().getInitialResources(player.getNickname())) {
+                                    if (initResourcesCount.get() == LocalConfig.getInstance().getInitialResources(player.getNickname())) {
                                         JsonObject request = client.buildRequestMessage(CommandType.INITRESOURCES);
                                         gui.bufferWrite(request.toString());
                                         JsonObject message = client.buildCommandMessage("resources", JsonUtil.getInstance().serialize(initDepots));
@@ -322,13 +321,13 @@ public class GUIWarehouse implements LocalModelElementObserver {
 
                 JPanel switchPanel = new JPanel(new GridBagLayout());
                 GridBagConstraints gbc = new GridBagConstraints();
-                for(int i =0; i<3; i++) {
+                for (int i = 0; i < 3; i++) {
                     int finalI = i;
 
                     JButton button = new JButton("switch");
 
                     button.addMouseListener(new ButtonClickEvent((e) -> {
-                        if(selectedButton.get() == null) {
+                        if (selectedButton.get() == null) {
                             // TODO : fix border
                             Border redBorder = BorderFactory.createLineBorder(Color.RED);
                             button.setBorder(redBorder);
@@ -360,13 +359,13 @@ public class GUIWarehouse implements LocalModelElementObserver {
                 warehousePanel.add(depotsPanel);
             }
         } else {
-            if(!player.initResources() && player.getNickname().equals(client.getNickname())) {
+            if (!player.initResources() && player.getNickname().equals(client.getNickname())) {
                 JPanel initResourcesPanel = new JPanel(new GridBagLayout());
 
                 GridBagConstraints gbc = new GridBagConstraints();
                 gbc.insets = new Insets(5, 5, 5, 5);
-                for(int i = 0; i < 2; ++i) {
-                    for(int j = 0; j < 2; ++j) {
+                for (int i = 0; i < 2; ++i) {
+                    for (int j = 0; j < 2; ++j) {
                         gbc.gridx = i;
                         gbc.gridy = j;
 

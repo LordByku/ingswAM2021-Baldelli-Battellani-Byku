@@ -5,6 +5,7 @@ import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.LocalConfig;
 import it.polimi.ingsw.view.localModel.FaithTrack;
 import it.polimi.ingsw.view.localModel.LocalModelElementObserver;
+import it.polimi.ingsw.view.localModel.Player;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -17,12 +18,15 @@ public class GUIFaithTrack implements LocalModelElementObserver {
     private int currPosition;
     private Integer lolloPosition;
     private FaithTrack faithTrack;
+    private Player player;
 
     public GUIFaithTrack(Client client, JPanel faithTrackPanel, String nickname) {
         this.client = client;
         this.faithTrackPanel = faithTrackPanel;
 
-        faithTrack = client.getModel().getPlayer(nickname).getBoard().getFaithTrack();
+        player = client.getModel().getPlayer(nickname);
+
+        faithTrack = player.getBoard().getFaithTrack();
         faithTrack.addObserver(this);
     }
 
@@ -86,7 +90,7 @@ public class GUIFaithTrack implements LocalModelElementObserver {
         GUICheckPoints guiCheckPoints = new GUICheckPoints(faithTrackPanel, panels, c, checkPoints, size);
         guiCheckPoints.loadCheckPoints();
 
-        GUIPopeFavor guiPopeFavor = new GUIPopeFavor(client, faithTrackPanel, panels, c, lolloPosition, size);
+        GUIPopeFavor guiPopeFavor = new GUIPopeFavor(client, faithTrackPanel, panels, c, lolloPosition, player.getNickname(), size);
         guiPopeFavor.loadPopeFavors();
 
     }

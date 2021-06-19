@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui.board.faithTrack;
 import it.polimi.ingsw.model.playerBoard.faithTrack.VaticanReportSection;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.LocalConfig;
+import it.polimi.ingsw.view.localModel.Player;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -19,8 +20,9 @@ public class GUIPopeFavor {
     Client client;
     int size;
     int numOfPlayers;
+    private Player player;
 
-    public GUIPopeFavor(Client client, JPanel faithTrack, JPanel[][] panels, GridBagConstraints c, Integer lolloPosition, int size) {
+    public GUIPopeFavor(Client client, JPanel faithTrack, JPanel[][] panels, GridBagConstraints c, Integer lolloPosition, String nickname, int size) {
         this.faithTrack = faithTrack;
         this.panels = panels;
         this.c = c;
@@ -30,9 +32,13 @@ public class GUIPopeFavor {
         vaticanReportSections = LocalConfig.getInstance().getVaticanReportSections();
         nicknames = LocalConfig.getInstance().getTurnOrder();
         numOfPlayers = nicknames.size();
+
+        player = client.getModel().getPlayer(nickname);
     }
 
     public void loadPopeFavors() {
+
+        ArrayList<Integer> receivedFavors = player.getBoard().getFaithTrack().getReceivedFavors();
         for (VaticanReportSection vaticanReportSection : vaticanReportSections) {
 
             int initPos = vaticanReportSection.getFirstSpace();
@@ -50,9 +56,6 @@ public class GUIPopeFavor {
             String points = Integer.toString(vaticanReportSection.getPoints());
             JLabel popeFavor = new JLabel(points);
 
-            int myIndex;
-            for (myIndex = 0; myIndex < numOfPlayers && !nicknames.get(myIndex).equals(client.getNickname()); myIndex++)
-                ;
             boolean activated = false;
             Integer[] positions = new Integer[numOfPlayers];
 
@@ -64,11 +67,11 @@ public class GUIPopeFavor {
             if (lolloPosition != null && lolloPosition >= finalPos)
                 activated = true;
 
-            if (activated && positions[myIndex] < initPos) {
+            if (activated && !receivedFavors.contains(vaticanReportSection.getId())) {
                 popeFavor = new JLabel("X");
                 popeFavor.setForeground(Color.RED);
                 panels[0][initPos].setBackground(Color.WHITE);
-            } else if ((activated && positions[myIndex] >= initPos)) {
+            } else if ((activated && receivedFavors.contains(vaticanReportSection.getId()))) {
                 panels[0][initPos].setBackground(Color.GREEN);
             }
 

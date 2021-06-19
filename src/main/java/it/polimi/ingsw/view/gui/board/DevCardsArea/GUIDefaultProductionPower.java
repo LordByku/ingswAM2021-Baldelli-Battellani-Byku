@@ -85,7 +85,7 @@ public class GUIDefaultProductionPower implements LocalModelElementObserver {
         defProdPower.add(productionPanel, gbc);
 
         CommandBuffer commandBuffer = player.getCommandBuffer();
-        if (commandBuffer != null && commandBuffer.getCommandType() == CommandType.PRODUCTION) {
+        if (commandBuffer != null && !commandBuffer.isCompleted() && commandBuffer.getCommandType() == CommandType.PRODUCTION) {
             Production productionCommand = (Production) commandBuffer;
             int[] currentSelection = productionCommand.getProductionsToActivate();
             int n = currentSelection != null ? currentSelection.length : 0;

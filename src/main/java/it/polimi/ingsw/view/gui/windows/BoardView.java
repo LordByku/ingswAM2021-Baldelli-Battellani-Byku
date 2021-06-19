@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class BoardView extends GUIWindow {
+    private final String nickname;
     private JPanel panel;
     private JPanel faithTrack;
     private JPanel devCardsArea;
@@ -28,8 +29,8 @@ public class BoardView extends GUIWindow {
     private GUIStrongbox guiStrongbox;
     private GUIDevCardsArea guiDevCardsArea;
     private GUIHandLeaderCards guiHandLeaderCards;
+    private GUILeaderCardsArea guiLeaderCardsArea;
     private GUICommandsPanel guiCommandsPanel;
-    private final String nickname;
 
     public BoardView(GUI gui, Client client, String nickname) {
         super(gui, client);
@@ -67,7 +68,7 @@ public class BoardView extends GUIWindow {
     }
 
     public void loadLeaderCardsArea(Client client, String nickname) {
-        GUILeaderCardsArea guiLeaderCardsArea = new GUILeaderCardsArea(client, leaderCardsArea, nickname);
+        guiLeaderCardsArea = new GUILeaderCardsArea(client, leaderCardsArea, nickname);
         guiLeaderCardsArea.loadLeaderCardsArea();
     }
 
@@ -77,7 +78,7 @@ public class BoardView extends GUIWindow {
     }
 
     public void loadStrongbox(Client client, String nickname) {
-        guiStrongbox = new GUIStrongbox(client, strongbox, nickname);
+        guiStrongbox = new GUIStrongbox(gui, client, strongbox, nickname);
         guiStrongbox.loadStrongbox();
     }
 
@@ -98,6 +99,7 @@ public class BoardView extends GUIWindow {
         guiStrongbox.clean();
         guiDevCardsArea.clean();
         guiHandLeaderCards.clean();
+        guiLeaderCardsArea.clean();
         if (nickname.equals(client.getNickname())) {
             guiCommandsPanel.clean();
         }

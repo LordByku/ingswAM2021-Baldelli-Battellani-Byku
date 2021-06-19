@@ -120,7 +120,7 @@ public class PurchaseWindow extends CommandWindow {
                 int devCardID = client.getModel().getGameZone().getCardMarket().getDevCard(row, col);
                 ConcreteResourceSet requirements = DevCardsParser.getInstance().getCard(devCardID).getReqResources();
 
-                for (int leaderCardID : self.getBoard().getPlayedLeaderCards()) {
+                for (int leaderCardID : self.getBoard().getPlayedLeaderCards().getLeaderCards()) {
                     LeaderCard leaderCard = LeaderCardsParser.getInstance().getCard(leaderCardID);
                     if (leaderCard.isType(LeaderCardType.DISCOUNT)) {
                         DiscountLeaderCard discountLeaderCard = (DiscountLeaderCard) leaderCard;
@@ -133,7 +133,7 @@ public class PurchaseWindow extends CommandWindow {
 
                 ConcreteResourceSet currentSelection = commandBuffer.getCurrentTotalToSpend();
 
-                CLI.showWarehouse(self.getBoard().getWarehouse().getDepots(), self.getBoard().getPlayedLeaderCards());
+                CLI.showWarehouse(self.getBoard().getWarehouse().getDepots(), self.getBoard().getPlayedLeaderCards().getLeaderCards());
                 CLI.showStrongbox(self.getBoard().getStrongBox().getContent());
                 CLI.spendResources(toSpend, currentSelection);
             }

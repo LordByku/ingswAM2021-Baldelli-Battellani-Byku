@@ -11,6 +11,7 @@ import it.polimi.ingsw.view.gui.windows.tokens.MarbleMarketToken;
 import it.polimi.ingsw.view.gui.windows.tokens.WindowToken;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 
 public class GUIBottomPanel {
@@ -28,12 +29,12 @@ public class GUIBottomPanel {
         bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.X_AXIS));
     }
 
-    private void addButton(String text, WindowToken windowToken) {
+    private JButton addButton(String text, WindowToken windowToken) {
         if (excludedToken.equals(windowToken)) {
-            return;
+            return null;
         }
 
-        GUIUtil.addButton(text, bottomPanel, new ButtonClickEvent((event) -> {
+        return GUIUtil.addButton(text, bottomPanel, new ButtonClickEvent((event) -> {
             gui.switchGameWindow(windowToken);
         }));
     }
@@ -44,7 +45,14 @@ public class GUIBottomPanel {
         addButton("View Card Market", new CardMarketToken());
         addButton("View Marble Market", new MarbleMarketToken());
         for (String nickname : nicknames) {
-            addButton("View " + nickname + "'s board", new BoardToken(nickname));
+            if (nickname.equals(client.getNickname())) {
+                JButton button = addButton("View your board", new BoardToken(nickname));
+                if (button != null) {
+                    button.setForeground(Color.BLUE);
+                }
+            } else {
+                addButton("View " + nickname + "'s board", new BoardToken(nickname));
+            }
         }
     }
 }

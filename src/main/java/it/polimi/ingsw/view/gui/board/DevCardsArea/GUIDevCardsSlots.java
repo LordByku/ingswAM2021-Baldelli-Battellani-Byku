@@ -99,7 +99,7 @@ public class GUIDevCardsSlots implements LocalModelElementObserver {
                 slotPanel.add(card, c);
             }
 
-            if (commandBuffer != null && commandBuffer.getCommandType() == CommandType.PRODUCTION) {
+            if (commandBuffer != null && !commandBuffer.isCompleted() && commandBuffer.getCommandType() == CommandType.PRODUCTION) {
                 if (!deck.isEmpty()) {
                     Production productionCommand = (Production) commandBuffer;
                     int[] currentSelection = productionCommand.getProductionsToActivate();
@@ -113,6 +113,9 @@ public class GUIDevCardsSlots implements LocalModelElementObserver {
                         selection[n] = finalI + 1;
                         JsonObject message = client.buildCommandMessage("selection", JsonUtil.getInstance().serialize(selection));
                         gui.bufferWrite(message.toString());
+
+                        // TODO : border (?)
+                        // TODO : toggle (?)
                     }));
                     container.setOpaque(false);
                     c.gridy++;

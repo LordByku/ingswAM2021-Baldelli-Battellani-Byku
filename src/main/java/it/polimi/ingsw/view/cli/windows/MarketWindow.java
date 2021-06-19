@@ -143,7 +143,7 @@ public class MarketWindow extends CommandWindow {
             ChoiceResourceSet obtained = commandBuffer.getObtainedResources();
             if (!obtained.isConcrete()) {
                 ChoiceSet choiceSet = new ChoiceSet();
-                for (Integer leaderCardId : board.getPlayedLeaderCards()) {
+                for (Integer leaderCardId : board.getPlayedLeaderCards().getLeaderCards()) {
                     LeaderCard leaderCard = LeaderCardsParser.getInstance().getCard(leaderCardId);
                     if (leaderCard.isType(LeaderCardType.CONVERSION)) {
                         choiceSet.addChoice(((WhiteConversionLeaderCard) leaderCard).getConversionEffect().getResource());
@@ -151,7 +151,7 @@ public class MarketWindow extends CommandWindow {
                 }
                 CLI.whiteMarbleSelection(choiceSet, obtained.getChoiceResources().size());
             } else {
-                CLI.showWarehouse(board.getWarehouse().getDepots(), board.getPlayedLeaderCards());
+                CLI.showWarehouse(board.getWarehouse().getDepots(), board.getPlayedLeaderCards().getLeaderCards());
                 CLI.manageWarehouse(commandBuffer.getToDiscard());
             }
         }

@@ -188,7 +188,7 @@ public class Purchase extends CommandBuffer {
 
         if (devCard.canPlay(person.getBoard(), deckIndex)) {
             this.deckIndex = deckIndex;
-            warehouseToSpend = new ConcreteResourceSet[BoardParser.getInstance().getDepotSizes().size()];
+            warehouseToSpend = new ConcreteResourceSet[person.getBoard().getWarehouse().numberOfDepots()];
             for (int i = 0; i < warehouseToSpend.length; ++i) {
                 warehouseToSpend[i] = new ConcreteResourceSet();
             }

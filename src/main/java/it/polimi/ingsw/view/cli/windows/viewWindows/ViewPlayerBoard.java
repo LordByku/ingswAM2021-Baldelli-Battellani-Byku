@@ -25,7 +25,7 @@ public class ViewPlayerBoard extends CLIViewWindow {
                         break;
                     }
                     case 1: {
-                        CLI.showWarehouse(board.getWarehouse().getDepots(), board.getPlayedLeaderCards());
+                        CLI.showWarehouse(board.getWarehouse().getDepots(), board.getPlayedLeaderCards().getLeaderCards());
                         break;
                     }
                     case 2: {
@@ -37,7 +37,7 @@ public class ViewPlayerBoard extends CLIViewWindow {
                         break;
                     }
                     case 4: {
-                        CLI.showLeaderCards(board.getPlayedLeaderCards());
+                        CLI.showLeaderCards(board.getPlayedLeaderCards().getLeaderCards());
                         break;
                     }
                     case 5: {

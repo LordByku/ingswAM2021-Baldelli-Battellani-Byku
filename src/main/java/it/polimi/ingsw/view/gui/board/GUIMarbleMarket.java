@@ -92,6 +92,7 @@ public class GUIMarbleMarket implements LocalModelElementObserver {
 
                     for (int i = 0; i < 4; i++) {
                         button = new JButton("↑");
+                        // TODO : fix button size
                         button.setPreferredSize(new Dimension(40, 60));
 
                         int finalI = i;

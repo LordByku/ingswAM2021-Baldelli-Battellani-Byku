@@ -67,8 +67,8 @@ public class Board extends LocalModelElement implements CLIPrintable {
         return faithTrack;
     }
 
-    public ArrayList<Integer> getPlayedLeaderCards() {
-        return playedLeaderCards.getLeaderCards();
+    public PlayedLeaderCardsArea getPlayedLeaderCards() {
+        return playedLeaderCards;
     }
 
     public Strongbox getStrongBox() {
@@ -93,7 +93,7 @@ public class Board extends LocalModelElement implements CLIPrintable {
             }
         }
         int index = devCardsId.size() + 1;
-        for (int leaderCardID : getPlayedLeaderCards()) {
+        for (int leaderCardID : getPlayedLeaderCards().getLeaderCards()) {
             LeaderCard leaderCard = LeaderCardsParser.getInstance().getCard(leaderCardID);
             if (leaderCard.isType(LeaderCardType.PRODUCTION)) {
                 ProductionLeaderCard productionLeaderCard = (ProductionLeaderCard) leaderCard;

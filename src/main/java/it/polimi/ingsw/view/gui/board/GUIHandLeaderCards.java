@@ -53,7 +53,7 @@ public class GUIHandLeaderCards implements LocalModelElementObserver {
 
     public void loadHandLeaderCards() {
         GridBagConstraints c = new GridBagConstraints();
-        if(nickname.equals(client.getNickname())){
+        if (nickname.equals(client.getNickname())) {
             ArrayList<LeaderCardImage> leaderCardImages = new ArrayList<>();
 
             c.gridx = 0;
@@ -111,8 +111,7 @@ public class GUIHandLeaderCards implements LocalModelElementObserver {
                 handLeaderCardsPanel.add(cardPanel, c);
                 c.gridx++;
             }
-        }
-        else {
+        } else {
             ArrayList<LeaderCardsBackImage> leaderCardImages = new ArrayList<>();
             c.gridx = 0;
             c.gridy = 0;
