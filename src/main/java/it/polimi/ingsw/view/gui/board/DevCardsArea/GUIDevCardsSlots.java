@@ -57,7 +57,6 @@ public class GUIDevCardsSlots implements LocalModelElementObserver {
             JPanel slotPanel = new DevCardSlotImage();
             slotPanel.setBorder(new LineBorder(Color.BLACK));
 
-            // TODO : change player to load
             Player player = client.getModel().getPlayer(nickname);
 
             if (player.getNickname().equals(client.getNickname())) {
@@ -91,7 +90,6 @@ public class GUIDevCardsSlots implements LocalModelElementObserver {
             }*/
 
             for (int j = deck.size() - 1; j >= 0; --j) {
-                // TODO : adjust size ?
                 DevCard devCard = DevCardsParser.getInstance().getCard(deck.get(j));
                 JPanel card = devCard.getDevCardImage(128);
                 card.setBorder(new LineBorder(Color.BLACK));

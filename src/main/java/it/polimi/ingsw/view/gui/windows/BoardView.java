@@ -42,7 +42,6 @@ public class BoardView extends GUIWindow {
         GUIBottomPanel guiBottomPanel = new GUIBottomPanel(gui, client, bottomPanel, new BoardToken(nickname));
         guiBottomPanel.loadBottomPanel();
 
-        // TODO : load board's component according to nickname
         loadBoard(nickname);
 
         errorLabel.setForeground(Color.RED);

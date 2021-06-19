@@ -4,6 +4,7 @@ import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.model.resources.ChoiceResource;
+import it.polimi.ingsw.model.resources.ChoiceSet;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ChoiceResourceSet;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
@@ -210,6 +211,7 @@ public class GUIWarehouse implements LocalModelElementObserver {
 
                 if (toDiscard == null) {
                     ChoiceResourceSet obtained = marketCommand.getObtainedResources();
+
                     for (ConcreteResource concreteResource : ConcreteResource.values()) {
                         ResourceImageType resourceImageType = concreteResource.getResourceImageType();
                         for (int i = 0; i < obtained.getConcreteResources().getCount(concreteResource); ++i) {
@@ -223,14 +225,43 @@ public class GUIWarehouse implements LocalModelElementObserver {
                     JPanel choicePanel = new JPanel();
                     choicePanel.setLayout(new BoxLayout(choicePanel, BoxLayout.X_AXIS));
 
-                    for (ChoiceResource choiceResource : obtained.getChoiceResources()) {
+                    ArrayList<ChoiceResource> choiceResources = obtained.getChoiceResources();
+                    for (int i = 0; i < choiceResources.size(); i++) {
+                        ChoiceResource choiceResource = choiceResources.get(i);
                         ResourceImageType resourceImageType = choiceResource.getResourceImageType();
 
                         JPanel container = new JPanel();
                         JPanel imagePanel = new ResourceImage(resourceImageType, 30);
 
+                        int finalI = i;
                         imagePanel.addMouseListener(new ButtonClickEvent((e) -> {
-                            // TODO : choice selection
+                            JPanel popupContent = new JPanel();
+                            popupContent.setLayout(new BoxLayout(popupContent, BoxLayout.X_AXIS));
+
+                            Popup popup = PopupFactory.getSharedInstance().getPopup(imagePanel, popupContent, imagePanel.getX(), imagePanel.getY());
+
+                            for (ConcreteResource concreteResource : ConcreteResource.values()) {
+                                if (choiceResource.canChoose(concreteResource)) {
+                                    ResourceImageType concreteImageType = concreteResource.getResourceImageType();
+                                    JPanel concreteResourcePanel = new ResourceImage(concreteImageType, 30);
+
+                                    concreteResourcePanel.addMouseListener(new ButtonClickEvent((event) -> {
+                                        ConcreteResource[] resourcesArray = new ConcreteResource[choiceResources.size()];
+                                        resourcesArray[finalI] = concreteResource;
+                                        JsonObject message = client.buildCommandMessage("conversion", JsonUtil.getInstance().serialize(resourcesArray));
+                                        gui.bufferWrite(message.toString());
+                                        popup.hide();
+                                    }, true));
+
+                                    popupContent.add(concreteResourcePanel);
+                                }
+                            }
+
+                            GUIUtil.addButton("x", popupContent, new ButtonClickEvent((event) -> {
+                                popup.hide();
+                            }, true));
+
+                            popup.show();
                         }));
 
                         container.add(imagePanel);

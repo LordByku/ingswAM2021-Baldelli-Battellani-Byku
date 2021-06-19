@@ -254,13 +254,15 @@ public class Market extends CommandBuffer {
         }
         for (int i = 0; i < resources.length; ++i) {
             ChoiceResource choiceResource = choiceResources.get(i);
-            if (!choiceResource.canChoose(resources[i])) {
+            if (resources[i] != null && !choiceResource.canChoose(resources[i])) {
                 return;
             }
         }
         for (int i = 0; i < resources.length; ++i) {
             ChoiceResource choiceResource = choiceResources.get(i);
-            choiceResource.makeChoice(resources[i]);
+            if(resources[i] != null) {
+                choiceResource.makeChoice(resources[i]);
+            }
         }
     }
 
