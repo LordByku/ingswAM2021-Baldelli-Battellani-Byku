@@ -95,7 +95,7 @@ public class GUIMarbleMarket implements LocalModelElementObserver {
                         // TODO : fix button size
                         button.setPreferredSize(new Dimension(40, 50));
 
-                        int finalI = i;
+                        int finalI = 1-i;
                         button.addMouseListener(new ButtonClickEvent((e) -> {
                             JsonObject value = new JsonObject();
                             value.addProperty("rowColSel", false);
