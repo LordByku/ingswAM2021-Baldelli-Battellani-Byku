@@ -53,12 +53,12 @@ public class GUIFaithTrack implements LocalModelElementObserver {
             panels[1][i].setVisible(true);
             panels[1][i].setBorder(new LineBorder(Color.BLACK));
             panels[1][i].setBackground(Color.decode("#fffcf0"));
-            labelC.gridx=0;
-            labelC.gridy=0;
+            labelC.gridx = 0;
+            labelC.gridy = 0;
             panels[1][i].add(position, labelC);
             if (lolloPosition == null) {
                 if (currPosition == i) {
-                    panels[1][i].add(cross,labelC);
+                    panels[1][i].add(cross, labelC);
                 } else {
                     position.setText(Integer.toString(i));
                 }
@@ -68,7 +68,7 @@ public class GUIFaithTrack implements LocalModelElementObserver {
                     cross.setPreferredSize(cellSizeD);
                     panels[1][i].add(black_cross, labelC);
                 } else if (currPosition == i && lolloPosition != i) {
-                    panels[1][i].add(cross,labelC);
+                    panels[1][i].add(cross, labelC);
                 } else if (currPosition == i) {
                     JPanel black_cross = new CrossImage("Punchboard/croce.png");
                     cross.setPreferredSize(cellSizeD);

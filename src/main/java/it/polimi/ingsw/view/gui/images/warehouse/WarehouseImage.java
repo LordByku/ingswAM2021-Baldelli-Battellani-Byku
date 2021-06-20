@@ -2,7 +2,6 @@ package it.polimi.ingsw.view.gui.images.warehouse;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
@@ -14,8 +13,8 @@ public class WarehouseImage extends JPanel {
 
     public WarehouseImage(int width, int height) {
         super(null);
-        this.width=width;
-        this.height=height;
+        this.width = width;
+        this.height = height;
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         URL resource = classLoader.getResource("Punchboard/warehouse.png");
         try {

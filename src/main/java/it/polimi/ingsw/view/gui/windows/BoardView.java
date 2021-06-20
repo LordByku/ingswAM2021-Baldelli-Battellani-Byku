@@ -8,7 +8,6 @@ import it.polimi.ingsw.view.gui.board.faithTrack.GUIFaithTrack;
 import it.polimi.ingsw.view.gui.windows.tokens.BoardToken;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class BoardView extends GUIWindow {

@@ -5,20 +5,24 @@ import it.polimi.ingsw.controller.CommandBuffer;
 import it.polimi.ingsw.controller.CommandType;
 import it.polimi.ingsw.controller.Production;
 import it.polimi.ingsw.controller.Purchase;
+import it.polimi.ingsw.model.resources.ChoiceResource;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.utility.JsonUtil;
 import it.polimi.ingsw.view.gui.GUI;
+import it.polimi.ingsw.view.gui.GUIUtil;
 import it.polimi.ingsw.view.gui.components.ButtonClickEvent;
 import it.polimi.ingsw.view.gui.images.StrongboxImage;
 import it.polimi.ingsw.view.gui.images.resources.ResourceImage;
+import it.polimi.ingsw.view.gui.images.resources.ResourceImageType;
 import it.polimi.ingsw.view.localModel.LocalModelElementObserver;
 import it.polimi.ingsw.view.localModel.Player;
 import it.polimi.ingsw.view.localModel.Strongbox;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class GUIStrongbox implements LocalModelElementObserver {
     private final GUI gui;
@@ -42,8 +46,6 @@ public class GUIStrongbox implements LocalModelElementObserver {
         strongbox.addObserver(this);
         player.getCommandElement().addObserver(this, CommandType.PURCHASE);
         player.getCommandElement().addObserver(this, CommandType.PRODUCTION);
-
-        // TODO : production choice resources
     }
 
     public void loadStrongbox() {
@@ -54,6 +56,58 @@ public class GUIStrongbox implements LocalModelElementObserver {
         c.gridy = 0;
 
         CommandBuffer commandBuffer = player.getCommandBuffer();
+
+        if (commandBuffer != null && !commandBuffer.isCompleted() && commandBuffer.getCommandType() == CommandType.PRODUCTION) {
+            Production productionCommand = (Production) commandBuffer;
+            if (productionCommand.getObtainedResources() != null) {
+                JPanel choicePanel = new JPanel();
+                ArrayList<ChoiceResource> choiceResources = productionCommand.getObtainedResources().getChoiceResources();
+                for (int i = 0; i < choiceResources.size(); i++) {
+                    ChoiceResource choiceResource = choiceResources.get(i);
+                    ResourceImageType resourceImageType = choiceResource.getResourceImageType();
+
+                    JPanel container = new JPanel();
+                    JPanel imagePanel = new ResourceImage(resourceImageType, 25);
+
+                    int finalI = i;
+                    imagePanel.addMouseListener(new ButtonClickEvent((e) -> {
+                        JPanel popupContent = new JPanel();
+                        popupContent.setLayout(new BoxLayout(popupContent, BoxLayout.X_AXIS));
+
+                        // TODO : fix coordinates
+                        Popup popup = PopupFactory.getSharedInstance().getPopup(container, popupContent, imagePanel.getX(), imagePanel.getY());
+
+                        for (ConcreteResource concreteResource : ConcreteResource.values()) {
+                            if (choiceResource.canChoose(concreteResource)) {
+                                ResourceImageType concreteImageType = concreteResource.getResourceImageType();
+                                JPanel concreteResourcePanel = new ResourceImage(concreteImageType, 25);
+
+                                concreteResourcePanel.addMouseListener(new ButtonClickEvent((event) -> {
+                                    ConcreteResource[] resourcesArray = new ConcreteResource[choiceResources.size()];
+                                    resourcesArray[finalI] = concreteResource;
+                                    JsonObject message = client.buildCommandMessage("choiceSelection", JsonUtil.getInstance().serialize(resourcesArray));
+                                    gui.bufferWrite(message.toString());
+                                    popup.hide();
+                                }, true));
+
+                                popupContent.add(concreteResourcePanel);
+                            }
+                        }
+
+                        GUIUtil.addButton("x", popupContent, new ButtonClickEvent((event) -> {
+                            popup.hide();
+                        }, true));
+
+                        popup.show();
+                    }));
+
+                    container.add(imagePanel);
+                    choicePanel.add(container, c);
+                }
+                strongboxPanel.add(choicePanel);
+            }
+        }
+
         for (ConcreteResource resource : ConcreteResource.values()) {
             quantity = strongbox.getContent().getCount(resource);
             resourcePanel = new ResourceImage(resource.getResourceImageType(), 30);
@@ -115,17 +169,20 @@ public class GUIStrongbox implements LocalModelElementObserver {
 
             c.gridy++;
         }
-        c.gridx=1;
-        c.gridy=0;
-        c.insets=new Insets(0,0,0,0);
-        strongboxPanel.add(backgroundPanel,c);
+        c.gridx = 1;
+        c.gridy = 0;
+        c.insets = new Insets(0, 0, 0, 0);
+        strongboxPanel.add(backgroundPanel, c);
     }
 
     @Override
     public void notifyObserver() {
         SwingUtilities.invokeLater(() -> {
+            backgroundPanel.removeAll();
             strongboxPanel.removeAll();
             loadStrongbox();
+            backgroundPanel.revalidate();
+            backgroundPanel.repaint();
             strongboxPanel.revalidate();
             strongboxPanel.repaint();
         });

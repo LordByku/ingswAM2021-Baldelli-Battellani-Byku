@@ -12,7 +12,7 @@ public class LeaderCardsBackImage extends JPanel {
     private Image img;
 
 
-    public LeaderCardsBackImage(int width){
+    public LeaderCardsBackImage(int width) {
         super(null);
         this.width = width;
         this.height = (int) (1.5 * width);

@@ -41,7 +41,7 @@ public class GUIWarehouse implements LocalModelElementObserver {
         this.gui = gui;
         this.client = client;
         this.warehousePanel = warehousePanel;
-        this.backgroundPanel = new WarehouseImage(150,150);
+        this.backgroundPanel = new WarehouseImage(150, 150);
         numOfDepots = LocalConfig.getInstance().getNumberOfDepots();
         depotSizes = LocalConfig.getInstance().getDepotSizes();
 
@@ -54,6 +54,8 @@ public class GUIWarehouse implements LocalModelElementObserver {
         warehouse.addObserver(this);
 
         // TODO : check leader card depots (?)
+
+        // TODO : show resources to spend (?)
     }
 
     public void loadWarehouse() {
@@ -219,12 +221,12 @@ public class GUIWarehouse implements LocalModelElementObserver {
                             JPanel imagePanel = new ResourceImage(resourceImageType, 25);
                             container.add(imagePanel);
                             c.gridx = count / 2;
-                            c.gridy = count % 2 ;
-                            concretePanel.add(container,c);
+                            c.gridy = count % 2;
+                            concretePanel.add(container, c);
                             count++;
                         }
                     }
-                    count=0;
+                    count = 0;
                     JPanel choicePanel = new JPanel();
                     choicePanel.setLayout(new GridBagLayout());
 
@@ -241,6 +243,7 @@ public class GUIWarehouse implements LocalModelElementObserver {
                             JPanel popupContent = new JPanel();
                             popupContent.setLayout(new BoxLayout(popupContent, BoxLayout.X_AXIS));
 
+                            // TODO : fix coordinates
                             Popup popup = PopupFactory.getSharedInstance().getPopup(imagePanel, popupContent, imagePanel.getX(), imagePanel.getY());
 
                             for (ConcreteResource concreteResource : ConcreteResource.values()) {
@@ -268,16 +271,16 @@ public class GUIWarehouse implements LocalModelElementObserver {
                         }));
 
                         container.add(imagePanel);
-                        c.gridx = count/2;
+                        c.gridx = count / 2;
                         c.gridy = count % 2;
-                        choicePanel.add(container,c);
+                        choicePanel.add(container, c);
                         count++;
                     }
-                    c.gridx=0;
-                    c.gridy=0;
-                    obtainedPanel.add(concretePanel,c);
+                    c.gridx = 0;
+                    c.gridy = 0;
+                    obtainedPanel.add(concretePanel, c);
                     c.gridy = 1;
-                    obtainedPanel.add(choicePanel,c);
+                    obtainedPanel.add(choicePanel, c);
                 } else {
                     for (ConcreteResource concreteResource : ConcreteResource.values()) {
                         ResourceImageType resourceImageType = concreteResource.getResourceImageType();
@@ -308,8 +311,8 @@ public class GUIWarehouse implements LocalModelElementObserver {
 
                             container.add(imagePanel);
                             c.gridx = count / 2;
-                            c.gridy = count % 2 ;
-                            concretePanel.add(container,c);
+                            c.gridy = count % 2;
+                            concretePanel.add(container, c);
                             count++;
 
                         }
@@ -317,7 +320,7 @@ public class GUIWarehouse implements LocalModelElementObserver {
 
                     JPanel buttonPanel = new JPanel(new GridBagLayout());
                     JButton button = new JButton("Confirm");
-                    button.setPreferredSize(new Dimension(80,20));
+                    button.setPreferredSize(new Dimension(80, 20));
                     button.setFont(new Font("Arial", Font.PLAIN, 10));
                     button.addMouseListener(new ButtonClickEvent((e) -> {
                         JsonObject message = client.buildCommandMessage("confirmWarehouse", JsonNull.INSTANCE);
@@ -325,18 +328,18 @@ public class GUIWarehouse implements LocalModelElementObserver {
                     }));
                     buttonPanel.add(button);
 
-                    c.gridx=0;
-                    c.gridy=0;
-                    obtainedPanel.add(concretePanel,c);
-                    c.gridy=1;
-                    obtainedPanel.add(buttonPanel,c);
+                    c.gridx = 0;
+                    c.gridy = 0;
+                    obtainedPanel.add(concretePanel, c);
+                    c.gridy = 1;
+                    obtainedPanel.add(buttonPanel, c);
                 }
-                c.gridx=0;
-                c.gridy=0;
-                warehousePanel.add(obtainedPanel,c);
+                c.gridx = 0;
+                c.gridy = 0;
+                warehousePanel.add(obtainedPanel, c);
                 ++c.gridx;
-                backgroundPanel.add(depotsPanel,c);
-                warehousePanel.add(backgroundPanel,c);
+                backgroundPanel.add(depotsPanel, c);
+                warehousePanel.add(backgroundPanel, c);
 
                 AtomicReference<JButton> selectedButton = new AtomicReference<>();
                 AtomicReference<Integer> selectedIndex = new AtomicReference<>();
@@ -347,7 +350,7 @@ public class GUIWarehouse implements LocalModelElementObserver {
                     int finalI = i;
 
                     JButton button = new JButton("switch");
-                    button.setPreferredSize(new Dimension(80,20));
+                    button.setPreferredSize(new Dimension(80, 20));
                     button.setFont(new Font("Arial", Font.PLAIN, 10));
 
                     button.addMouseListener(new ButtonClickEvent((e) -> {
@@ -379,11 +382,11 @@ public class GUIWarehouse implements LocalModelElementObserver {
                     switchPanel.add(button, gbc);
                 }
                 ++c.gridx;
-                warehousePanel.add(switchPanel,c);
+                warehousePanel.add(switchPanel, c);
             } else {
-                c.gridx=0;
-                c.gridy=0;
-                backgroundPanel.add(depotsPanel,c);
+                c.gridx = 0;
+                c.gridy = 0;
+                backgroundPanel.add(depotsPanel, c);
                 warehousePanel.add(backgroundPanel);
             }
         } else {
@@ -424,14 +427,14 @@ public class GUIWarehouse implements LocalModelElementObserver {
                         initResourcesPanel.add(imagePanel, gbc);
                     }
                 }
-                c.gridx=0;
-                c.gridy=0;
+                c.gridx = 0;
+                c.gridy = 0;
                 warehousePanel.add(initResourcesPanel);
             }
-            c.gridx=0;
+            c.gridx = 0;
             c.gridy++;
-            backgroundPanel.add(depotsPanel,c);
-            warehousePanel.add(backgroundPanel,c);
+            backgroundPanel.add(depotsPanel, c);
+            warehousePanel.add(backgroundPanel, c);
         }
     }
 

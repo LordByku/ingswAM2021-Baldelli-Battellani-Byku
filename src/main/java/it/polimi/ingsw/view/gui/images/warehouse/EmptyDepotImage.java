@@ -2,7 +2,6 @@ package it.polimi.ingsw.view.gui.images.warehouse;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.plaf.synth.SynthScrollBarUI;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;

@@ -95,7 +95,7 @@ public class GUIMarbleMarket implements LocalModelElementObserver {
                         // TODO : fix button size
                         button.setPreferredSize(new Dimension(40, 50));
 
-                        int finalI = 1-i;
+                        int finalI = 1 - i;
                         button.addMouseListener(new ButtonClickEvent((e) -> {
                             JsonObject value = new JsonObject();
                             value.addProperty("rowColSel", false);
@@ -114,7 +114,7 @@ public class GUIMarbleMarket implements LocalModelElementObserver {
                         // TODO : fix button size
                         button.setPreferredSize(new Dimension(40, 50));
 
-                        int finalI = i+2;
+                        int finalI = i + 2;
                         button.addMouseListener(new ButtonClickEvent((e) -> {
                             JsonObject value = new JsonObject();
                             value.addProperty("rowColSel", false);
@@ -125,7 +125,7 @@ public class GUIMarbleMarket implements LocalModelElementObserver {
 
                         c.gridx = 0;
                         c.gridy = 0;
-                        c.insets = new Insets(230,86+ (i * offset), 0, 0);
+                        c.insets = new Insets(230, 86 + (i * offset), 0, 0);
                         marketPanel.add(button, c);
                     }
                 }
