@@ -15,6 +15,8 @@ import it.polimi.ingsw.view.gui.GUIUtil;
 import it.polimi.ingsw.view.gui.components.ButtonClickEvent;
 import it.polimi.ingsw.view.gui.images.resources.ResourceImage;
 import it.polimi.ingsw.view.gui.images.resources.ResourceImageType;
+import it.polimi.ingsw.view.gui.images.warehouse.EmptyDepotImage;
+import it.polimi.ingsw.view.gui.images.warehouse.WarehouseImage;
 import it.polimi.ingsw.view.localModel.LocalModelElementObserver;
 import it.polimi.ingsw.view.localModel.Player;
 import it.polimi.ingsw.view.localModel.Warehouse;
@@ -33,14 +35,15 @@ public class GUIWarehouse implements LocalModelElementObserver {
     private JPanel warehousePanel;
     private int numOfDepots;
     private ArrayList<Integer> depotSizes;
+    private JPanel backgroundPanel;
 
     public GUIWarehouse(GUI gui, Client client, JPanel warehousePanel, String nickname) {
         this.gui = gui;
         this.client = client;
         this.warehousePanel = warehousePanel;
+        this.backgroundPanel = new WarehouseImage(150,150);
         numOfDepots = LocalConfig.getInstance().getNumberOfDepots();
         depotSizes = LocalConfig.getInstance().getDepotSizes();
-        warehousePanel.setLayout(new BoxLayout(warehousePanel, BoxLayout.X_AXIS));
 
         player = client.getModel().getPlayer(nickname);
         warehouse = player.getBoard().getWarehouse();
@@ -65,6 +68,7 @@ public class GUIWarehouse implements LocalModelElementObserver {
         }
 
         JPanel depotsPanel = new JPanel(new GridBagLayout());
+        depotsPanel.setOpaque(false);
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 0.5;
         for (int i = 0; i < numOfDepots; i++) {
@@ -76,7 +80,7 @@ public class GUIWarehouse implements LocalModelElementObserver {
             ConcreteResource concreteResource = depot.getResourceType();
             for (int j = 0; j < depotSizes.get(i); ++j) {
                 if (j < count && concreteResource != null) {
-                    JPanel resourcePanel = new ResourceImage(concreteResource.getResourceImageType(), 30);
+                    JPanel resourcePanel = new ResourceImage(concreteResource.getResourceImageType(), 25);
                     depotPanel.add(resourcePanel, c);
 
                     if (commandBuffer != null && !commandBuffer.isCompleted() && player.getNickname().equals(client.getNickname())) {
@@ -144,17 +148,13 @@ public class GUIWarehouse implements LocalModelElementObserver {
                         }
                     }
                 } else {
-                    // TODO : load via Class Loader
-                    Image empty = Toolkit.getDefaultToolkit().getImage("src/main/resources/Depots/emptyDepotSlot.png");
-
-                    JLabel emptyResourceLabel = new JLabel();
-                    emptyResourceLabel.setIcon(new ImageIcon(empty.getScaledInstance(30, 30, Image.SCALE_SMOOTH)));
-                    depotPanel.add(emptyResourceLabel, c);
+                    JPanel emptyPanel = new EmptyDepotImage();
+                    depotPanel.add(emptyPanel, c);
 
                     if (commandBuffer != null && commandBuffer.getCommandType() == CommandType.MARKET) {
                         Market marketCommand = (Market) commandBuffer;
                         if (marketCommand.getIndex() != -1 && !marketCommand.isCompleted()) {
-                            emptyResourceLabel.addMouseListener(new ButtonClickEvent((e) -> {
+                            emptyPanel.addMouseListener(new ButtonClickEvent((e) -> {
                                 if (selectedResource.get() != null) {
                                     ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
                                     concreteResourceSet.addResource(selectedResource.get());
@@ -171,7 +171,7 @@ public class GUIWarehouse implements LocalModelElementObserver {
                         }
                     } else {
                         if (!player.initResources() && player.getNickname().equals(client.getNickname())) {
-                            emptyResourceLabel.addMouseListener(new ButtonClickEvent((e) -> {
+                            emptyPanel.addMouseListener(new ButtonClickEvent((e) -> {
                                 if (selectedResource.get() != null) {
                                     initDepots[finalI].addResource(selectedResource.get());
                                     selectedResource.set(null);
@@ -200,14 +200,15 @@ public class GUIWarehouse implements LocalModelElementObserver {
             Market marketCommand = (Market) commandBuffer;
             if (marketCommand.getIndex() != -1) {
                 JPanel obtainedPanel = new JPanel();
-                obtainedPanel.setLayout(new BoxLayout(obtainedPanel, BoxLayout.Y_AXIS));
+                obtainedPanel.setLayout(new GridBagLayout());
 
                 ConcreteResourceSet toDiscard = marketCommand.getToDiscard();
                 JPanel concretePanel = new JPanel();
-                concretePanel.setLayout(new BoxLayout(concretePanel, BoxLayout.X_AXIS));
+                concretePanel.setLayout(new GridBagLayout());
 
                 // TODO : handle obtained faith points
 
+                int count = 0;
                 if (toDiscard == null) {
                     ChoiceResourceSet obtained = marketCommand.getObtainedResources();
 
@@ -215,14 +216,17 @@ public class GUIWarehouse implements LocalModelElementObserver {
                         ResourceImageType resourceImageType = concreteResource.getResourceImageType();
                         for (int i = 0; i < obtained.getConcreteResources().getCount(concreteResource); ++i) {
                             JPanel container = new JPanel();
-                            JPanel imagePanel = new ResourceImage(resourceImageType, 20);
+                            JPanel imagePanel = new ResourceImage(resourceImageType, 25);
                             container.add(imagePanel);
-                            concretePanel.add(container);
+                            c.gridx = count / 2;
+                            c.gridy = count % 2 ;
+                            concretePanel.add(container,c);
+                            count++;
                         }
                     }
-
+                    count=0;
                     JPanel choicePanel = new JPanel();
-                    choicePanel.setLayout(new BoxLayout(choicePanel, BoxLayout.X_AXIS));
+                    choicePanel.setLayout(new GridBagLayout());
 
                     ArrayList<ChoiceResource> choiceResources = obtained.getChoiceResources();
                     for (int i = 0; i < choiceResources.size(); i++) {
@@ -230,7 +234,7 @@ public class GUIWarehouse implements LocalModelElementObserver {
                         ResourceImageType resourceImageType = choiceResource.getResourceImageType();
 
                         JPanel container = new JPanel();
-                        JPanel imagePanel = new ResourceImage(resourceImageType, 30);
+                        JPanel imagePanel = new ResourceImage(resourceImageType, 25);
 
                         int finalI = i;
                         imagePanel.addMouseListener(new ButtonClickEvent((e) -> {
@@ -242,7 +246,7 @@ public class GUIWarehouse implements LocalModelElementObserver {
                             for (ConcreteResource concreteResource : ConcreteResource.values()) {
                                 if (choiceResource.canChoose(concreteResource)) {
                                     ResourceImageType concreteImageType = concreteResource.getResourceImageType();
-                                    JPanel concreteResourcePanel = new ResourceImage(concreteImageType, 30);
+                                    JPanel concreteResourcePanel = new ResourceImage(concreteImageType, 25);
 
                                     concreteResourcePanel.addMouseListener(new ButtonClickEvent((event) -> {
                                         ConcreteResource[] resourcesArray = new ConcreteResource[choiceResources.size()];
@@ -264,17 +268,22 @@ public class GUIWarehouse implements LocalModelElementObserver {
                         }));
 
                         container.add(imagePanel);
-                        choicePanel.add(container);
+                        c.gridx = count/2;
+                        c.gridy = count % 2;
+                        choicePanel.add(container,c);
+                        count++;
                     }
-
-                    obtainedPanel.add(concretePanel);
-                    obtainedPanel.add(choicePanel);
+                    c.gridx=0;
+                    c.gridy=0;
+                    obtainedPanel.add(concretePanel,c);
+                    c.gridy = 1;
+                    obtainedPanel.add(choicePanel,c);
                 } else {
                     for (ConcreteResource concreteResource : ConcreteResource.values()) {
                         ResourceImageType resourceImageType = concreteResource.getResourceImageType();
                         for (int i = 0; i < toDiscard.getCount(concreteResource); ++i) {
                             JPanel container = new JPanel(new GridBagLayout());
-                            JPanel imagePanel = new ResourceImage(resourceImageType, 30);
+                            JPanel imagePanel = new ResourceImage(resourceImageType, 25);
                             if (imagePanel.equals(selectedPanel.get())) {
                                 Border redBorder = BorderFactory.createLineBorder(Color.RED);
                                 imagePanel.setBorder(redBorder);
@@ -298,23 +307,36 @@ public class GUIWarehouse implements LocalModelElementObserver {
                             }));
 
                             container.add(imagePanel);
-                            concretePanel.add(container);
+                            c.gridx = count / 2;
+                            c.gridy = count % 2 ;
+                            concretePanel.add(container,c);
+                            count++;
 
                         }
                     }
 
                     JPanel buttonPanel = new JPanel(new GridBagLayout());
-                    GUIUtil.addButton("Confirm", buttonPanel, new ButtonClickEvent((e) -> {
+                    JButton button = new JButton("Confirm");
+                    button.setPreferredSize(new Dimension(80,20));
+                    button.setFont(new Font("Arial", Font.PLAIN, 10));
+                    button.addMouseListener(new ButtonClickEvent((e) -> {
                         JsonObject message = client.buildCommandMessage("confirmWarehouse", JsonNull.INSTANCE);
                         gui.bufferWrite(message.toString());
                     }));
+                    buttonPanel.add(button);
 
-                    obtainedPanel.add(concretePanel);
-                    obtainedPanel.add(buttonPanel);
+                    c.gridx=0;
+                    c.gridy=0;
+                    obtainedPanel.add(concretePanel,c);
+                    c.gridy=1;
+                    obtainedPanel.add(buttonPanel,c);
                 }
-
-                warehousePanel.add(obtainedPanel);
-                warehousePanel.add(depotsPanel);
+                c.gridx=0;
+                c.gridy=0;
+                warehousePanel.add(obtainedPanel,c);
+                ++c.gridx;
+                backgroundPanel.add(depotsPanel,c);
+                warehousePanel.add(backgroundPanel,c);
 
                 AtomicReference<JButton> selectedButton = new AtomicReference<>();
                 AtomicReference<Integer> selectedIndex = new AtomicReference<>();
@@ -325,6 +347,8 @@ public class GUIWarehouse implements LocalModelElementObserver {
                     int finalI = i;
 
                     JButton button = new JButton("switch");
+                    button.setPreferredSize(new Dimension(80,20));
+                    button.setFont(new Font("Arial", Font.PLAIN, 10));
 
                     button.addMouseListener(new ButtonClickEvent((e) -> {
                         if (selectedButton.get() == null) {
@@ -351,12 +375,16 @@ public class GUIWarehouse implements LocalModelElementObserver {
 
                     gbc.gridx = 0;
                     gbc.gridy = i;
-                    gbc.insets = new Insets(2, 0, 2, 0);
+                    gbc.insets = new Insets(4, 0, 4, 0);
                     switchPanel.add(button, gbc);
                 }
-                warehousePanel.add(switchPanel);
+                ++c.gridx;
+                warehousePanel.add(switchPanel,c);
             } else {
-                warehousePanel.add(depotsPanel);
+                c.gridx=0;
+                c.gridy=0;
+                backgroundPanel.add(depotsPanel,c);
+                warehousePanel.add(backgroundPanel);
             }
         } else {
             if (!player.initResources() && player.getNickname().equals(client.getNickname())) {
@@ -371,7 +399,7 @@ public class GUIWarehouse implements LocalModelElementObserver {
 
                         ConcreteResource concreteResource = ConcreteResource.values()[2 * i + j];
                         ResourceImageType resourceImageType = concreteResource.getResourceImageType();
-                        ResourceImage resourceImage = new ResourceImage(resourceImageType, 30);
+                        ResourceImage resourceImage = new ResourceImage(resourceImageType, 25);
 
                         JPanel imagePanel = new JPanel(new GridBagLayout());
                         imagePanel.add(resourceImage);
@@ -396,20 +424,28 @@ public class GUIWarehouse implements LocalModelElementObserver {
                         initResourcesPanel.add(imagePanel, gbc);
                     }
                 }
+                c.gridx=0;
+                c.gridy=0;
                 warehousePanel.add(initResourcesPanel);
             }
-
-            warehousePanel.add(depotsPanel);
+            c.gridx=0;
+            c.gridy++;
+            backgroundPanel.add(depotsPanel,c);
+            warehousePanel.add(backgroundPanel,c);
         }
     }
 
     @Override
     public void notifyObserver() {
         SwingUtilities.invokeLater(() -> {
+            backgroundPanel.removeAll();
             warehousePanel.removeAll();
             loadWarehouse();
+
             warehousePanel.revalidate();
+            backgroundPanel.revalidate();
             warehousePanel.repaint();
+            backgroundPanel.repaint();
         });
     }
 

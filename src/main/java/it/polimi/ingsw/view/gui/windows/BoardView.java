@@ -8,6 +8,7 @@ import it.polimi.ingsw.view.gui.board.faithTrack.GUIFaithTrack;
 import it.polimi.ingsw.view.gui.windows.tokens.BoardToken;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class BoardView extends GUIWindow {
@@ -18,12 +19,10 @@ public class BoardView extends GUIWindow {
     private JPanel handLeaderCardsArea;
     private JPanel bottomPanel;
     private JLabel errorLabel;
-    private JPanel strongbox;
-    private JPanel warehouse;
-    private JPanel resourcesPanel;
     private JPanel leaderCardsArea;
     private JPanel commandsPanel;
-    private JPanel resourcePanel;
+    private JPanel warehouse;
+    private JPanel strongbox;
     private GUIFaithTrack guiFaithTrack;
     private GUIWarehouse guiWarehouse;
     private GUIStrongbox guiStrongbox;

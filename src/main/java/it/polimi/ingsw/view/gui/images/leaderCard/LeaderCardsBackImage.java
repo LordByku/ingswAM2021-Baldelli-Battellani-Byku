@@ -12,7 +12,7 @@ public class LeaderCardsBackImage extends JPanel {
     private Image img;
 
 
-    public LeaderCardsBackImage(int width) {
+    public LeaderCardsBackImage(int width){
         super(null);
         this.width = width;
         this.height = (int) (1.5 * width);
@@ -21,6 +21,7 @@ public class LeaderCardsBackImage extends JPanel {
         try {
             this.img = ImageIO.read(resource);
         } catch (IOException e) {
+            e.printStackTrace();
         }
         this.setPreferredSize(new Dimension(width, height));
         setLayout(null);

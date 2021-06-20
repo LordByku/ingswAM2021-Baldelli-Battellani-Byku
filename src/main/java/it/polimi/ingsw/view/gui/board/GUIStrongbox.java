@@ -11,6 +11,7 @@ import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.utility.JsonUtil;
 import it.polimi.ingsw.view.gui.GUI;
 import it.polimi.ingsw.view.gui.components.ButtonClickEvent;
+import it.polimi.ingsw.view.gui.images.StrongboxImage;
 import it.polimi.ingsw.view.gui.images.resources.ResourceImage;
 import it.polimi.ingsw.view.localModel.LocalModelElementObserver;
 import it.polimi.ingsw.view.localModel.Player;
@@ -27,11 +28,13 @@ public class GUIStrongbox implements LocalModelElementObserver {
     private JPanel resourcePanel;
     private JLabel resourceQuantity;
     private Player player;
+    private JPanel backgroundPanel;
 
     public GUIStrongbox(GUI gui, Client client, JPanel strongboxPanel, String nickname) {
         this.gui = gui;
         this.client = client;
         this.strongboxPanel = strongboxPanel;
+        this.backgroundPanel = new StrongboxImage(150, 150);
 
         player = client.getModel().getPlayer(nickname);
         strongbox = player.getBoard().getStrongBox();
@@ -55,10 +58,11 @@ public class GUIStrongbox implements LocalModelElementObserver {
             quantity = strongbox.getContent().getCount(resource);
             resourcePanel = new ResourceImage(resource.getResourceImageType(), 30);
             resourceQuantity = new JLabel(Integer.toString(quantity));
+            resourceQuantity.setForeground(Color.white);
             c.gridx = 0;
-            strongboxPanel.add(resourceQuantity, c);
+            backgroundPanel.add(resourceQuantity, c);
             c.gridx++;
-            strongboxPanel.add(resourcePanel, c);
+            backgroundPanel.add(resourcePanel, c);
 
             if (commandBuffer != null && !commandBuffer.isCompleted() && player.getNickname().equals(client.getNickname())) {
                 switch (commandBuffer.getCommandType()) {
@@ -111,6 +115,10 @@ public class GUIStrongbox implements LocalModelElementObserver {
 
             c.gridy++;
         }
+        c.gridx=1;
+        c.gridy=0;
+        c.insets=new Insets(0,0,0,0);
+        strongboxPanel.add(backgroundPanel,c);
     }
 
     @Override

@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui.board.faithTrack;
 import it.polimi.ingsw.model.playerBoard.faithTrack.CheckPoint;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.LocalConfig;
+import it.polimi.ingsw.view.gui.images.faithTrack.CrossImage;
 import it.polimi.ingsw.view.localModel.FaithTrack;
 import it.polimi.ingsw.view.localModel.LocalModelElementObserver;
 import it.polimi.ingsw.view.localModel.Player;
@@ -39,10 +40,9 @@ public class GUIFaithTrack implements LocalModelElementObserver {
         GridBagConstraints c = new GridBagConstraints();
         JPanel[][] panels = new JPanel[3][size];
         Dimension cellSizeD = new Dimension(30, 30);
-        //To add the right cross path.
-        Image redCross = Toolkit.getDefaultToolkit().getImage("src/main/resources/Punchboard/calamaio.png");
-        Image blackCross = Toolkit.getDefaultToolkit().getImage("src/main/resources/Punchboard/croce.png");
 
+        JPanel cross = new CrossImage("Punchboard/faith_cross.png");
+        cross.setPreferredSize(cellSizeD);
         for (int i = 0; i < size; i++) {
             JLabel position = new JLabel();
             position.setForeground(Color.GRAY);
@@ -53,33 +53,33 @@ public class GUIFaithTrack implements LocalModelElementObserver {
             panels[1][i].setVisible(true);
             panels[1][i].setBorder(new LineBorder(Color.BLACK));
             panels[1][i].setBackground(Color.decode("#fffcf0"));
+            labelC.gridx=0;
+            labelC.gridy=0;
+            panels[1][i].add(position, labelC);
             if (lolloPosition == null) {
                 if (currPosition == i) {
-                    position.setIcon(new ImageIcon(redCross.getScaledInstance(30, 30, Image.SCALE_SMOOTH)));
+                    panels[1][i].add(cross,labelC);
                 } else {
                     position.setText(Integer.toString(i));
                 }
             } else {
                 if (currPosition != i && lolloPosition == i) {
-                    position.setIcon(new ImageIcon(blackCross.getScaledInstance(30, 30, Image.SCALE_SMOOTH)));
+                    JPanel black_cross = new CrossImage("Punchboard/croce.png");
+                    cross.setPreferredSize(cellSizeD);
+                    panels[1][i].add(black_cross, labelC);
                 } else if (currPosition == i && lolloPosition != i) {
-                    position.setIcon(new ImageIcon(redCross.getScaledInstance(30, 30, Image.SCALE_SMOOTH)));
+                    panels[1][i].add(cross,labelC);
                 } else if (currPosition == i) {
-                    JLabel magnificoPosition = new JLabel();
-                    magnificoPosition.setIcon(new ImageIcon(blackCross.getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
-                    position.setIcon(new ImageIcon(redCross.getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
-                    labelC.gridx = 0;
-                    labelC.gridy = 0;
-                    labelC.insets = new Insets(0, 5, 0, 0);
-                    panels[1][i].add(magnificoPosition, labelC);
-                    labelC.insets = new Insets(0, 0, 0, 5);
+                    JPanel black_cross = new CrossImage("Punchboard/croce.png");
+                    cross.setPreferredSize(cellSizeD);
+                    labelC.insets = new Insets(0, 8, 0, 0);
+                    panels[1][i].add(black_cross, labelC);
+                    labelC.insets = new Insets(0, 0, 0, 8);
+                    panels[1][i].add(cross, labelC);
                 } else {
                     position.setText(Integer.toString(i));
                 }
             }
-            labelC.gridx = 0;
-            labelC.gridy = 0;
-            panels[1][i].add(position, labelC);
             c.fill = GridBagConstraints.BOTH;
             c.gridx = i;
             c.gridy = 1;
