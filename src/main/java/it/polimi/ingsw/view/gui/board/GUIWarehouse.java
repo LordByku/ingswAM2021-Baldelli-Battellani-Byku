@@ -334,12 +334,6 @@ public class GUIWarehouse implements LocalModelElementObserver {
                     c.gridy = 1;
                     obtainedPanel.add(buttonPanel, c);
                 }
-                c.gridx = 0;
-                c.gridy = 0;
-                warehousePanel.add(obtainedPanel, c);
-                ++c.gridx;
-                backgroundPanel.add(depotsPanel, c);
-                warehousePanel.add(backgroundPanel, c);
 
                 AtomicReference<JButton> selectedButton = new AtomicReference<>();
                 AtomicReference<Integer> selectedIndex = new AtomicReference<>();
@@ -381,15 +375,25 @@ public class GUIWarehouse implements LocalModelElementObserver {
                     gbc.insets = new Insets(4, 0, 4, 0);
                     switchPanel.add(button, gbc);
                 }
+
+                c.gridx = 0;
+                c.gridy = 0;
+                backgroundPanel.add(depotsPanel, c);
+
+                warehousePanel.add(obtainedPanel, c);
+                ++c.gridx;
+                warehousePanel.add(backgroundPanel, c);
                 ++c.gridx;
                 warehousePanel.add(switchPanel, c);
             } else {
                 c.gridx = 0;
                 c.gridy = 0;
                 backgroundPanel.add(depotsPanel, c);
+
                 warehousePanel.add(backgroundPanel);
             }
         } else {
+            c.gridx = c.gridy = 0;
             if (!player.initResources() && player.getNickname().equals(client.getNickname())) {
                 JPanel initResourcesPanel = new JPanel(new GridBagLayout());
 
@@ -427,13 +431,10 @@ public class GUIWarehouse implements LocalModelElementObserver {
                         initResourcesPanel.add(imagePanel, gbc);
                     }
                 }
-                c.gridx = 0;
-                c.gridy = 0;
-                warehousePanel.add(initResourcesPanel);
+                warehousePanel.add(initResourcesPanel, c);
+                c.gridx++;
             }
-            c.gridx = 0;
-            c.gridy++;
-            backgroundPanel.add(depotsPanel, c);
+            backgroundPanel.add(depotsPanel);
             warehousePanel.add(backgroundPanel, c);
         }
     }
