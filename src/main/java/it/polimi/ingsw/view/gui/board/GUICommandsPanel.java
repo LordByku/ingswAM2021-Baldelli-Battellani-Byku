@@ -31,7 +31,9 @@ public class GUICommandsPanel implements LocalModelElementObserver {
         commandsPanel.setLayout(new BoxLayout(commandsPanel, BoxLayout.X_AXIS));
 
         self = client.getModel().getPlayer(client.getNickname());
-        self.addObserver(this);
+        for(Player player: client.getModel().getPlayers()) {
+            player.addObserver(this);
+        }
 
         self.getCommandElement().addObserver(this, CommandType.MARKET);
         self.getCommandElement().addObserver(this, CommandType.PURCHASE);
@@ -99,7 +101,9 @@ public class GUICommandsPanel implements LocalModelElementObserver {
 
     @Override
     public void clean() {
-        self.removeObserver(this);
+        for(Player player: client.getModel().getPlayers()) {
+            player.removeObserver(this);
+        }
         self.getCommandElement().removeObserver(this, CommandType.MARKET);
         self.getCommandElement().removeObserver(this, CommandType.PURCHASE);
     }

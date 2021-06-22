@@ -2,12 +2,14 @@ package it.polimi.ingsw.controller;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import it.polimi.ingsw.editor.model.Config;
 import it.polimi.ingsw.model.game.Game;
 import it.polimi.ingsw.model.game.Person;
 import it.polimi.ingsw.model.playerBoard.resourceLocations.Warehouse;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.network.server.GameStateSerializer;
+import it.polimi.ingsw.parsing.BoardParser;
 import it.polimi.ingsw.parsing.InitGameParser;
 import it.polimi.ingsw.utility.Deserializer;
 
@@ -24,12 +26,21 @@ public class InitResources extends CommandBuffer {
             throw new InvalidCommandException();
         }
 
-        resources = null;
+        resources = new ConcreteResourceSet[BoardParser.getInstance().getDepotSizes().size()];
+        for(int i = 0; i < resources.length; ++i) {
+            resources[i] = new ConcreteResourceSet();
+        }
     }
 
     @Override
     public boolean isReady() {
-        return resources != null;
+        ConcreteResourceSet totalResources = new ConcreteResourceSet();
+        for(ConcreteResourceSet depotResources: resources) {
+            totalResources.union(depotResources);
+        }
+        Person person = getPerson();
+        int playerIndex = Game.getInstance().getPlayerIndex(person);
+        return totalResources.size() == InitGameParser.getInstance().getInitResources(playerIndex);
     }
 
     @Override
@@ -39,11 +50,6 @@ public class InitResources extends CommandBuffer {
         }
 
         Person person = getPerson();
-        Warehouse warehouse = person.getBoard().getWarehouse();
-
-        for (int i = 0; i < resources.length; ++i) {
-            warehouse.addResources(i, resources[i]);
-        }
 
         person.initSelectDone();
 
@@ -56,7 +62,14 @@ public class InitResources extends CommandBuffer {
 
     @Override
     public Consumer<GameStateSerializer> cancel() {
+        Person person = getPerson();
+        Warehouse warehouse = person.getBoard().getWarehouse();
+        for(int i = 0; i < resources.length; ++i) {
+            warehouse.removeResources(i, resources[i]);
+        }
+
         return (serializer) -> {
+            serializer.addWarehouse(person);
         };
     }
 
@@ -73,7 +86,10 @@ public class InitResources extends CommandBuffer {
         if (isReady()) {
             return complete();
         } else {
-            return null;
+            Person person = getPerson();
+            return (serializer) -> {
+                serializer.addWarehouse(person);
+            };
         }
     }
 
@@ -101,14 +117,17 @@ public class InitResources extends CommandBuffer {
                 }
                 resourceTypes.add(resources[i].getResourceType());
             }
-            totalSize += resources[i].size();
+            totalSize += resources[i].size() + this.resources[i].size();
         }
 
         int playerIndex = Game.getInstance().getPlayerIndex(person);
         int resourcesToReceive = InitGameParser.getInstance().getInitResources(playerIndex);
 
-        if (totalSize == resourcesToReceive) {
-            this.resources = resources;
+        if (totalSize <= resourcesToReceive) {
+            for(int i = 0; i < resources.length; ++i) {
+                this.resources[i].union(resources[i]);
+                warehouse.addResources(i, resources[i]);
+            }
         }
     }
 }

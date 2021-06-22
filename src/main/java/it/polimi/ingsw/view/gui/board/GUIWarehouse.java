@@ -64,10 +64,6 @@ public class GUIWarehouse implements LocalModelElementObserver {
         AtomicReference<ConcreteResource> selectedResource = new AtomicReference<>();
 
         AtomicReference<Integer> initResourcesCount = new AtomicReference<>(0);
-        ConcreteResourceSet[] initDepots = new ConcreteResourceSet[numOfDepots];
-        for (int k = 0; k < numOfDepots; ++k) {
-            initDepots[k] = new ConcreteResourceSet();
-        }
 
         JPanel depotsPanel = new JPanel(new GridBagLayout());
         depotsPanel.setOpaque(false);
@@ -175,17 +171,20 @@ public class GUIWarehouse implements LocalModelElementObserver {
                         if (!player.initResources() && player.getNickname().equals(client.getNickname())) {
                             emptyPanel.addMouseListener(new ButtonClickEvent((e) -> {
                                 if (selectedResource.get() != null) {
-                                    initDepots[finalI].addResource(selectedResource.get());
+                                    ConcreteResourceSet[] depots = new ConcreteResourceSet[numOfDepots];
+                                    for(int k = 0; k < numOfDepots; ++k) {
+                                        depots[k] = new ConcreteResourceSet();
+                                    }
+                                    depots[finalI].addResource(selectedResource.get());
                                     selectedResource.set(null);
                                     selectedPanel.set(null);
 
-                                    initResourcesCount.set(initResourcesCount.get() + 1);
-                                    if (initResourcesCount.get() == LocalConfig.getInstance().getInitialResources(player.getNickname())) {
+                                    if(commandBuffer == null) {
                                         JsonObject request = client.buildRequestMessage(CommandType.INITRESOURCES);
                                         gui.bufferWrite(request.toString());
-                                        JsonObject message = client.buildCommandMessage("resources", JsonUtil.getInstance().serialize(initDepots));
-                                        gui.bufferWrite(message.toString());
                                     }
+                                    JsonObject message = client.buildCommandMessage("resources", JsonUtil.getInstance().serialize(depots));
+                                    gui.bufferWrite(message.toString());
                                 }
                             }));
                         }
