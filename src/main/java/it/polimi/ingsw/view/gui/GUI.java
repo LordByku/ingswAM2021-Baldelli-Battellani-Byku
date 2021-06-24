@@ -9,6 +9,7 @@ import it.polimi.ingsw.network.client.GUIClientUserCommunication;
 import it.polimi.ingsw.view.ViewInterface;
 import it.polimi.ingsw.view.gui.images.resources.ResourceImageType;
 import it.polimi.ingsw.view.gui.windows.BoardView;
+import it.polimi.ingsw.view.gui.windows.EndGameView;
 import it.polimi.ingsw.view.gui.windows.GUIWindow;
 import it.polimi.ingsw.view.gui.windows.Welcome;
 import it.polimi.ingsw.view.gui.windows.tokens.WindowToken;
@@ -97,7 +98,12 @@ public class GUI implements ViewInterface {
 
     @Override
     public void onEndGame(JsonObject endGameMessage) {
-
+        client.getModel().setEndGameResults(endGameMessage);
+        SwingUtilities.invokeLater(() -> {
+            guiWindow.setActive(false, frame);
+            guiWindow = new EndGameView(this, client);
+            guiWindow.setActive(true, frame);
+        });
     }
 
     @Override
