@@ -16,13 +16,13 @@ public class Welcome extends GUIWindow {
 
     public Welcome(GUI gui, Client client) {
         super(gui, client);
-        playOnlineButton.addMouseListener(new ButtonClickEvent((event) -> {
+        playOnlineButton.addActionListener(new ButtonClickEvent((event) -> {
             errorLabel.setText(" ");
             connectionLabel.setText(" ");
             gui.bufferWrite(insertYourNicknameTextField.getText());
             gui.bufferWrite("0");
         }));
-        playOfflineButton.addMouseListener(new ButtonClickEvent((event) -> {
+        playOfflineButton.addActionListener(new ButtonClickEvent((event) -> {
             errorLabel.setText(" ");
             connectionLabel.setText(" ");
             gui.bufferWrite(insertYourNicknameTextField.getText());

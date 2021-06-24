@@ -2,33 +2,21 @@ package it.polimi.ingsw.editor.gui;
 
 import it.polimi.ingsw.editor.EditorApp;
 import it.polimi.ingsw.editor.gui.components.TextFieldDocumentListener;
+import it.polimi.ingsw.editor.gui.components.ValidatableTextField;
 import it.polimi.ingsw.editor.gui.components.panelHandlers.*;
-import it.polimi.ingsw.editor.model.BoardEditor;
-import it.polimi.ingsw.editor.model.Config;
-import it.polimi.ingsw.editor.model.FaithTrackEditor;
-import it.polimi.ingsw.editor.model.InitGameEditor;
+import it.polimi.ingsw.editor.model.*;
 import it.polimi.ingsw.view.gui.components.ButtonClickEvent;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Window {
-    private JFormattedTextField leaderCardsToAssignTextField;
-    private JFormattedTextField leaderCardsToDiscardTextField;
-    private JFormattedTextField initFaithPoints1;
-    private JFormattedTextField initResources1;
-    private JFormattedTextField initFaithPoints2;
-    private JFormattedTextField initResources2;
-    private JFormattedTextField initFaithPoints3;
-    private JFormattedTextField initResources3;
-    private JFormattedTextField initFaithPoints4;
-    private JFormattedTextField initResources4;
-    private JFormattedTextField faithTrackLengthTextField;
     private JPanel checkPointsPanel;
     private JPanel panel;
     private JPanel VRSPanel;
-    private JFormattedTextField developmentCardSlotsTextField;
     private JPanel defaultProductionInPanel;
     private JPanel defaultProductionOutPanel;
     private JPanel depotsPanel;
@@ -64,15 +52,28 @@ public class Window {
     private JLabel fileErrorLabel;
     private JPanel devCardPointsPanel;
     private JPanel leaderCardPointsPanel;
+    private JPanel faithTrackLengthPanel;
+    private JPanel developmentCardsSlotsPanel;
+    private JPanel leaderCardsToAssignPanel;
+    private JPanel leaderCardsToDiscardPanel;
+    private JPanel initResources1Panel;
+    private JPanel initResources2Panel;
+    private JPanel initResources3Panel;
+    private JPanel initResources4Panel;
+    private JPanel initFaithPoints1Panel;
+    private JPanel initFaithPoints2Panel;
+    private JPanel initFaithPoints3Panel;
+    private JPanel initFaithPoints4Panel;
+    private final ArrayList<ValidatableTextField> validatableTextFields;
 
     public Window(JFrame frame) {
-        loadDefaultConfigButton.addMouseListener(new ButtonClickEvent((event) -> {
+        loadDefaultConfigButton.addActionListener(new ButtonClickEvent((event) -> {
             Config.setDefaultPath();
             Config.reload();
             EditorApp.setWindow(new Window(frame));
         }));
 
-        loadCustomConfigButton.addMouseListener(new ButtonClickEvent((event) -> {
+        loadCustomConfigButton.addActionListener(new ButtonClickEvent((event) -> {
             try {
                 Config.setPath(loadCustomConfigTextField.getText());
                 Config.reload();
@@ -82,20 +83,27 @@ public class Window {
             }
         }));
 
-        saveCurrentConfigButton.addMouseListener(new ButtonClickEvent((event) -> {
+        saveCurrentConfigButton.addActionListener(new ButtonClickEvent((event) -> {
             try {
-                Config.getInstance().save(saveConfigTextField.getText());
+                if (validate()) {
+                    Config.getInstance().save(saveConfigTextField.getText());
+                    fileErrorLabel.setText("Config file saved successfully");
+                } else {
+                    fileErrorLabel.setText("Some parameters are invalid, fix them first");
+                }
             } catch (IOException ioException) {
                 fileErrorLabel.setText("An error occurred while saving the file");
             }
         }));
 
-        // TODO : replace with validatable text field
+        validatableTextFields = new ArrayList<>();
+
         FaithTrackEditor faithTrackEditor = Config.getInstance().getFaithTrackEditor();
-        faithTrackLengthTextField.setValue(faithTrackEditor.getFinalPosition());
-        faithTrackLengthTextField.getDocument().addDocumentListener(new TextFieldDocumentListener(
-                faithTrackLengthTextField, (value) -> faithTrackEditor.setFinalPosition(Integer.parseInt(value))
-        ));
+        faithTrackLengthPanel.setLayout(new GridBagLayout());
+        validatableTextFields.add(EditorGUIUtil.addValidatableTextField(faithTrackEditor.getFinalPosition(),
+                faithTrackLengthPanel,
+                faithTrackEditor::setFinalPosition,
+                (value) -> value > 0 && value < 30));
 
         CheckPointsPanelHandler checkPointsPanelHandler = new CheckPointsPanelHandler(frame, checkPointsPanel);
         checkPointsPanelHandler.build();
@@ -111,57 +119,57 @@ public class Window {
         DepotsPanelHandler depotsPanelHandler = new DepotsPanelHandler(frame, depotsPanel);
         depotsPanelHandler.build();
 
-        // TODO : replace with validatable text field
-        developmentCardSlotsTextField.setValue(boardEditor.getDevelopmentCardSlots());
-        developmentCardSlotsTextField.getDocument().addDocumentListener(new TextFieldDocumentListener(
-                developmentCardSlotsTextField, (value) -> boardEditor.setDevelopmentCardSlots(Integer.parseInt(value))
-        ));
+        developmentCardsSlotsPanel.setLayout(new GridBagLayout());
+        validatableTextFields.add(EditorGUIUtil.addValidatableTextField(boardEditor.getDevelopmentCardSlots(),
+                developmentCardsSlotsPanel,
+                boardEditor::setDevelopmentCardSlots,
+                (value) -> value > 0 && value <= 5));
 
         InitGameEditor initGameEditor = Config.getInstance().getInitGameEditor();
-        leaderCardsToAssignTextField.setValue(initGameEditor.getLeaderCardsToAssign());
-        leaderCardsToDiscardTextField.setValue(initGameEditor.getLeaderCardsToDiscard());
-        initFaithPoints1.setValue(initGameEditor.getFaithPoints(0));
-        initFaithPoints2.setValue(initGameEditor.getFaithPoints(1));
-        initFaithPoints3.setValue(initGameEditor.getFaithPoints(2));
-        initFaithPoints4.setValue(initGameEditor.getFaithPoints(3));
-        initResources1.setValue(initGameEditor.getResources(0));
-        initResources2.setValue(initGameEditor.getResources(1));
-        initResources3.setValue(initGameEditor.getResources(2));
-        initResources4.setValue(initGameEditor.getResources(3));
+        LeaderCardsEditor leaderCardsEditor = Config.getInstance().getLeaderCardsEditor();
 
-        // TODO : replace with validatable text fields
-        leaderCardsToAssignTextField.getDocument().addDocumentListener(new TextFieldDocumentListener(
-                leaderCardsToAssignTextField, (value) -> initGameEditor.setLeaderCardsToAssign(Integer.parseInt(value))
-        ));
-        leaderCardsToDiscardTextField.getDocument().addDocumentListener(new TextFieldDocumentListener(
-                leaderCardsToDiscardTextField, (value) -> initGameEditor.setLeaderCardsToDiscard(Integer.parseInt(value))
-        ));
-        initFaithPoints1.getDocument().addDocumentListener(new TextFieldDocumentListener(
-                initFaithPoints1, (value) -> initGameEditor.setFaithPoints(0, Integer.parseInt(value))
-        ));
-        initFaithPoints2.getDocument().addDocumentListener(new TextFieldDocumentListener(
-                initFaithPoints2, (value) -> initGameEditor.setFaithPoints(1, Integer.parseInt(value))
-        ));
-        initFaithPoints3.getDocument().addDocumentListener(new TextFieldDocumentListener(
-                initFaithPoints3, (value) -> initGameEditor.setFaithPoints(2, Integer.parseInt(value))
-        ));
-        initFaithPoints4.getDocument().addDocumentListener(new TextFieldDocumentListener(
-                initFaithPoints4, (value) -> initGameEditor.setFaithPoints(3, Integer.parseInt(value))
-        ));
-        initResources1.getDocument().addDocumentListener(new TextFieldDocumentListener(
-                initResources1, (value) -> initGameEditor.setResources(0, Integer.parseInt(value))
-        ));
-        initResources2.getDocument().addDocumentListener(new TextFieldDocumentListener(
-                initResources2, (value) -> initGameEditor.setResources(1, Integer.parseInt(value))
-        ));
-        initResources3.getDocument().addDocumentListener(new TextFieldDocumentListener(
-                initResources3, (value) -> initGameEditor.setResources(2, Integer.parseInt(value))
-        ));
-        initResources4.getDocument().addDocumentListener(new TextFieldDocumentListener(
-                initResources4, (value) -> initGameEditor.setResources(3, Integer.parseInt(value))
-        ));
+        leaderCardsToAssignPanel.setLayout(new GridBagLayout());
+        leaderCardsToDiscardPanel.setLayout(new GridBagLayout());
+        validatableTextFields.add(EditorGUIUtil.addValidatableTextField(initGameEditor.getLeaderCardsToAssign(),
+                leaderCardsToAssignPanel,
+                initGameEditor::setLeaderCardsToAssign,
+                (value) -> value > 0 && 4 * value <= leaderCardsEditor.getLeaderCards().size()));
+        validatableTextFields.add(EditorGUIUtil.addValidatableTextField(initGameEditor.getLeaderCardsToDiscard(),
+                leaderCardsToDiscardPanel,
+                initGameEditor::setLeaderCardsToDiscard,
+                (value) -> value >= 0 && value < initGameEditor.getLeaderCardsToAssign()));
 
-        // TODO : Radio Buttons: set listener to state change instead of mouse clicked
+        JPanel[] initFaithPointsPanels = new JPanel[4];
+        initFaithPointsPanels[0] = initFaithPoints1Panel;
+        initFaithPointsPanels[1] = initFaithPoints2Panel;
+        initFaithPointsPanels[2] = initFaithPoints3Panel;
+        initFaithPointsPanels[3] = initFaithPoints4Panel;
+
+        JPanel[] initResourcesPanels = new JPanel[4];
+        initResourcesPanels[0] = initResources1Panel;
+        initResourcesPanels[1] = initResources2Panel;
+        initResourcesPanels[2] = initResources3Panel;
+        initResourcesPanels[3] = initResources4Panel;
+
+        for(int i = 0; i < 4; ++i) {
+            int finalI = i;
+            initFaithPointsPanels[i].setLayout(new GridBagLayout());
+            initResourcesPanels[i].setLayout(new GridBagLayout());
+            validatableTextFields.add(EditorGUIUtil.addValidatableTextField(initGameEditor.getFaithPoints(i),
+                    initFaithPointsPanels[i],
+                    (value) -> initGameEditor.setFaithPoints(finalI, value),
+                    (value) -> value >= 0 && value < faithTrackEditor.getFinalPosition()));
+            validatableTextFields.add(EditorGUIUtil.addValidatableTextField(initGameEditor.getResources(i),
+                    initResourcesPanels[i],
+                    (value) -> initGameEditor.setResources(finalI, value),
+                    (value) -> {
+                        int warehouseSize = 0;
+                        for(int depotSize: boardEditor.getDepotSizes()) {
+                            warehouseSize += depotSize;
+                        }
+                        return value >= 0 && value <= warehouseSize;
+                    }));
+        }
 
         ButtonGroup levelGroup = new ButtonGroup();
         levelGroup.add(IRadioButton);
@@ -196,5 +204,15 @@ public class Window {
 
         frame.setContentPane(panel);
         frame.setVisible(true);
+    }
+
+    private boolean validate() {
+        boolean result = true;
+        for(ValidatableTextField validatableTextField: validatableTextFields) {
+            if(!validatableTextField.validate()) {
+                result = false;
+            }
+        }
+        return result;
     }
 }

@@ -30,7 +30,7 @@ public class Lobby extends GUIWindow {
 
         startGameButton.setEnabled(LocalConfig.getInstance().isHost());
 
-        startGameButton.addMouseListener(new ButtonClickEvent((event) -> {
+        startGameButton.addActionListener(new ButtonClickEvent((event) -> {
             gui.bufferWrite("");
         }));
     }

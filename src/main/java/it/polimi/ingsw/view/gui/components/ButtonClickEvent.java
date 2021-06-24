@@ -1,19 +1,19 @@
 package it.polimi.ingsw.view.gui.components;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.function.Consumer;
 
-public class ButtonClickEvent extends MouseAdapter {
+public class ButtonClickEvent extends MouseAdapter implements ActionListener {
     private static volatile boolean locked = false;
-    private final Consumer<MouseEvent> lambda;
+    private final Consumer<AWTEvent> lambda;
     private final boolean priority;
 
-    public ButtonClickEvent(Consumer<MouseEvent> lambda) {
+    public ButtonClickEvent(Consumer<AWTEvent> lambda) {
         this(lambda, false);
     }
 
-    public ButtonClickEvent(Consumer<MouseEvent> lambda, boolean priority) {
+    public ButtonClickEvent(Consumer<AWTEvent> lambda, boolean priority) {
         this.lambda = lambda;
         this.priority = priority;
         if (priority) {
@@ -23,6 +23,15 @@ public class ButtonClickEvent extends MouseAdapter {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        click(e);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        click(e);
+    }
+
+    protected void click(AWTEvent e) {
         if (!locked || priority) {
             lambda.accept(e);
             if (priority) {

@@ -6,6 +6,7 @@ import it.polimi.ingsw.controller.CommandType;
 import it.polimi.ingsw.controller.Market;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.view.gui.GUI;
+import it.polimi.ingsw.view.gui.GUIUtil;
 import it.polimi.ingsw.view.gui.components.ButtonClickEvent;
 import it.polimi.ingsw.view.gui.images.marbleMarket.MarbleImage;
 import it.polimi.ingsw.view.gui.images.marbleMarket.MarketTrayImage;
@@ -47,7 +48,6 @@ public class GUIMarbleMarket implements LocalModelElementObserver {
     public void loadMarbleMarket() {
         JPanel marble;
         Image img;
-        JButton button;
         GridBagConstraints c = new GridBagConstraints();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 4; j++) {
@@ -73,60 +73,56 @@ public class GUIMarbleMarket implements LocalModelElementObserver {
                 } else if (player.getNickname().equals(client.getNickname())) {
                     int offset = 125;
                     for (int i = 0; i < 3; i++) {
-                        button = new JButton("<-");
+                        c.gridx = 0;
+                        c.gridy = 0;
+                        c.insets = new Insets(0, 500, 325 - (i * offset), 0);
 
                         int finalI = i;
-                        button.addMouseListener(new ButtonClickEvent((e) -> {
+                        JButton button = GUIUtil.addButton("<-", marketPanel, new ButtonClickEvent((e) -> {
                             JsonObject value = new JsonObject();
                             value.addProperty("rowColSel", true);
                             value.addProperty("index", finalI);
                             JsonObject message = client.buildCommandMessage("selection", value);
                             gui.bufferWrite(message.toString());
-                        }));
+                        }), c);
 
-                        c.gridx = 0;
-                        c.gridy = 0;
-                        c.insets = new Insets(0, 500, 325 - (i * offset), 0);
-                        marketPanel.add(button, c);
+                        // TODO: fix button size
                     }
                     offset = 126;
                     for (int i = 0; i < 2; i++) {
-                        button = new JButton("↑");
-                        // TODO : fix button size
-                        button.setPreferredSize(new Dimension(40, 50));
-
-                        int finalI = 1 - i;
-                        button.addMouseListener(new ButtonClickEvent((e) -> {
-                            JsonObject value = new JsonObject();
-                            value.addProperty("rowColSel", false);
-                            value.addProperty("index", finalI);
-                            JsonObject message = client.buildCommandMessage("selection", value);
-                            gui.bufferWrite(message.toString());
-                        }));
-
                         c.gridx = 0;
                         c.gridy = 0;
                         c.insets = new Insets(230, 0, 0, 40 + (i * offset));
-                        marketPanel.add(button, c);
-                    }
-                    for (int i = 0; i < 2; i++) {
-                        button = new JButton("↑");
-                        // TODO : fix button size
-                        button.setPreferredSize(new Dimension(40, 50));
 
-                        int finalI = i + 2;
-                        button.addMouseListener(new ButtonClickEvent((e) -> {
+                        int finalI = 1 - i;
+                        JButton button = GUIUtil.addButton("↑", marketPanel, new ButtonClickEvent((e) -> {
                             JsonObject value = new JsonObject();
                             value.addProperty("rowColSel", false);
                             value.addProperty("index", finalI);
                             JsonObject message = client.buildCommandMessage("selection", value);
                             gui.bufferWrite(message.toString());
-                        }));
+                        }), c);
 
+                        // TODO : fix button size
+                        button.setPreferredSize(new Dimension(40, 50));
+                    }
+                    for (int i = 0; i < 2; i++) {
                         c.gridx = 0;
                         c.gridy = 0;
                         c.insets = new Insets(230, 86 + (i * offset), 0, 0);
-                        marketPanel.add(button, c);
+
+                        int finalI = i + 2;
+
+                        JButton button = GUIUtil.addButton("↑", marketPanel, new ButtonClickEvent((e) -> {
+                            JsonObject value = new JsonObject();
+                            value.addProperty("rowColSel", false);
+                            value.addProperty("index", finalI);
+                            JsonObject message = client.buildCommandMessage("selection", value);
+                            gui.bufferWrite(message.toString());
+                        }), c);
+
+                        // TODO : fix button size
+                        button.setPreferredSize(new Dimension(40, 50));
                     }
                 }
             }

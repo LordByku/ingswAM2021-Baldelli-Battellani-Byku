@@ -4,9 +4,11 @@ import it.polimi.ingsw.view.gui.components.ButtonClickEvent;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class GUIUtil {
-    public static JButton addButton(String text, JPanel outerPanel, ButtonClickEvent clickEvent) {
+    public static JButton addButton(String text, JPanel outerPanel, ActionListener actionListener) {
         JPanel container = new JPanel(new GridBagLayout());
 
         JButton button = new JButton(text);
@@ -14,11 +16,28 @@ public class GUIUtil {
         int width = 17 + 8 * text.length();
         button.setPreferredSize(new Dimension(width, 25));
         button.setVerticalAlignment(SwingConstants.CENTER);
-        button.addMouseListener(clickEvent);
+        button.addActionListener(actionListener);
 
         container.add(button);
 
         outerPanel.add(container);
+
+        return button;
+    }
+
+    public static JButton addButton(String text, JPanel outerPanel, ActionListener actionListener, GridBagConstraints gbc) {
+        JPanel container = new JPanel(new GridBagLayout());
+
+        JButton button = new JButton(text);
+        button.setMargin(new Insets(1, 1, 1, 1));
+        int width = 17 + 8 * text.length();
+        button.setPreferredSize(new Dimension(width, 25));
+        button.setVerticalAlignment(SwingConstants.CENTER);
+        button.addActionListener(actionListener);
+
+        container.add(button);
+
+        outerPanel.add(container, gbc);
 
         return button;
     }
@@ -36,12 +55,12 @@ public class GUIUtil {
         return label;
     }
 
-    public static JCheckBox addCheckBox(String text, boolean isSelected, ButtonGroup checkBoxesButtonGroup, JPanel outerPanel, ButtonClickEvent buttonClickEvent) {
+    public static JCheckBox addCheckBox(String text, boolean isSelected, ButtonGroup checkBoxesButtonGroup, JPanel outerPanel, ActionListener actionListener) {
         JPanel container = new JPanel(new GridBagLayout());
 
         JCheckBox checkBox = new JCheckBox();
         checkBox.setText(text);
-        checkBox.addMouseListener(buttonClickEvent);
+        checkBox.addActionListener(actionListener);
 
         checkBoxesButtonGroup.add(checkBox);
         checkBoxesButtonGroup.setSelected(checkBox.getModel(), isSelected);
@@ -54,13 +73,13 @@ public class GUIUtil {
     }
 
     public static JRadioButton addRadioButton(String text, boolean isSelected, ButtonGroup buttonGroup,
-                                              JPanel outerPanel, ButtonClickEvent buttonClickEvent) {
+                                              JPanel outerPanel, ActionListener actionListener) {
         JPanel container = new JPanel(new GridBagLayout());
 
         JRadioButton button = new JRadioButton();
         button.setText(text);
         button.setSelected(isSelected);
-        button.addMouseListener(buttonClickEvent);
+        button.addActionListener(actionListener);
         buttonGroup.add(button);
 
         container.add(button);

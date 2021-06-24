@@ -22,6 +22,7 @@ import it.polimi.ingsw.view.localModel.Strongbox;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class GUIStrongbox implements LocalModelElementObserver {
@@ -74,7 +75,8 @@ public class GUIStrongbox implements LocalModelElementObserver {
                         JPanel popupContent = new JPanel();
                         popupContent.setLayout(new BoxLayout(popupContent, BoxLayout.X_AXIS));
 
-                        Popup popup = PopupFactory.getSharedInstance().getPopup(container, popupContent, e.getXOnScreen(), e.getYOnScreen());
+                        MouseEvent mouseEvent = (MouseEvent) e;
+                        Popup popup = PopupFactory.getSharedInstance().getPopup(imagePanel, popupContent, mouseEvent.getXOnScreen(), mouseEvent.getYOnScreen());
 
                         for (ConcreteResource concreteResource : ConcreteResource.values()) {
                             if (choiceResource.canChoose(concreteResource)) {

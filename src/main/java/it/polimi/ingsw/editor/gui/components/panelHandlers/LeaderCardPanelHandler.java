@@ -69,7 +69,7 @@ public class LeaderCardPanelHandler extends PanelHandler {
             }
         });
 
-        removeLeaderCardButton.addMouseListener(new ButtonClickEvent((e) -> {
+        removeLeaderCardButton.addActionListener(new ButtonClickEvent((e) -> {
             leaderCardsEditor.removeCard(leaderCardsEditor.getCurrentSelection());
             int newSelection = 0;
             leaderCardsEditor.setCurrentSelection(newSelection);
@@ -79,26 +79,26 @@ public class LeaderCardPanelHandler extends PanelHandler {
 
         Enumeration<AbstractButton> requirementsButton = requirementsGroup.getElements();
         for (RequirementType requirementType : RequirementType.values()) {
-            requirementsButton.nextElement().addMouseListener(new ButtonClickEvent((e) -> {
+            requirementsButton.nextElement().addActionListener((e) -> {
                 int currentSelection = leaderCardsEditor.getCurrentSelection();
                 LeaderCard leaderCard = leaderCardsEditor.getLeaderCards().get(currentSelection);
                 if (leaderCard.getRequirements().getRequirementType() != requirementType) {
                     leaderCard.setRequirements(Requirements.build(requirementType));
                     loadCard(currentSelection);
                 }
-            }));
+            });
         }
 
         Enumeration<AbstractButton> effectButton = effectGroup.getElements();
         for (EffectType effectType : EffectType.values()) {
-            effectButton.nextElement().addMouseListener(new ButtonClickEvent((e) -> {
+            effectButton.nextElement().addActionListener((e) -> {
                 int currentSelection = leaderCardsEditor.getCurrentSelection();
                 LeaderCard leaderCard = leaderCardsEditor.getLeaderCards().get(currentSelection);
                 if (leaderCard.getEffect().getEffectType() != effectType) {
                     leaderCard.setEffect(Effect.build(effectType));
                     loadCard(currentSelection);
                 }
-            }));
+            });
         }
 
         loadCard(selection);

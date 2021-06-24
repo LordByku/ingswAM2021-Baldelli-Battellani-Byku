@@ -45,9 +45,7 @@ public class CardSetPanelHandler extends PanelHandler {
 
             for (CardLevel level : CardLevel.values()) {
                 EditorGUIUtil.addCheckBox(level.toString(), cardSet.getCardSet(colour).getCardLevel() == level,
-                        checkBoxesButtonGroup, checkBoxesPanel, new ButtonClickEvent((e) -> {
-                            cardSet.getCardSet(colour).toggle(level);
-                        }));
+                        checkBoxesButtonGroup, checkBoxesPanel, (e) -> cardSet.getCardSet(colour).toggle(level));
             }
 
             levelPanel.add(checkBoxesPanel);

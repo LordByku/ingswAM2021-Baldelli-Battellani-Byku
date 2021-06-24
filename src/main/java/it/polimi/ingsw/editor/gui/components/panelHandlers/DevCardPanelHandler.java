@@ -63,7 +63,7 @@ public class DevCardPanelHandler extends PanelHandler {
             }
         });
 
-        removeDevCardButton.addMouseListener(new ButtonClickEvent((e) -> {
+        removeDevCardButton.addActionListener(new ButtonClickEvent((e) -> {
             devCardsEditor.removeCard(devCardsEditor.getCurrentSelection());
             int newSelection = 0;
             devCardsEditor.setCurrentSelection(newSelection);
@@ -73,14 +73,14 @@ public class DevCardPanelHandler extends PanelHandler {
 
         Enumeration<AbstractButton> levelButtons = levelGroup.getElements();
         for (CardLevel cardLevel : CardLevel.values()) {
-            levelButtons.nextElement().addMouseListener(new ButtonClickEvent((e) -> {
+            levelButtons.nextElement().addActionListener(new ButtonClickEvent((e) -> {
                 devCardsEditor.getDevCards().get(devCardsEditor.getCurrentSelection()).setLevel(cardLevel);
             }));
         }
 
         Enumeration<AbstractButton> colourButtons = colourGroup.getElements();
         for (CardColour cardColour : CardColour.values()) {
-            colourButtons.nextElement().addMouseListener(new ButtonClickEvent((e) -> {
+            colourButtons.nextElement().addActionListener(new ButtonClickEvent((e) -> {
                 devCardsEditor.getDevCards().get(devCardsEditor.getCurrentSelection()).setColour(cardColour);
             }));
         }

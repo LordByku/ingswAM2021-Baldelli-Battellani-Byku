@@ -27,6 +27,7 @@ import it.polimi.ingsw.view.localModel.Warehouse;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicReference;
@@ -286,7 +287,8 @@ public class GUIWarehouse implements LocalModelElementObserver {
                                     JPanel popupContent = new JPanel();
                                     popupContent.setLayout(new BoxLayout(popupContent, BoxLayout.X_AXIS));
 
-                                    Popup popup = PopupFactory.getSharedInstance().getPopup(imagePanel, popupContent, e.getXOnScreen(), e.getYOnScreen());
+                                    MouseEvent mouseEvent = (MouseEvent) e;
+                                    Popup popup = PopupFactory.getSharedInstance().getPopup(imagePanel, popupContent, mouseEvent.getXOnScreen(), mouseEvent.getYOnScreen());
 
                                     for (ConcreteResource concreteResource : ConcreteResource.values()) {
                                         if (choiceResource.canChoose(concreteResource)) {
@@ -361,14 +363,13 @@ public class GUIWarehouse implements LocalModelElementObserver {
                             }
 
                             JPanel buttonPanel = new JPanel(new GridBagLayout());
-                            JButton button = new JButton("Confirm");
-                            button.setPreferredSize(new Dimension(80, 20));
-                            button.setFont(new Font("Arial", Font.PLAIN, 10));
-                            button.addMouseListener(new ButtonClickEvent((e) -> {
+
+                            JButton button = GUIUtil.addButton("Confirm", buttonPanel, new ButtonClickEvent((e) -> {
                                 JsonObject message = client.buildCommandMessage("confirmWarehouse", JsonNull.INSTANCE);
                                 gui.bufferWrite(message.toString());
                             }));
-                            buttonPanel.add(button);
+                            button.setPreferredSize(new Dimension(80, 20));
+                            button.setFont(new Font("Arial", Font.PLAIN, 10));
 
                             c.gridx = 0;
                             c.gridy = 0;
