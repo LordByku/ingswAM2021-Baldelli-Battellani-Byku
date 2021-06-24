@@ -133,7 +133,7 @@ public class GUIDevCardsSlots implements LocalModelElementObserver {
     }
 
     @Override
-    public void notifyObserver() {
+    public void notifyObserver(NotificationSource notificationSource) {
         SwingUtilities.invokeLater(() -> {
             slotsPanel.removeAll();
             loadDevCardsSlots();

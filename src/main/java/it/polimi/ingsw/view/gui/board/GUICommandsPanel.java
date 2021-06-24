@@ -69,24 +69,27 @@ public class GUICommandsPanel implements LocalModelElementObserver {
     }
 
     @Override
-    public void notifyObserver() {
-        CommandBuffer commandBuffer = self.getCommandBuffer();
+    public void notifyObserver(NotificationSource notificationSource) {
+        if(notificationSource == NotificationSource.COMMANDELEMENT) {
+            CommandBuffer commandBuffer = self.getCommandBuffer();
 
-        if (commandBuffer != null) {
-            switch (commandBuffer.getCommandType()) {
-                case MARKET: {
-                    Market marketCommand = (Market) commandBuffer;
-                    if (marketCommand.getIndex() == -1) {
-                        gui.switchGameWindow(new MarbleMarketToken());
+            if (commandBuffer != null) {
+                System.out.println(commandBuffer.getCommandType().name());
+                switch (commandBuffer.getCommandType()) {
+                    case MARKET: {
+                        Market marketCommand = (Market) commandBuffer;
+                        if (marketCommand.getIndex() == -1) {
+                            gui.switchGameWindow(new MarbleMarketToken());
+                        }
+                        break;
                     }
-                    break;
-                }
-                case PURCHASE: {
-                    Purchase purchaseCommand = (Purchase) commandBuffer;
-                    if (purchaseCommand.getMarketRow() == -1 || purchaseCommand.getMarketCol() == -1) {
-                        gui.switchGameWindow(new CardMarketToken());
+                    case PURCHASE: {
+                        Purchase purchaseCommand = (Purchase) commandBuffer;
+                        if (purchaseCommand.getMarketRow() == -1 || purchaseCommand.getMarketCol() == -1) {
+                            gui.switchGameWindow(new CardMarketToken());
+                        }
+                        break;
                     }
-                    break;
                 }
             }
         }

@@ -10,19 +10,21 @@ import it.polimi.ingsw.model.resources.FullChoiceSet;
 import it.polimi.ingsw.model.resources.InvalidResourceException;
 import it.polimi.ingsw.model.resources.resourceSets.*;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
+import java.net.URI;
+import java.net.URL;
 
 public class Parser {
-    private static final String path = "src/main/resources/config.json";
+    private static final String filename = "config";
     private static Parser instance;
     private final Gson gson;
     private JsonObject config;
 
-    private Parser() throws FileNotFoundException {
+    private Parser() throws IOException {
         JsonParser parser = new JsonParser();
-        FileReader reader = new FileReader(Parser.path);
-        config = (JsonObject) parser.parse(reader);
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        URL resource = classLoader.getResource(filename + ".json");
+        config = (JsonObject) parser.parse(new InputStreamReader(resource.openStream()));
 
         gson = new Gson();
     }
@@ -31,7 +33,7 @@ public class Parser {
         if (instance == null) {
             try {
                 instance = new Parser();
-            } catch (FileNotFoundException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }

@@ -163,6 +163,10 @@ public class Production extends CommandBuffer {
     }
 
     private void setSelection(int[] productionsToActivate) {
+        if(getCurrentTotalToSpend().size() > 0) {
+            return;
+        }
+
         Person person = getPerson();
         ProductionArea productionArea = person.getBoard().getProductionArea();
         HashSet<Integer> set = new HashSet<>();

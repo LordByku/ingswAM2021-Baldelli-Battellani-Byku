@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import it.polimi.ingsw.model.devCards.DevCard;
 import it.polimi.ingsw.parsing.DevCardsParser;
 import it.polimi.ingsw.view.cli.CLIPrintable;
+import it.polimi.ingsw.view.localModel.LocalModelElementObserver.NotificationSource;
 
 public class CardMarketDeck extends LocalModelElement implements CLIPrintable {
     private Integer topCard;
@@ -23,7 +24,7 @@ public class CardMarketDeck extends LocalModelElement implements CLIPrintable {
         JsonObject cardMarketDeckObject = cardMarketDeckJson.getAsJsonObject();
         topCard = gson.fromJson(cardMarketDeckObject.get("topCard"), Integer.class);
         quantity = cardMarketDeckObject.get("quantity").getAsInt();
-        notifyObservers();
+        notifyObservers(NotificationSource.CARDMARKETDECK);
     }
 
     @Override

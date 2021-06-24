@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.localModel;
 
 import it.polimi.ingsw.controller.CommandBuffer;
 import it.polimi.ingsw.controller.CommandType;
+import it.polimi.ingsw.view.localModel.LocalModelElementObserver.NotificationSource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +34,7 @@ public class CommandElement {
         synchronized (observers) {
             if (observers.containsKey(commandType)) {
                 for (LocalModelElementObserver observer : observers.get(commandType)) {
-                    observer.notifyObserver();
+                    observer.notifyObserver(NotificationSource.COMMANDELEMENT);
                 }
             }
         }

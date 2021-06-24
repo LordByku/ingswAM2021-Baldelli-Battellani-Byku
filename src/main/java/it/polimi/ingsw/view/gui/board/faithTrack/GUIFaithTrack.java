@@ -96,7 +96,7 @@ public class GUIFaithTrack implements LocalModelElementObserver {
     }
 
     @Override
-    public void notifyObserver() {
+    public void notifyObserver(NotificationSource notificationSource) {
         // TODO : only update positions ?
         SwingUtilities.invokeLater(() -> {
             faithTrackPanel.removeAll();

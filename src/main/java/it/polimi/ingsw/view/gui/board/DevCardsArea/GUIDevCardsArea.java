@@ -34,7 +34,7 @@ public class GUIDevCardsArea implements LocalModelElementObserver {
     }
 
     @Override
-    public void notifyObserver() {
+    public void notifyObserver(NotificationSource notificationSource) {
         SwingUtilities.invokeLater(() -> {
             devCardsArea.removeAll();
             loadSlots();

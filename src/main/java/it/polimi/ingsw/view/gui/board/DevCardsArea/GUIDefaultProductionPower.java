@@ -106,7 +106,7 @@ public class GUIDefaultProductionPower implements LocalModelElementObserver {
     }
 
     @Override
-    public void notifyObserver() {
+    public void notifyObserver(NotificationSource notificationSource) {
         SwingUtilities.invokeLater(() -> {
             defProdPower.removeAll();
             loadDefaultProductionPower();

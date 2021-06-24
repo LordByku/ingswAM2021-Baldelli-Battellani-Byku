@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.view.cli.CLIPrintable;
+import it.polimi.ingsw.view.localModel.LocalModelElementObserver.NotificationSource;
 
 import java.util.ArrayList;
 
@@ -37,7 +38,7 @@ public class LocalModel extends LocalModelElement implements CLIPrintable {
             }
         }
 
-        notifyObservers();
+        notifyObservers(NotificationSource.LOCALMODEL);
     }
 
     public void setEndGameResults(JsonObject endGameObject) {

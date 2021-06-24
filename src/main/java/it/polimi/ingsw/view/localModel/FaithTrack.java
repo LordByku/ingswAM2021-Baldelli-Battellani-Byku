@@ -10,6 +10,7 @@ import it.polimi.ingsw.view.cli.BackGroundColor;
 import it.polimi.ingsw.view.cli.CLIPrintable;
 import it.polimi.ingsw.view.cli.Strings;
 import it.polimi.ingsw.view.cli.TextColour;
+import it.polimi.ingsw.view.localModel.LocalModelElementObserver.NotificationSource;
 
 import java.util.ArrayList;
 
@@ -117,7 +118,7 @@ public class FaithTrack extends LocalModelElement implements CLIPrintable {
             computerPosition = faithTrackObject.get("computerPosition").getAsInt();
         }
 
-        notifyObservers();
+        notifyObservers(NotificationSource.FAITHTRACK);
     }
 
     public ArrayList<Integer> getReceivedFavors() {

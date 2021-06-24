@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.localModel;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import it.polimi.ingsw.view.localModel.LocalModelElementObserver.NotificationSource;
 
 import java.util.ArrayList;
 
@@ -23,12 +24,12 @@ public abstract class LocalModelElement {
         }
     }
 
-    protected void notifyObservers() {
+    protected void notifyObservers(NotificationSource notificationSource) {
         synchronized (observers) {
             System.out.println(observers.size());
             for (LocalModelElementObserver observer : observers) {
                 System.out.println(observer);
-                observer.notifyObserver();
+                observer.notifyObserver(notificationSource);
             }
         }
     }

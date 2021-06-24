@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.localModel;
 
 import com.google.gson.JsonElement;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
+import it.polimi.ingsw.view.localModel.LocalModelElementObserver.NotificationSource;
 
 import java.util.ArrayList;
 
@@ -14,7 +15,7 @@ public class Warehouse extends LocalModelElement {
         for (JsonElement depotJson : warehouseJson.getAsJsonObject().getAsJsonArray("depots")) {
             depots.add(gson.fromJson(depotJson, ConcreteResourceSet.class));
         }
-        notifyObservers();
+        notifyObservers(NotificationSource.WAREHOUSE);
     }
 
     public ArrayList<ConcreteResourceSet> getDepots() {

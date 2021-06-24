@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.localModel;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.controller.CommandBuffer;
+import it.polimi.ingsw.view.localModel.LocalModelElementObserver.NotificationSource;
 
 public class Player extends LocalModelElement {
     private String nickname;
@@ -32,7 +33,7 @@ public class Player extends LocalModelElement {
             board.updateModel(playerObject.getAsJsonObject("board"));
         }
 
-        notifyObservers();
+        notifyObservers(NotificationSource.PLAYER);
     }
 
     public CommandBuffer getCommandBuffer() {

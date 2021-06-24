@@ -12,6 +12,7 @@ import it.polimi.ingsw.network.client.LocalConfig;
 import it.polimi.ingsw.parsing.DevCardsParser;
 import it.polimi.ingsw.parsing.LeaderCardsParser;
 import it.polimi.ingsw.view.cli.CLIPrintable;
+import it.polimi.ingsw.view.localModel.LocalModelElementObserver.NotificationSource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,7 +53,7 @@ public class Board extends LocalModelElement implements CLIPrintable {
             handLeaderCards.updateModel(handLeaderCardsJson);
         }
 
-        notifyObservers();
+        notifyObservers(NotificationSource.BOARD);
     }
 
     public HandLeaderCardsArea getHandLeaderCards() {

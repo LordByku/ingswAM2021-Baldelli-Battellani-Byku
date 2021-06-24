@@ -102,7 +102,7 @@ public class GUICardMarket implements LocalModelElementObserver {
     }
 
     @Override
-    public void notifyObserver() {
+    public void notifyObserver(NotificationSource notificationSource) {
         Player self = client.getModel().getPlayer(client.getNickname());
         CommandBuffer commandBuffer = self.getCommandBuffer();
 

@@ -74,8 +74,7 @@ public class GUIStrongbox implements LocalModelElementObserver {
                         JPanel popupContent = new JPanel();
                         popupContent.setLayout(new BoxLayout(popupContent, BoxLayout.X_AXIS));
 
-                        // TODO : fix coordinates
-                        Popup popup = PopupFactory.getSharedInstance().getPopup(container, popupContent, imagePanel.getX(), imagePanel.getY());
+                        Popup popup = PopupFactory.getSharedInstance().getPopup(container, popupContent, e.getXOnScreen(), e.getYOnScreen());
 
                         for (ConcreteResource concreteResource : ConcreteResource.values()) {
                             if (choiceResource.canChoose(concreteResource)) {
@@ -169,14 +168,74 @@ public class GUIStrongbox implements LocalModelElementObserver {
 
             c.gridy++;
         }
+
+        if (commandBuffer != null && !commandBuffer.isCompleted()) {
+            switch (commandBuffer.getCommandType()) {
+                case PURCHASE: {
+                    Purchase purchaseCommand = (Purchase) commandBuffer;
+                    if(purchaseCommand.getDeckIndex() != -1) {
+                        addSpentPanel(c, purchaseCommand.getCurrentTotalToSpend());
+                    } else {
+                        c.gridx = 1;
+                        c.gridy = 0;
+                        c.insets = new Insets(0, 0, 0, 0);
+                        strongboxPanel.add(backgroundPanel, c);
+                    }
+                    break;
+                }
+                case PRODUCTION: {
+                    Production productionCommand = (Production) commandBuffer;
+                    if(productionCommand.getProductionsToActivate() != null && productionCommand.getObtainedResources() == null) {
+                        addSpentPanel(c, productionCommand.getCurrentTotalToSpend());
+                    } else {
+                        c.gridx = 1;
+                        c.gridy = 0;
+                        c.insets = new Insets(0, 0, 0, 0);
+                        strongboxPanel.add(backgroundPanel, c);
+                    }
+                    break;
+                }
+                default: {
+                    c.gridx = 1;
+                    c.gridy = 0;
+                    c.insets = new Insets(0, 0, 0, 0);
+                    strongboxPanel.add(backgroundPanel, c);
+                }
+            }
+        } else {
+            c.gridx = 1;
+            c.gridy = 0;
+            c.insets = new Insets(0, 0, 0, 0);
+            strongboxPanel.add(backgroundPanel, c);
+        }
+    }
+
+    private void addSpentPanel(GridBagConstraints c, ConcreteResourceSet currentSpent) {
+        JPanel spentPanel = new JPanel(new GridBagLayout());
+        int count = 0;
+        for (ConcreteResource concreteResource : ConcreteResource.values()) {
+            ResourceImageType resourceImageType = concreteResource.getResourceImageType();
+            for (int i = 0; i < currentSpent.getCount(concreteResource); ++i) {
+                JPanel container = new JPanel();
+                JPanel imagePanel = new ResourceImage(resourceImageType, 25);
+                container.add(imagePanel);
+                c.gridx = count / 2;
+                c.gridy = count % 2;
+                spentPanel.add(container, c);
+                count++;
+            }
+        }
         c.gridx = 1;
         c.gridy = 0;
         c.insets = new Insets(0, 0, 0, 0);
         strongboxPanel.add(backgroundPanel, c);
+
+        c.gridx++;
+        strongboxPanel.add(spentPanel, c);
     }
 
     @Override
-    public void notifyObserver() {
+    public void notifyObserver(NotificationSource notificationSource) {
         SwingUtilities.invokeLater(() -> {
             backgroundPanel.removeAll();
             strongboxPanel.removeAll();

@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.localModel;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.model.game.actionTokens.ActionToken;
+import it.polimi.ingsw.view.localModel.LocalModelElementObserver.NotificationSource;
 
 public class GameZone extends LocalModelElement {
     private MarbleMarket marbleMarket;
@@ -28,7 +29,7 @@ public class GameZone extends LocalModelElement {
             actionTokenDeck.updateModel(actionTokenDeckJson);
         }
 
-        notifyObservers();
+        notifyObservers(NotificationSource.GAMEZONE);
     }
 
     public MarbleMarket getMarbleMarket() {

@@ -125,7 +125,7 @@ public class GUIHandLeaderCards implements LocalModelElementObserver {
     }
 
     @Override
-    public void notifyObserver() {
+    public void notifyObserver(NotificationSource notificationSource) {
         SwingUtilities.invokeLater(() -> {
             handLeaderCardsPanel.removeAll();
             loadHandLeaderCards();

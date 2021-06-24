@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.devCards.CardColour;
 import it.polimi.ingsw.model.devCards.CardLevel;
 import it.polimi.ingsw.view.cli.CLIPrintable;
 import it.polimi.ingsw.view.cli.Strings;
+import it.polimi.ingsw.view.localModel.LocalModelElementObserver.NotificationSource;
 
 import java.util.ArrayList;
 
@@ -92,6 +93,6 @@ public class CardMarket extends LocalModelElement implements CLIPrintable {
                 market.get(i).get(j).updateModel(marketRow.get(j));
             }
         }
-        notifyObservers();
+        notifyObservers(NotificationSource.CARDMARKET);
     }
 }

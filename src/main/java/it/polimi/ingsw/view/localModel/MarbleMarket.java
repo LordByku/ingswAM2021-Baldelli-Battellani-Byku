@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.localModel;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.model.gameZone.marbles.MarbleColour;
+import it.polimi.ingsw.view.localModel.LocalModelElementObserver.NotificationSource;
 
 public class MarbleMarket extends LocalModelElement {
     private MarbleColour[][] market;
@@ -58,6 +59,6 @@ public class MarbleMarket extends LocalModelElement {
         JsonObject marketObject = marketJson.getAsJsonObject();
         market = gson.fromJson(marketObject.get("market"), MarbleColour[][].class);
         freeMarble = gson.fromJson(marketObject.get("freeMarble"), MarbleColour.class);
-        notifyObservers();
+        notifyObservers(NotificationSource.MARBLEMARKET);
     }
 }
