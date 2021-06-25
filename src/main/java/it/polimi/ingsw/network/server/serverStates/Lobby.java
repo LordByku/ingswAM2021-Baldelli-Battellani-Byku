@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import it.polimi.ingsw.model.game.Game;
 import it.polimi.ingsw.model.game.GameAlreadyStartedException;
 import it.polimi.ingsw.network.server.ClientHandler;
+import it.polimi.ingsw.parsing.Parser;
 import it.polimi.ingsw.utility.JsonUtil;
 
 public class Lobby extends ServerState {
@@ -14,6 +15,15 @@ public class Lobby extends ServerState {
 
             if (clientHandler.getPerson().isHost()) {
                 if (clientMessage.get("command").getAsString().equals("startGame")) {
+                    if (clientMessage.has("config")) {
+                        JsonObject config = clientMessage.getAsJsonObject("config");
+                        if (!Parser.getInstance().validateConfig(config)) {
+                            clientHandler.error("Invalid config file");
+                            return;
+                        }
+                        Parser.getInstance().setConfig(config);
+                    }
+
                     if (Game.getInstance().getNumberOfPlayers() >= 1) {
                         if (Game.getInstance().getNumberOfPlayers() == 1) {
                             Game.getInstance().startSinglePlayer();

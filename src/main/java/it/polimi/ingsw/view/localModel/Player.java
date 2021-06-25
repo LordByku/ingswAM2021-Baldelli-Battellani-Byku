@@ -12,7 +12,7 @@ public class Player extends LocalModelElement {
     private boolean initResources;
     private boolean mainAction;
     private Board board;
-    private CommandElement command = new CommandElement();
+    private final CommandElement command = new CommandElement();
 
     public String getNickname() {
         return nickname;

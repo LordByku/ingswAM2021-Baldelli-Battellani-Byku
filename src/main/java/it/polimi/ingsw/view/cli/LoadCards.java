@@ -18,7 +18,7 @@ public class LoadCards {
     public void leaderCardWidth() {
         LeaderCard leaderCard;
 
-        while ((leaderCard = LeaderCardsParser.getInstance().nextCard()) != null) {
+        while ((leaderCard = LeaderCardsParser.getInstance().getNextCard()) != null) {
             leaderCard.addCLISupport();
         }
     }

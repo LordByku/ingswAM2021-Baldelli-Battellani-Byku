@@ -24,10 +24,10 @@ public class GUIMarbleMarket implements LocalModelElementObserver {
     private final GUI gui;
     private final MarbleMarket marbleMarket;
     private final ArrayList<Player> players;
-    private JPanel marketPanel;
-    private JPanel marblePanel;
-    private JPanel marketTrayPanel;
-    private Client client;
+    private final JPanel marketPanel;
+    private final JPanel marblePanel;
+    private final JPanel marketTrayPanel;
+    private final Client client;
 
     public GUIMarbleMarket(GUI gui, Client client, JPanel marketPanel) {
         this.gui = gui;

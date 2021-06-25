@@ -97,7 +97,7 @@ public class LeaderCardsParser {
         }
     }
 
-    public LeaderCard nextCard() throws NoConfigFileException {
+    public LeaderCard getNextCard() throws NoConfigFileException {
         LeaderCard leaderCard = getCard(currentCard++);
         if (leaderCard == null) {
             currentCard = 0;

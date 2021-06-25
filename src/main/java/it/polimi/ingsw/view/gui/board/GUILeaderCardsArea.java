@@ -12,7 +12,7 @@ import java.awt.*;
 public class GUILeaderCardsArea implements LocalModelElementObserver {
     JPanel leaderCardsArea;
     Client client;
-    private PlayedLeaderCardsArea playedLeaderCards;
+    private final PlayedLeaderCardsArea playedLeaderCards;
 
     public GUILeaderCardsArea(Client client, JPanel leaderCardsArea, String nickname) {
         this.client = client;

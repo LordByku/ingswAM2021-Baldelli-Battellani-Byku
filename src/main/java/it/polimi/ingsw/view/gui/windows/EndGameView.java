@@ -5,21 +5,18 @@ import it.polimi.ingsw.view.gui.GUI;
 import it.polimi.ingsw.view.localModel.EndGameResult;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import java.awt.*;
 import java.util.ArrayList;
 
 public class EndGameView extends GUIWindow {
+    int textSize = 20;
     private JPanel panel;
     private JPanel rank;
     private JTable rankingTable;
     private JButton backButton;
-    private ArrayList<EndGameResult> results;
-    private boolean computerWins;
-    int textSize = 20;
+    private final ArrayList<EndGameResult> results;
+    private final boolean computerWins;
 
     public EndGameView(GUI gui, Client client) {
         super(gui, client);
@@ -27,7 +24,7 @@ public class EndGameView extends GUIWindow {
         computerWins = client.getModel().getEndGameResults().getComputerWins();
 
         results.sort((r1, r2) -> {
-            if(r1.getVPoints() == r2.getVPoints()) {
+            if (r1.getVPoints() == r2.getVPoints()) {
                 return r2.getResources() - r1.getResources();
             }
             return r2.getVPoints() - r1.getVPoints();
@@ -38,13 +35,13 @@ public class EndGameView extends GUIWindow {
         rankingTable.setRowHeight(50);
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-        for(int i=0; i < 4; i++)
-            rankingTable.getColumnModel().getColumn(i).setCellRenderer( centerRenderer );
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        for (int i = 0; i < 4; i++)
+            rankingTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 
 
-        for(int i=0; i<results.size(); ++i){
-            String position = Integer.toString(i+1);
+        for (int i = 0; i < results.size(); ++i) {
+            String position = Integer.toString(i + 1);
             String nickname = results.get(i).getPlayer();
             String victoryPoints = Integer.toString(results.get(i).getVPoints());
             String resources = Integer.toString(results.get(i).getResources());

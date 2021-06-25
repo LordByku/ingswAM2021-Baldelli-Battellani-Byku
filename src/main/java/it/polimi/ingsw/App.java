@@ -3,13 +3,14 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.server.Server;
 
+import java.util.Arrays;
+
 public class App {
     private static void printUsage() {
-
         System.out.println("To launch client:");
-        System.out.println("App client <hostname> <port>");
+        System.out.println("java -jar AM24.jar client <hostname> <port> <cli/gui>");
         System.out.println("To launch server:");
-        System.out.println("App server <port>");
+        System.out.println("java -jar AM24.jar server <port>");
     }
 
     public static void main(String[] args) {
@@ -17,6 +18,8 @@ public class App {
             printUsage();
             return;
         }
+
+        System.out.println(Arrays.toString(args));
 
         String mode = args[0];
         if (mode.equals("server")) {
@@ -31,7 +34,7 @@ public class App {
 
             server.start();
         } else if (mode.equals("client")) {
-            if (args.length != 3) {
+            if (args.length != 4) {
                 printUsage();
                 return;
             }
@@ -39,8 +42,23 @@ public class App {
             String hostname = args[1];
             int port = Integer.parseInt(args[2]);
 
-            // TODO: guiSelection
-            Client client = new Client(hostname, port, true);
+            boolean guiSelection;
+            switch (args[3]) {
+                case "cli": {
+                    guiSelection = false;
+                    break;
+                }
+                case "gui": {
+                    guiSelection = true;
+                    break;
+                }
+                default: {
+                    printUsage();
+                    return;
+                }
+            }
+
+            Client client = new Client(hostname, port, guiSelection);
 
             client.start();
         } else {

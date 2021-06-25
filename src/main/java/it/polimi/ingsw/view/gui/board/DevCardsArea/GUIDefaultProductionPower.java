@@ -30,10 +30,10 @@ public class GUIDefaultProductionPower implements LocalModelElementObserver {
     private final GUI gui;
     private final Client client;
     private final Player player;
-    private JPanel devCardsArea;
-    private ProductionDetails defaultProductionPower;
-    private JPanel defProdPower;
-    private String nickname;
+    private final JPanel devCardsArea;
+    private final ProductionDetails defaultProductionPower;
+    private final JPanel defProdPower;
+    private final String nickname;
 
     public GUIDefaultProductionPower(GUI gui, Client client, JPanel devCardsArea, String nickname) {
         this.gui = gui;
@@ -95,15 +95,15 @@ public class GUIDefaultProductionPower implements LocalModelElementObserver {
 
             boolean selected = false;
             if (currentSelection != null) {
-                for(int selection: currentSelection) {
-                    if(0 == selection) {
+                for (int selection : currentSelection) {
+                    if (0 == selection) {
                         selected = true;
                     }
                 }
             }
             boolean finalSelected = selected;
             JButton button = GUIUtil.addButton("select", container, new ButtonClickEvent((e) -> {
-                if(finalSelected) {
+                if (finalSelected) {
                     int[] selection = new int[n - 1];
                     for (int j = 0, k = 0; j < n; ++j) {
                         if (currentSelection[j] != 0) {
@@ -123,7 +123,7 @@ public class GUIDefaultProductionPower implements LocalModelElementObserver {
                 }
             }));
 
-            if(selected) {
+            if (selected) {
                 Border redBorder = BorderFactory.createLineBorder(Color.RED);
                 button.setBorder(redBorder);
             } else {

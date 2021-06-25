@@ -13,9 +13,9 @@ public class DevCard {
     private CardColour colour;
     private CardLevel level;
     private int points;
-    private ConcreteResourceSet requirements;
-    private SpendableResourceSet productionIn;
-    private ObtainableResourceSet productionOut;
+    private final ConcreteResourceSet requirements;
+    private final SpendableResourceSet productionIn;
+    private final ObtainableResourceSet productionOut;
 
     public DevCard(CardColour colour, CardLevel level, int points, ConcreteResourceSet requirements,
                    SpendableResourceSet productionIn, ObtainableResourceSet productionOut) {

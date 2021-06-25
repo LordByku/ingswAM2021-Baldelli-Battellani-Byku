@@ -36,11 +36,11 @@ public class GUIWarehouse implements LocalModelElementObserver {
     private final GUI gui;
     private final Player player;
     private final Warehouse warehouse;
-    private Client client;
-    private JPanel warehousePanel;
-    private int numOfDepots;
-    private ArrayList<Integer> depotSizes;
-    private JPanel backgroundPanel;
+    private final Client client;
+    private final JPanel warehousePanel;
+    private final int numOfDepots;
+    private final ArrayList<Integer> depotSizes;
+    private final JPanel backgroundPanel;
 
     public GUIWarehouse(GUI gui, Client client, JPanel warehousePanel, String nickname) {
         this.gui = gui;
@@ -173,14 +173,14 @@ public class GUIWarehouse implements LocalModelElementObserver {
                             emptyPanel.addMouseListener(new ButtonClickEvent((e) -> {
                                 if (selectedResource.get() != null) {
                                     ConcreteResourceSet[] depots = new ConcreteResourceSet[numOfDepots];
-                                    for(int k = 0; k < numOfDepots; ++k) {
+                                    for (int k = 0; k < numOfDepots; ++k) {
                                         depots[k] = new ConcreteResourceSet();
                                     }
                                     depots[finalI].addResource(selectedResource.get());
                                     selectedResource.set(null);
                                     selectedPanel.set(null);
 
-                                    if(commandBuffer == null) {
+                                    if (commandBuffer == null) {
                                         JsonObject request = client.buildRequestMessage(CommandType.INITRESOURCES);
                                         gui.bufferWrite(request.toString());
                                     }
@@ -438,7 +438,7 @@ public class GUIWarehouse implements LocalModelElementObserver {
                 }
                 case PURCHASE: {
                     Purchase purchaseCommand = (Purchase) commandBuffer;
-                    if(purchaseCommand.getDeckIndex() != -1) {
+                    if (purchaseCommand.getDeckIndex() != -1) {
                         int row = purchaseCommand.getMarketRow(), col = purchaseCommand.getMarketCol();
                         int devCardId = client.getModel().getGameZone().getCardMarket().getDevCard(row, col);
                         ConcreteResourceSet toSpend = DevCardsParser.getInstance().getCard(devCardId).getReqResources();
@@ -475,11 +475,11 @@ public class GUIWarehouse implements LocalModelElementObserver {
                 case PRODUCTION: {
                     Production productionCommand = (Production) commandBuffer;
 
-                    if(productionCommand.getProductionsToActivate() != null && productionCommand.getObtainedResources() == null) {
+                    if (productionCommand.getProductionsToActivate() != null && productionCommand.getObtainedResources() == null) {
                         HashMap<Integer, ProductionDetails> map = player.getBoard().activeProductionDetails();
 
                         SpendableResourceSet toSpend = new SpendableResourceSet();
-                        for(int productionIndex: productionCommand.getProductionsToActivate()) {
+                        for (int productionIndex : productionCommand.getProductionsToActivate()) {
                             toSpend = toSpend.union(map.get(productionIndex).getInput());
                         }
 

@@ -8,9 +8,9 @@ import javax.swing.*;
 
 public class GUIDevCardsArea implements LocalModelElementObserver {
     private final GUI gui;
-    private JPanel devCardsArea;
-    private Client client;
-    private String nickname;
+    private final JPanel devCardsArea;
+    private final Client client;
+    private final String nickname;
     private GUIDevCardsSlots guiDevCardsSlots;
     private GUIDefaultProductionPower guiDefaultProductionPower;
 

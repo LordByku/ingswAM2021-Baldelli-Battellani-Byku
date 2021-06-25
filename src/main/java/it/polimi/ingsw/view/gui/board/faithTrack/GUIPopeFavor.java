@@ -20,7 +20,7 @@ public class GUIPopeFavor {
     Client client;
     int size;
     int numOfPlayers;
-    private Player player;
+    private final Player player;
 
     public GUIPopeFavor(Client client, JPanel faithTrack, JPanel[][] panels, GridBagConstraints c, Integer lolloPosition, String nickname, int size) {
         this.faithTrack = faithTrack;

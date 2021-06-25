@@ -76,7 +76,6 @@ public class CheckPointsPanelHandler extends PanelHandler {
     }
 
     public boolean validate() {
-        // TODO : limit number of checkpoints
         boolean result = true;
         for (ValidatableTextField validatableTextField : checkPointFields) {
             if (!validatableTextField.validate()) {

@@ -120,4 +120,8 @@ public class FaithTrack implements Scoring {
     public ArrayList<PopeFavor> getReceivedPopeFavors() {
         return (ArrayList<PopeFavor>) receivedPopeFavors.clone();
     }
+
+    public ArrayList<CheckPoint> getCheckPoints() {
+        return checkPoints;
+    }
 }

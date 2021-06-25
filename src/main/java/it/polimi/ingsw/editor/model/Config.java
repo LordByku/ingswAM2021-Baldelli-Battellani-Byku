@@ -9,13 +9,12 @@ import it.polimi.ingsw.editor.model.resources.SpendableResourceSet;
 import it.polimi.ingsw.editor.model.simplifiedModel.VaticanReportSection;
 
 import java.io.*;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 public class Config {
     public static final int MAXPLAYERS = 4;
     private static final String defaultConfig = "config.json";
-    private static FileReader reader;
+    private static InputStreamReader reader;
     private static Config instance;
     private final Gson gson;
     private final JsonObject json;
@@ -52,25 +51,14 @@ public class Config {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         URL resource = classLoader.getResource(defaultConfig);
         try {
-            File file = new File(resource.toURI());
-            reader = new FileReader(file);
-        } catch (URISyntaxException | FileNotFoundException e) {
+            reader = new InputStreamReader(resource.openStream());
+        } catch (IOException e) {
         }
     }
 
     public static void setPath(String filename) throws FileNotFoundException {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        URL resource = classLoader.getResource("custom/" + filename + ".json");
-        if (resource == null) {
-            throw new FileNotFoundException();
-        } else {
-            try {
-                File file = new File(resource.toURI());
-                reader = new FileReader(file);
-            } catch (URISyntaxException e) {
-                throw new FileNotFoundException();
-            }
-        }
+        File file = new File(filename + ".json");
+        reader = new FileReader(file);
     }
 
     public static Config getInstance() {
@@ -101,14 +89,7 @@ public class Config {
         devCardsEditor.write(out);
         leaderCardsEditor.write(out);
 
-        String path = "src/main/resources/custom";
-        File directory = new File(path);
-
-        if (!directory.exists()) {
-            directory.mkdir();
-        }
-
-        FileWriter writer = new FileWriter(path + "/" + outFilename + ".json");
+        FileWriter writer = new FileWriter(outFilename + ".json");
         writer.write(out.toString());
         writer.flush();
         writer.close();

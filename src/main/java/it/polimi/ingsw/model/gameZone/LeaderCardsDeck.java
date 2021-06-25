@@ -29,7 +29,7 @@ public class LeaderCardsDeck {
 
         LeaderCard leaderCard;
 
-        while ((leaderCard = LeaderCardsParser.getInstance().nextCard()) != null) {
+        while ((leaderCard = LeaderCardsParser.getInstance().getNextCard()) != null) {
             deck.add(leaderCard);
         }
 

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.editor.gui;
 
 import it.polimi.ingsw.editor.EditorApp;
-import it.polimi.ingsw.editor.gui.components.TextFieldDocumentListener;
 import it.polimi.ingsw.editor.gui.components.ValidatableTextField;
 import it.polimi.ingsw.editor.gui.components.panelHandlers.*;
 import it.polimi.ingsw.editor.model.*;
@@ -14,6 +13,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Window {
+    private final ArrayList<ValidatableTextField> validatableTextFields;
+    private final ArrayList<PanelHandler> panelHandlers;
     private JPanel checkPointsPanel;
     private JPanel panel;
     private JPanel VRSPanel;
@@ -64,8 +65,6 @@ public class Window {
     private JPanel initFaithPoints2Panel;
     private JPanel initFaithPoints3Panel;
     private JPanel initFaithPoints4Panel;
-    private final ArrayList<ValidatableTextField> validatableTextFields;
-    private final ArrayList<PanelHandler> panelHandlers;
 
     public Window(JFrame frame) {
         loadDefaultConfigButton.addActionListener(new ButtonClickEvent((event) -> {
@@ -105,7 +104,7 @@ public class Window {
         validatableTextFields.add(EditorGUIUtil.addValidatableTextField(faithTrackEditor.getFinalPosition(),
                 faithTrackLengthPanel,
                 faithTrackEditor::setFinalPosition,
-                (value) -> value > 0 && value < 30));
+                (value) -> value > 0 && value <= 30));
 
         CheckPointsPanelHandler checkPointsPanelHandler = new CheckPointsPanelHandler(frame, checkPointsPanel);
         checkPointsPanelHandler.build();
@@ -158,7 +157,7 @@ public class Window {
         initResourcesPanels[2] = initResources3Panel;
         initResourcesPanels[3] = initResources4Panel;
 
-        for(int i = 0; i < 4; ++i) {
+        for (int i = 0; i < 4; ++i) {
             int finalI = i;
             initFaithPointsPanels[i].setLayout(new GridBagLayout());
             initResourcesPanels[i].setLayout(new GridBagLayout());
@@ -171,7 +170,7 @@ public class Window {
                     (value) -> initGameEditor.setResources(finalI, value),
                     (value) -> {
                         int warehouseSize = 0;
-                        for(int depotSize: boardEditor.getDepotSizes()) {
+                        for (int depotSize : boardEditor.getDepotSizes()) {
                             warehouseSize += depotSize;
                         }
                         return value >= 0 && value <= warehouseSize;
@@ -217,13 +216,13 @@ public class Window {
 
     private boolean validate() {
         boolean result = true;
-        for(ValidatableTextField validatableTextField: validatableTextFields) {
-            if(!validatableTextField.validate()) {
+        for (ValidatableTextField validatableTextField : validatableTextFields) {
+            if (!validatableTextField.validate()) {
                 result = false;
             }
         }
-        for(PanelHandler panelHandler: panelHandlers) {
-            if(!panelHandler.validate()) {
+        for (PanelHandler panelHandler : panelHandlers) {
+            if (!panelHandler.validate()) {
                 result = false;
             }
         }

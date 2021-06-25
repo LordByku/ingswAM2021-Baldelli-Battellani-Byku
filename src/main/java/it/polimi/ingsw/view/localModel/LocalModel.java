@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class LocalModel extends LocalModelElement implements CLIPrintable {
     private GameZone gameZone;
     private ArrayList<Player> players;
-        private EndGame endGameResults;
+    private EndGame endGameResults;
     private boolean endGame = false;
 
     public Player getPlayer(String nickname) {
@@ -41,13 +41,13 @@ public class LocalModel extends LocalModelElement implements CLIPrintable {
         notifyObservers(NotificationSource.LOCALMODEL);
     }
 
+    public EndGame getEndGameResults() {
+        return endGameResults;
+    }
+
     public void setEndGameResults(JsonObject endGameObject) {
         endGameResults = gson.fromJson(endGameObject, EndGame.class);
         endGameResults.computeVictoryPoints();
-    }
-
-    public EndGame getEndGameResults(){
-        return endGameResults;
     }
 
     public GameZone getGameZone() {

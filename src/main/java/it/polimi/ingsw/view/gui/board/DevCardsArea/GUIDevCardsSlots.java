@@ -23,16 +23,15 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class GUIDevCardsSlots implements LocalModelElementObserver {
     private final GUI gui;
     private final JPanel slotsPanel;
     private final Player player;
-    private JPanel devCardsArea;
-    private int numOfSlots;
-    private Client client;
-    private String nickname;
+    private final JPanel devCardsArea;
+    private final int numOfSlots;
+    private final Client client;
+    private final String nickname;
 
     public GUIDevCardsSlots(GUI gui, Client client, JPanel devCardsArea, String nickname) {
         this.gui = gui;
@@ -111,15 +110,15 @@ public class GUIDevCardsSlots implements LocalModelElementObserver {
 
                     boolean selected = false;
                     if (currentSelection != null) {
-                        for(int selection: currentSelection) {
-                            if(finalI + 1 == selection) {
+                        for (int selection : currentSelection) {
+                            if (finalI + 1 == selection) {
                                 selected = true;
                             }
                         }
                     }
                     boolean finalSelected = selected;
                     JButton button = GUIUtil.addButton("select", container, new ButtonClickEvent((e) -> {
-                        if(finalSelected) {
+                        if (finalSelected) {
                             int[] selection = new int[n - 1];
                             for (int j = 0, k = 0; j < n; ++j) {
                                 if (currentSelection[j] != finalI + 1) {
@@ -139,7 +138,7 @@ public class GUIDevCardsSlots implements LocalModelElementObserver {
                         }
                     }));
 
-                    if(selected) {
+                    if (selected) {
                         Border redBorder = BorderFactory.createLineBorder(Color.RED);
                         button.setBorder(redBorder);
                     } else {

@@ -15,8 +15,8 @@ public class MarbleMarketView extends GUIWindow {
     private JPanel panel;
     private JPanel marketPanel;
     private JPanel bottomPanel;
-    private JPanel marbleMarketPanel;
-    private GUIMarbleMarket guiMarbleMarket;
+    private final JPanel marbleMarketPanel;
+    private final GUIMarbleMarket guiMarbleMarket;
 
     public MarbleMarketView(GUI gui, Client client) {
         super(gui, client);

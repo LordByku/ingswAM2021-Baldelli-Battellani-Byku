@@ -6,7 +6,7 @@ import java.awt.*;
 public class MarbleImage extends JPanel {
     private final int width = 48;
     private final int height = 48;
-    private Image img;
+    private final Image img;
 
     public MarbleImage(String img) {
         this(new ImageIcon(img).getImage());

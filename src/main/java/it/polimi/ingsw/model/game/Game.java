@@ -12,7 +12,7 @@ import java.util.Iterator;
 public class Game {
     private static Game instance;
     private final ArrayList<Player> players;
-    private final GameZone gameZone;
+    private GameZone gameZone;
     private int numberOfPlayers;
     private volatile boolean gameStarted;
     private volatile boolean gameEnded;
@@ -242,5 +242,9 @@ public class Game {
 
     public boolean hasGameEnded() {
         return gameEnded;
+    }
+
+    public void refreshModel() {
+        gameZone = new GameZone();
     }
 }

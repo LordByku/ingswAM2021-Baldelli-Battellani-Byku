@@ -14,12 +14,12 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class GUIFaithTrack implements LocalModelElementObserver {
-    private JPanel faithTrackPanel;
-    private Client client;
+    private final JPanel faithTrackPanel;
+    private final Client client;
     private int currPosition;
     private Integer lolloPosition;
-    private FaithTrack faithTrack;
-    private Player player;
+    private final FaithTrack faithTrack;
+    private final Player player;
 
     public GUIFaithTrack(Client client, JPanel faithTrackPanel, String nickname) {
         this.client = client;

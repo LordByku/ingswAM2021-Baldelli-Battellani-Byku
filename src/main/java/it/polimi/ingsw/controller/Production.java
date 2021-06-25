@@ -163,7 +163,7 @@ public class Production extends CommandBuffer {
     }
 
     private void setSelection(int[] productionsToActivate) {
-        if(getCurrentTotalToSpend().size() > 0) {
+        if (getCurrentTotalToSpend().size() > 0) {
             return;
         }
 

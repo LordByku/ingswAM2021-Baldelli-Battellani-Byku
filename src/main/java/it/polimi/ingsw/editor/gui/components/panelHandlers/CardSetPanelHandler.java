@@ -5,7 +5,6 @@ import it.polimi.ingsw.editor.gui.components.ValidatableTextField;
 import it.polimi.ingsw.editor.model.simplifiedModel.leaderCards.requirements.CardSetRequirements;
 import it.polimi.ingsw.model.devCards.CardColour;
 import it.polimi.ingsw.model.devCards.CardLevel;
-import it.polimi.ingsw.view.gui.components.ButtonClickEvent;
 
 import javax.swing.*;
 import java.util.ArrayList;

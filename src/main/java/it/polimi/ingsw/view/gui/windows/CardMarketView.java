@@ -12,7 +12,7 @@ public class CardMarketView extends GUIWindow {
     private JPanel bottomPanel;
     private JPanel marketPanel;
     private JPanel panel;
-    private GUICardMarket guiCardMarket;
+    private final GUICardMarket guiCardMarket;
 
     public CardMarketView(GUI gui, Client client) {
         super(gui, client);

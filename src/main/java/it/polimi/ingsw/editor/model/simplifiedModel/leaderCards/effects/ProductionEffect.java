@@ -7,8 +7,8 @@ import it.polimi.ingsw.editor.model.resources.SpendableResourceSet;
 import it.polimi.ingsw.utility.JsonUtil;
 
 public class ProductionEffect extends Effect {
-    private SpendableResourceSet productionIn;
-    private ObtainableResourceSet productionOut;
+    private final SpendableResourceSet productionIn;
+    private final ObtainableResourceSet productionOut;
 
     public ProductionEffect() {
         super(EffectType.production);

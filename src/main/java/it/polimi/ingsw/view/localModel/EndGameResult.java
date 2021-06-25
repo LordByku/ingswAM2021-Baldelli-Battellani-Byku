@@ -11,7 +11,7 @@ public class EndGameResult {
         VPoints = basePoints + resources / 5;
     }
 
-    public String getPlayer(){
+    public String getPlayer() {
         return player;
     }
 

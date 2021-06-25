@@ -28,12 +28,12 @@ import java.util.ArrayList;
 public class GUIStrongbox implements LocalModelElementObserver {
     private final GUI gui;
     private final Client client;
-    private JPanel strongboxPanel;
-    private Strongbox strongbox;
+    private final JPanel strongboxPanel;
+    private final Strongbox strongbox;
     private JPanel resourcePanel;
     private JLabel resourceQuantity;
-    private Player player;
-    private JPanel backgroundPanel;
+    private final Player player;
+    private final JPanel backgroundPanel;
 
     public GUIStrongbox(GUI gui, Client client, JPanel strongboxPanel, String nickname) {
         this.gui = gui;
@@ -175,7 +175,7 @@ public class GUIStrongbox implements LocalModelElementObserver {
             switch (commandBuffer.getCommandType()) {
                 case PURCHASE: {
                     Purchase purchaseCommand = (Purchase) commandBuffer;
-                    if(purchaseCommand.getDeckIndex() != -1) {
+                    if (purchaseCommand.getDeckIndex() != -1) {
                         addSpentPanel(c, purchaseCommand.getCurrentTotalToSpend());
                     } else {
                         c.gridx = 1;
@@ -187,7 +187,7 @@ public class GUIStrongbox implements LocalModelElementObserver {
                 }
                 case PRODUCTION: {
                     Production productionCommand = (Production) commandBuffer;
-                    if(productionCommand.getProductionsToActivate() != null && productionCommand.getObtainedResources() == null) {
+                    if (productionCommand.getProductionsToActivate() != null && productionCommand.getObtainedResources() == null) {
                         addSpentPanel(c, productionCommand.getCurrentTotalToSpend());
                     } else {
                         c.gridx = 1;

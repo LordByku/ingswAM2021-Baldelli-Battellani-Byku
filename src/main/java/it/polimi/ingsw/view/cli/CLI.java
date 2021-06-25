@@ -101,7 +101,15 @@ public class CLI implements ViewInterface {
     }
 
     public static void host() {
-        System.out.println("Press ENTER to start the game:");
+        System.out.println("Type a file name to load a custom config file or press ENTER to start the game:");
+    }
+
+    public static void loadSuccessful() {
+        System.out.println("Config file loaded successfully");
+    }
+
+    public static void loadFailed() {
+        System.out.println("An error occurred loading the file");
     }
 
     public static void waitStart() {

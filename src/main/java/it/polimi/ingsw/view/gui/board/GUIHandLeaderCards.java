@@ -25,12 +25,12 @@ public class GUIHandLeaderCards implements LocalModelElementObserver {
     private final Client client;
     private final GUI gui;
     private final Player player;
-    private JPanel handLeaderCardsPanel;
-    private int numOfCardsToDiscard;
-    private HandLeaderCardsArea handLeaderCardsArea;
-    private ArrayList<Integer> initDiscardSelection;
-    private ArrayList<Integer> handLeaderCards;
-    private String nickname;
+    private final JPanel handLeaderCardsPanel;
+    private final int numOfCardsToDiscard;
+    private final HandLeaderCardsArea handLeaderCardsArea;
+    private final ArrayList<Integer> initDiscardSelection;
+    private final ArrayList<Integer> handLeaderCards;
+    private final String nickname;
 
     public GUIHandLeaderCards(GUI gui, Client client, JPanel handLeaderCardsPanel, String nickname) {
         this.client = client;

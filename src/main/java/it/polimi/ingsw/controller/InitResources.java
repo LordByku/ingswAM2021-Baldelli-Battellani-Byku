@@ -2,7 +2,6 @@ package it.polimi.ingsw.controller;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import it.polimi.ingsw.editor.model.Config;
 import it.polimi.ingsw.model.game.Game;
 import it.polimi.ingsw.model.game.Person;
 import it.polimi.ingsw.model.playerBoard.resourceLocations.Warehouse;
@@ -17,7 +16,7 @@ import java.util.HashSet;
 import java.util.function.Consumer;
 
 public class InitResources extends CommandBuffer {
-    private ConcreteResourceSet[] resources;
+    private final ConcreteResourceSet[] resources;
 
     protected InitResources(CommandType commandType, Person person) {
         super(commandType, person);
@@ -27,7 +26,7 @@ public class InitResources extends CommandBuffer {
         }
 
         resources = new ConcreteResourceSet[BoardParser.getInstance().getDepotSizes().size()];
-        for(int i = 0; i < resources.length; ++i) {
+        for (int i = 0; i < resources.length; ++i) {
             resources[i] = new ConcreteResourceSet();
         }
     }
@@ -35,7 +34,7 @@ public class InitResources extends CommandBuffer {
     @Override
     public boolean isReady() {
         ConcreteResourceSet totalResources = new ConcreteResourceSet();
-        for(ConcreteResourceSet depotResources: resources) {
+        for (ConcreteResourceSet depotResources : resources) {
             totalResources.union(depotResources);
         }
         Person person = getPerson();
@@ -64,7 +63,7 @@ public class InitResources extends CommandBuffer {
     public Consumer<GameStateSerializer> cancel() {
         Person person = getPerson();
         Warehouse warehouse = person.getBoard().getWarehouse();
-        for(int i = 0; i < resources.length; ++i) {
+        for (int i = 0; i < resources.length; ++i) {
             warehouse.removeResources(i, resources[i]);
         }
 
@@ -124,7 +123,7 @@ public class InitResources extends CommandBuffer {
         int resourcesToReceive = InitGameParser.getInstance().getInitResources(playerIndex);
 
         if (totalSize <= resourcesToReceive) {
-            for(int i = 0; i < resources.length; ++i) {
+            for (int i = 0; i < resources.length; ++i) {
                 this.resources[i].union(resources[i]);
                 warehouse.addResources(i, resources[i]);
             }
