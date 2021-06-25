@@ -37,12 +37,7 @@ public class VRSPanelHandler extends PanelHandler {
 
             VaticanReportSection vaticanReportSection = vaticanReportSections.get(i);
 
-            EditorGUIUtil.addButton("+", panel, new ButtonClickEvent((e) -> {
-                if (validate()) {
-                    faithTrackEditor.addVaticanReportSection(finalI, 1, 1, 1);
-                    build();
-                }
-            }));
+            addNewVRSButton(finalI);
 
             JPanel dataPanel = new JPanel();
             dataPanel.setLayout(new BoxLayout(dataPanel, BoxLayout.Y_AXIS));
@@ -67,19 +62,23 @@ public class VRSPanelHandler extends PanelHandler {
             panel.add(dataPanel);
         }
 
-        EditorGUIUtil.addButton("+", panel, new ButtonClickEvent((e) -> {
-            if (validate()) {
-                faithTrackEditor.addVaticanReportSection(vaticanReportSections.size(), 1, 1, 1);
-                build();
-            }
-        }));
+        addNewVRSButton(vaticanReportSections.size());
 
         frame.setVisible(true);
     }
 
+    private void addNewVRSButton(int index) {
+        JButton button = EditorGUIUtil.addButton("+", panel, new ButtonClickEvent((e) -> {
+            if (validate()) {
+                faithTrackEditor.addVaticanReportSection(index, 1, 1, 1);
+                build();
+            }
+        }));
+        button.setEnabled(faithTrackEditor.getVaticanReportSections().size() < 5);
+    }
+
     @Override
     public boolean validate() {
-        // TODO : limit number of vrs
         boolean result = true;
         for (ValidatableTextField validatableTextField : firstSpaceFields) {
             if (!validatableTextField.validate()) {

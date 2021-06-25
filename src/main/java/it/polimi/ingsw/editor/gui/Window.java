@@ -65,6 +65,7 @@ public class Window {
     private JPanel initFaithPoints3Panel;
     private JPanel initFaithPoints4Panel;
     private final ArrayList<ValidatableTextField> validatableTextFields;
+    private final ArrayList<PanelHandler> panelHandlers;
 
     public Window(JFrame frame) {
         loadDefaultConfigButton.addActionListener(new ButtonClickEvent((event) -> {
@@ -97,6 +98,7 @@ public class Window {
         }));
 
         validatableTextFields = new ArrayList<>();
+        panelHandlers = new ArrayList<>();
 
         FaithTrackEditor faithTrackEditor = Config.getInstance().getFaithTrackEditor();
         faithTrackLengthPanel.setLayout(new GridBagLayout());
@@ -107,9 +109,11 @@ public class Window {
 
         CheckPointsPanelHandler checkPointsPanelHandler = new CheckPointsPanelHandler(frame, checkPointsPanel);
         checkPointsPanelHandler.build();
+        panelHandlers.add(checkPointsPanelHandler);
 
         VRSPanelHandler vrsPanelHandler = new VRSPanelHandler(frame, VRSPanel);
         vrsPanelHandler.build();
+        panelHandlers.add(vrsPanelHandler);
 
         BoardEditor boardEditor = Config.getInstance().getBoardEditor();
         SpendablePanelHandler productionInPanelHandler = new SpendablePanelHandler(frame, defaultProductionInPanel, boardEditor.getDefaultProductionIn());
@@ -118,6 +122,9 @@ public class Window {
         productionOutPanelHandler.build();
         DepotsPanelHandler depotsPanelHandler = new DepotsPanelHandler(frame, depotsPanel);
         depotsPanelHandler.build();
+        panelHandlers.add(productionInPanelHandler);
+        panelHandlers.add(productionOutPanelHandler);
+        panelHandlers.add(depotsPanelHandler);
 
         developmentCardsSlotsPanel.setLayout(new GridBagLayout());
         validatableTextFields.add(EditorGUIUtil.addValidatableTextField(boardEditor.getDevelopmentCardSlots(),
@@ -186,6 +193,7 @@ public class Window {
                 devCardRequirementPanel, devCardProductionInPanel, devCardProductionOutPanel,
                 devCardSelectionBox, devCardPointsPanel, removeDevCardButton, levelGroup, colourGroup);
         devCardPanelHandler.build();
+        panelHandlers.add(devCardPanelHandler);
 
         ButtonGroup requirementsGroup = new ButtonGroup();
         requirementsGroup.add(resourcesRadioButton);
@@ -201,6 +209,7 @@ public class Window {
                 leaderCardRequirementsPanel, leaderCardEffectPanel, leaderCardSelectionBox,
                 leaderCardPointsPanel, removeLeaderCardButton, requirementsGroup, effectGroup);
         leaderCardPanelHandler.build();
+        panelHandlers.add(leaderCardPanelHandler);
 
         frame.setContentPane(panel);
         frame.setVisible(true);
@@ -210,6 +219,11 @@ public class Window {
         boolean result = true;
         for(ValidatableTextField validatableTextField: validatableTextFields) {
             if(!validatableTextField.validate()) {
+                result = false;
+            }
+        }
+        for(PanelHandler panelHandler: panelHandlers) {
+            if(!panelHandler.validate()) {
                 result = false;
             }
         }

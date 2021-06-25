@@ -35,12 +35,7 @@ public class CheckPointsPanelHandler extends PanelHandler {
 
             CheckPoint checkPoint = checkPoints.get(i);
 
-            EditorGUIUtil.addButton("+", panel, new ButtonClickEvent((e) -> {
-                if (validate()) {
-                    faithTrackEditor.addCheckPoint(finalI, new CheckPoint(1, 1));
-                    build();
-                }
-            }));
+            addNewCheckPointButton(finalI);
 
             JPanel dataPanel = new JPanel();
             dataPanel.setLayout(new BoxLayout(dataPanel, BoxLayout.Y_AXIS));
@@ -65,14 +60,19 @@ public class CheckPointsPanelHandler extends PanelHandler {
             panel.add(dataPanel);
         }
 
-        EditorGUIUtil.addButton("+", panel, new ButtonClickEvent((e) -> {
+        addNewCheckPointButton(checkPoints.size());
+
+        frame.setVisible(true);
+    }
+
+    private void addNewCheckPointButton(int index) {
+        JButton button = EditorGUIUtil.addButton("+", panel, new ButtonClickEvent((e) -> {
             if (validate()) {
-                faithTrackEditor.addCheckPoint(checkPoints.size(), new CheckPoint(1, 1));
+                faithTrackEditor.addCheckPoint(index, new CheckPoint(1, 1));
                 build();
             }
         }));
-
-        frame.setVisible(true);
+        button.setEnabled(faithTrackEditor.getCheckPoints().size() < 15);
     }
 
     public boolean validate() {

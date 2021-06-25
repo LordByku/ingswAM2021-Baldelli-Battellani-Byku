@@ -22,6 +22,7 @@ import it.polimi.ingsw.view.localModel.LocalModelElementObserver;
 import it.polimi.ingsw.view.localModel.Player;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
@@ -87,18 +88,48 @@ public class GUIDefaultProductionPower implements LocalModelElementObserver {
         CommandBuffer commandBuffer = player.getCommandBuffer();
         if (commandBuffer != null && !commandBuffer.isCompleted() && commandBuffer.getCommandType() == CommandType.PRODUCTION) {
             Production productionCommand = (Production) commandBuffer;
+            JPanel container = new JPanel();
+
             int[] currentSelection = productionCommand.getProductionsToActivate();
             int n = currentSelection != null ? currentSelection.length : 0;
-            JPanel container = new JPanel();
-            GUIUtil.addButton("select", container, new ButtonClickEvent((e) -> {
-                int[] selection = new int[n + 1];
-                for (int i = 0; i < n; ++i) {
-                    selection[i] = currentSelection[i];
+
+            boolean selected = false;
+            if (currentSelection != null) {
+                for(int selection: currentSelection) {
+                    if(0 == selection) {
+                        selected = true;
+                    }
                 }
-                selection[n] = 0;
-                JsonObject message = client.buildCommandMessage("selection", JsonUtil.getInstance().serialize(selection));
-                gui.bufferWrite(message.toString());
+            }
+            boolean finalSelected = selected;
+            JButton button = GUIUtil.addButton("select", container, new ButtonClickEvent((e) -> {
+                if(finalSelected) {
+                    int[] selection = new int[n - 1];
+                    for (int j = 0, k = 0; j < n; ++j) {
+                        if (currentSelection[j] != 0) {
+                            selection[k++] = currentSelection[j];
+                        }
+                    }
+                    JsonObject message = client.buildCommandMessage("selection", JsonUtil.getInstance().serialize(selection));
+                    gui.bufferWrite(message.toString());
+                } else {
+                    int[] selection = new int[n + 1];
+                    for (int j = 0; j < n; ++j) {
+                        selection[j] = currentSelection[j];
+                    }
+                    selection[n] = 0;
+                    JsonObject message = client.buildCommandMessage("selection", JsonUtil.getInstance().serialize(selection));
+                    gui.bufferWrite(message.toString());
+                }
             }));
+
+            if(selected) {
+                Border redBorder = BorderFactory.createLineBorder(Color.RED);
+                button.setBorder(redBorder);
+            } else {
+                button.setBorder(null);
+            }
+
             container.setOpaque(false);
             gbc.gridy++;
             defProdPower.add(container, gbc);

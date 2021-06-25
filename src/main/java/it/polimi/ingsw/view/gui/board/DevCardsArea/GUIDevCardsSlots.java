@@ -19,9 +19,11 @@ import it.polimi.ingsw.view.localModel.LocalModelElementObserver;
 import it.polimi.ingsw.view.localModel.Player;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class GUIDevCardsSlots implements LocalModelElementObserver {
     private final GUI gui;
@@ -102,21 +104,48 @@ public class GUIDevCardsSlots implements LocalModelElementObserver {
             if (commandBuffer != null && !commandBuffer.isCompleted() && commandBuffer.getCommandType() == CommandType.PRODUCTION) {
                 if (!deck.isEmpty()) {
                     Production productionCommand = (Production) commandBuffer;
+                    JPanel container = new JPanel();
+
                     int[] currentSelection = productionCommand.getProductionsToActivate();
                     int n = currentSelection != null ? currentSelection.length : 0;
-                    JPanel container = new JPanel();
-                    GUIUtil.addButton("select", container, new ButtonClickEvent((e) -> {
-                        int[] selection = new int[n + 1];
-                        for (int j = 0; j < n; ++j) {
-                            selection[j] = currentSelection[j];
-                        }
-                        selection[n] = finalI + 1;
-                        JsonObject message = client.buildCommandMessage("selection", JsonUtil.getInstance().serialize(selection));
-                        gui.bufferWrite(message.toString());
 
-                        // TODO : border (?)
-                        // TODO : toggle (?)
+                    boolean selected = false;
+                    if (currentSelection != null) {
+                        for(int selection: currentSelection) {
+                            if(finalI + 1 == selection) {
+                                selected = true;
+                            }
+                        }
+                    }
+                    boolean finalSelected = selected;
+                    JButton button = GUIUtil.addButton("select", container, new ButtonClickEvent((e) -> {
+                        if(finalSelected) {
+                            int[] selection = new int[n - 1];
+                            for (int j = 0, k = 0; j < n; ++j) {
+                                if (currentSelection[j] != finalI + 1) {
+                                    selection[k++] = currentSelection[j];
+                                }
+                            }
+                            JsonObject message = client.buildCommandMessage("selection", JsonUtil.getInstance().serialize(selection));
+                            gui.bufferWrite(message.toString());
+                        } else {
+                            int[] selection = new int[n + 1];
+                            for (int j = 0; j < n; ++j) {
+                                selection[j] = currentSelection[j];
+                            }
+                            selection[n] = finalI + 1;
+                            JsonObject message = client.buildCommandMessage("selection", JsonUtil.getInstance().serialize(selection));
+                            gui.bufferWrite(message.toString());
+                        }
                     }));
+
+                    if(selected) {
+                        Border redBorder = BorderFactory.createLineBorder(Color.RED);
+                        button.setBorder(redBorder);
+                    } else {
+                        button.setBorder(null);
+                    }
+
                     container.setOpaque(false);
                     c.gridy++;
                     c.insets = new Insets(0, 0, 0, 0);

@@ -4,6 +4,7 @@ import it.polimi.ingsw.editor.gui.EditorGUIUtil;
 import it.polimi.ingsw.editor.gui.components.ValidatableTextField;
 import it.polimi.ingsw.editor.model.BoardEditor;
 import it.polimi.ingsw.editor.model.Config;
+import it.polimi.ingsw.model.playerBoard.faithTrack.CheckPoint;
 import it.polimi.ingsw.view.gui.components.ButtonClickEvent;
 
 import javax.swing.*;
@@ -32,12 +33,7 @@ public class DepotsPanelHandler extends PanelHandler {
 
             int size = depotSizes.get(i);
 
-            EditorGUIUtil.addButton("+", panel, new ButtonClickEvent((e) -> {
-                if (validate()) {
-                    boardEditor.addDepot(finalI, 1);
-                    build();
-                }
-            }));
+            addNewCheckPointButton(finalI);
 
             JPanel dataPanel = new JPanel();
             dataPanel.setLayout(new BoxLayout(dataPanel, BoxLayout.Y_AXIS));
@@ -54,14 +50,19 @@ public class DepotsPanelHandler extends PanelHandler {
             panel.add(dataPanel);
         }
 
-        EditorGUIUtil.addButton("+", panel, new ButtonClickEvent((e) -> {
+        addNewCheckPointButton(depotSizes.size());
+
+        frame.setVisible(true);
+    }
+
+    private void addNewCheckPointButton(int index) {
+        JButton button = EditorGUIUtil.addButton("+", panel, new ButtonClickEvent((e) -> {
             if (validate()) {
-                boardEditor.addDepot(depotSizes.size(), 1);
+                boardEditor.addDepot(index, 1);
                 build();
             }
         }));
-
-        frame.setVisible(true);
+        button.setEnabled(boardEditor.getDepotSizes().size() < 4);
     }
 
     public boolean validate() {
