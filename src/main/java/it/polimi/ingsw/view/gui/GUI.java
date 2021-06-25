@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.devCards.CardColour;
 import it.polimi.ingsw.model.gameZone.marbles.MarbleColour;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.GUIClientUserCommunication;
+import it.polimi.ingsw.utility.JsonUtil;
 import it.polimi.ingsw.view.ViewInterface;
 import it.polimi.ingsw.view.gui.images.resources.ResourceImageType;
 import it.polimi.ingsw.view.gui.windows.BoardView;
@@ -146,6 +147,11 @@ public class GUI implements ViewInterface {
     public void startGame(String line) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("command", "startGame");
+        if (!line.equals("")) {
+            JsonObject config = JsonUtil.getInstance().parseLine(line).getAsJsonObject();
+            jsonObject.add("config", config);
+        }
+        System.out.println(jsonObject.toString());
 
         client.write(jsonObject.toString());
     }

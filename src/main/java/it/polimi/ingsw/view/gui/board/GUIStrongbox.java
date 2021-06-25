@@ -30,10 +30,10 @@ public class GUIStrongbox implements LocalModelElementObserver {
     private final Client client;
     private final JPanel strongboxPanel;
     private final Strongbox strongbox;
-    private JPanel resourcePanel;
-    private JLabel resourceQuantity;
     private final Player player;
     private final JPanel backgroundPanel;
+    private JPanel resourcePanel;
+    private JLabel resourceQuantity;
 
     public GUIStrongbox(GUI gui, Client client, JPanel strongboxPanel, String nickname) {
         this.gui = gui;

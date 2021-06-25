@@ -12,11 +12,11 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class MarbleMarketView extends GUIWindow {
+    private final JPanel marbleMarketPanel;
+    private final GUIMarbleMarket guiMarbleMarket;
     private JPanel panel;
     private JPanel marketPanel;
     private JPanel bottomPanel;
-    private final JPanel marbleMarketPanel;
-    private final GUIMarbleMarket guiMarbleMarket;
 
     public MarbleMarketView(GUI gui, Client client) {
         super(gui, client);

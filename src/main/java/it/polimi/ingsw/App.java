@@ -3,8 +3,6 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.server.Server;
 
-import java.util.Arrays;
-
 public class App {
     private static void printUsage() {
         System.out.println("To launch client:");
@@ -18,8 +16,6 @@ public class App {
             printUsage();
             return;
         }
-
-        System.out.println(Arrays.toString(args));
 
         String mode = args[0];
         if (mode.equals("server")) {

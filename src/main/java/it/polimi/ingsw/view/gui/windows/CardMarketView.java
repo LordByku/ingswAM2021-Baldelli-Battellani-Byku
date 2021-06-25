@@ -9,10 +9,10 @@ import it.polimi.ingsw.view.gui.windows.tokens.CardMarketToken;
 import javax.swing.*;
 
 public class CardMarketView extends GUIWindow {
+    private final GUICardMarket guiCardMarket;
     private JPanel bottomPanel;
     private JPanel marketPanel;
     private JPanel panel;
-    private final GUICardMarket guiCardMarket;
 
     public CardMarketView(GUI gui, Client client) {
         super(gui, client);

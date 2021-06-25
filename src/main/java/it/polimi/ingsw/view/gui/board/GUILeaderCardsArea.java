@@ -10,9 +10,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GUILeaderCardsArea implements LocalModelElementObserver {
+    private final PlayedLeaderCardsArea playedLeaderCards;
     JPanel leaderCardsArea;
     Client client;
-    private final PlayedLeaderCardsArea playedLeaderCards;
 
     public GUILeaderCardsArea(Client client, JPanel leaderCardsArea, String nickname) {
         this.client = client;

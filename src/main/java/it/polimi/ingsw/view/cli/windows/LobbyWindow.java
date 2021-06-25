@@ -28,8 +28,8 @@ public class LobbyWindow extends CLIWindow {
                 return;
             } else {
                 success = false;
-                File file = new File(line);
                 try {
+                    File file = new File(line);
                     InputStreamReader reader = new FileReader(file);
                     customConfig = new JsonParser().parse(reader).getAsJsonObject();
                     success = true;

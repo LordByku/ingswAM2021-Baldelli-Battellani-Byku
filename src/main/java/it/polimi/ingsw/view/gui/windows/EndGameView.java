@@ -10,13 +10,13 @@ import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 
 public class EndGameView extends GUIWindow {
+    private final ArrayList<EndGameResult> results;
+    private final boolean computerWins;
     int textSize = 20;
     private JPanel panel;
     private JPanel rank;
     private JTable rankingTable;
     private JButton backButton;
-    private final ArrayList<EndGameResult> results;
-    private final boolean computerWins;
 
     public EndGameView(GUI gui, Client client) {
         super(gui, client);

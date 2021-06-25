@@ -6,13 +6,13 @@ import it.polimi.ingsw.controller.CommandBuffer;
 import it.polimi.ingsw.view.localModel.LocalModelElementObserver.NotificationSource;
 
 public class Player extends LocalModelElement {
+    private final CommandElement command = new CommandElement();
     private String nickname;
     private boolean inkwell;
     private boolean initDiscard;
     private boolean initResources;
     private boolean mainAction;
     private Board board;
-    private final CommandElement command = new CommandElement();
 
     public String getNickname() {
         return nickname;

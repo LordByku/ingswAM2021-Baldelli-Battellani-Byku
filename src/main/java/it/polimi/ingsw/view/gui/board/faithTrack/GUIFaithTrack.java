@@ -16,10 +16,10 @@ import java.util.ArrayList;
 public class GUIFaithTrack implements LocalModelElementObserver {
     private final JPanel faithTrackPanel;
     private final Client client;
-    private int currPosition;
-    private Integer lolloPosition;
     private final FaithTrack faithTrack;
     private final Player player;
+    private int currPosition;
+    private Integer lolloPosition;
 
     public GUIFaithTrack(Client client, JPanel faithTrackPanel, String nickname) {
         this.client = client;

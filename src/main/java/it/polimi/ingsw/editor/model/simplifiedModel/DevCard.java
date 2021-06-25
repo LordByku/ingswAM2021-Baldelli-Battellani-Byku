@@ -10,12 +10,12 @@ import it.polimi.ingsw.model.devCards.CardLevel;
 import it.polimi.ingsw.utility.JsonUtil;
 
 public class DevCard {
-    private CardColour colour;
-    private CardLevel level;
-    private int points;
     private final ConcreteResourceSet requirements;
     private final SpendableResourceSet productionIn;
     private final ObtainableResourceSet productionOut;
+    private CardColour colour;
+    private CardLevel level;
+    private int points;
 
     public DevCard(CardColour colour, CardLevel level, int points, ConcreteResourceSet requirements,
                    SpendableResourceSet productionIn, ObtainableResourceSet productionOut) {

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view.gui.windows;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.LocalConfig;
 import it.polimi.ingsw.view.gui.GUI;
@@ -7,13 +9,20 @@ import it.polimi.ingsw.view.gui.components.ButtonClickEvent;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.io.File;
+import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Lobby extends GUIWindow {
     private JTable player;
     private JButton startGameButton;
     private JPanel panel;
+    private JLabel errorLabel;
+    private JTextField configFilename;
+    private JButton loadCustomConfigFileButton;
 
     public Lobby(GUI gui, Client client, ArrayList<String> nicknames, String hostNickname) {
         super(gui, client);
@@ -28,10 +37,31 @@ public class Lobby extends GUIWindow {
             }
         }
 
+        AtomicReference<JsonObject> customConfig = new AtomicReference<>(null);
+
         startGameButton.setEnabled(LocalConfig.getInstance().isHost());
 
         startGameButton.addActionListener(new ButtonClickEvent((event) -> {
-            gui.bufferWrite("");
+            errorLabel.setText(" ");
+            if (customConfig.get() != null) {
+                gui.bufferWrite(customConfig.get().toString());
+            } else {
+                gui.bufferWrite("");
+            }
+        }));
+
+        loadCustomConfigFileButton.setEnabled(LocalConfig.getInstance().isHost());
+
+        loadCustomConfigFileButton.addActionListener(new ButtonClickEvent((event) -> {
+            try {
+                String filename = configFilename.getText();
+                File file = new File(filename);
+                InputStreamReader reader = new FileReader(file);
+                customConfig.set(new JsonParser().parse(reader).getAsJsonObject());
+                errorLabel.setText("Config file loaded successfully");
+            } catch (Exception e) {
+                errorLabel.setText("An error occurred trying to load the file");
+            }
         }));
     }
 
@@ -67,6 +97,6 @@ public class Lobby extends GUIWindow {
 
     @Override
     public void onError(String message) {
-
+        errorLabel.setText(message);
     }
 }

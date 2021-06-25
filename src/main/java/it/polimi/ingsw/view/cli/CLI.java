@@ -109,7 +109,7 @@ public class CLI implements ViewInterface {
     }
 
     public static void loadFailed() {
-        System.out.println("An error occurred loading the file");
+        System.out.println("An error occurred trying to load the file");
     }
 
     public static void waitStart() {

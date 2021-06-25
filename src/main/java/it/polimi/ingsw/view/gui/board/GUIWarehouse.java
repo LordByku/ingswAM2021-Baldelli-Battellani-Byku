@@ -442,6 +442,7 @@ public class GUIWarehouse implements LocalModelElementObserver {
                         int row = purchaseCommand.getMarketRow(), col = purchaseCommand.getMarketCol();
                         int devCardId = client.getModel().getGameZone().getCardMarket().getDevCard(row, col);
                         ConcreteResourceSet toSpend = DevCardsParser.getInstance().getCard(devCardId).getReqResources();
+                        // TODO : apply discounts
 
                         JPanel toSpendPanel = new JPanel(new GridBagLayout());
                         int count = 0;

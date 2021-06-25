@@ -11,6 +11,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class GUIPopeFavor {
+    private final Player player;
     JPanel faithTrack;
     JPanel[][] panels;
     GridBagConstraints c;
@@ -20,7 +21,6 @@ public class GUIPopeFavor {
     Client client;
     int size;
     int numOfPlayers;
-    private final Player player;
 
     public GUIPopeFavor(Client client, JPanel faithTrack, JPanel[][] panels, GridBagConstraints c, Integer lolloPosition, String nickname, int size) {
         this.faithTrack = faithTrack;
