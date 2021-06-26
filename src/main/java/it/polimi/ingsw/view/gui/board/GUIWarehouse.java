@@ -4,6 +4,9 @@ import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.model.devCards.ProductionDetails;
+import it.polimi.ingsw.model.leaderCards.DiscountLeaderCard;
+import it.polimi.ingsw.model.leaderCards.LeaderCard;
+import it.polimi.ingsw.model.leaderCards.LeaderCardType;
 import it.polimi.ingsw.model.resources.ChoiceResource;
 import it.polimi.ingsw.model.resources.ConcreteResource;
 import it.polimi.ingsw.model.resources.resourceSets.ChoiceResourceSet;
@@ -12,6 +15,7 @@ import it.polimi.ingsw.model.resources.resourceSets.SpendableResourceSet;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.LocalConfig;
 import it.polimi.ingsw.parsing.DevCardsParser;
+import it.polimi.ingsw.parsing.LeaderCardsParser;
 import it.polimi.ingsw.utility.JsonUtil;
 import it.polimi.ingsw.view.gui.GUI;
 import it.polimi.ingsw.view.gui.GUIUtil;
@@ -57,8 +61,6 @@ public class GUIWarehouse implements LocalModelElementObserver {
         player.getCommandElement().addObserver(this, CommandType.PURCHASE);
         player.getCommandElement().addObserver(this, CommandType.PRODUCTION);
         warehouse.addObserver(this);
-
-        // TODO : check leader card depots (?)
     }
 
     public void loadWarehouse() {
@@ -79,73 +81,7 @@ public class GUIWarehouse implements LocalModelElementObserver {
             ConcreteResource concreteResource = depot.getResourceType();
             for (int j = 0; j < depotSizes.get(i); ++j) {
                 if (j < count && concreteResource != null) {
-                    JPanel resourcePanel = new ResourceImage(concreteResource.getResourceImageType(), 25);
-                    depotPanel.add(resourcePanel, c);
-
-                    if (commandBuffer != null && !commandBuffer.isCompleted() && player.getNickname().equals(client.getNickname())) {
-                        switch (commandBuffer.getCommandType()) {
-                            case MARKET: {
-                                Market marketCommand = (Market) commandBuffer;
-                                if (marketCommand.getIndex() != -1 && !marketCommand.isCompleted()) {
-                                    resourcePanel.addMouseListener(new ButtonClickEvent((e) -> {
-                                        ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
-                                        concreteResourceSet.addResource(concreteResource);
-
-                                        JsonObject value = new JsonObject();
-                                        value.addProperty("depotIndex", finalI);
-                                        value.add("resources", JsonUtil.getInstance().serialize(concreteResourceSet));
-                                        JsonObject message = client.buildCommandMessage("removeFromDepot", value);
-                                        gui.bufferWrite(message.toString());
-                                    }));
-                                }
-                                break;
-                            }
-                            case PURCHASE: {
-                                Purchase purchaseCommand = (Purchase) commandBuffer;
-                                if (purchaseCommand.getDeckIndex() != -1) {
-                                    resourcePanel.addMouseListener(new ButtonClickEvent((e) -> {
-                                        ConcreteResourceSet[] depots = new ConcreteResourceSet[warehouse.getDepots().size()];
-                                        for (int k = 0; k < depots.length; ++k) {
-                                            depots[k] = new ConcreteResourceSet();
-                                        }
-                                        ConcreteResourceSet strongBox = new ConcreteResourceSet();
-
-                                        depots[finalI].addResource(concreteResource);
-
-                                        JsonObject value = new JsonObject();
-                                        value.add("warehouse", JsonUtil.getInstance().serialize(depots));
-                                        value.add("strongbox", JsonUtil.getInstance().serialize(strongBox));
-
-                                        JsonObject message = client.buildCommandMessage("spendResources", value);
-                                        gui.bufferWrite(message.toString());
-                                    }));
-                                }
-                                break;
-                            }
-                            case PRODUCTION: {
-                                Production productionCommand = (Production) commandBuffer;
-                                if (productionCommand.getProductionsToActivate() != null) {
-                                    resourcePanel.addMouseListener(new ButtonClickEvent((e) -> {
-                                        ConcreteResourceSet[] depots = new ConcreteResourceSet[warehouse.getDepots().size()];
-                                        for (int k = 0; k < depots.length; ++k) {
-                                            depots[k] = new ConcreteResourceSet();
-                                        }
-                                        ConcreteResourceSet strongBox = new ConcreteResourceSet();
-
-                                        depots[finalI].addResource(concreteResource);
-
-                                        JsonObject value = new JsonObject();
-                                        value.add("warehouse", JsonUtil.getInstance().serialize(depots));
-                                        value.add("strongbox", JsonUtil.getInstance().serialize(strongBox));
-
-                                        JsonObject message = client.buildCommandMessage("spendResources", value);
-                                        gui.bufferWrite(message.toString());
-                                    }));
-                                }
-                                break;
-                            }
-                        }
-                    }
+                    depotPanel.add(addResourcePanel(concreteResource, commandBuffer, finalI), c);
                 } else {
                     JPanel emptyPanel = new EmptyDepotImage();
                     depotPanel.add(emptyPanel, c);
@@ -442,7 +378,14 @@ public class GUIWarehouse implements LocalModelElementObserver {
                         int row = purchaseCommand.getMarketRow(), col = purchaseCommand.getMarketCol();
                         int devCardId = client.getModel().getGameZone().getCardMarket().getDevCard(row, col);
                         ConcreteResourceSet toSpend = DevCardsParser.getInstance().getCard(devCardId).getReqResources();
-                        // TODO : apply discounts
+
+                        for (int cardId : player.getBoard().getPlayedLeaderCards().getLeaderCards()) {
+                            LeaderCard leaderCard = LeaderCardsParser.getInstance().getCard(cardId);
+                            if (leaderCard.isType(LeaderCardType.DISCOUNT)) {
+                                DiscountLeaderCard discountLeaderCard = (DiscountLeaderCard) leaderCard;
+                                toSpend = discountLeaderCard.getDiscountEffect().applyDiscount(toSpend);
+                            }
+                        }
 
                         JPanel toSpendPanel = new JPanel(new GridBagLayout());
                         int count = 0;
@@ -536,6 +479,77 @@ public class GUIWarehouse implements LocalModelElementObserver {
             backgroundPanel.add(depotsPanel);
             warehousePanel.add(backgroundPanel, c);
         }
+    }
+
+    private JPanel addResourcePanel(ConcreteResource concreteResource, CommandBuffer commandBuffer, int depotIndex) {
+        JPanel resourcePanel = new ResourceImage(concreteResource.getResourceImageType(), 25);
+
+        if (commandBuffer != null && !commandBuffer.isCompleted() && player.getNickname().equals(client.getNickname())) {
+            switch (commandBuffer.getCommandType()) {
+                case MARKET: {
+                    Market marketCommand = (Market) commandBuffer;
+                    if (marketCommand.getIndex() != -1 && !marketCommand.isCompleted()) {
+                        resourcePanel.addMouseListener(new ButtonClickEvent((e) -> {
+                            ConcreteResourceSet concreteResourceSet = new ConcreteResourceSet();
+                            concreteResourceSet.addResource(concreteResource);
+
+                            JsonObject value = new JsonObject();
+                            value.addProperty("depotIndex", depotIndex);
+                            value.add("resources", JsonUtil.getInstance().serialize(concreteResourceSet));
+                            JsonObject message = client.buildCommandMessage("removeFromDepot", value);
+                            gui.bufferWrite(message.toString());
+                        }));
+                    }
+                    break;
+                }
+                case PURCHASE: {
+                    Purchase purchaseCommand = (Purchase) commandBuffer;
+                    if (purchaseCommand.getDeckIndex() != -1) {
+                        resourcePanel.addMouseListener(new ButtonClickEvent((e) -> {
+                            ConcreteResourceSet[] depots = new ConcreteResourceSet[warehouse.getDepots().size()];
+                            for (int k = 0; k < depots.length; ++k) {
+                                depots[k] = new ConcreteResourceSet();
+                            }
+                            ConcreteResourceSet strongBox = new ConcreteResourceSet();
+
+                            depots[depotIndex].addResource(concreteResource);
+
+                            JsonObject value = new JsonObject();
+                            value.add("warehouse", JsonUtil.getInstance().serialize(depots));
+                            value.add("strongbox", JsonUtil.getInstance().serialize(strongBox));
+
+                            JsonObject message = client.buildCommandMessage("spendResources", value);
+                            gui.bufferWrite(message.toString());
+                        }));
+                    }
+                    break;
+                }
+                case PRODUCTION: {
+                    Production productionCommand = (Production) commandBuffer;
+                    if (productionCommand.getProductionsToActivate() != null) {
+                        resourcePanel.addMouseListener(new ButtonClickEvent((e) -> {
+                            ConcreteResourceSet[] depots = new ConcreteResourceSet[warehouse.getDepots().size()];
+                            for (int k = 0; k < depots.length; ++k) {
+                                depots[k] = new ConcreteResourceSet();
+                            }
+                            ConcreteResourceSet strongBox = new ConcreteResourceSet();
+
+                            depots[depotIndex].addResource(concreteResource);
+
+                            JsonObject value = new JsonObject();
+                            value.add("warehouse", JsonUtil.getInstance().serialize(depots));
+                            value.add("strongbox", JsonUtil.getInstance().serialize(strongBox));
+
+                            JsonObject message = client.buildCommandMessage("spendResources", value);
+                            gui.bufferWrite(message.toString());
+                        }));
+                    }
+                    break;
+                }
+            }
+        }
+
+        return resourcePanel;
     }
 
     @Override

@@ -5,9 +5,13 @@ import it.polimi.ingsw.controller.CommandBuffer;
 import it.polimi.ingsw.controller.CommandType;
 import it.polimi.ingsw.controller.Purchase;
 import it.polimi.ingsw.model.devCards.DevCard;
+import it.polimi.ingsw.model.leaderCards.DiscountLeaderCard;
+import it.polimi.ingsw.model.leaderCards.LeaderCard;
+import it.polimi.ingsw.model.leaderCards.LeaderCardType;
 import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.parsing.DevCardsParser;
+import it.polimi.ingsw.parsing.LeaderCardsParser;
 import it.polimi.ingsw.view.gui.GUI;
 import it.polimi.ingsw.view.gui.GUIUtil;
 import it.polimi.ingsw.view.gui.components.ButtonClickEvent;
@@ -83,6 +87,14 @@ public class GUICardMarket implements LocalModelElementObserver {
 
                             ConcreteResourceSet requirements = devCard.getReqResources();
                             ConcreteResourceSet boardResources = player.getBoard().getResources();
+
+                            for (int cardId : player.getBoard().getPlayedLeaderCards().getLeaderCards()) {
+                                LeaderCard leaderCard = LeaderCardsParser.getInstance().getCard(cardId);
+                                if (leaderCard.isType(LeaderCardType.DISCOUNT)) {
+                                    DiscountLeaderCard discountLeaderCard = (DiscountLeaderCard) leaderCard;
+                                    requirements = discountLeaderCard.getDiscountEffect().applyDiscount(requirements);
+                                }
+                            }
 
                             GUIUtil.addButton("Purchase", container, new ButtonClickEvent((e) -> {
                                 JsonObject value = new JsonObject();

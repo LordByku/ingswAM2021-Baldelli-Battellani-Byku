@@ -238,7 +238,7 @@ public class Production extends CommandBuffer {
         }
         for (int i = 0; i < resources.length; ++i) {
             ChoiceResource choiceResource = choiceResources.get(i);
-            if (choiceResource != null) {
+            if (resources[i] != null) {
                 choiceResource.makeChoice(resources[i]);
             }
         }

@@ -30,6 +30,10 @@ public class CardTypeSet implements LeaderCardRequirements {
         cardTypes.put(cardTypeDetails.getCardColour(), cardTypeDetails);
     }
 
+    public TreeMap<CardColour, CardTypeDetails> getCardTypes() {
+        return (TreeMap<CardColour, CardTypeDetails>) cardTypes.clone();
+    }
+
     /**
      * @param board the board of the current player.
      * @return true iff the card types and their quantities on the board contains
@@ -79,5 +83,10 @@ public class CardTypeSet implements LeaderCardRequirements {
     @Override
     public JPanel getRequirementsPanel(int leaderCardWidth, int leaderCardHeight) {
         return new CardTypeRequirementsPanel(cardTypes, leaderCardWidth, leaderCardHeight).getPanel();
+    }
+
+    @Override
+    public RequirementsType getRequirementsType() {
+        return RequirementsType.CARDSET;
     }
 }

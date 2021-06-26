@@ -285,4 +285,9 @@ public class ConcreteResourceSet implements ResourceSet, LeaderCardRequirements 
     public JPanel getRequirementsPanel(int leaderCardWidth, int leaderCardHeight) {
         return new ResourcesRequirementsPanel(this, leaderCardWidth, leaderCardHeight).getPanel();
     }
+
+    @Override
+    public RequirementsType getRequirementsType() {
+        return RequirementsType.RESOURCES;
+    }
 }

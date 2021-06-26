@@ -3,7 +3,15 @@ package it.polimi.ingsw.view.localModel;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.controller.CommandBuffer;
+import it.polimi.ingsw.model.devCards.CardTypeDetails;
+import it.polimi.ingsw.model.devCards.CardTypeSet;
+import it.polimi.ingsw.model.devCards.DevCard;
+import it.polimi.ingsw.model.leaderCards.LeaderCardRequirements;
+import it.polimi.ingsw.model.resources.resourceSets.ConcreteResourceSet;
+import it.polimi.ingsw.parsing.DevCardsParser;
 import it.polimi.ingsw.view.localModel.LocalModelElementObserver.NotificationSource;
+
+import java.util.ArrayList;
 
 public class Player extends LocalModelElement {
     private final CommandElement command = new CommandElement();
@@ -71,8 +79,42 @@ public class Player extends LocalModelElement {
         return model.allInitDiscard() && model.allInitResources() && hasInkwell();
     }
 
-    public boolean canPlay(LocalModel model) {
-        return model.allInitDiscard() && model.allInitResources() && hasInkwell();
+    public boolean canPlay(LocalModel model, LeaderCardRequirements leaderCardRequirements) {
+        if (model.allInitDiscard() && model.allInitResources() && hasInkwell() ) {
+            switch (leaderCardRequirements.getRequirementsType()) {
+                case CARDSET: {
+                    ArrayList<ArrayList<Integer>> decks = board.getDevCardsArea().getDecks();
+                    CardTypeSet cardTypeSet = (CardTypeSet) leaderCardRequirements;
+
+                    for (CardTypeDetails cardTypeDetails : cardTypeSet.getCardTypes().values()) {
+                        int satisfiedCount = 0;
+                        for(ArrayList<Integer> deck: decks) {
+                            for(Integer cardId: deck) {
+                                DevCard card = DevCardsParser.getInstance().getCard(cardId);
+                                if (cardTypeDetails.isSatisfied(card)) {
+                                    satisfiedCount++;
+                                }
+                            }
+                        }
+                        if (satisfiedCount < cardTypeDetails.getQuantity()) {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                }
+                case RESOURCES: {
+                    ConcreteResourceSet requirements = (ConcreteResourceSet) leaderCardRequirements;
+                    ConcreteResourceSet resources = board.getResources();
+                    return resources.contains(requirements);
+                }
+                default: {
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
     }
 
     public boolean canMainAction(LocalModel model) {

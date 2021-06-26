@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.game.actionTokens;
 import it.polimi.ingsw.model.devCards.CardColour;
 import it.polimi.ingsw.model.game.Game;
 import it.polimi.ingsw.model.gameZone.CardMarket;
+import it.polimi.ingsw.model.playerBoard.faithTrack.VRSObserver;
 import it.polimi.ingsw.view.cli.CLIPrintable;
 import it.polimi.ingsw.view.cli.TextColour;
 
@@ -11,10 +12,12 @@ import java.util.function.UnaryOperator;
 public enum ActionToken implements CLIPrintable {
     ADVANCEONCEANDRESHUFFLE(deck -> {
         deck.getFaithTrack().addFaithPoints();
+        VRSObserver.getInstance().updateVRS();
         return new ActionTokenDeck(deck.getFaithTrack());
     }, "Lorenzo il Magnifico advanced one position in his Faith Track and shuffled all the tokens"),
     ADVANCETWICE(deck -> {
         deck.getFaithTrack().addFaithPoints(2);
+        VRSObserver.getInstance().updateVRS();
         deck.removeTopToken();
         return deck;
     }, "Lorenzo il Magnifico advanced two positions in his Faith Track"),

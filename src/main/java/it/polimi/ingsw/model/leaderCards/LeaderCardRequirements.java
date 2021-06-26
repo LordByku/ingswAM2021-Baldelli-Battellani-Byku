@@ -30,4 +30,11 @@ public interface LeaderCardRequirements extends Cloneable {
     String getCLIString();
 
     JPanel getRequirementsPanel(int leaderCardWidth, int leaderCardHeight);
+
+    RequirementsType getRequirementsType();
+
+    enum RequirementsType {
+        CARDSET,
+        RESOURCES
+    }
 }

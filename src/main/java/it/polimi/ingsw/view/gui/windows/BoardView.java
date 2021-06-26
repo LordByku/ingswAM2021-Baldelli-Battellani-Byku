@@ -66,7 +66,7 @@ public class BoardView extends GUIWindow {
     }
 
     public void loadLeaderCardsArea(Client client, String nickname) {
-        guiLeaderCardsArea = new GUILeaderCardsArea(client, leaderCardsArea, nickname);
+        guiLeaderCardsArea = new GUILeaderCardsArea(gui, client, leaderCardsArea, nickname);
         guiLeaderCardsArea.loadLeaderCardsArea();
     }
 
