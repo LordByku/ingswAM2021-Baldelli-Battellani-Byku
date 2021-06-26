@@ -62,7 +62,6 @@ public class GUICardMarket implements LocalModelElementObserver {
 
                 Integer devCardId = cardMarket.getDevCard(2 - i, j);
                 if (devCardId == null) {
-                    // TODO : handle null devCardId
                     continue;
                 }
                 DevCard devCard = DevCardsParser.getInstance().getCard(devCardId);
@@ -71,7 +70,7 @@ public class GUICardMarket implements LocalModelElementObserver {
 
                 for (Player player : players) {
                     CommandBuffer commandBuffer = player.getCommandBuffer();
-                    if (commandBuffer == null) {
+                    if (commandBuffer == null || commandBuffer.isCompleted()) {
                         continue;
                     }
                     if (commandBuffer.getCommandType() == CommandType.PURCHASE) {

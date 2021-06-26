@@ -33,7 +33,7 @@ public class DiscardLeader extends CommandBuffer {
         }
 
         Person person = getPerson();
-        ArrayList<LeaderCard> leaderCards = person.getBoard().getLeaderCardArea().getLeaderCards();
+        ArrayList<LeaderCard> leaderCards = person.getBoard().getLeaderCardArea().getHandLeaderCards();
         leaderCards.get(index).discard();
 
         setCompleted();
@@ -66,7 +66,7 @@ public class DiscardLeader extends CommandBuffer {
 
     private void setIndex(int index) {
         Person person = getPerson();
-        ArrayList<LeaderCard> leaderCards = person.getBoard().getLeaderCardArea().getLeaderCards();
+        ArrayList<LeaderCard> leaderCards = person.getBoard().getLeaderCardArea().getHandLeaderCards();
 
         if (index >= 0 && index < leaderCards.size()) {
             this.index = index;

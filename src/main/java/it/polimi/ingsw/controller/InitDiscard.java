@@ -39,7 +39,7 @@ public class InitDiscard extends CommandBuffer {
         ArrayList<LeaderCard> toDiscard = new ArrayList<>();
 
         Person person = getPerson();
-        ArrayList<LeaderCard> leaderCards = person.getBoard().getLeaderCardArea().getLeaderCards();
+        ArrayList<LeaderCard> leaderCards = person.getBoard().getLeaderCardArea().getHandLeaderCards();
         for (int index : indices) {
             toDiscard.add(leaderCards.get(index));
         }
@@ -87,7 +87,7 @@ public class InitDiscard extends CommandBuffer {
 
         HashSet<Integer> set = new HashSet<>();
         Person person = getPerson();
-        ArrayList<LeaderCard> handLeaderCards = person.getBoard().getLeaderCardArea().getLeaderCards();
+        ArrayList<LeaderCard> handLeaderCards = person.getBoard().getLeaderCardArea().getHandLeaderCards();
         for (int index : indices) {
             if (index < 0 || index >= handLeaderCards.size()) {
                 return;

@@ -184,7 +184,7 @@ public class Game {
         return gameZone;
     }
 
-    public void endGame() {
+    private void endGame() {
         gameEnded = true;
     }
 

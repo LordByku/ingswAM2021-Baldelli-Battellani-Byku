@@ -47,6 +47,16 @@ public class LeaderCardArea implements Scoring {
         return (ArrayList<LeaderCard>) leaderCards.clone();
     }
 
+    public ArrayList<LeaderCard> getHandLeaderCards() {
+        ArrayList<LeaderCard> handLeaderCards = new ArrayList<>();
+        for (LeaderCard leaderCard : leaderCards) {
+            if (!leaderCard.isActive()) {
+                handLeaderCards.add(leaderCard);
+            }
+        }
+        return handLeaderCards;
+    }
+
     /**
      * getPoints returns the points awarded by the LeaderCards played in this LeaderCardArea
      *

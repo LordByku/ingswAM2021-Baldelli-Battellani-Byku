@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.images.leaderCard;
 
 import it.polimi.ingsw.model.leaderCards.LeaderCardDepot;
+import it.polimi.ingsw.view.gui.images.resources.ResourceImageType;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -9,8 +10,8 @@ import java.io.IOException;
 import java.net.URL;
 
 public class ResourceDepotImage extends JPanel {
-    private final Image image;
     private final int size;
+    private Image image;
 
     public ResourceDepotImage(LeaderCardDepot depot, int size) throws IOException {
         super(null);
@@ -28,5 +29,9 @@ public class ResourceDepotImage extends JPanel {
         if (image != null) {
             g.drawImage(image, 0, 0, size, size, null);
         }
+    }
+
+    public void setImage(ResourceImageType resourceImageType) {
+        this.image = resourceImageType.getImage();
     }
 }

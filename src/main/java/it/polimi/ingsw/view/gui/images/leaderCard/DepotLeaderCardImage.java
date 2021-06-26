@@ -6,8 +6,11 @@ import it.polimi.ingsw.model.leaderCards.LeaderCardDepot;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class DepotLeaderCardImage extends LeaderCardImage {
+    private final ArrayList<ResourceDepotImage> resourceDepotImages;
+
     public DepotLeaderCardImage(DepotLeaderCard leaderCard, int width) throws IOException {
         super("4", leaderCard, width);
 
@@ -17,15 +20,22 @@ public class DepotLeaderCardImage extends LeaderCardImage {
 
         LeaderCardDepot depot = leaderCard.getDepot();
 
+        resourceDepotImages = new ArrayList<>();
         for (int i = 0; i < depot.getSlots(); ++i) {
             JPanel container = new JPanel();
             container.setLayout(new GridBagLayout());
 
-            container.add(new ResourceDepotImage(depot, width / 7));
+            ResourceDepotImage resourceDepotImage = new ResourceDepotImage(depot, width / 7);
+            container.add(resourceDepotImage);
+            resourceDepotImages.add(resourceDepotImage);
 
             depotsPanel.add(container);
         }
 
         this.add(depotsPanel);
+    }
+
+    public ArrayList<ResourceDepotImage> getResourceDepotImages() {
+        return resourceDepotImages;
     }
 }

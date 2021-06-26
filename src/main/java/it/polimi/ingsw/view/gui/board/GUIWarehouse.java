@@ -37,6 +37,10 @@ import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class GUIWarehouse implements LocalModelElementObserver {
+    private static AtomicReference<JPanel> selectedPanel = new AtomicReference<>();
+    private static AtomicReference<ConcreteResource> selectedResource = new AtomicReference<>();
+    private static AtomicReference<JButton> selectedButton = new AtomicReference<>();
+    private static AtomicReference<Integer> selectedIndex = new AtomicReference<>();
     private final GUI gui;
     private final Player player;
     private final Warehouse warehouse;
@@ -63,10 +67,29 @@ public class GUIWarehouse implements LocalModelElementObserver {
         warehouse.addObserver(this);
     }
 
+    protected static AtomicReference<JPanel> getSelectedPanelReference() {
+        return selectedPanel;
+    }
+
+    protected static AtomicReference<ConcreteResource> getSelectedResourceReference() {
+        return selectedResource;
+    }
+
+    protected static AtomicReference<JButton> getSelectedButtonReference() {
+        return selectedButton;
+    }
+
+    protected static AtomicReference<Integer> getSelectedIndexReference() {
+        return selectedIndex;
+    }
+
     public void loadWarehouse() {
+        selectedPanel = new AtomicReference<>();
+        selectedResource = new AtomicReference<>();
+        selectedButton = new AtomicReference<>();
+        selectedIndex = new AtomicReference<>();
+
         CommandBuffer commandBuffer = player.getCommandBuffer();
-        AtomicReference<JPanel> selectedPanel = new AtomicReference<>();
-        AtomicReference<ConcreteResource> selectedResource = new AtomicReference<>();
 
         JPanel depotsPanel = new JPanel(new GridBagLayout());
         depotsPanel.setOpaque(false);
@@ -314,9 +337,6 @@ public class GUIWarehouse implements LocalModelElementObserver {
                             obtainedPanel.add(buttonPanel, c);
                         }
 
-                        AtomicReference<JButton> selectedButton = new AtomicReference<>();
-                        AtomicReference<Integer> selectedIndex = new AtomicReference<>();
-
                         JPanel switchPanel = new JPanel(new GridBagLayout());
                         GridBagConstraints gbc = new GridBagConstraints();
                         for (int i = 0; i < 3; i++) {
@@ -326,7 +346,7 @@ public class GUIWarehouse implements LocalModelElementObserver {
                             button.setPreferredSize(new Dimension(80, 20));
                             button.setFont(new Font("Arial", Font.PLAIN, 10));
 
-                            button.addMouseListener(new ButtonClickEvent((e) -> {
+                            button.addActionListener(new ButtonClickEvent((e) -> {
                                 if (selectedButton.get() == null) {
                                     Border redBorder = BorderFactory.createLineBorder(Color.RED);
                                     button.setBorder(redBorder);
@@ -554,6 +574,7 @@ public class GUIWarehouse implements LocalModelElementObserver {
 
     @Override
     public void notifyObserver(NotificationSource notificationSource) {
+        System.out.println("WAREHOUSE UPDATE");
         SwingUtilities.invokeLater(() -> {
             backgroundPanel.removeAll();
             warehousePanel.removeAll();

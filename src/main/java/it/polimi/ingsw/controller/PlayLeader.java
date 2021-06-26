@@ -29,7 +29,7 @@ public class PlayLeader extends CommandBuffer {
     @Override
     public Consumer<GameStateSerializer> complete() throws CommandNotCompleteException {
         Person person = getPerson();
-        ArrayList<LeaderCard> leaderCards = person.getBoard().getLeaderCardArea().getLeaderCards();
+        ArrayList<LeaderCard> leaderCards = person.getBoard().getLeaderCardArea().getHandLeaderCards();
         leaderCards.get(index).play();
 
         setCompleted();
@@ -63,7 +63,7 @@ public class PlayLeader extends CommandBuffer {
 
     private void setIndex(int index) {
         Person person = getPerson();
-        ArrayList<LeaderCard> leaderCards = person.getBoard().getLeaderCardArea().getLeaderCards();
+        ArrayList<LeaderCard> leaderCards = person.getBoard().getLeaderCardArea().getHandLeaderCards();
 
         if (index < 0 || index >= leaderCards.size()) {
             return;

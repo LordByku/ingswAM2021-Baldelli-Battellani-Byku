@@ -63,7 +63,7 @@ public class CardMarket {
         }
         DevCard card = decks[levelRow][colourColumn].removeTop();
         if (Game.getInstance().getNumberOfPlayers() == 1 && hasEmptyColour()) {
-            Game.getInstance().endGame();
+            Game.getInstance().setLastTurn();
         }
 
         return card;

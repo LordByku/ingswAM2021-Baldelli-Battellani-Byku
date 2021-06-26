@@ -80,7 +80,7 @@ public class Player extends LocalModelElement {
     }
 
     public boolean canPlay(LocalModel model, LeaderCardRequirements leaderCardRequirements) {
-        if (model.allInitDiscard() && model.allInitResources() && hasInkwell() ) {
+        if (model.allInitDiscard() && model.allInitResources() && hasInkwell()) {
             switch (leaderCardRequirements.getRequirementsType()) {
                 case CARDSET: {
                     ArrayList<ArrayList<Integer>> decks = board.getDevCardsArea().getDecks();
@@ -88,8 +88,8 @@ public class Player extends LocalModelElement {
 
                     for (CardTypeDetails cardTypeDetails : cardTypeSet.getCardTypes().values()) {
                         int satisfiedCount = 0;
-                        for(ArrayList<Integer> deck: decks) {
-                            for(Integer cardId: deck) {
+                        for (ArrayList<Integer> deck : decks) {
+                            for (Integer cardId : deck) {
                                 DevCard card = DevCardsParser.getInstance().getCard(cardId);
                                 if (cardTypeDetails.isSatisfied(card)) {
                                     satisfiedCount++;
