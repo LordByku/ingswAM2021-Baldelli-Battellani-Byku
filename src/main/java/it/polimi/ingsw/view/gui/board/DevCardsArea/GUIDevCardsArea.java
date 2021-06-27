@@ -38,10 +38,12 @@ public class GUIDevCardsArea implements LocalModelElementObserver {
     @Override
     public void notifyObserver(NotificationSource notificationSource) {
         SwingUtilities.invokeLater(() -> {
-            devCardsArea.removeAll();
-            loadSlots();
-            devCardsArea.revalidate();
-            devCardsArea.repaint();
+            synchronized (client.getModel()) {
+                devCardsArea.removeAll();
+                loadSlots();
+                devCardsArea.revalidate();
+                devCardsArea.repaint();
+            }
         });
     }
 

@@ -163,10 +163,12 @@ public class GUIDevCardsSlots implements LocalModelElementObserver {
     @Override
     public void notifyObserver(NotificationSource notificationSource) {
         SwingUtilities.invokeLater(() -> {
-            slotsPanel.removeAll();
-            loadDevCardsSlots();
-            slotsPanel.revalidate();
-            slotsPanel.repaint();
+            synchronized (client.getModel()) {
+                slotsPanel.removeAll();
+                loadDevCardsSlots();
+                slotsPanel.revalidate();
+                slotsPanel.repaint();
+            }
         });
     }
 

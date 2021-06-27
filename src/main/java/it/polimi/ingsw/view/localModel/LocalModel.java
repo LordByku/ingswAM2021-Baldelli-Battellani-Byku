@@ -24,7 +24,7 @@ public class LocalModel extends LocalModelElement implements CLIPrintable {
     }
 
     @Override
-    public void updateModel(JsonElement modelJson) {
+    public synchronized void updateModel(JsonElement modelJson) {
         JsonObject modelObject = modelJson.getAsJsonObject();
         if (modelObject.has("gameZone")) {
             gameZone.updateModel(modelObject.getAsJsonObject("gameZone"));

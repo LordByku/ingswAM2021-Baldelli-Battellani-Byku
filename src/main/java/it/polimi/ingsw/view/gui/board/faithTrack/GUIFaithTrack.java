@@ -99,10 +99,12 @@ public class GUIFaithTrack implements LocalModelElementObserver {
     public void notifyObserver(NotificationSource notificationSource) {
         // TODO : only update positions ?
         SwingUtilities.invokeLater(() -> {
-            faithTrackPanel.removeAll();
-            loadFaithTrack();
-            faithTrackPanel.revalidate();
-            faithTrackPanel.repaint();
+            synchronized (client.getModel()) {
+                faithTrackPanel.removeAll();
+                loadFaithTrack();
+                faithTrackPanel.revalidate();
+                faithTrackPanel.repaint();
+            }
         });
     }
 

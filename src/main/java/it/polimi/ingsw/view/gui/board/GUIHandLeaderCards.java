@@ -126,10 +126,12 @@ public class GUIHandLeaderCards implements LocalModelElementObserver {
     @Override
     public void notifyObserver(NotificationSource notificationSource) {
         SwingUtilities.invokeLater(() -> {
-            handLeaderCardsPanel.removeAll();
-            loadHandLeaderCards();
-            handLeaderCardsPanel.revalidate();
-            handLeaderCardsPanel.repaint();
+            synchronized (client.getModel()) {
+                handLeaderCardsPanel.removeAll();
+                loadHandLeaderCards();
+                handLeaderCardsPanel.revalidate();
+                handLeaderCardsPanel.repaint();
+            }
         });
     }
 

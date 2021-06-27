@@ -126,10 +126,12 @@ public class GUICardMarket implements LocalModelElementObserver {
         }
 
         SwingUtilities.invokeLater(() -> {
-            marketPanel.removeAll();
-            loadCardMarket();
-            marketPanel.revalidate();
-            marketPanel.repaint();
+            synchronized (client.getModel()) {
+                marketPanel.removeAll();
+                loadCardMarket();
+                marketPanel.revalidate();
+                marketPanel.repaint();
+            }
         });
     }
 

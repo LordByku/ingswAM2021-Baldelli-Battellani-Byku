@@ -5,10 +5,6 @@ import it.polimi.ingsw.controller.CommandBuffer;
 import it.polimi.ingsw.controller.CommandType;
 import it.polimi.ingsw.controller.Production;
 import it.polimi.ingsw.model.devCards.ProductionDetails;
-import it.polimi.ingsw.model.resources.ChoiceResource;
-import it.polimi.ingsw.model.resources.ConcreteResource;
-import it.polimi.ingsw.model.resources.FullChoiceSet;
-import it.polimi.ingsw.model.resources.resourceSets.ChoiceResourceSet;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.LocalConfig;
 import it.polimi.ingsw.utility.JsonUtil;
@@ -57,7 +53,8 @@ public class GUIDefaultProductionPower implements LocalModelElementObserver {
         gbc.gridx = 0;
         gbc.gridy = 0;
 
-        ChoiceResourceSet choiceResourceSet = new ChoiceResourceSet();
+        // tests
+        /*ChoiceResourceSet choiceResourceSet = new ChoiceResourceSet();
         for (ConcreteResource concreteResource : ConcreteResource.values()) {
             for (int i = 0; i < 10; ++i) {
                 choiceResourceSet.addResource(concreteResource);
@@ -65,7 +62,7 @@ public class GUIDefaultProductionPower implements LocalModelElementObserver {
         }
         for (int i = 0; i < 10; ++i) {
             choiceResourceSet.addResource(new ChoiceResource(new FullChoiceSet()));
-        }
+        }*/
 
         JPanel inputPanel = new ProductionInPanel(defaultProductionPower.getInput(), null, 18).getPanel();
         productionPanel.add(inputPanel);
@@ -139,10 +136,12 @@ public class GUIDefaultProductionPower implements LocalModelElementObserver {
     @Override
     public void notifyObserver(NotificationSource notificationSource) {
         SwingUtilities.invokeLater(() -> {
-            defProdPower.removeAll();
-            loadDefaultProductionPower();
-            defProdPower.revalidate();
-            defProdPower.repaint();
+            synchronized (client.getModel()) {
+                defProdPower.removeAll();
+                loadDefaultProductionPower();
+                defProdPower.revalidate();
+                defProdPower.repaint();
+            }
         });
     }
 

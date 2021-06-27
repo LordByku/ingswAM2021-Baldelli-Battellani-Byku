@@ -239,13 +239,15 @@ public class GUIStrongbox implements LocalModelElementObserver {
     @Override
     public void notifyObserver(NotificationSource notificationSource) {
         SwingUtilities.invokeLater(() -> {
-            backgroundPanel.removeAll();
-            strongboxPanel.removeAll();
-            loadStrongbox();
-            backgroundPanel.revalidate();
-            backgroundPanel.repaint();
-            strongboxPanel.revalidate();
-            strongboxPanel.repaint();
+            synchronized (client.getModel()) {
+                backgroundPanel.removeAll();
+                strongboxPanel.removeAll();
+                loadStrongbox();
+                backgroundPanel.revalidate();
+                backgroundPanel.repaint();
+                strongboxPanel.revalidate();
+                strongboxPanel.repaint();
+            }
         });
     }
 

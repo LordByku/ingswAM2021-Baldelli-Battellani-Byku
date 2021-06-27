@@ -95,10 +95,12 @@ public class GUICommandsPanel implements LocalModelElementObserver {
         }
 
         SwingUtilities.invokeLater(() -> {
-            commandsPanel.removeAll();
-            loadCommandsPanel();
-            commandsPanel.revalidate();
-            commandsPanel.repaint();
+            synchronized (client.getModel()) {
+                commandsPanel.removeAll();
+                loadCommandsPanel();
+                commandsPanel.revalidate();
+                commandsPanel.repaint();
+            }
         });
     }
 

@@ -576,14 +576,16 @@ public class GUIWarehouse implements LocalModelElementObserver {
     public void notifyObserver(NotificationSource notificationSource) {
         System.out.println("WAREHOUSE UPDATE");
         SwingUtilities.invokeLater(() -> {
-            backgroundPanel.removeAll();
-            warehousePanel.removeAll();
-            loadWarehouse();
+            synchronized (client.getModel()) {
+                backgroundPanel.removeAll();
+                warehousePanel.removeAll();
+                loadWarehouse();
 
-            warehousePanel.revalidate();
-            backgroundPanel.revalidate();
-            warehousePanel.repaint();
-            backgroundPanel.repaint();
+                warehousePanel.revalidate();
+                backgroundPanel.revalidate();
+                warehousePanel.repaint();
+                backgroundPanel.repaint();
+            }
         });
     }
 
