@@ -223,8 +223,8 @@ public class GUIWarehouse implements LocalModelElementObserver {
                                     JPanel container = new JPanel();
                                     JPanel imagePanel = new ResourceImage(resourceImageType, 25);
                                     container.add(imagePanel);
-                                    c.gridx = count / 2;
-                                    c.gridy = count % 2;
+                                    c.gridx = count / 3;
+                                    c.gridy = count % 3;
                                     concretePanel.add(container, c);
                                     count++;
                                 }
@@ -274,8 +274,8 @@ public class GUIWarehouse implements LocalModelElementObserver {
                                 }));
 
                                 container.add(imagePanel);
-                                c.gridx = count / 2;
-                                c.gridy = count % 2;
+                                c.gridx = count / 3;
+                                c.gridy = count % 3;
                                 choicePanel.add(container, c);
                                 count++;
                             }
@@ -313,8 +313,8 @@ public class GUIWarehouse implements LocalModelElementObserver {
                                     }));
 
                                     container.add(imagePanel);
-                                    c.gridx = count / 2;
-                                    c.gridy = count % 2;
+                                    c.gridx = count / 3;
+                                    c.gridy = count % 3;
                                     concretePanel.add(container, c);
                                     count++;
 
@@ -339,7 +339,7 @@ public class GUIWarehouse implements LocalModelElementObserver {
 
                         JPanel switchPanel = new JPanel(new GridBagLayout());
                         GridBagConstraints gbc = new GridBagConstraints();
-                        for (int i = 0; i < 3; i++) {
+                        for (int i = 0; i < LocalConfig.getInstance().getNumberOfDepots(); i++) {
                             int finalI = i;
 
                             JButton button = new JButton("switch");
@@ -415,8 +415,8 @@ public class GUIWarehouse implements LocalModelElementObserver {
                                 JPanel container = new JPanel();
                                 JPanel imagePanel = new ResourceImage(resourceImageType, 25);
                                 container.add(imagePanel);
-                                c.gridx = count / 2;
-                                c.gridy = count % 2;
+                                c.gridx = count / 3;
+                                c.gridy = count % 3;
                                 toSpendPanel.add(container, c);
                                 count++;
                             }
@@ -457,8 +457,8 @@ public class GUIWarehouse implements LocalModelElementObserver {
                                 JPanel container = new JPanel();
                                 JPanel imagePanel = new ResourceImage(resourceImageType, 25);
                                 container.add(imagePanel);
-                                c.gridx = count / 2;
-                                c.gridy = count % 2;
+                                c.gridx = count / 3;
+                                c.gridy = count % 3;
                                 toSpendPanel.add(container, c);
                                 count++;
                             }
@@ -468,8 +468,8 @@ public class GUIWarehouse implements LocalModelElementObserver {
                             JPanel container = new JPanel();
                             JPanel imagePanel = new ResourceImage(resourceImageType, 25);
                             container.add(imagePanel);
-                            c.gridx = count / 2;
-                            c.gridy = count % 2;
+                            c.gridx = count / 3;
+                            c.gridy = count % 3;
                             toSpendPanel.add(container, c);
                             count++;
                         }

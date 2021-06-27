@@ -15,7 +15,7 @@ public class DevCardsParser {
     private static DevCardsParser instance;
     private final Gson gson;
     private final Parser parser;
-    private final DevCard[] map;
+    private DevCard[] map;
     private JsonArray developmentCards;
     private int currentCard;
 
@@ -41,6 +41,8 @@ public class DevCardsParser {
 
     public void setConfig(JsonObject config) {
         developmentCards = (JsonArray) config.get("developmentCards");
+        map = new DevCard[developmentCards.size()];
+        DevCard.clearIds();
     }
 
     public DevCard getCard(int index) throws NoConfigFileException {

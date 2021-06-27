@@ -124,7 +124,9 @@ public class LeaderCardPanelHandler extends PanelHandler {
         for (int i = 0; i < leaderCards.size(); i++) {
             leaderCardSelectionBox.addItem(i);
         }
-        leaderCardSelectionBox.addItem("Add new card");
+        if (leaderCards.size() < 30) {
+            leaderCardSelectionBox.addItem("Add new card");
+        }
 
         leaderCardSelectionBox.setSelectedIndex(selection);
     }

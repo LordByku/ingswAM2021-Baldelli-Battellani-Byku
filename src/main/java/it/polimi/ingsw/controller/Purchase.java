@@ -121,7 +121,11 @@ public class Purchase extends CommandBuffer {
 
                 setDeckSelection(deckIndex);
 
-                return null;
+                if (isReady()) {
+                    return complete();
+                } else {
+                    return null;
+                }
             }
             case "spendResources": {
                 if (marketRow == -1 || marketCol == -1) {

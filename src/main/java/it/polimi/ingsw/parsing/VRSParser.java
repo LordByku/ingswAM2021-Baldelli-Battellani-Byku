@@ -9,7 +9,7 @@ public class VRSParser {
     private static VRSParser instance;
     private final Gson gson;
     private final Parser parser;
-    private final VaticanReportSection[] map;
+    private VaticanReportSection[] map;
     private JsonArray vaticanReportSections;
     private int currentVRS;
 
@@ -31,6 +31,8 @@ public class VRSParser {
 
     public void setConfig(JsonObject config) {
         vaticanReportSections = (JsonArray) config.get("vaticanReportSections");
+        map = new VaticanReportSection[vaticanReportSections.size()];
+        VaticanReportSection.clearIds();
     }
 
     public VaticanReportSection getVRS(int index) throws NoConfigFileException {

@@ -129,7 +129,7 @@ public class Window {
         validatableTextFields.add(EditorGUIUtil.addValidatableTextField(boardEditor.getDevelopmentCardSlots(),
                 developmentCardsSlotsPanel,
                 boardEditor::setDevelopmentCardSlots,
-                (value) -> value > 0 && value <= 5));
+                (value) -> value > 0 && value <= 4));
 
         InitGameEditor initGameEditor = Config.getInstance().getInitGameEditor();
         LeaderCardsEditor leaderCardsEditor = Config.getInstance().getLeaderCardsEditor();

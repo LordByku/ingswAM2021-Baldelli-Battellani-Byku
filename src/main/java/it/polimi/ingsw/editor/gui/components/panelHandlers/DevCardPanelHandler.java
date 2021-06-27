@@ -111,7 +111,9 @@ public class DevCardPanelHandler extends PanelHandler {
         for (int i = 0; i < devCards.size(); i++) {
             devCardSelectionBox.addItem(i);
         }
-        devCardSelectionBox.addItem("Add new card");
+        if (devCards.size() < 100) {
+            devCardSelectionBox.addItem("Add new card");
+        }
 
         devCardSelectionBox.setSelectedIndex(selection);
     }

@@ -58,6 +58,10 @@ public class VaticanReportSection {
         usedIds.add(id);
     }
 
+    public static void clearIds() {
+        usedIds.clear();
+    }
+
     /**
      * getPopeSpace is a getter of the attribute popeSpace
      *

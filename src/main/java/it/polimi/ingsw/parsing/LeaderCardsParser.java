@@ -13,7 +13,7 @@ public class LeaderCardsParser {
     private static LeaderCardsParser instance;
     private final Gson gson;
     private final Parser parser;
-    private final LeaderCard[] map;
+    private LeaderCard[] map;
     private JsonArray leaderCards;
     private int currentCard;
 
@@ -39,6 +39,8 @@ public class LeaderCardsParser {
 
     public void setConfig(JsonObject config) {
         leaderCards = (JsonArray) config.get("leaderCards");
+        map = new LeaderCard[leaderCards.size()];
+        LeaderCard.clearIds();
     }
 
     public LeaderCard getCard(int index) throws NoConfigFileException {

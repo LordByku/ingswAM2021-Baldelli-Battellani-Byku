@@ -64,6 +64,10 @@ public abstract class LeaderCard implements Scoring {
         usedIds.add(id);
     }
 
+    public static void clearIds() {
+        usedIds.clear();
+    }
+
     /**
      * isPlayable calls the Board to check if we match the requirements
      *

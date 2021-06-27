@@ -19,6 +19,8 @@ public class GUIDevCardsArea implements LocalModelElementObserver {
         this.devCardsArea = devCardsArea;
         this.client = client;
         this.nickname = nickname;
+
+        devCardsArea.setLayout(new BoxLayout(devCardsArea, BoxLayout.X_AXIS));
     }
 
     public void loadDevCardsArea() {

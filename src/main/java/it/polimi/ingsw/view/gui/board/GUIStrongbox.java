@@ -221,8 +221,8 @@ public class GUIStrongbox implements LocalModelElementObserver {
                 JPanel container = new JPanel();
                 JPanel imagePanel = new ResourceImage(resourceImageType, 25);
                 container.add(imagePanel);
-                c.gridx = count / 2;
-                c.gridy = count % 2;
+                c.gridx = count / 3;
+                c.gridy = count % 3;
                 spentPanel.add(container, c);
                 count++;
             }

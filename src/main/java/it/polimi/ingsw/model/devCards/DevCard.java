@@ -86,6 +86,10 @@ public class DevCard implements Scoring, Cloneable {
         usedIds.add(id);
     }
 
+    public static void clearIds() {
+        usedIds.clear();
+    }
+
     /**
      * @param board     the board where the card can be played
      * @param deckIndex the position of the deck where the card ca be played

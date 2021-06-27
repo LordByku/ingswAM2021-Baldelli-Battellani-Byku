@@ -181,7 +181,7 @@ public class Parser {
                 }
                 totalWarehouseSize += depotSize;
             }
-            if (BoardParser.getInstance().getDevelopmentCardsSlots() <= 0 || BoardParser.getInstance().getDevelopmentCardsSlots() > 5) {
+            if (BoardParser.getInstance().getDevelopmentCardsSlots() <= 0 || BoardParser.getInstance().getDevelopmentCardsSlots() > 4) {
                 setConfig(this.config);
                 return false;
             }
@@ -201,7 +201,9 @@ public class Parser {
 
             HashMap<CardColour, HashSet<CardLevel>> devCardMap = new HashMap<>();
             DevCard devCard;
+            int devCardCount = 0;
             while ((devCard = DevCardsParser.getInstance().getNextCard()) != null) {
+                ++devCardCount;
                 if (!devCardMap.containsKey(devCard.getColour())) {
                     devCardMap.put(devCard.getColour(), new HashSet<>());
                 }
@@ -214,9 +216,19 @@ public class Parser {
                 }
             }
 
+            if (devCardCount > 100) {
+                setConfig(this.config);
+                return false;
+            }
+
             int leaderCardsCount = 0;
             while (LeaderCardsParser.getInstance().getNextCard() != null) {
                 ++leaderCardsCount;
+            }
+
+            if (leaderCardsCount > 30) {
+                setConfig(this.config);
+                return false;
             }
 
             if (InitGameParser.getInstance().getLeaderCardsToAssign() <= 0 || 4 * InitGameParser.getInstance().getLeaderCardsToAssign() > leaderCardsCount) {
@@ -245,6 +257,7 @@ public class Parser {
 
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }

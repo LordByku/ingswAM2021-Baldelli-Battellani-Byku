@@ -152,7 +152,7 @@ public class GUIDevCardsSlots implements LocalModelElementObserver {
                 }
             }
 
-            c.gridx = i + 1;
+            c.gridx = i;
             c.gridy = 0;
             c.insets = new Insets(0, 0, 0, 0);
             c.weightx = 0.5;
