@@ -167,6 +167,12 @@ public class Warehouse implements ResourceLocation {
                 depotIndexB < 0 || depotIndexB >= depots.size()) {
             throw new InvalidDepotIndexException();
         }
+
+        // do not allow swap of a depot with itself
+        if (depotIndexA == depotIndexB) {
+            return false;
+        }
+
         ConcreteResourceSet resourceSetA = depots.get(depotIndexA).getResources();
         ConcreteResourceSet resourceSetB = depots.get(depotIndexB).getResources();
 

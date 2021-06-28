@@ -3,7 +3,6 @@ package it.polimi.ingsw.view.gui.windows;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.view.gui.GUI;
 import it.polimi.ingsw.view.gui.components.ButtonClickEvent;
-import jdk.jfr.Percentage;
 
 import javax.swing.*;
 
