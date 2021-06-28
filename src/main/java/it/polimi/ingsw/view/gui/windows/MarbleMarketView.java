@@ -49,5 +49,15 @@ public class MarbleMarketView extends GUIWindow {
     public void onError(String message) {
 
     }
+
+    @Override
+    public void connectionFailed(int timerDelay) {
+        // TODO : handle reconnection
+    }
+
+    @Override
+    public void clearErrors() {
+        // TODO : reconnection successful
+    }
 }
 

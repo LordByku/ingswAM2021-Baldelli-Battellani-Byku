@@ -99,4 +99,14 @@ public class Lobby extends GUIWindow {
     public void onError(String message) {
         errorLabel.setText(message);
     }
+
+    @Override
+    public void connectionFailed(int timerDelay) {
+        // TODO : i don't know what should happen here
+    }
+
+    @Override
+    public void clearErrors() {
+        // TODO : see connectionFailed
+    }
 }

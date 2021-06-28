@@ -37,5 +37,9 @@ public abstract class GUIWindow {
     }
 
     public abstract void onError(String message);
+
+    public abstract void connectionFailed(int timerDelay);
+
+    public abstract void clearErrors();
 }
 

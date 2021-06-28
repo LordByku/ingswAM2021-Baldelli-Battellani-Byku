@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui.windows;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.view.gui.GUI;
 import it.polimi.ingsw.view.gui.components.ButtonClickEvent;
+import jdk.jfr.Percentage;
 
 import javax.swing.*;
 
@@ -50,7 +51,14 @@ public class Welcome extends GUIWindow {
         connectionLabel.setText("Connecting to server...");
     }
 
-    public void connectionFailed() {
+    @Override
+    public void connectionFailed(int timerDelay) {
         connectionLabel.setText("There was an error connecting to the server");
+    }
+
+    @Override
+    public void clearErrors() {
+        connectionLabel.setText(" ");
+        errorLabel.setText(" ");
     }
 }

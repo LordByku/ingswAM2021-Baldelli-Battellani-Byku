@@ -66,4 +66,14 @@ public class EndGameView extends GUIWindow {
     public void onError(String message) {
 
     }
+
+    @Override
+    public void connectionFailed(int timerDelay) {
+        // TODO : close client ?
+    }
+
+    @Override
+    public void clearErrors() {
+
+    }
 }

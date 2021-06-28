@@ -78,12 +78,12 @@ public class GUI implements ViewInterface {
 
     @Override
     public void onCommand(String player, CommandBuffer commandBuffer) {
-
+        guiWindow.clearErrors();
     }
 
     @Override
     public void onUpdate() {
-
+        guiWindow.clearErrors();
     }
 
     @Override
@@ -165,13 +165,9 @@ public class GUI implements ViewInterface {
 
     @Override
     public void connectionFailed(int timerDelay) {
-        if (timerDelay > 0) {
-            // TODO: handle reconnection
-        } else {
-            SwingUtilities.invokeLater(() -> {
-                ((Welcome) guiWindow).connectionFailed();
-            });
-        }
+        SwingUtilities.invokeLater(() -> {
+            guiWindow.connectionFailed(timerDelay);
+        });
     }
 
     @Override

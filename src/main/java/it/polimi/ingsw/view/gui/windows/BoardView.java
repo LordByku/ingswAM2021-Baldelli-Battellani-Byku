@@ -105,8 +105,18 @@ public class BoardView extends GUIWindow {
 
     @Override
     public void onError(String message) {
-        // TODO : remove error message at some point (timer ?)
         errorLabel.setText(message);
+    }
+
+    @Override
+    public void connectionFailed(int timerDelay) {
+        // TODO : handle reconnection
+    }
+
+    @Override
+    public void clearErrors() {
+        // TODO : reconnection successful
+        errorLabel.setText(" ");
     }
 }
 
