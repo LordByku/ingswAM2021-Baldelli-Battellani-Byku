@@ -47,6 +47,10 @@ public class GUIDevCardsSlots implements LocalModelElementObserver {
         player.getBoard().getDevCardsArea().addObserver(this);
 
         slotsPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx=0;
+        c.gridy=0;
+        c.weightx = 0.5;
         devCardsArea.add(slotsPanel);
     }
 

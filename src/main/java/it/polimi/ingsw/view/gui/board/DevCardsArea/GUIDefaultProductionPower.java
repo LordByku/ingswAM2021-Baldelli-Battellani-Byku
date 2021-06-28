@@ -42,7 +42,11 @@ public class GUIDefaultProductionPower implements LocalModelElementObserver {
         player.getCommandElement().addObserver(this, CommandType.PRODUCTION);
 
         defProdPower = new DefaultProductionImage();
-        devCardsArea.add(defProdPower);
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx=0;
+        c.gridy=0;
+        c.weightx = 0.5;
+        devCardsArea.add(defProdPower, c);
     }
 
     public void loadDefaultProductionPower() {

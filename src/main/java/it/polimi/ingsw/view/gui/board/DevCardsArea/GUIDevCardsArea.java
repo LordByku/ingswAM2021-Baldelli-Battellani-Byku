@@ -5,6 +5,7 @@ import it.polimi.ingsw.view.gui.GUI;
 import it.polimi.ingsw.view.localModel.LocalModelElementObserver;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class GUIDevCardsArea implements LocalModelElementObserver {
     private final GUI gui;
@@ -20,7 +21,9 @@ public class GUIDevCardsArea implements LocalModelElementObserver {
         this.client = client;
         this.nickname = nickname;
 
-        devCardsArea.setLayout(new BoxLayout(devCardsArea, BoxLayout.X_AXIS));
+        GridBagLayout gbl = new GridBagLayout();
+        gbl.columnWeights = new double[] {1, 1};
+        devCardsArea.setLayout(gbl);
     }
 
     public void loadDevCardsArea() {

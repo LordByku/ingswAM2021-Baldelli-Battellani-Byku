@@ -32,21 +32,21 @@
             <border type="line"/>
             <children/>
           </grid>
-          <grid id="3e98c" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
+          <grid id="3e98c" layout-manager="GridBagLayout">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
               <gridbag top="0" left="0" bottom="0" right="5" weightx="1.0" weighty="1.0"/>
             </constraints>
             <properties>
-              <maximumSize width="1000" height="1000"/>
-              <preferredSize width="220" height="200"/>
+              <maximumSize width="2147483647" height="2147483647"/>
+              <preferredSize width="20" height="200"/>
             </properties>
             <border type="none"/>
             <children>
               <grid id="85ea6" binding="warehouse" layout-manager="GridBagLayout">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="1.0" weighty="1.0"/>
                 </constraints>
                 <properties>
                   <maximumSize width="100" height="100"/>
@@ -58,6 +58,7 @@
               <grid id="b9210" binding="strongbox" layout-manager="GridBagLayout">
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="1.0" weighty="1.0"/>
                 </constraints>
                 <properties>
                   <maximumSize width="100" height="100"/>
