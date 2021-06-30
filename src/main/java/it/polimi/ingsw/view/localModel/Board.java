@@ -32,14 +32,6 @@ public class Board extends LocalModelElement implements CLIPrintable {
             JsonElement faithTrackJson = boardObject.get("faithTrack");
             faithTrack.updateModel(faithTrackJson);
         }
-        if (boardObject.has("warehouse")) {
-            JsonElement warehouseJson = boardObject.get("warehouse");
-            warehouse.updateModel(warehouseJson);
-        }
-        if (boardObject.has("strongbox")) {
-            JsonElement strongboxJson = boardObject.get("strongbox");
-            strongbox.updateModel(strongboxJson);
-        }
         if (boardObject.has("devCards")) {
             JsonElement devCardsJson = boardObject.get("devCards");
             devCards.updateModel(devCardsJson);
@@ -51,6 +43,14 @@ public class Board extends LocalModelElement implements CLIPrintable {
         if (boardObject.has("handLeaderCards")) {
             JsonElement handLeaderCardsJson = boardObject.get("handLeaderCards");
             handLeaderCards.updateModel(handLeaderCardsJson);
+        }
+        if (boardObject.has("warehouse")) {
+            JsonElement warehouseJson = boardObject.get("warehouse");
+            warehouse.updateModel(warehouseJson);
+        }
+        if (boardObject.has("strongbox")) {
+            JsonElement strongboxJson = boardObject.get("strongbox");
+            strongbox.updateModel(strongboxJson);
         }
 
         notifyObservers(NotificationSource.BOARD);

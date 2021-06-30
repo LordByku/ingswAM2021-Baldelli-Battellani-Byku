@@ -104,6 +104,8 @@ public class GUILeaderCardsArea implements LocalModelElementObserver {
                         }
                     }));
 
+                    button.setEnabled(player.equals(client.getModel().getPlayer(client.getNickname())));
+
                     if (selected) {
                         Border redBorder = BorderFactory.createLineBorder(Color.RED);
                         button.setBorder(redBorder);
@@ -130,7 +132,7 @@ public class GUILeaderCardsArea implements LocalModelElementObserver {
                 for (int i = 0; i < depot.size(); ++i) {
                     resourceDepotImages.get(i).setImage(resource.getResourceImageType());
 
-                    if (commandBuffer != null && !commandBuffer.isCompleted()) {
+                    if (commandBuffer != null && !commandBuffer.isCompleted() && player.equals(client.getModel().getPlayer(client.getNickname()))) {
                         switch (commandBuffer.getCommandType()) {
                             case MARKET: {
                                 Market marketCommand = (Market) commandBuffer;
@@ -216,35 +218,37 @@ public class GUILeaderCardsArea implements LocalModelElementObserver {
                             }));
                         }
 
-                        JPanel buttonPanel = new JPanel(new GridBagLayout());
-                        JButton button = new JButton("switch");
-                        button.setPreferredSize(new Dimension(80, 20));
-                        button.setFont(new Font("Arial", Font.PLAIN, 10));
+                        if(player.equals(client.getModel().getPlayer(client.getNickname()))) {
+                            JPanel buttonPanel = new JPanel(new GridBagLayout());
+                            JButton button = new JButton("switch");
+                            button.setPreferredSize(new Dimension(80, 20));
+                            button.setFont(new Font("Arial", Font.PLAIN, 10));
 
-                        button.addActionListener(new ButtonClickEvent((e) -> {
-                            if (GUIWarehouse.getSelectedButtonReference().get() == null) {
-                                Border redBorder = BorderFactory.createLineBorder(Color.RED);
-                                button.setBorder(redBorder);
+                            button.addActionListener(new ButtonClickEvent((e) -> {
+                                if (GUIWarehouse.getSelectedButtonReference().get() == null) {
+                                    Border redBorder = BorderFactory.createLineBorder(Color.RED);
+                                    button.setBorder(redBorder);
 
-                                GUIWarehouse.getSelectedButtonReference().set(button);
-                                GUIWarehouse.getSelectedIndexReference().set(depotIndex);
-                            } else {
-                                int indexA = GUIWarehouse.getSelectedIndexReference().get(), indexB = depotIndex;
+                                    GUIWarehouse.getSelectedButtonReference().set(button);
+                                    GUIWarehouse.getSelectedIndexReference().set(depotIndex);
+                                } else {
+                                    int indexA = GUIWarehouse.getSelectedIndexReference().get(), indexB = depotIndex;
 
-                                GUIWarehouse.getSelectedButtonReference().get().setBorder(null);
-                                GUIWarehouse.getSelectedButtonReference().set(null);
-                                GUIWarehouse.getSelectedIndexReference().set(null);
+                                    GUIWarehouse.getSelectedButtonReference().get().setBorder(null);
+                                    GUIWarehouse.getSelectedButtonReference().set(null);
+                                    GUIWarehouse.getSelectedIndexReference().set(null);
 
-                                JsonObject value = new JsonObject();
-                                value.addProperty("depotIndexA", indexA);
-                                value.addProperty("depotIndexB", indexB);
-                                JsonObject message = client.buildCommandMessage("swapFromDepots", value);
-                                gui.bufferWrite(message.toString());
-                            }
-                        }));
+                                    JsonObject value = new JsonObject();
+                                    value.addProperty("depotIndexA", indexA);
+                                    value.addProperty("depotIndexB", indexB);
+                                    JsonObject message = client.buildCommandMessage("swapFromDepots", value);
+                                    gui.bufferWrite(message.toString());
+                                }
+                            }));
 
-                        buttonPanel.add(button);
-                        container.add(buttonPanel);
+                            buttonPanel.add(button);
+                            container.add(buttonPanel);
+                        }
                     }
                 }
             }

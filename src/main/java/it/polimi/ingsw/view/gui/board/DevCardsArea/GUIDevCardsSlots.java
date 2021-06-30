@@ -89,11 +89,6 @@ public class GUIDevCardsSlots implements LocalModelElementObserver {
                 }
             }
 
-            // for testing:
-            /*for(int j = 0; j <= i; ++j) {
-                deck.add(j);
-            }*/
-
             for (int j = deck.size() - 1; j >= 0; --j) {
                 DevCard devCard = DevCardsParser.getInstance().getCard(deck.get(j));
                 JPanel card = devCard.getDevCardImage(128);
@@ -141,6 +136,8 @@ public class GUIDevCardsSlots implements LocalModelElementObserver {
                             gui.bufferWrite(message.toString());
                         }
                     }));
+
+                    button.setEnabled(player.equals(client.getModel().getPlayer(client.getNickname())));
 
                     if (selected) {
                         Border redBorder = BorderFactory.createLineBorder(Color.RED);

@@ -71,36 +71,38 @@ public class GUIStrongbox implements LocalModelElementObserver {
                     JPanel imagePanel = new ResourceImage(resourceImageType, 25);
 
                     int finalI = i;
-                    imagePanel.addMouseListener(new ButtonClickEvent((e) -> {
-                        JPanel popupContent = new JPanel();
-                        popupContent.setLayout(new BoxLayout(popupContent, BoxLayout.X_AXIS));
+                    if(player.equals(client.getModel().getPlayer(client.getNickname()))) {
+                        imagePanel.addMouseListener(new ButtonClickEvent((e) -> {
+                            JPanel popupContent = new JPanel();
+                            popupContent.setLayout(new BoxLayout(popupContent, BoxLayout.X_AXIS));
 
-                        MouseEvent mouseEvent = (MouseEvent) e;
-                        Popup popup = PopupFactory.getSharedInstance().getPopup(imagePanel, popupContent, mouseEvent.getXOnScreen(), mouseEvent.getYOnScreen());
+                            MouseEvent mouseEvent = (MouseEvent) e;
+                            Popup popup = PopupFactory.getSharedInstance().getPopup(imagePanel, popupContent, mouseEvent.getXOnScreen(), mouseEvent.getYOnScreen());
 
-                        for (ConcreteResource concreteResource : ConcreteResource.values()) {
-                            if (choiceResource.canChoose(concreteResource)) {
-                                ResourceImageType concreteImageType = concreteResource.getResourceImageType();
-                                JPanel concreteResourcePanel = new ResourceImage(concreteImageType, 25);
+                            for (ConcreteResource concreteResource : ConcreteResource.values()) {
+                                if (choiceResource.canChoose(concreteResource)) {
+                                    ResourceImageType concreteImageType = concreteResource.getResourceImageType();
+                                    JPanel concreteResourcePanel = new ResourceImage(concreteImageType, 25);
 
-                                concreteResourcePanel.addMouseListener(new ButtonClickEvent((event) -> {
-                                    ConcreteResource[] resourcesArray = new ConcreteResource[choiceResources.size()];
-                                    resourcesArray[finalI] = concreteResource;
-                                    JsonObject message = client.buildCommandMessage("choiceSelection", JsonUtil.getInstance().serialize(resourcesArray));
-                                    gui.bufferWrite(message.toString());
-                                    popup.hide();
-                                }, true));
+                                    concreteResourcePanel.addMouseListener(new ButtonClickEvent((event) -> {
+                                            ConcreteResource[] resourcesArray = new ConcreteResource[choiceResources.size()];
+                                            resourcesArray[finalI] = concreteResource;
+                                            JsonObject message = client.buildCommandMessage("choiceSelection", JsonUtil.getInstance().serialize(resourcesArray));
+                                            gui.bufferWrite(message.toString());
+                                            popup.hide();
+                                        }, true));
 
-                                popupContent.add(concreteResourcePanel);
+                                    popupContent.add(concreteResourcePanel);
+                                }
                             }
-                        }
 
-                        GUIUtil.addButton("x", popupContent, new ButtonClickEvent((event) -> {
-                            popup.hide();
-                        }, true));
+                            GUIUtil.addButton("x", popupContent, new ButtonClickEvent((event) -> {
+                                popup.hide();
+                            }, true));
 
-                        popup.show();
-                    }));
+                            popup.show();
+                        }));
+                    }
 
                     container.add(imagePanel);
                     choicePanel.add(container, c);

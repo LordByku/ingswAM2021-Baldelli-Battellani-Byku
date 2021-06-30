@@ -124,6 +124,8 @@ public class GUIDefaultProductionPower implements LocalModelElementObserver {
                 }
             }));
 
+            button.setEnabled(player.equals(client.getModel().getPlayer(client.getNickname())));
+
             if (selected) {
                 Border redBorder = BorderFactory.createLineBorder(Color.RED);
                 button.setBorder(redBorder);

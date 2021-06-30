@@ -109,7 +109,7 @@ public class GUIWarehouse implements LocalModelElementObserver {
                     JPanel emptyPanel = new EmptyDepotImage();
                     depotPanel.add(emptyPanel, c);
 
-                    if (commandBuffer != null && commandBuffer.getCommandType() == CommandType.MARKET) {
+                    if (commandBuffer != null && commandBuffer.getCommandType() == CommandType.MARKET && player.equals(client.getModel().getPlayer(client.getNickname()))) {
                         Market marketCommand = (Market) commandBuffer;
                         if (marketCommand.getIndex() != -1 && !marketCommand.isCompleted()) {
                             emptyPanel.addMouseListener(new ButtonClickEvent((e) -> {
@@ -242,36 +242,38 @@ public class GUIWarehouse implements LocalModelElementObserver {
                                 JPanel imagePanel = new ResourceImage(resourceImageType, 25);
 
                                 int finalI = i;
-                                imagePanel.addMouseListener(new ButtonClickEvent((e) -> {
-                                    JPanel popupContent = new JPanel();
-                                    popupContent.setLayout(new BoxLayout(popupContent, BoxLayout.X_AXIS));
+                                if(player.equals(client.getModel().getPlayer(client.getNickname()))) {
+                                    imagePanel.addMouseListener(new ButtonClickEvent((e) -> {
+                                        JPanel popupContent = new JPanel();
+                                        popupContent.setLayout(new BoxLayout(popupContent, BoxLayout.X_AXIS));
 
-                                    MouseEvent mouseEvent = (MouseEvent) e;
-                                    Popup popup = PopupFactory.getSharedInstance().getPopup(imagePanel, popupContent, mouseEvent.getXOnScreen(), mouseEvent.getYOnScreen());
+                                        MouseEvent mouseEvent = (MouseEvent) e;
+                                        Popup popup = PopupFactory.getSharedInstance().getPopup(imagePanel, popupContent, mouseEvent.getXOnScreen(), mouseEvent.getYOnScreen());
 
-                                    for (ConcreteResource concreteResource : ConcreteResource.values()) {
-                                        if (choiceResource.canChoose(concreteResource)) {
-                                            ResourceImageType concreteImageType = concreteResource.getResourceImageType();
-                                            JPanel concreteResourcePanel = new ResourceImage(concreteImageType, 25);
+                                        for (ConcreteResource concreteResource : ConcreteResource.values()) {
+                                            if (choiceResource.canChoose(concreteResource)) {
+                                                ResourceImageType concreteImageType = concreteResource.getResourceImageType();
+                                                JPanel concreteResourcePanel = new ResourceImage(concreteImageType, 25);
 
-                                            concreteResourcePanel.addMouseListener(new ButtonClickEvent((event) -> {
-                                                ConcreteResource[] resourcesArray = new ConcreteResource[choiceResources.size()];
-                                                resourcesArray[finalI] = concreteResource;
-                                                JsonObject message = client.buildCommandMessage("conversion", JsonUtil.getInstance().serialize(resourcesArray));
-                                                gui.bufferWrite(message.toString());
-                                                popup.hide();
-                                            }, true));
+                                                concreteResourcePanel.addMouseListener(new ButtonClickEvent((event) -> {
+                                                    ConcreteResource[] resourcesArray = new ConcreteResource[choiceResources.size()];
+                                                    resourcesArray[finalI] = concreteResource;
+                                                    JsonObject message = client.buildCommandMessage("conversion", JsonUtil.getInstance().serialize(resourcesArray));
+                                                    gui.bufferWrite(message.toString());
+                                                    popup.hide();
+                                                }, true));
 
-                                            popupContent.add(concreteResourcePanel);
+                                                popupContent.add(concreteResourcePanel);
+                                            }
                                         }
-                                    }
 
-                                    GUIUtil.addButton("x", popupContent, new ButtonClickEvent((event) -> {
-                                        popup.hide();
-                                    }, true));
+                                        GUIUtil.addButton("x", popupContent, new ButtonClickEvent((event) -> {
+                                            popup.hide();
+                                        }, true));
 
-                                    popup.show();
-                                }));
+                                        popup.show();
+                                    }));
+                                }
 
                                 container.add(imagePanel);
                                 c.gridx = count / 3;
@@ -295,22 +297,24 @@ public class GUIWarehouse implements LocalModelElementObserver {
                                         imagePanel.setBorder(redBorder);
                                     }
 
-                                    imagePanel.addMouseListener(new ButtonClickEvent((e) -> {
-                                        if (imagePanel.equals(selectedPanel.get())) {
-                                            imagePanel.setBorder(null);
-                                            selectedPanel.set(null);
-                                            selectedResource.set(null);
-                                        } else {
-                                            if (selectedPanel.get() != null) {
-                                                selectedPanel.get().setBorder(null);
-                                            }
-                                            Border redBorder = BorderFactory.createLineBorder(Color.RED);
-                                            imagePanel.setBorder(redBorder);
+                                    if(player.equals(client.getModel().getPlayer(client.getNickname()))) {
+                                        imagePanel.addMouseListener(new ButtonClickEvent((e) -> {
+                                            if (imagePanel.equals(selectedPanel.get())) {
+                                                imagePanel.setBorder(null);
+                                                selectedPanel.set(null);
+                                                selectedResource.set(null);
+                                            } else {
+                                                if (selectedPanel.get() != null) {
+                                                    selectedPanel.get().setBorder(null);
+                                                }
+                                                Border redBorder = BorderFactory.createLineBorder(Color.RED);
+                                                imagePanel.setBorder(redBorder);
 
-                                            selectedPanel.set(imagePanel);
-                                            selectedResource.set(concreteResource);
-                                        }
-                                    }));
+                                                selectedPanel.set(imagePanel);
+                                                selectedResource.set(concreteResource);
+                                            }
+                                        }));
+                                    }
 
                                     container.add(imagePanel);
                                     c.gridx = count / 3;
@@ -323,12 +327,14 @@ public class GUIWarehouse implements LocalModelElementObserver {
 
                             JPanel buttonPanel = new JPanel(new GridBagLayout());
 
-                            JButton button = GUIUtil.addButton("Confirm", buttonPanel, new ButtonClickEvent((e) -> {
-                                JsonObject message = client.buildCommandMessage("confirmWarehouse", JsonNull.INSTANCE);
-                                gui.bufferWrite(message.toString());
-                            }));
-                            button.setPreferredSize(new Dimension(80, 20));
-                            button.setFont(new Font("Arial", Font.PLAIN, 10));
+                            if(player.equals(client.getModel().getPlayer(client.getNickname()))) {
+                                JButton button = GUIUtil.addButton("Confirm", buttonPanel, new ButtonClickEvent((e) -> {
+                                    JsonObject message = client.buildCommandMessage("confirmWarehouse", JsonNull.INSTANCE);
+                                    gui.bufferWrite(message.toString());
+                                }));
+                                button.setPreferredSize(new Dimension(80, 20));
+                                button.setFont(new Font("Arial", Font.PLAIN, 10));
+                            }
 
                             c.gridx = 0;
                             c.gridy = 0;
@@ -339,39 +345,41 @@ public class GUIWarehouse implements LocalModelElementObserver {
 
                         JPanel switchPanel = new JPanel(new GridBagLayout());
                         GridBagConstraints gbc = new GridBagConstraints();
-                        for (int i = 0; i < LocalConfig.getInstance().getNumberOfDepots(); i++) {
-                            int finalI = i;
+                        if(player.equals(client.getModel().getPlayer(client.getNickname()))) {
+                            for (int i = 0; i < LocalConfig.getInstance().getNumberOfDepots(); i++) {
+                                int finalI = i;
 
-                            JButton button = new JButton("switch");
-                            button.setPreferredSize(new Dimension(80, 20));
-                            button.setFont(new Font("Arial", Font.PLAIN, 10));
+                                JButton button = new JButton("switch");
+                                button.setPreferredSize(new Dimension(80, 20));
+                                button.setFont(new Font("Arial", Font.PLAIN, 10));
 
-                            button.addActionListener(new ButtonClickEvent((e) -> {
-                                if (selectedButton.get() == null) {
-                                    Border redBorder = BorderFactory.createLineBorder(Color.RED);
-                                    button.setBorder(redBorder);
+                                button.addActionListener(new ButtonClickEvent((e) -> {
+                                    if (selectedButton.get() == null) {
+                                        Border redBorder = BorderFactory.createLineBorder(Color.RED);
+                                        button.setBorder(redBorder);
 
-                                    selectedButton.set(button);
-                                    selectedIndex.set(finalI);
-                                } else {
-                                    int indexA = selectedIndex.get(), indexB = finalI;
+                                        selectedButton.set(button);
+                                        selectedIndex.set(finalI);
+                                    } else {
+                                        int indexA = selectedIndex.get(), indexB = finalI;
 
-                                    selectedButton.get().setBorder(null);
-                                    selectedButton.set(null);
-                                    selectedIndex.set(null);
+                                        selectedButton.get().setBorder(null);
+                                        selectedButton.set(null);
+                                        selectedIndex.set(null);
 
-                                    JsonObject value = new JsonObject();
-                                    value.addProperty("depotIndexA", indexA);
-                                    value.addProperty("depotIndexB", indexB);
-                                    JsonObject message = client.buildCommandMessage("swapFromDepots", value);
-                                    gui.bufferWrite(message.toString());
-                                }
-                            }));
+                                        JsonObject value = new JsonObject();
+                                        value.addProperty("depotIndexA", indexA);
+                                        value.addProperty("depotIndexB", indexB);
+                                        JsonObject message = client.buildCommandMessage("swapFromDepots", value);
+                                        gui.bufferWrite(message.toString());
+                                    }
+                                }));
 
-                            gbc.gridx = 0;
-                            gbc.gridy = i;
-                            gbc.insets = new Insets(4, 0, 4, 0);
-                            switchPanel.add(button, gbc);
+                                gbc.gridx = 0;
+                                gbc.gridy = i;
+                                gbc.insets = new Insets(4, 0, 4, 0);
+                                switchPanel.add(button, gbc);
+                            }
                         }
 
                         c.gridx = 0;
@@ -396,29 +404,32 @@ public class GUIWarehouse implements LocalModelElementObserver {
                     Purchase purchaseCommand = (Purchase) commandBuffer;
                     if (purchaseCommand.getDeckIndex() != -1) {
                         int row = purchaseCommand.getMarketRow(), col = purchaseCommand.getMarketCol();
-                        int devCardId = client.getModel().getGameZone().getCardMarket().getDevCard(row, col);
-                        ConcreteResourceSet toSpend = DevCardsParser.getInstance().getCard(devCardId).getReqResources();
-
-                        for (int cardId : player.getBoard().getPlayedLeaderCards().getLeaderCards()) {
-                            LeaderCard leaderCard = LeaderCardsParser.getInstance().getCard(cardId);
-                            if (leaderCard.isType(LeaderCardType.DISCOUNT)) {
-                                DiscountLeaderCard discountLeaderCard = (DiscountLeaderCard) leaderCard;
-                                toSpend = discountLeaderCard.getDiscountEffect().applyDiscount(toSpend);
-                            }
-                        }
+                        Integer devCardId = client.getModel().getGameZone().getCardMarket().getDevCard(row, col);
 
                         JPanel toSpendPanel = new JPanel(new GridBagLayout());
-                        int count = 0;
-                        for (ConcreteResource concreteResource : ConcreteResource.values()) {
-                            ResourceImageType resourceImageType = concreteResource.getResourceImageType();
-                            for (int i = 0; i < toSpend.getCount(concreteResource); ++i) {
-                                JPanel container = new JPanel();
-                                JPanel imagePanel = new ResourceImage(resourceImageType, 25);
-                                container.add(imagePanel);
-                                c.gridx = count / 3;
-                                c.gridy = count % 3;
-                                toSpendPanel.add(container, c);
-                                count++;
+                        if (devCardId != null && !player.getBoard().getDevCardsArea().getDecks().get(purchaseCommand.getDeckIndex()).contains(devCardId)) {
+                            ConcreteResourceSet toSpend = DevCardsParser.getInstance().getCard(devCardId).getReqResources();
+
+                            for (int cardId : player.getBoard().getPlayedLeaderCards().getLeaderCards()) {
+                                LeaderCard leaderCard = LeaderCardsParser.getInstance().getCard(cardId);
+                                if (leaderCard.isType(LeaderCardType.DISCOUNT)) {
+                                    DiscountLeaderCard discountLeaderCard = (DiscountLeaderCard) leaderCard;
+                                    toSpend = discountLeaderCard.getDiscountEffect().applyDiscount(toSpend);
+                                }
+                            }
+
+                            int count = 0;
+                            for (ConcreteResource concreteResource : ConcreteResource.values()) {
+                                ResourceImageType resourceImageType = concreteResource.getResourceImageType();
+                                for (int i = 0; i < toSpend.getCount(concreteResource); ++i) {
+                                    JPanel container = new JPanel();
+                                    JPanel imagePanel = new ResourceImage(resourceImageType, 25);
+                                    container.add(imagePanel);
+                                    c.gridx = count / 3;
+                                    c.gridy = count % 3;
+                                    toSpendPanel.add(container, c);
+                                    count++;
+                                }
                             }
                         }
 
