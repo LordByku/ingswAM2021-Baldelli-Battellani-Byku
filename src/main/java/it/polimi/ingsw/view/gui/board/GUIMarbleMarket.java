@@ -85,7 +85,6 @@ public class GUIMarbleMarket implements LocalModelElementObserver {
                             JsonObject message = client.buildCommandMessage("selection", value);
                             gui.bufferWrite(message.toString());
                         }), c);
-
                         // TODO: fix button size
                     }
                     offset = 126;
