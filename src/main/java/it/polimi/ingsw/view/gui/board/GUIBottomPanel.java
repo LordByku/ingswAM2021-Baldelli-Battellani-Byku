@@ -5,10 +5,7 @@ import it.polimi.ingsw.network.client.LocalConfig;
 import it.polimi.ingsw.view.gui.GUI;
 import it.polimi.ingsw.view.gui.GUIUtil;
 import it.polimi.ingsw.view.gui.components.ButtonClickEvent;
-import it.polimi.ingsw.view.gui.windows.tokens.BoardToken;
-import it.polimi.ingsw.view.gui.windows.tokens.CardMarketToken;
-import it.polimi.ingsw.view.gui.windows.tokens.MarbleMarketToken;
-import it.polimi.ingsw.view.gui.windows.tokens.WindowToken;
+import it.polimi.ingsw.view.gui.windows.tokens.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,6 +50,9 @@ public class GUIBottomPanel {
             } else {
                 addButton("View " + nickname + "'s board", new BoardToken(nickname));
             }
+        }
+        if(client.getModel().getEndGame()){
+            addButton("Ranking", new EndGameToken());
         }
     }
 }

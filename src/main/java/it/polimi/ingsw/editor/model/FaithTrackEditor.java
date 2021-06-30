@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class FaithTrackEditor {
     private int finalPosition;
     private ArrayList<CheckPoint> checkPoints;
-    private ArrayList<VaticanReportSection> vaticanReportSections;
+    private ArrayList<VaticanReportSection> vaticanReportSections = new ArrayList<>();
 
     public void addVRS(VaticanReportSection vaticanReportSection) {
         if (vaticanReportSections == null) {

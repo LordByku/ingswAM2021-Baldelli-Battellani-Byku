@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.controller.CommandBuffer;
 import it.polimi.ingsw.model.devCards.CardColour;
+import it.polimi.ingsw.model.game.actionTokens.ActionToken;
 import it.polimi.ingsw.model.gameZone.marbles.MarbleColour;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.GUIClientUserCommunication;
@@ -131,6 +132,9 @@ public class GUI implements ViewInterface {
             }
             for (MarbleColour marbleColour : MarbleColour.values()) {
                 marbleColour.loadImage();
+            }
+            for(ActionToken actionToken: ActionToken.values()) {
+                actionToken.loadImage();
             }
         } catch (IOException e) {
         }

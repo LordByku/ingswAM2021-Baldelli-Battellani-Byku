@@ -1,13 +1,16 @@
 package it.polimi.ingsw.view.gui.windows;
 
+import it.polimi.ingsw.model.game.actionTokens.ActionToken;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.view.gui.GUI;
 import it.polimi.ingsw.view.gui.board.DevCardsArea.GUIDevCardsArea;
 import it.polimi.ingsw.view.gui.board.*;
 import it.polimi.ingsw.view.gui.board.faithTrack.GUIFaithTrack;
+import it.polimi.ingsw.view.gui.images.ActionTokenImage;
 import it.polimi.ingsw.view.gui.windows.tokens.BoardToken;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class BoardView extends GUIWindow {
@@ -22,6 +25,8 @@ public class BoardView extends GUIWindow {
     private JPanel commandsPanel;
     private JPanel warehouse;
     private JPanel strongbox;
+    private JPanel actionTokensPanel;
+    private JPanel actionTokenTextPanel;
     private GUIFaithTrack guiFaithTrack;
     private GUIWarehouse guiWarehouse;
     private GUIStrongbox guiStrongbox;
@@ -29,6 +34,7 @@ public class BoardView extends GUIWindow {
     private GUIHandLeaderCards guiHandLeaderCards;
     private GUILeaderCardsArea guiLeaderCardsArea;
     private GUICommandsPanel guiCommandsPanel;
+    private GUIActionToken actionToken;
 
     public BoardView(GUI gui, Client client, String nickname) {
         super(gui, client);
@@ -53,6 +59,8 @@ public class BoardView extends GUIWindow {
         loadWarehouse(client, nickname);
         loadStrongbox(client, nickname);
         loadHandLeaderCardsArea(client, nickname);
+        if(client.isSinglePlayer())
+            loadActionTokens(client);
     }
 
     public void loadFaithTrack(Client client, String nickname) {
@@ -85,6 +93,11 @@ public class BoardView extends GUIWindow {
         guiHandLeaderCards.loadHandLeaderCards();
     }
 
+    public void loadActionTokens(Client client){
+        actionToken = new GUIActionToken(client, actionTokenTextPanel);
+        actionToken.loadActionToken();
+    }
+
     @Override
     protected JPanel getPanel() {
         return panel;
@@ -101,6 +114,8 @@ public class BoardView extends GUIWindow {
         if (nickname.equals(client.getNickname())) {
             guiCommandsPanel.clean();
         }
+        if(client.isSinglePlayer())
+            actionToken.clean();
     }
 
     @Override

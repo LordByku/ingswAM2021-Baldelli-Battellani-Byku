@@ -48,6 +48,7 @@ public class LocalModel extends LocalModelElement implements CLIPrintable {
     public void setEndGameResults(JsonObject endGameObject) {
         endGameResults = gson.fromJson(endGameObject, EndGame.class);
         endGameResults.computeVictoryPoints();
+        setEndGame();
     }
 
     public GameZone getGameZone() {

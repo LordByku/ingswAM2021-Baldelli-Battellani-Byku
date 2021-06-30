@@ -8,7 +8,7 @@ import it.polimi.ingsw.view.localModel.LocalModelElementObserver.NotificationSou
 public class GameZone extends LocalModelElement {
     private MarbleMarket marbleMarket;
     private CardMarket cardMarket;
-    private ActionTokenDeck actionTokenDeck;
+    private ActionTokenDeck actionTokenDeck = new ActionTokenDeck();
 
     @Override
     public void updateModel(JsonElement gameZoneJson) {
@@ -23,9 +23,6 @@ public class GameZone extends LocalModelElement {
         }
         if (gameZoneObject.has("actionTokenDeck")) {
             JsonElement actionTokenDeckJson = gameZoneObject.get("actionTokenDeck");
-            if (actionTokenDeck == null) {
-                actionTokenDeck = new ActionTokenDeck();
-            }
             actionTokenDeck.updateModel(actionTokenDeckJson);
         }
 
@@ -38,6 +35,10 @@ public class GameZone extends LocalModelElement {
 
     public CardMarket getCardMarket() {
         return cardMarket;
+    }
+
+    public ActionTokenDeck getActionTokenDeck() {
+        return actionTokenDeck;
     }
 
     public ActionToken getActionToken() {

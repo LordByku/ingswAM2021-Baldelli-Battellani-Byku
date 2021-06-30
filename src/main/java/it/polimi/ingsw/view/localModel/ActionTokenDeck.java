@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.game.actionTokens.ActionToken;
 import static it.polimi.ingsw.view.localModel.LocalModelElementObserver.NotificationSource;
 
 public class ActionTokenDeck extends LocalModelElement {
-    private ActionToken flippedActionToken;
+    private ActionToken flippedActionToken = null;
 
     @Override
     public void updateModel(JsonElement actionTokenDeckJson) {

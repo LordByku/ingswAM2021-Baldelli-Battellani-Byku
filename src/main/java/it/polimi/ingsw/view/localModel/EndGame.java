@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class EndGame {
     private ArrayList<EndGameResult> results;
-    private boolean computerWins;
+    private boolean computerWin;
 
     public void computeVictoryPoints() {
         for (EndGameResult endGameResult : results) {
@@ -16,7 +16,7 @@ public class EndGame {
         return results;
     }
 
-    public boolean getComputerWins() {
-        return computerWins;
+    public boolean getComputerWin() {
+        return computerWin;
     }
 }
