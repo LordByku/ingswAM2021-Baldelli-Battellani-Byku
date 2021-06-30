@@ -33,6 +33,8 @@ public class AcceptNickname extends ServerState {
                 clientHandler.broadcast("playerList", GameStateSerializer.getJsonPlayerList());
                 clientHandler.setState(new Lobby());
             }
+        } catch (GameEndedException e) {
+            clientHandler.fatalError("The game already ended");
         } catch (FullLobbyException e) {
             clientHandler.fatalError("Lobby is already full");
         } catch (ExistingNicknameException e) {

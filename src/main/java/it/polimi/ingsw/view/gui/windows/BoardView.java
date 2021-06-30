@@ -110,12 +110,12 @@ public class BoardView extends GUIWindow {
 
     @Override
     public void connectionFailed(int timerDelay) {
-        // TODO : handle reconnection
+        showReconnectionPopup(timerDelay);
     }
 
     @Override
     public void clearErrors() {
-        // TODO : reconnection successful
+        hideReconnectionPopup();
         errorLabel.setText(" ");
     }
 }

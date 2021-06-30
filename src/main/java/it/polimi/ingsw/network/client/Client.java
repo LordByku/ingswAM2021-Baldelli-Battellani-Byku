@@ -105,7 +105,9 @@ public class Client {
                 e.printStackTrace();
             }
         } else {
-            serverOut.println(message);
+            if(serverOut != null) {
+                serverOut.println(message);
+            }
         }
     }
 
@@ -132,7 +134,7 @@ public class Client {
         }
 
         try {
-            if (!getModel().getEndGame()) {
+            if (getModel() == null || !getModel().getEndGame()) {
                 connectToServer();
             }
         } catch (IOException e) {

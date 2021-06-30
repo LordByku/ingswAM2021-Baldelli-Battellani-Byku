@@ -41,8 +41,12 @@ public class Game {
     }
 
     public Player addPlayer(String nickname)
-            throws FullLobbyException, ExistingNicknameException, InvalidNicknameException, GameAlreadyStartedException {
+            throws FullLobbyException, ExistingNicknameException, InvalidNicknameException,
+            GameAlreadyStartedException, GameEndedException {
         synchronized (players) {
+            if(gameEnded) {
+                throw new GameEndedException();
+            }
             if (gameStarted) {
                 for (Player player : players) {
                     if (player.getPlayerType() == PlayerType.PERSON) {

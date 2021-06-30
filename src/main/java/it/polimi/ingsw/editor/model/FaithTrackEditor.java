@@ -117,10 +117,10 @@ public class FaithTrackEditor {
         int right = finalPosition + 1;
 
         if (index > 0) {
-            left = checkPoints.get(index - 1).getPosition();
+            left = Math.max(left, checkPoints.get(index - 1).getPosition());
         }
         if (index < checkPoints.size() - 1) {
-            right = checkPoints.get(index + 1).getPosition();
+            right = Math.min(right, checkPoints.get(index + 1).getPosition());
         }
 
         int position = checkPoints.get(index).getPosition();

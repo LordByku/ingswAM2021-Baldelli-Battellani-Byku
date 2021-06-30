@@ -10,6 +10,7 @@ import it.polimi.ingsw.network.server.serverStates.GameStarted;
 import it.polimi.ingsw.utility.JsonUtil;
 
 import java.io.IOException;
+import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -43,14 +44,17 @@ public class Server {
         ExecutorService executor = Executors.newCachedThreadPool();
         try {
             serverSocket = new ServerSocket(port);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (BindException e) {
+            System.err.println("This port cannot be used");
+            return;
+        } catch (Exception e) {
+            System.err.println("Server could not be started");
             return;
         }
 
         System.out.println("Server ready");
 
-        while (!Game.getInstance().hasGameEnded()) {
+        while (true) {
             try {
                 Socket socket = serverSocket.accept();
                 ClientHandler clientHandler = new ClientHandler(socket, this);

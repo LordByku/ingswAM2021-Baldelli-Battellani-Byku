@@ -65,7 +65,7 @@ public class GUI implements ViewInterface {
     @Override
     public void onFatalError(String message) {
         SwingUtilities.invokeLater(() -> {
-            guiWindow.onError(message);
+            guiWindow = guiWindow.onFatalError(frame, message);
         });
     }
 
@@ -140,6 +140,7 @@ public class GUI implements ViewInterface {
     public void updatePlayerList(ArrayList<String> nicknames, String hostNickname) {
         SwingUtilities.invokeLater(() -> {
             guiWindow = guiWindow.refreshPlayerList(client, frame, buffer, nicknames, hostNickname);
+            guiWindow.clearErrors();
         });
     }
 
@@ -159,7 +160,7 @@ public class GUI implements ViewInterface {
     @Override
     public void startConnection() {
         SwingUtilities.invokeLater(() -> {
-            ((Welcome) guiWindow).startConnection();
+            guiWindow.startConnection();
         });
     }
 

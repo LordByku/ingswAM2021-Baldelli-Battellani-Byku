@@ -41,11 +41,19 @@ public class Welcome extends GUIWindow {
     }
 
     @Override
+    public GUIWindow onFatalError(JFrame frame, String message) {
+        connectionLabel.setText(" ");
+        errorLabel.setText(message);
+        return this;
+    }
+
+    @Override
     public void onError(String message) {
         connectionLabel.setText(" ");
         errorLabel.setText(message);
     }
 
+    @Override
     public void startConnection() {
         connectionLabel.setText("Connecting to server...");
     }

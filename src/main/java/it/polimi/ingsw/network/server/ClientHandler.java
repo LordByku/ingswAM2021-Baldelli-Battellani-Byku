@@ -158,11 +158,9 @@ public class ClientHandler implements Runnable {
         if ("pong".equals(line)) {
             ponged = true;
         } else {
-            if (Game.getInstance().hasGameEnded()) {
-                ok("endGame", server.buildEndGameMessage());
-            } else {
+            try {
                 serverState.handleClientMessage(this, line);
-            }
+            } catch (Exception e) {}
         }
     }
 

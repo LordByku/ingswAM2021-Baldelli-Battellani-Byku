@@ -102,11 +102,11 @@ public class Lobby extends GUIWindow {
 
     @Override
     public void connectionFailed(int timerDelay) {
-        // TODO : i don't know what should happen here
+        showReconnectionPopup(timerDelay);
     }
 
     @Override
     public void clearErrors() {
-        // TODO : see connectionFailed
+        hideReconnectionPopup();
     }
 }
