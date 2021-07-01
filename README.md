@@ -24,20 +24,31 @@ AM24 - Baldelli Battellani Byku
 
 ### Server
 Per lanciare il server posizionarsi nella directory /deliverables/final/AM24_jar e lanciare da terminale il seguente comando:
+
 bash
-java -jar AM24.jar server _port_
+
+java -jar AM24.jar server _[port]_
 
 ### Client
 Per lanciare il client posizionarsi nella directory /deliverables/final/AM24_jar e lanciare da terminale il comando corrispondente alla modalità:
 
 #### CLI
 Per giocare con la CLI:
-java -jar AM24.jar client _hostname_ _port_ cli
+
+bash
+
+java -jar AM24.jar client _[hostname]_ _[port]_ cli
 
 #### GUI
-java -jar AM24.jar client _hostname_ _port_ gui
+Per giocare con la GUI:
+
+bash
+
+java -jar AM24.jar client _[hostname]_ _[port]_ gui
 
 ### Editor
 Per lanciare l'editor dei parametri posizionarsi nella directory /deliverables/final/AM24Editor_jar e lanciare da terminale il seguente comando:
+
 bash
+
 java -jar AM24.jar
