@@ -186,7 +186,9 @@ public class LocalController implements Runnable {
 
         try {
             while (!Thread.interrupted()) {
-                handleUserMessage(readBuffer.take());
+                try {
+                    handleUserMessage(readBuffer.take());
+                } catch (RuntimeException e) {}
             }
         } catch (InterruptedException e) {
         }

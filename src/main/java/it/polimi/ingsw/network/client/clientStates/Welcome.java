@@ -48,7 +48,7 @@ public class Welcome extends ClientState {
                         Game.getInstance().addPlayer(client.getNickname());
                         Game.getInstance().startSinglePlayer();
 
-                        client.setSinglePlayer(true);
+                        client.setOfflineGame(true);
 
                         ArrayList<String> turnOrder = new ArrayList<>();
                         turnOrder.add(client.getNickname());

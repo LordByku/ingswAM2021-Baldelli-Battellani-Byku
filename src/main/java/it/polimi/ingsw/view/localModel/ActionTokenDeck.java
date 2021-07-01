@@ -10,7 +10,6 @@ public class ActionTokenDeck extends LocalModelElement {
 
     @Override
     public void updateModel(JsonElement actionTokenDeckJson) {
-        // TODO : show flipped action token in gui
         flippedActionToken = gson.fromJson(actionTokenDeckJson.getAsJsonObject().get("flippedActionToken"), ActionToken.class);
         notifyObservers(NotificationSource.ACTIONTOKENDECK);
     }

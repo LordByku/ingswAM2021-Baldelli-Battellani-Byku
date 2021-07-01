@@ -235,7 +235,7 @@ public class DevCard implements Scoring, Cloneable {
 
     public DevCardImage getDevCardImage(int width) {
         try {
-            return new DevCardImage("" + id, width, this);
+            return new DevCardImage(width, this);
         } catch (IOException e) {
             return null;
         }

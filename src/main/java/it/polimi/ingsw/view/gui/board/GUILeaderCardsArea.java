@@ -251,6 +251,7 @@ public class GUILeaderCardsArea implements LocalModelElementObserver {
                         }
                     }
                 }
+                ++depotCardIndex;
             }
 
             leaderCardsArea.add(container, c);

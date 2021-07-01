@@ -40,15 +40,4 @@ public class GameZone extends LocalModelElement {
     public ActionTokenDeck getActionTokenDeck() {
         return actionTokenDeck;
     }
-
-    public ActionToken getActionToken() {
-        if (actionTokenDeck == null) {
-            return null;
-        }
-        return actionTokenDeck.getFlippedActionToken();
-    }
-
-    public void resetActionToken() {
-        actionTokenDeck.resetActionToken();
-    }
 }

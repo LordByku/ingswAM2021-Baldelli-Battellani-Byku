@@ -1,16 +1,14 @@
 package it.polimi.ingsw.view.gui.windows;
 
-import it.polimi.ingsw.model.game.actionTokens.ActionToken;
 import it.polimi.ingsw.network.client.Client;
+import it.polimi.ingsw.network.client.LocalConfig;
 import it.polimi.ingsw.view.gui.GUI;
 import it.polimi.ingsw.view.gui.board.DevCardsArea.GUIDevCardsArea;
 import it.polimi.ingsw.view.gui.board.*;
 import it.polimi.ingsw.view.gui.board.faithTrack.GUIFaithTrack;
-import it.polimi.ingsw.view.gui.images.ActionTokenImage;
 import it.polimi.ingsw.view.gui.windows.tokens.BoardToken;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class BoardView extends GUIWindow {
@@ -59,7 +57,7 @@ public class BoardView extends GUIWindow {
         loadWarehouse(client, nickname);
         loadStrongbox(client, nickname);
         loadHandLeaderCardsArea(client, nickname);
-        if(client.isSinglePlayer())
+        if(LocalConfig.getInstance().getTurnOrder().size() == 1)
             loadActionTokens(client);
     }
 
@@ -114,7 +112,7 @@ public class BoardView extends GUIWindow {
         if (nickname.equals(client.getNickname())) {
             guiCommandsPanel.clean();
         }
-        if(client.isSinglePlayer())
+        if(LocalConfig.getInstance().getTurnOrder().size() == 1)
             actionToken.clean();
     }
 

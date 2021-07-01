@@ -31,7 +31,7 @@ public class Client {
     private PrintWriter serverOut;
     private Socket socket;
     private LocalModel localModel;
-    private boolean singlePlayer;
+    private boolean offlineGame;
     private BlockingQueue<String> readBuffer;
     private BlockingQueue<String> writeBuffer;
     private Thread localController;
@@ -42,7 +42,7 @@ public class Client {
         this.hostname = hostname;
         this.port = port;
         nickname = null;
-        singlePlayer = false;
+        offlineGame = false;
         this.guiSelection = guiSelection;
     }
 
@@ -77,12 +77,8 @@ public class Client {
         this.nickname = nickname;
     }
 
-    public Boolean isSinglePlayer() {
-        return singlePlayer;
-    }
-
-    public void setSinglePlayer(boolean singlePlayer) {
-        this.singlePlayer = singlePlayer;
+    public void setOfflineGame(boolean offlineGame) {
+        this.offlineGame = offlineGame;
     }
 
     public void setState(ClientState clientState) {
@@ -98,7 +94,7 @@ public class Client {
     }
 
     public void write(String message) {
-        if (singlePlayer) {
+        if (offlineGame) {
             try {
                 writeBuffer.put(message);
             } catch (InterruptedException e) {

@@ -96,7 +96,7 @@ public class EndGameView extends GUIWindow {
 
     @Override
     public void connectionFailed(int timerDelay) {
-        // TODO : close client ?
+
     }
 
     @Override

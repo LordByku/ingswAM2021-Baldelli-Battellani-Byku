@@ -197,10 +197,10 @@ public class CLI implements ViewInterface {
 
     public static void actionToken(LocalModel model) {
         if (model != null) {
-            ActionToken actionToken = model.getGameZone().getActionToken();
+            ActionToken actionToken = model.getGameZone().getActionTokenDeck().getFlippedActionToken();
             if (actionToken != null) {
                 System.out.println(actionToken.getCLIString());
-                model.getGameZone().resetActionToken();
+                model.getGameZone().getActionTokenDeck().resetActionToken();
             }
         }
     }
@@ -380,6 +380,8 @@ public class CLI implements ViewInterface {
                 if (totalPoints > maxPoints || resources > maxResources) {
                     winner.clear();
                     winner.add(player);
+                    maxPoints = totalPoints;
+                    maxResources = resources;
                 } else if (resources == maxResources) {
                     winner.add(player);
                 }
@@ -438,6 +440,7 @@ public class CLI implements ViewInterface {
         } else {
             System.out.println(TextColour.GREEN.escape() + "The winners are " + stringBuilder.toString() + " (Tie)" + TextColour.RESET);
         }
+        System.out.println("[x] Exit");
     }
 
     public CLIViewWindow getViewWindow() {

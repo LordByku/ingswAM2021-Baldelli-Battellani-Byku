@@ -18,8 +18,10 @@ public class DevCardImage extends JPanel {
     private final int width;
     private final int height;
 
-    public DevCardImage(String filename, int width, DevCard devCard) throws IOException {
+    public DevCardImage(int width, DevCard devCard) throws IOException {
         super(null);
+        String filename = String.valueOf(devCard.getLevel().getFileOffset() + devCard.getColour().getFileOffset());
+
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         URL resource = classLoader.getResource("DevCardPNGs/" + filename + ".png");
         image = ImageIO.read(resource);

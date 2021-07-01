@@ -24,7 +24,7 @@ public class GUIActionToken implements LocalModelElementObserver {
 
     public void loadActionToken(){
         JPanel imagePanel;
-        ActionToken token = client.getModel().getGameZone().getActionToken();
+        ActionToken token = client.getModel().getGameZone().getActionTokenDeck().getFlippedActionToken();
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = c.gridy = 0;
         if(token!=null) {
