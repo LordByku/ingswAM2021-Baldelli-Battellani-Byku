@@ -8,7 +8,7 @@ AM24 - Baldelli Battellani Byku
 
 [Paolo Battellani](https://github.com/paolob2)
 
-[Andrea Byku] (https://github.com/LordByku)
+[Andrea Byku](https://github.com/LordByku)
 
 ## Funzionalità implementate
 
