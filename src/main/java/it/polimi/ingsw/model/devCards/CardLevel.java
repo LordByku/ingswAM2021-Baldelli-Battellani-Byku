@@ -12,7 +12,6 @@ public enum CardLevel {
 
     private final String CLIString;
     private final int fileOffset;
-    private static final Random rng = new Random();
 
     CardLevel(String CLIString, int fileOffset) {
         this.CLIString = CLIString;
@@ -40,6 +39,6 @@ public enum CardLevel {
     }
 
     public int getFileOffset() {
-        return fileOffset + CardColour.values().length * rng.nextInt(4);
+        return fileOffset;
     }
 }

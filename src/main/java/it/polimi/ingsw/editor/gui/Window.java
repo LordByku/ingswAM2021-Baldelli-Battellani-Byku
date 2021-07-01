@@ -80,6 +80,9 @@ public class Window {
                 EditorApp.setWindow(new Window(frame));
             } catch (FileNotFoundException fileNotFoundException) {
                 fileErrorLabel.setText("File not found");
+            } catch (RuntimeException e) {
+                Config.setDefaultPath();
+                fileErrorLabel.setText("Invalid file");
             }
         }));
 
