@@ -1,8 +1,8 @@
-# Prova Finale Ingegneria del Software 2020/2021
+# Prova Finale Ingegneria del Software 2020/2021 - Masters of Renaissance
 AM24 - Baldelli Battellani Byku
 
 
-## Sviluppatori
+## Developers
 
 [Emanuele Baldelli](https://github.com/emadens)
 
@@ -10,44 +10,44 @@ AM24 - Baldelli Battellani Byku
 
 [Andrea Byku](https://github.com/LordByku)
 
-## Funzionalità implementate
+## Implemented features
 
-* Regole Complete
+* Complete rules
 * CLI + GUI
 * Socket
-* _3 Funzionalità Avanzate:_
-  * Partita in locale
-  * Resistenza alle disconnessioni
-  * Editor dei parametri
+* _3 Advanced features:_
+  * Local game
+  * Resilience to disconnections
+  * Parameter Editor
 
-## Istruzioni per l'esecuzione
+## Instructions to run the game
 
 ### Server
-Per lanciare il server posizionarsi nella directory /deliverables/final/AM24_jar e lanciare da terminale il seguente comando:
+To launch the server open this path (/deliverables/final/AM24_jar) from terminal and run the following command:
 
 bash
 
-java -jar AM24.jar server _[port]_
+java -jar AM24.jar server [_port_]
 
 ### Client
-Per lanciare il client posizionarsi nella directory /deliverables/final/AM24_jar e lanciare da terminale il comando corrispondente alla modalità:
+To launch the client open this path (/deliverables/final/AM24_jar) from terminal and choose the command to run:
 
 #### CLI
-Per giocare con la CLI:
+To play with the CLI:
 
 bash
 
-java -jar AM24.jar client _[hostname]_ _[port]_ cli
+java -jar AM24.jar client [_hostname_] [_port_] cli
 
 #### GUI
-Per giocare con la GUI:
+To play with the GUI:
 
 bash
 
-java -jar AM24.jar client _[hostname]_ _[port]_ gui
+java -jar AM24.jar client [_hostname_] [_port_] gui
 
 ### Editor
-Per lanciare l'editor dei parametri posizionarsi nella directory /deliverables/final/AM24Editor_jar e lanciare da terminale il seguente comando:
+To launch the parameter editor open this path (/deliverables/final/AM24Editor_jar) from terminal and run the following command:
 
 bash
 
