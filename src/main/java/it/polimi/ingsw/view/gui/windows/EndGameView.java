@@ -16,7 +16,6 @@ import java.util.ArrayList;
 public class EndGameView extends GUIWindow {
     private final ArrayList<EndGameResult> results;
     private final boolean computerWin;
-    int textSize = 20;
     private JPanel panel;
     private JPanel rank;
     private JTable rankingTable;
@@ -51,6 +50,7 @@ public class EndGameView extends GUIWindow {
             winnerLabel = GUIUtil.addLabel("The winner is: " + winnerNickname + "!", winnerPanel);
         }
         winnerLabel.setFont(new Font("Arial", Font.BOLD, 60));
+        winnerLabel.setForeground(Color.GREEN);
 
         DefaultTableModel model = new DefaultTableModel(new String[]{"Position:", "Nickname:", "VictoryPoints:", "Resources:"}, 0);
         rankingTable.setModel(model);
