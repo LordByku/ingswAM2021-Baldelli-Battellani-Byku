@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.devCards;
 import it.polimi.ingsw.model.leaderCards.LeaderCardRequirements;
 import it.polimi.ingsw.model.playerBoard.Board;
 import it.polimi.ingsw.model.playerBoard.InvalidBoardException;
+import it.polimi.ingsw.view.cli.CLIPrintable;
 import it.polimi.ingsw.view.gui.images.leaderCard.CardTypeRequirementsPanel;
 
 import javax.swing.*;
@@ -13,7 +14,7 @@ import java.util.TreeMap;
  * CardTypeset represents a set of CardTypes
  */
 
-public class CardTypeSet implements LeaderCardRequirements {
+public class CardTypeSet implements LeaderCardRequirements, CLIPrintable {
     /**
      * cardTypes represents a hash map of card types and his quantity
      */
@@ -26,10 +27,18 @@ public class CardTypeSet implements LeaderCardRequirements {
         cardTypes = new TreeMap<>();
     }
 
+    /**
+     * add adds a new CardTypeDetails to this CardTypeSet
+     * @param cardTypeDetails the CardTypeDetails to add
+     */
     public void add(CardTypeDetails cardTypeDetails) {
         cardTypes.put(cardTypeDetails.getCardColour(), cardTypeDetails);
     }
 
+    /**
+     * getCardTypes returns all CardTypeDetails in this CardTypeSet grouped in a TreeMap
+     * @return a TreeMap containing all CardTypeDetails
+     */
     public TreeMap<CardColour, CardTypeDetails> getCardTypes() {
         return (TreeMap<CardColour, CardTypeDetails>) cardTypes.clone();
     }

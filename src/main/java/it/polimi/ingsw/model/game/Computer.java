@@ -53,6 +53,10 @@ public class Computer extends Player {
         return faithTrack;
     }
 
+    /**
+     * hasWon checks whether the Computer has won the single player game
+     * @return true iff the Computer has won the single player game
+     */
     public boolean hasWon() {
         CardMarket cardMarket = Game.getInstance().getGameZone().getCardMarket();
         return faithTrack.getMarkerPosition() == faithTrack.getFinalPosition() || cardMarket.hasEmptyColour();

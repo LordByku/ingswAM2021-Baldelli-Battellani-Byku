@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.function.UnaryOperator;
 
+/**
+ * Enum for single player action tokens
+ */
 public enum ActionToken implements CLIPrintable {
     ADVANCEONCEANDRESHUFFLE(deck -> {
         deck.getFaithTrack().addFaithPoints();
@@ -58,6 +61,7 @@ public enum ActionToken implements CLIPrintable {
     private final UnaryOperator<ActionTokenDeck> flipLambda;
     private Image image;
     private final String filename;
+
     ActionToken(UnaryOperator<ActionTokenDeck> flipLambda, String cliString, String name) {
         this.flipLambda = flipLambda;
         this.cliString = cliString;
@@ -86,5 +90,4 @@ public enum ActionToken implements CLIPrintable {
     public Image getImage() {
         return image;
     }
-
 }

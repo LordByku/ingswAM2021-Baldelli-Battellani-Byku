@@ -88,6 +88,10 @@ public class CardMarketDeck {
         return devCardStack.peek();
     }
 
+    /**
+     * isEmpty checks whether this deck is empty
+     * @return true iff this deck is empty
+     */
     public boolean isEmpty() {
         return devCardStack.isEmpty();
     }
@@ -108,6 +112,10 @@ public class CardMarketDeck {
         }
     }
 
+    /**
+     * size returns the size of this deck
+     * @return the size of this deck
+     */
     public int size() {
         return devCardStack.size();
     }

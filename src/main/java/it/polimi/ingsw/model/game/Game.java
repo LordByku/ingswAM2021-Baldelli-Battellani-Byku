@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
+/**
+ * Game is the main class for the model
+ */
 public class Game {
     private static Game instance;
     private final ArrayList<Player> players;

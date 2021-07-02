@@ -48,6 +48,12 @@ public class CardMarket {
         }
     }
 
+    /**
+     * top returns the top card of a given CardMarket deck
+     * @param levelRow the market row
+     * @param colourColumn the market column
+     * @return the DevCard on top of the selected deck
+     */
     public DevCard top(int levelRow, int colourColumn) {
         if (levelRow < 0 || levelRow >= CardLevel.values().length ||
                 colourColumn < 0 || colourColumn >= CardColour.values().length) {
@@ -56,6 +62,13 @@ public class CardMarket {
         return decks[levelRow][colourColumn].top();
     }
 
+    /**
+     * removeTop removes and returns the top card of a given CardMarket deck
+     * @param levelRow the market row
+     * @param colourColumn the market column
+     * @return the DevCard removed from the selected deck
+     * @throws EmptyDeckException if the selected deck is empty
+     */
     public DevCard removeTop(int levelRow, int colourColumn) throws EmptyDeckException {
         if (levelRow < 0 || levelRow >= CardLevel.values().length ||
                 colourColumn < 0 || colourColumn >= CardColour.values().length) {
@@ -69,6 +82,12 @@ public class CardMarket {
         return card;
     }
 
+    /**
+     * size returns the number of DevCards in a given CardMarket deck
+     * @param levelRow the market row
+     * @param colourColumn the market column
+     * @return the size of the selected deck
+     */
     public int size(int levelRow, int colourColumn) {
         if (levelRow < 0 || levelRow >= CardLevel.values().length ||
                 colourColumn < 0 || colourColumn >= CardColour.values().length) {
@@ -77,6 +96,11 @@ public class CardMarket {
         return decks[levelRow][colourColumn].size();
     }
 
+    /**
+     * discardColourCard discards a DevCard of a given colour,
+     * starting from the ones of a lower level
+     * @param colour the CardColour of the card to discard
+     */
     public void discardColourCard(CardColour colour) {
         List<CardColour> cardColourList = Arrays.asList(CardColour.values());
         int j = cardColourList.indexOf(colour);
@@ -88,6 +112,11 @@ public class CardMarket {
         }
     }
 
+    /**
+     * hasEmptyColour checks whether there is at least a CardColour
+     * with no card left in this CardMarket
+     * @return true iff there is at least a CardColour with no card left
+     */
     public boolean hasEmptyColour() {
         for (int i = 0; i < CardColour.values().length; ++i) {
             boolean allEmpty = true;

@@ -21,6 +21,9 @@ public class DevCard implements Scoring, Cloneable {
      * usedIds is a container for the ids already used for development cards
      */
     private final static HashSet<Integer> usedIds = new HashSet<>();
+    /**
+     * width is the maximum CLI width of a DevCard
+     */
     protected static int width = 0;
     /**
      * colour represents the card's colour
@@ -86,6 +89,9 @@ public class DevCard implements Scoring, Cloneable {
         usedIds.add(id);
     }
 
+    /**
+     * clearIds clears the set of used ids
+     */
     public static void clearIds() {
         usedIds.clear();
     }
@@ -139,6 +145,10 @@ public class DevCard implements Scoring, Cloneable {
         return colour;
     }
 
+    /**
+     * getProductionPower returns the ProductionDetails of this DevCard
+     * @return the ProductionDetails of this DevCard
+     */
     public ProductionDetails getProductionPower() {
         return productionPower.clone();
     }
@@ -152,7 +162,7 @@ public class DevCard implements Scoring, Cloneable {
         return points;
     }
 
-
+    @Override
     public DevCard clone() {
         try {
             DevCard cloneDevCard = (DevCard) super.clone();
