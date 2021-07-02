@@ -48,7 +48,7 @@ public class EndGameView extends GUIWindow {
         }
         else {
             String winnerNickname = results.get(0).getPlayer();
-            winnerLabel = GUIUtil.addLabel(winnerNickname, winnerPanel);
+            winnerLabel = GUIUtil.addLabel("The winner is: " + winnerNickname + "!", winnerPanel);
         }
         winnerLabel.setFont(new Font("Arial", Font.BOLD, 60));
 
