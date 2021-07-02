@@ -18,7 +18,6 @@ public class InitResources extends CommandWindow {
 
     public InitResources(Client client) {
         selectionsLeft = LocalConfig.getInstance().getInitialResources(client.getNickname());
-        System.out.println(selectionsLeft);
         currentDepotIndex = 0;
         assignment = new ConcreteResourceSet[LocalConfig.getInstance().getNumberOfDepots()];
         for (int i = 0; i < assignment.length; ++i) {

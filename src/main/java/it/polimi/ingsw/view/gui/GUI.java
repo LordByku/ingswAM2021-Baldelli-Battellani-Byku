@@ -89,7 +89,6 @@ public class GUI implements ViewInterface {
 
     @Override
     public void onUserInput(String line) {
-        System.out.println("sending: " + line);
         client.write(line);
     }
 
@@ -156,7 +155,6 @@ public class GUI implements ViewInterface {
             JsonObject config = JsonUtil.getInstance().parseLine(line).getAsJsonObject();
             jsonObject.add("config", config);
         }
-        System.out.println(jsonObject.toString());
 
         client.write(jsonObject.toString());
     }

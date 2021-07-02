@@ -23,18 +23,12 @@ public class ClientServerCommunication implements Runnable {
         String line;
         try {
             while ((line = in.readLine()) != null) {
-                System.out.println("Client received: " + line);
                 client.handleServerMessage(line);
             }
         } catch (SocketTimeoutException e) {
-            System.out.println("Socket timeout exception");
             client.reconnect();
         } catch (IOException e) {
-            if(Thread.interrupted()) {
-                System.out.println("Thread interrupted");
-                return;
-            } else {
-                System.out.println("Unexpected io exception");
+            if (!Thread.interrupted()) {
                 Timer timer = new Timer();
                 timer.schedule(new TimerTask() {
                     @Override

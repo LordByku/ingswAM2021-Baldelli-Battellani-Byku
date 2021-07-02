@@ -73,7 +73,6 @@ public class Server {
     public void broadcast(String type, JsonObject message) {
         synchronized (clientHandlers) {
             for (ClientHandler clientHandler : clientHandlers) {
-                System.out.println("broadcasting to " + clientHandler);
                 clientHandler.ok(type, message);
             }
         }

@@ -110,13 +110,11 @@ public class Client {
 
     public void openServerCommunication() throws IOException {
         viewInterface.startConnection();
-        System.out.println("creating socket");
         socket = new Socket(hostname, port);
         socket.setSoTimeout(3 * timerDelay);
         serverOut = new PrintWriter(socket.getOutputStream(), true);
         clientServerCommunication = new Thread(new ClientServerCommunication(this, socket));
         clientServerCommunication.start();
-        System.out.println("communication thread started");
     }
 
     public void closeServerCommunication() {
@@ -133,8 +131,6 @@ public class Client {
         if (!socket.isClosed()) {
             closeServerCommunication();
         }
-
-        System.out.println("socket closed? " + socket.isClosed());
 
         try {
             if (getModel() == null || !getModel().getEndGame()) {
@@ -153,11 +149,9 @@ public class Client {
     }
 
     public void connectToServer() throws IOException {
-        System.out.println("connecting to server");
         openServerCommunication();
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("nickname", getNickname());
-        System.out.println("sending: " + jsonObject.toString());
         write(jsonObject.toString());
         setState(new Lobby(viewInterface));
     }

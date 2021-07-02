@@ -585,7 +585,6 @@ public class GUIWarehouse implements LocalModelElementObserver {
 
     @Override
     public void notifyObserver(NotificationSource notificationSource) {
-        System.out.println("WAREHOUSE UPDATE");
         SwingUtilities.invokeLater(() -> {
             synchronized (client.getModel()) {
                 backgroundPanel.removeAll();

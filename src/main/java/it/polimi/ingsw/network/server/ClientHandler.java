@@ -67,7 +67,6 @@ public class ClientHandler implements Runnable {
     }
 
     public void broadcast(String type, JsonObject message) {
-        System.out.println(this + " requesting broadcast");
         server.broadcast(type, message);
     }
 
@@ -77,7 +76,6 @@ public class ClientHandler implements Runnable {
     }
 
     public synchronized void disconnection() {
-        System.out.println("Client has disconnected");
         server.removeClientHandler(this);
         try {
             // person may be null if an exception is thrown trying to add the person to the game
@@ -145,7 +143,6 @@ public class ClientHandler implements Runnable {
         try {
             serverClientCommunication.join();
             timer.cancel();
-            System.out.println("ServerClientCommunication closed");
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
@@ -154,7 +151,6 @@ public class ClientHandler implements Runnable {
     }
 
     public void handleClientMessage(String line) {
-        System.out.println(this + " received " + line);
         if ("pong".equals(line)) {
             ponged = true;
         } else {

@@ -37,7 +37,6 @@ public class EndGameView extends GUIWindow {
         winnerPanel.setLayout(new BoxLayout(winnerPanel, BoxLayout.X_AXIS));
         JLabel winnerLabel;
         if(results.size() == 1){
-            System.out.println("computerWin: " + computerWin);
             if(computerWin) {
                 winnerLabel = GUIUtil.addLabel("YOU LOST!", winnerPanel);
             }
