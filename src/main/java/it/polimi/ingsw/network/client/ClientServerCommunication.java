@@ -5,10 +5,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ClientServerCommunication implements Runnable {
     private final BufferedReader in;
     private final Client client;
+    private final int timerDelay = 10000;
 
     public ClientServerCommunication(Client client, Socket socket) throws IOException {
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -32,7 +35,13 @@ public class ClientServerCommunication implements Runnable {
                 return;
             } else {
                 System.out.println("Unexpected io exception");
-                client.reconnect();
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        client.reconnect();
+                    }
+                }, 2 * timerDelay);
             }
         }
     }

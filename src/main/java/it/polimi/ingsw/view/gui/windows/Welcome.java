@@ -21,12 +21,16 @@ public class Welcome extends GUIWindow {
             connectionLabel.setText(" ");
             gui.bufferWrite(insertYourNicknameTextField.getText());
             gui.bufferWrite("0");
+            playOnlineButton.setEnabled(false);
+            playOfflineButton.setEnabled(false);
         }));
         playOfflineButton.addActionListener(new ButtonClickEvent((event) -> {
             errorLabel.setText(" ");
             connectionLabel.setText(" ");
             gui.bufferWrite(insertYourNicknameTextField.getText());
             gui.bufferWrite("1");
+            playOnlineButton.setEnabled(false);
+            playOfflineButton.setEnabled(false);
         }));
     }
 
@@ -44,6 +48,8 @@ public class Welcome extends GUIWindow {
     public GUIWindow onFatalError(JFrame frame, String message) {
         connectionLabel.setText(" ");
         errorLabel.setText(message);
+        playOnlineButton.setEnabled(true);
+        playOfflineButton.setEnabled(true);
         return this;
     }
 
@@ -51,6 +57,8 @@ public class Welcome extends GUIWindow {
     public void onError(String message) {
         connectionLabel.setText(" ");
         errorLabel.setText(message);
+        playOnlineButton.setEnabled(true);
+        playOfflineButton.setEnabled(true);
     }
 
     @Override

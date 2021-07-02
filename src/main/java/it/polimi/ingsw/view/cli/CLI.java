@@ -148,7 +148,7 @@ public class CLI implements ViewInterface {
     }
 
     public static void initDiscard() {
-        System.out.println("Insert the indices of the two Leader Cards you want to discard:");
+        System.out.println("Insert the indices of the " + LocalConfig.getInstance().getInitialDiscards() + " Leader Cards you want to discard:");
     }
 
     public static void discardLeaderCard() {
