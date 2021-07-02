@@ -69,11 +69,15 @@ public class Welcome extends GUIWindow {
     @Override
     public void connectionFailed(int timerDelay) {
         connectionLabel.setText("There was an error connecting to the server");
+        playOnlineButton.setEnabled(true);
+        playOfflineButton.setEnabled(true);
     }
 
     @Override
     public void clearErrors() {
         connectionLabel.setText(" ");
         errorLabel.setText(" ");
+        playOnlineButton.setEnabled(true);
+        playOfflineButton.setEnabled(true);
     }
 }
