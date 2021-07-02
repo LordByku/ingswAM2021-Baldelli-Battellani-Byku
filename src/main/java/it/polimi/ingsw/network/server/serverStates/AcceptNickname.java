@@ -14,11 +14,9 @@ public class AcceptNickname extends ServerState {
         JsonObject message = JsonUtil.getInstance().parseLine(line).getAsJsonObject();
         String nickname = message.get("nickname").getAsString();
 
-        System.out.println("Received nickname " + nickname);
         try {
             Person currentPerson = (Person) Game.getInstance().addPlayer(nickname);
             clientHandler.setPlayer(currentPerson);
-            System.out.println("Accepted nickname " + nickname);
             if (Game.getInstance().hasGameStarted()) {
                 // handle reconnection here
                 clientHandler.ok("config", getConfigMessage());

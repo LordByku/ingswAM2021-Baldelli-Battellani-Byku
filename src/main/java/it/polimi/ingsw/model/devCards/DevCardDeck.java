@@ -1,9 +1,11 @@
 package it.polimi.ingsw.model.devCards;
 
+import it.polimi.ingsw.view.cli.CLIPrintable;
+
 import java.util.ArrayList;
 import java.util.Stack;
 
-public class DevCardDeck {
+public class DevCardDeck implements CLIPrintable {
     /**
      * devCardStack represents the development card deck
      */
@@ -57,6 +59,10 @@ public class DevCardDeck {
         return new ArrayList<>(devCardStack);
     }
 
+    /**
+     * isEmpty checks whether this deck is empty
+     * @return true iff this deck is empty
+     */
     public boolean isEmpty() {
         return devCardStack.isEmpty();
     }
@@ -82,10 +88,8 @@ public class DevCardDeck {
         return top().getLevel();
     }
 
+    @Override
     public String getCLIString() {
-
-        char c;
-        int nl = 0;
         StringBuilder result = new StringBuilder();
 
         ArrayList<DevCard> devCards = this.getCards();
@@ -103,19 +107,6 @@ public class DevCardDeck {
             result.append(devCards.get(2).getCLIString()).append("\n");
             result.append(devCards.get(1).buildLastTwoRows(1)).append("\n");
             result.append(devCards.get(0).buildLastTwoRows(2));
-    /*
-            for (int i=0;i<result.toString().length();i++)
-                c=result.toString().charAt(i);
-
-                if(c == '\n')
-                    nl++;
-
-                if(nl>=5 && nl<=7)
-                    result.toString();
-
-
-
-    */
         }
 
         return result.toString();

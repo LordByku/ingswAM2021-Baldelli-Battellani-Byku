@@ -11,6 +11,9 @@ import java.util.Collections;
  * ActionTokenDeck is the deck of ActionTokens in single player games
  */
 public class ActionTokenDeck {
+    /**
+     * flippedToken contains the last flipped ActionToken
+     */
     private static ActionToken flippedToken = null;
     /**
      * faithTrack is the Computer's Faith Track
@@ -45,6 +48,10 @@ public class ActionTokenDeck {
         Collections.shuffle(deck);
     }
 
+    /**
+     * getFlippedToken returns the last flipped token
+     * @return the last flipped token
+     */
     public static ActionToken getFlippedToken() {
         return flippedToken;
     }

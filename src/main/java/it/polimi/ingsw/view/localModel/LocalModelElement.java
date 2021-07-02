@@ -26,9 +26,7 @@ public abstract class LocalModelElement {
 
     protected void notifyObservers(NotificationSource notificationSource) {
         synchronized (observers) {
-            System.out.println(observers.size());
             for (LocalModelElementObserver observer : observers) {
-                System.out.println(observer);
                 observer.notifyObserver(notificationSource);
             }
         }

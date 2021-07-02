@@ -28,7 +28,6 @@ public class GameStarted extends ServerState {
                 CommandType commandType = Deserializer.getInstance().getCommandType(commandElement);
                 try {
                     CommandBuffer newBuffer = commandType.getCommandBuffer(clientHandler.getPerson());
-                    System.out.println("New buffer successfully created " + commandBuffer);
 
                     Consumer<GameStateSerializer> lambda = null;
                     if (commandBuffer == null || commandBuffer.isCompleted() || (lambda = commandBuffer.cancel()) != null) {

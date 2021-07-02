@@ -211,8 +211,6 @@ public class GUIWarehouse implements LocalModelElementObserver {
                         JPanel concretePanel = new JPanel();
                         concretePanel.setLayout(new GridBagLayout());
 
-                        // TODO : handle obtained faith points
-
                         int count = 0;
                         if (toDiscard == null) {
                             ChoiceResourceSet obtained = marketCommand.getObtainedResources();
@@ -585,7 +583,6 @@ public class GUIWarehouse implements LocalModelElementObserver {
 
     @Override
     public void notifyObserver(NotificationSource notificationSource) {
-        System.out.println("WAREHOUSE UPDATE");
         SwingUtilities.invokeLater(() -> {
             synchronized (client.getModel()) {
                 backgroundPanel.removeAll();

@@ -63,6 +63,10 @@ public class LeaderCardsDeck {
         return leaderCard;
     }
 
+    /**
+     * assignCards assigns the initial LeaderCards to a given Board
+     * @param board the Board to assign the LeaderCards to
+     */
     public void assignCards(Board board) {
         int toAssign = InitGameParser.getInstance().getLeaderCardsToAssign();
 

@@ -4,8 +4,15 @@ package it.polimi.ingsw.model.game;
  * Player represents a player of the game
  */
 public abstract class Player {
+    /**
+     * playerType indicates the type of Player
+     */
     private final PlayerType playerType;
 
+    /**
+     * Default constructor
+     * @param playerType the PlayerType of this Player
+     */
     protected Player(PlayerType playerType) {
         this.playerType = playerType;
     }
@@ -23,6 +30,10 @@ public abstract class Player {
      */
     public abstract void endTurn() throws GameEndedException, GameNotStartedException;
 
+    /**
+     * getPlayerType returns the PlayerType of this Player
+     * @return the PlayerType of this Player
+     */
     public PlayerType getPlayerType() {
         return playerType;
     }

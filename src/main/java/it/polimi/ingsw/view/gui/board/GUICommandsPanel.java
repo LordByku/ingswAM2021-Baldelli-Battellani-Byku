@@ -74,7 +74,6 @@ public class GUICommandsPanel implements LocalModelElementObserver {
             CommandBuffer commandBuffer = self.getCommandBuffer();
 
             if (commandBuffer != null) {
-                System.out.println(commandBuffer.getCommandType().name());
                 switch (commandBuffer.getCommandType()) {
                     case MARKET: {
                         Market marketCommand = (Market) commandBuffer;
