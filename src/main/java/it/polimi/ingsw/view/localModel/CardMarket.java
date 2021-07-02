@@ -40,7 +40,7 @@ public class CardMarket extends LocalModelElement implements CLIPrintable {
                     if (k < market.get(i).get(j).getQuantity()) {
                         result.append("[");
                     } else {
-                        if(k == market.get(i).get(j).getQuantity()) {
+                        if(k > 0 && k == market.get(i).get(j).getQuantity()) {
                             result.append("]");
                         } else {
                             result.append(" ");

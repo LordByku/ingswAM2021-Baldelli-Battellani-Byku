@@ -18,7 +18,7 @@ AM24 - Baldelli Battellani Byku
 * _3 Advanced features:_
   * Local game
   * Resilience to disconnections
-  * Parameter Editor
+  * Parameters Editor
 
 ## Instructions to run the game
 
