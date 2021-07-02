@@ -23,32 +23,23 @@ AM24 - Baldelli Battellani Byku
 ## Instructions to run the game
 
 ### Server
-To launch the server open this path (/deliverables/final/AM24_jar) from terminal and run the following command:
-
-bash
+To launch the server run:
 
 java -jar AM24.jar server [_port_]
 
 ### Client
-To launch the client open this path (/deliverables/final/AM24_jar) from terminal and choose the command to run:
+To launch the client run:
 
 #### CLI
-To play with the CLI:
-
-bash
-
 java -jar AM24.jar client [_hostname_] [_port_] cli
+> Note: CLI requirements: Linux environment
 
 #### GUI
-To play with the GUI:
-
-bash
-
 java -jar AM24.jar client [_hostname_] [_port_] gui
+> Note: GUI requirements: 1920x1080 minimum resolution
 
 ### Editor
-To launch the parameter editor open this path (/deliverables/final/AM24Editor_jar) from terminal and run the following command:
+To launch the parameters editor run:
 
-bash
-
-java -jar AM24.jar
+java -jar AM24-editor.jar
+> Note: GUI requirements: 1920x1080 minimum resolution
