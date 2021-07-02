@@ -142,7 +142,7 @@ public class Client {
             }
         } catch (IOException e) {
             viewInterface.connectionFailed(timerDelay);
-            Timer timer = new Timer();
+            Timer timer = new Timer(true);
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
