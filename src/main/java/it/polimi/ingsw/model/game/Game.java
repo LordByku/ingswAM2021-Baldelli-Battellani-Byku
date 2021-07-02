@@ -251,4 +251,19 @@ public class Game {
     public void refreshModel() {
         gameZone = new GameZone();
     }
+
+    public Person getActivePerson() {
+        synchronized (players) {
+            Person activePlayer = null;
+            for (Player player: players) {
+                if (player.getPlayerType() == PlayerType.PERSON) {
+                    Person person = (Person) player;
+                    if (person.isActivePlayer()) {
+                        activePlayer = person;
+                    }
+                }
+            }
+            return activePlayer;
+        }
+    }
 }

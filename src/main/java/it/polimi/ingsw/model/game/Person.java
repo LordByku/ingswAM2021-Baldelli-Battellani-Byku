@@ -14,7 +14,7 @@ public class Person extends Player {
      * isActivePlayer is a flag that tells whether it's currently
      * the turn of this Player
      */
-    boolean isActivePlayer;
+    private boolean isActivePlayer;
     /**
      * board is the personal Board of the player
      */
@@ -131,7 +131,10 @@ public class Person extends Player {
         if (Game.getInstance().allDisconnected()) {
             isConnected = true;
             while (!isActivePlayer) {
-                Game.getInstance().handleTurnOrder();
+                Person activePerson = Game.getInstance().getActivePerson();
+                if(activePerson != null) {
+                    activePerson.endTurn();
+                }
             }
         } else {
             isConnected = true;
