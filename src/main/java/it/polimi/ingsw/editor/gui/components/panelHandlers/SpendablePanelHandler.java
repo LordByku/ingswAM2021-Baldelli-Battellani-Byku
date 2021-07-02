@@ -34,7 +34,7 @@ public class SpendablePanelHandler extends PanelHandler {
             EditorGUIUtil.addLabel(resource.getString(), labelPanel);
             quantityFields.add(EditorGUIUtil.addValidatableTextField(spendable.getQuantity(resource), textFieldPanel, (value) -> {
                 spendable.updateQuantity(resource, value);
-            }, (value) -> value >= 0 && value < 100));
+            }, (value) -> value >= 0 && value < 10));
         }
 
         panel.add(labelPanel);
@@ -51,6 +51,15 @@ public class SpendablePanelHandler extends PanelHandler {
                 result = false;
             }
         }
+
+        int totalQuantity = 0;
+        for (SpendableResource resource: SpendableResource.values()) {
+            totalQuantity += spendable.getQuantity(resource);
+        }
+        if(totalQuantity >= 10) {
+            result = false;
+        }
+
         return result;
     }
 }

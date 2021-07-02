@@ -39,6 +39,8 @@ public class DiscountLeaderCard extends LeaderCard {
     @Override
     public void play() {
         if (isPlayable()) {
+            board.getLeaderCardArea().removeLeaderCard(this);
+            board.getLeaderCardArea().addLeaderCard(this);
             active = true;
             board.getDiscountArea().addDiscountEffect(discountEffect);
         }

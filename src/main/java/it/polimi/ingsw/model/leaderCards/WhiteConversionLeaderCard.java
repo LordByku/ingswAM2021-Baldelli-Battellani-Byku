@@ -40,6 +40,8 @@ public class WhiteConversionLeaderCard extends LeaderCard {
     @Override
     public void play() {
         if (isPlayable()) {
+            board.getLeaderCardArea().removeLeaderCard(this);
+            board.getLeaderCardArea().addLeaderCard(this);
             active = true;
             board.getConversionEffectArea().addConversionEffect(conversionEffect);
         }

@@ -181,6 +181,10 @@ public class Parser {
                 }
                 totalWarehouseSize += depotSize;
             }
+            if(totalWarehouseSize >= 10) {
+                setConfig(this.config);
+                return false;
+            }
             if (BoardParser.getInstance().getDevelopmentCardsSlots() <= 0 || BoardParser.getInstance().getDevelopmentCardsSlots() > 4) {
                 setConfig(this.config);
                 return false;

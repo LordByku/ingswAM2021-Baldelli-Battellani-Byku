@@ -271,9 +271,9 @@ public class CLI implements ViewInterface {
             }
             for (int j = depot.size(); j < depotSizes.get(i); ++j) {
                 if (resourceType == null) {
-                    result.append(TextColour.WHITE.escape()).append("\u25ef").append(TextColour.RESET).append(" ");
+                    result.append(TextColour.WHITE.escape()).append("o").append(TextColour.RESET).append(" ");
                 } else {
-                    result.append(resourceType.getColour().escape()).append("\u25ef").append(TextColour.RESET).append(" ");
+                    result.append(resourceType.getColour().escape()).append("o").append(TextColour.RESET).append(" ");
                 }
             }
 

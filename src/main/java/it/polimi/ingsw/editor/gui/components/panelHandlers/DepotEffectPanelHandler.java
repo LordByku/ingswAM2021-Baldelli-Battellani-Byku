@@ -46,7 +46,7 @@ public class DepotEffectPanelHandler extends PanelHandler {
         EditorGUIUtil.addLabel("Depot slots:", slotsPanel);
 
         slotsField = EditorGUIUtil.addValidatableTextField(depotEffect.getSlots(), slotsPanel,
-                depotEffect::setSlots, (value) -> value > 0 && value <= 5);
+                depotEffect::setSlots, (value) -> value > 0 && value < 5);
 
         panel.add(resourcePanel);
         panel.add(slotsPanel);

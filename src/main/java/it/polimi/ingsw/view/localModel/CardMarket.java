@@ -38,9 +38,13 @@ public class CardMarket extends LocalModelElement implements CLIPrintable {
                 result.append(" ");
                 for (int k = 0; k < colourWidth; ++k) {
                     if (k < market.get(i).get(j).getQuantity()) {
-                        result.append("\u25af");
+                        result.append("[");
                     } else {
-                        result.append(" ");
+                        if(k == market.get(i).get(j).getQuantity()) {
+                            result.append("]");
+                        } else {
+                            result.append(" ");
+                        }
                     }
                 }
             }

@@ -19,6 +19,11 @@ public class ProductionDetails implements Cloneable {
         if (input == null || output == null) {
             throw new InvalidResourceSetException();
         }
+        if (input.getResourceSet().size() <= 0 || input.getResourceSet().size() >= 10 ||
+            output.getResourceSet().size() + output.getFaithPoints() <= 0 ||
+            output.getResourceSet().size() + output.getFaithPoints() >= 10) {
+            throw new InvalidResourceSetException();
+        }
         this.input = input.clone();
         this.output = output.clone();
     }

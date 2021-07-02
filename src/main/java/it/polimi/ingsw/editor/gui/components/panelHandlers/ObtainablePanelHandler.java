@@ -4,6 +4,7 @@ import it.polimi.ingsw.editor.gui.EditorGUIUtil;
 import it.polimi.ingsw.editor.gui.components.ValidatableTextField;
 import it.polimi.ingsw.editor.model.resources.ObtainableResource;
 import it.polimi.ingsw.editor.model.resources.ObtainableResourceSet;
+import it.polimi.ingsw.editor.model.resources.SpendableResource;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class ObtainablePanelHandler extends PanelHandler {
             EditorGUIUtil.addLabel(resource.getString(), labelPanel);
             quantityFields.add(EditorGUIUtil.addValidatableTextField(obtainable.getQuantity(resource), textFieldPanel, (value) -> {
                 obtainable.updateQuantity(resource, value);
-            }, (value) -> value >= 0 && value < 100));
+            }, (value) -> value >= 0 && value < 10));
         }
 
         panel.add(labelPanel);
@@ -51,6 +52,15 @@ public class ObtainablePanelHandler extends PanelHandler {
                 result = false;
             }
         }
+
+        int totalQuantity = 0;
+        for (ObtainableResource resource: ObtainableResource.values()) {
+            totalQuantity += obtainable.getQuantity(resource);
+        }
+        if(totalQuantity >= 10) {
+            result = false;
+        }
+
         return result;
     }
 }

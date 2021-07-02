@@ -41,6 +41,8 @@ public class DepotLeaderCard extends LeaderCard {
     @Override
     public void play() {
         if (isPlayable()) {
+            board.getLeaderCardArea().removeLeaderCard(this);
+            board.getLeaderCardArea().addLeaderCard(this);
             active = true;
             board.getWarehouse().addLeaderCardDepot(depot);
         }
@@ -57,7 +59,7 @@ public class DepotLeaderCard extends LeaderCard {
             if (i > 0) {
                 effect.append(" ");
             }
-            effect.append("\u25ef");
+            effect.append("o");
         }
         effect.append(TextColour.RESET);
         return effect.toString();

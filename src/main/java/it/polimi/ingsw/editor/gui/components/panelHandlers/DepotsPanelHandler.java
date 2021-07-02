@@ -39,7 +39,7 @@ public class DepotsPanelHandler extends PanelHandler {
 
             slotsFields.add(EditorGUIUtil.addValidatableTextField(size, dataPanel, (value) -> {
                 boardEditor.setDepot(finalI, value);
-            }, (value) -> value > 0 && value <= 5));
+            }, (value) -> value > 0 && value < 5));
 
             EditorGUIUtil.addButton("-", dataPanel, new ButtonClickEvent((e) -> {
                 boardEditor.removeDepot(finalI);
@@ -71,6 +71,16 @@ public class DepotsPanelHandler extends PanelHandler {
                 result = false;
             }
         }
+
+        ArrayList<Integer> depotSizes = boardEditor.getDepotSizes();
+        int totalSlots = 0;
+        for(int depotSize: depotSizes) {
+            totalSlots += depotSize;
+        }
+        if(totalSlots >= 10) {
+            result = false;
+        }
+
         return result;
     }
 }
