@@ -160,10 +160,10 @@ public class GUIMarbleMarket implements LocalModelElementObserver {
 
         SwingUtilities.invokeLater(() -> {
             synchronized (client.getModel()) {
-                marketPanel.removeAll();
+                marketTrayPanel.removeAll();
                 loadMarbleMarket();
-                marketPanel.revalidate();
-                marketPanel.repaint();
+                marketTrayPanel.revalidate();
+                marketTrayPanel.repaint();
             }
         });
     }
