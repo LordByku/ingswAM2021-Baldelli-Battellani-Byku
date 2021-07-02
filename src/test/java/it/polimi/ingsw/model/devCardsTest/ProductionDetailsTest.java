@@ -17,7 +17,34 @@ import static org.junit.Assert.assertFalse;
 public class ProductionDetailsTest {
     @Test
     public void getProductionDetailsTest(){
-        // TODO
+        ChoiceResourceSet choiceResourceSet1 = new ChoiceResourceSet();
+        ChoiceResourceSet choiceResourceSet2 = new ChoiceResourceSet();
+        choiceResourceSet1.addResource(ConcreteResource.COIN);
+        choiceResourceSet1.addResource(ConcreteResource.SHIELD);
+        SpendableResourceSet spendableResourceSet = new SpendableResourceSet(choiceResourceSet1);
+        choiceResourceSet2.addResource(ConcreteResource.STONE);
+        choiceResourceSet2.addResource(ConcreteResource.SERVANT);
+        ObtainableResourceSet obtainableResourceSet = new ObtainableResourceSet(choiceResourceSet2);
+        ProductionDetails productionDetails1 = new ProductionDetails(spendableResourceSet,obtainableResourceSet);
+        ConcreteResourceSet concreteResourceSet1 =new ConcreteResourceSet();
+        concreteResourceSet1.addResource(ConcreteResource.COIN);
+        concreteResourceSet1.addResource(ConcreteResource.SHIELD);
+        ConcreteResourceSet concreteResourceSet2 = new ConcreteResourceSet();
+        concreteResourceSet2.addResource(ConcreteResource.STONE);
+        concreteResourceSet2.addResource(ConcreteResource.SERVANT);
+        assertTrue(productionDetails1.getInput().getResourceSet().getConcreteResources().contains(concreteResourceSet1));
+        assertTrue(productionDetails1.getOutput().getResourceSet().getConcreteResources().contains(concreteResourceSet2));
+        assertFalse(productionDetails1.getOutput().getResourceSet().getConcreteResources().contains(concreteResourceSet1));
+        assertFalse(productionDetails1.getInput().getResourceSet().getConcreteResources().contains(concreteResourceSet2));
+
+        ProductionDetails productionDetails2 = productionDetails1.clone();
+
+        assertTrue(productionDetails2.getInput().getResourceSet().getConcreteResources().contains(concreteResourceSet1));
+        assertTrue(productionDetails2.getOutput().getResourceSet().getConcreteResources().contains(concreteResourceSet2));
+        assertFalse(productionDetails2.getOutput().getResourceSet().getConcreteResources().contains(concreteResourceSet1));
+        assertFalse(productionDetails2.getInput().getResourceSet().getConcreteResources().contains(concreteResourceSet2));
+
+
     }
 
     @Test

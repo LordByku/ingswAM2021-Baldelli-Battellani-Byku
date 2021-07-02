@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.leaderCards.InvalidRequirementsException;
 import it.polimi.ingsw.model.leaderCards.ProductionLeaderCard;
 import it.polimi.ingsw.model.playerBoard.Board;
 import it.polimi.ingsw.model.playerBoard.InvalidBoardException;
+import it.polimi.ingsw.model.playerBoard.ProductionArea;
 import it.polimi.ingsw.model.resources.*;
 import it.polimi.ingsw.model.resources.resourceSets.*;
 import org.junit.Test;
@@ -128,11 +129,17 @@ public class ProductionLeaderCardTest {
             assertFalse(productionLeaderCard.isActive());
             productionLeaderCard.play();
             assertTrue(productionLeaderCard.isActive());
+            ConcreteResourceSet concreteResourceSet1 = productionLeaderCard.getProductionPower().getInput().getResourceSet().getConcreteResources();
+            ConcreteResourceSet cRS2 = productionLeaderCard.getProductionPower().getOutput().getResourceSet().getConcreteResources();
+
+            assertTrue(board.getProductionArea().getProduction(4).getInput().getResourceSet().getConcreteResources().toConcrete().contains(concreteResourceSet1));
+            assertTrue(board.getProductionArea().getProduction(4).getOutput().getResourceSet().getConcreteResources().toConcrete().contains(cRS2));
+            assertTrue((concreteResourceSet1).contains(board.getProductionArea().getProduction(4).getInput().getResourceSet().getConcreteResources().toConcrete()));
+            assertTrue((cRS2).contains(board.getProductionArea().getProduction(4).getOutput().getResourceSet().getConcreteResources().toConcrete()));
+
         } catch (InvalidPointsValueException | InvalidRequirementsException | InvalidBoardException e) {
             fail();
         }
 
-
-        //TODO: Check if adds the production correctly to the productionArea. TBD when everything's been implemented.
     }
 }
